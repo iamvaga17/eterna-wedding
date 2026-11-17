@@ -24,15 +24,140 @@
 /* ending */
 .ending{height:80svh;min-height:570px;isolation:isolate;display:flex;align-items:end;justify-content:center;text-align:center;color:#fff7ed;padding:50px 20px}.ending:before{content:'';position:absolute;inset:0;z-index:-2;background:url('https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=1600&q=85') center/cover}.ending:after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(transparent 20%,#211815d6)}.ending h2{font:italic clamp(70px,12vw,135px)/.85 var(--serif);margin-bottom:28px}.ending p{font-size:12px;letter-spacing:.16em;text-transform:uppercase}.site-footer{background:#302a25;color:#dbcfc0;padding:30px 22px;text-align:center;font-size:10px;line-height:1.9;letter-spacing:.04em}
 @keyframes heroBreath{to{transform:scale(1.12)}}@media(max-width:700px){.hero{min-height:580px}.hero-top{padding:22px 22px 0}.hero h1{font-size:clamp(65px,15vw,104px)}.hero-layout{margin-bottom:10svh}.invitation{padding:60px 18px 85px}.letter{padding:54px 30px 48px}.letter:before{inset:9px}.letter p{font-size:12px}.story{padding:75px 19px 90px}.story-header{display:block}.story h2{font-size:87px}.story-header p{margin-top:20px}.story-collage{grid-template-columns:1fr;gap:23px}.story-main{height:440px;transform:rotate(-1.5deg)}.story-aside{flex-direction:row;align-items:flex-end;gap:0}.story-small{width:59%;height:195px;transform:rotate(4deg)}.story-note{width:54%;margin-left:-10%;padding:16px 13px;transform:rotate(-3deg)}.story-note strong{font-size:27px}.story-note p{font-size:10px}.story-stamp{top:25%;font-size:26px}.day{padding:75px 18px}.day-top{display:block}.day h2{font-size:87px}.day-top .date-big{font-size:47px;margin:0 0 15px}.event{grid-template-columns:70px 1fr;gap:10px}.event time{font-size:33px}.event h3{font-size:32px}.venue{min-height:660px;padding:35px 18px}.venue-card{padding:37px 22px}.venue-card h2{font-size:75px}.dress{padding:75px 18px}.dress h2{font-size:90px}.mood-grid{grid-template-columns:1fr 1fr;gap:9px}.mood-grid figure:nth-child(1){height:265px;transform:rotate(-2deg)}.mood-grid figure:nth-child(2){height:330px;transform:rotate(2deg)}.mood-grid figure:nth-child(3){height:210px;grid-column:1/-1;width:64%;margin:9px auto 0;transform:rotate(-2deg)}.swatches{margin-top:38px;gap:4px}.swatches span{height:50px;border-width:2px}.timer-section{min-height:420px}.timer-section h2{font-size:52px}.counter{gap:13px}.counter strong{font-size:44px}.rsvp{padding:70px 15px}.rsvp-paper{padding:42px 22px}.rsvp-paper:before{inset:8px}.rsvp-paper h2{font-size:76px}.ending{min-height:550px}}@media(max-width:360px){.hero h1{font-size:60px}.story h2,.day h2,.dress h2{font-size:70px}.counter strong{font-size:39px}.letter h2{font-size:60px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}.intro.opening .book-cover{transform:none}}
+
+/* ÉTERNA / НОВАЯ РЕДАКЦИЯ — VOL. 04: sophisticated photography-led art direction */
+:root{--milk:#efe8df;--paper:#fffbf4;--ink:#221e1b;--gold:#b99a74}
+body{background:#e7ded3}
+.cover-special{position:absolute;right:14px;top:50%;font-size:9px;letter-spacing:.25em;writing-mode:vertical-rl;transform:translateY(-50%);opacity:.75}
+.book-cover{border:6px solid #ede4d7;box-shadow:inset 0 0 0 1px #ffffff55;background-position:52% 30%}
+.book-cover:after{content:"";position:absolute;inset:17px;border:1px solid #fff9;pointer-events:none}
+.cover-contents{padding:35px 28px 38px}
+.cover-contents h2{text-shadow:0 4px 22px #0008}
+.intro{background:radial-gradient(circle at 85% 80%,#b29d85,#e6ddcf 60%,#c8b7a0)}
+.intro:after{content:"";position:absolute;inset:16px;border:1px solid #ffffff65;pointer-events:none}
+.hero{height:100svh;min-height:620px;background:#332821}
+.hero-photo{background-image:url('https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&w=1800&q=86');background-position:50% 34%;filter:saturate(.72) contrast(1.06)}
+.hero::before{background:linear-gradient(0deg,#1d1515da 0%,#1b141544 38%,#19140f8c 100%)}
+.hero:after{content:"";position:absolute;inset:4.5% 4%;border:1px solid #f9ead473;pointer-events:none}
+.hero-top{z-index:4;padding:calc(36px + env(safe-area-inset-top)) 10% 0}
+.hero-top b{font-size:36px}
+.hero-layout{margin-bottom:9svh;position:relative;z-index:3}
+.hero h1{letter-spacing:-.065em;font-size:clamp(82px,17vw,190px);margin-top:20px;margin-bottom:32px;text-shadow:0 8px 38px #0a080858}
+.hero-layout .eyebrow{background:#f7eee6;display:inline-block;color:#45362d;padding:12px 14px;font-size:9px;letter-spacing:.18em}
+.hero-date{font-size:12px;letter-spacing:.24em}
+.hero-vertical{position:absolute;right:-1.5vw;top:4vh;writing-mode:vertical-rl;font-size:9px;letter-spacing:.25em;transform:rotate(180deg)}
+.hero-scroll{background:#f9f0e6;color:#332720;padding:17px 28px;border:0;margin-top:35px;font-weight:700;letter-spacing:.1em}
+/* big three-column photo-story, deliberately not a landing-page section */
+.opening-collage{background:#292321;color:#fff8ef;padding:22px min(5vw,75px) 66px;overflow:hidden;position:relative}
+.opening-rail,.opening-footer{display:flex;justify-content:space-between;gap:10px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#d4bda4;border-bottom:1px solid #b99e7955;padding:15px 0 25px}
+.opening-footer{border-bottom:0;border-top:1px solid #b99e7955;padding:26px 0 0}
+.opening-composition{max-width:1370px;margin:35px auto;display:grid;grid-template-columns:1fr .95fr 1fr;min-height:560px;align-items:center;gap:0}
+.opening-image{position:relative;height:530px;overflow:hidden;box-shadow:0 25px 50px #0b090945}
+.opening-image img{filter:grayscale(.28) sepia(.17);transition:transform 1.2s ease;object-fit:cover}
+.opening-image:hover img{transform:scale(1.05)}
+.opening-image.first{transform:rotate(-4deg) translate(12px,14px);z-index:1}
+.opening-image.second{transform:rotate(5deg) translate(-12px,-13px);z-index:1}
+.image-label{position:absolute;left:20px;bottom:22px;color:#fff;font-size:9px;letter-spacing:.22em;text-shadow:0 1px 4px #000}
+.opening-center{z-index:2;background:#e8ddcc;color:#3a2d25;text-align:center;padding:40px 20px;box-shadow:0 30px 65px #0006;transform:rotate(-1deg);margin:-25px -25px}
+.opening-kicker{font-size:9px;letter-spacing:.24em;margin:16px 0 24px}
+.ornament-star{font-size:34px;color:#998069}
+.opening-poem{font:400 clamp(54px,7vw,112px)/.82 var(--serif);letter-spacing:-.065em}
+.opening-poem i{font-weight:400;color:#88694f}
+.opening-byline{font-size:9px;letter-spacing:.18em;margin:30px 0 0}
+.opening-byline span{color:#a98266}
+.invitation{background:linear-gradient(#29231c50,#29231c50),url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=86') center 38%/cover;min-height:870px;display:grid;place-items:center;padding:120px 18px;isolation:isolate}
+.invitation:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,transparent 10%,#16100f7a 100%);z-index:-1}
+.invitation .leaf{color:#fff7ed;opacity:.3}
+.letter{z-index:2;box-shadow:0 35px 85px #140f0b9c,11px 12px 0 #d5c8b5;background:#f9f4ea}
+.invite-photo{position:absolute;width:min(18vw,260px);height:330px;background-size:cover;background-position:center;box-shadow:0 18px 42px #0006;border:8px solid #f2e9dd;z-index:1}
+.invite-photo-left{left:3%;top:17%;transform:rotate(-12deg);background-image:url('https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=500&q=80')}
+.invite-photo-right{right:3%;bottom:8%;transform:rotate(10deg);background-image:url('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=500&q=80')}
+.story{background:linear-gradient(90deg,#e6dacc 0%,#e6dacc 42%,#f5eee5 42%,#f5eee5 100%);padding-bottom:145px}
+.story h2{color:#392c26}
+.story-header .eyebrow{background:#2c221e;color:#fff4e3;padding:12px 16px;display:inline-block}
+.story-main{box-shadow:25px 27px 0 #a78b6c50,0 30px 60px #261a1545;transform:rotate(-5deg)}
+.story-small{transform:rotate(9deg);border:1px solid #bca48d}
+.story-note{background:#d5b99e;color:#34251c;box-shadow:0 19px 36px #26140f43}
+.memory-banner{height:78svh;min-height:550px;display:grid;place-items:center;text-align:center;background:#201a19;color:#fff6e9;isolation:isolate;overflow:hidden}
+.memory-banner-image{position:absolute;inset:0;z-index:-2;background:url('https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1800&q=85') center/cover;filter:saturate(.65)}
+.memory-banner:before{content:"";position:absolute;inset:0;z-index:-1;background:#18110ec4}
+.memory-banner-content{position:relative;padding:50px 20px}
+.memory-banner-content:before,.memory-banner-content:after{content:"";position:absolute;left:50%;transform:translateX(-50%);width:1px;height:65px;background:#f7e5c47f}
+.memory-banner-content:before{top:-40px}.memory-banner-content:after{bottom:-36px}
+.memory-banner-content span{font-size:10px;letter-spacing:.3em}
+.memory-banner-content h2{font:400 clamp(65px,11vw,145px)/.78 var(--serif);letter-spacing:-.045em;margin:35px 0}
+.memory-banner-content h2 i{font-weight:400;color:#e0c5a4}
+.memory-banner-content p{font:italic 31px var(--serif)}
+.memory-banner-side{position:absolute;bottom:25px;letter-spacing:.24em;font-size:9px}
+.day{background:#170f11}.day:before{background:linear-gradient(110deg,#110d11ef,#1b1119c9),url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=85') center/cover}
+.day-card{background:#fff8ee0e;backdrop-filter:blur(12px);border:1px solid #ecd8c174;box-shadow:0 25px 55px #0005}
+.day-top .date-big{color:#d9bc9e}
+.venue{min-height:820px;align-items:center;justify-content:flex-end;padding-right:7vw}
+.venue:before{background-image:url('https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1800&q=85')}
+.venue-card{width:min(490px,100%);box-shadow:17px 20px 0 #e1cbb698,0 35px 65px #0007;text-align:left}
+.venue-card h2{font-size:clamp(70px,11vw,119px)}
+.venue-edge{position:absolute;top:30px;left:7vw;color:#fff;letter-spacing:.2em;font-size:10px;z-index:2}
+.dress{background:#d6c4b4;isolation:isolate;overflow:hidden}
+.dress-wash{position:absolute;inset:0;z-index:-1;background:linear-gradient(#dac9b9dd,#dac9b9dd),url('https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=1600&q=85') center/cover}
+.dress-head{background:#fff7edda;max-width:850px;padding:40px 24px;box-shadow:0 15px 25px #66514422}
+.mood-grid figure{border:8px solid #f2e7d8;box-shadow:0 25px 55px #3d2b2255}
+.mood-grid figure:nth-child(1){transform:rotate(-8deg) translateX(12px)}
+.mood-grid figure:nth-child(3){transform:rotate(8deg) translateX(-12px)}
+.swatches span{box-shadow:0 10px 24px #33211444;height:90px}
+.rsvp{background:linear-gradient(#1d1916b8,#1d1916b8),url('https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=1700&q=85') center/cover}
+.rsvp-paper{background:#fff9ed;box-shadow:0 32px 75px #100d0a80}
+.ending{height:100svh}
+@media(max-width:700px){
+ .hero-photo{background-position:49% 29%}.hero:after{inset:18px 14px}
+ .hero-top{padding:calc(28px + env(safe-area-inset-top)) 8% 0}
+ .hero h1{font-size:clamp(66px,15.7vw,106px);line-height:.79}
+ .hero-vertical{display:none}.hero-layout{width:96%;margin-bottom:10svh}
+ .hero-layout .eyebrow{font-size:8px;padding:10px}
+ .hero-scroll{font-size:9px}
+ .opening-collage{padding:15px 17px 48px}.opening-rail,.opening-footer{font-size:8px}
+ .opening-composition{grid-template-columns:1fr 1fr;gap:0;min-height:0;margin:25px auto 35px;position:relative;padding-bottom:245px}
+ .opening-image{height:290px}
+ .opening-image.first{transform:rotate(-6deg) translate(10px,8px)}
+ .opening-image.second{transform:rotate(7deg) translate(-10px,-7px)}
+ .opening-center{position:absolute;bottom:0;left:10%;right:10%;padding:25px 13px;transform:rotate(-2deg);margin:0;z-index:2}
+ .opening-poem{font-size:66px}.opening-byline{margin-top:20px}
+ .invitation{min-height:780px;padding:80px 13px}.invite-photo{display:none}
+ .letter{padding:57px 24px 48px}.letter h2{font-size:78px}
+ .story{background:linear-gradient(180deg,#e6dacc 0%,#e6dacc 52%,#f5eee5 52%,#f5eee5 100%)}
+ .story-main{transform:rotate(-3deg);box-shadow:12px 17px 0 #a78b6c50,0 30px 45px #261a1545}
+ .memory-banner{min-height:640px}.memory-banner-content h2{font-size:70px}
+ .day-card{padding:17px}.venue{min-height:770px;justify-content:center;align-items:flex-end;padding:65px 19px}
+ .venue-card{box-shadow:9px 10px 0 #e1cbb698,0 25px 50px #0007;text-align:center}
+ .venue-edge{top:25px;left:25px;font-size:8px}.dress-head{padding:29px 18px}
+ .mood-grid{grid-template-columns:1fr 1fr;gap:7px}.mood-grid figure:nth-child(1){height:240px;transform:rotate(-4deg)}
+ .mood-grid figure:nth-child(2){height:315px;transform:translateY(0) rotate(3deg)}
+ .mood-grid figure:nth-child(3){grid-column:1/-1;height:240px;width:70%;margin:10px auto 0;transform:rotate(-3deg)}
+ .rsvp{padding:70px 14px}.rsvp-paper{padding:40px 28px}
+}
+@media(prefers-reduced-motion:reduce){.opening-image img,.hero-photo{animation:none!important;transition:none!important}}
 </style></head><body class="locked">
-<div class="intro" id="intro" role="dialog" aria-modal="true" aria-labelledby="intro-title"><div class="book-stage"><div class="book-back"></div><div class="book-cover"><div class="cover-contents"><div class="cover-top">Свадебный журнал · выпуск № 1</div><h2 id="intro-title">Александр<em>и</em>Виктория</h2><div class="cover-bottom">19 июня 2027 · Санкт-Петербург</div></div></div></div><div class="intro-actions"><button type="button" class="intro-open" id="openIntro">Открыть приглашение →</button></div></div>
-<header class="hero" id="top"><div class="hero-photo"></div><div class="hero-top"><b>Этерна.</b><a href="#rsvp">Ответить на приглашение</a></div><div class="hero-layout"><div class="eyebrow">История одной любви · выпуск № 1</div><h1 class="serif">Александр<em>и</em>Виктория</h1><div class="hero-date">19 июня 2027 года · Санкт-Петербург</div><a href="#invitation" class="hero-scroll">Листать нашу историю ↓</a></div></header>
+<div class="intro" id="intro" role="dialog" aria-modal="true" aria-labelledby="intro-title"><div class="book-stage"><div class="book-back"></div><div class="book-cover"><div class="cover-contents"><div class="cover-special">ЭКСКЛЮЗИВНО</div><div class="cover-top">ЛИЧНАЯ КОЛЛЕКЦИЯ ВОСПОМИНАНИЙ</div><h2 id="intro-title">Александр<em>и</em>Виктория</h2><div class="cover-bottom">19 июня 2027 · Санкт-Петербург</div></div></div></div><div class="intro-actions"><button type="button" class="intro-open" id="openIntro">Открыть нашу историю ↗</button></div></div>
+<header class="hero" id="top"><div class="hero-photo"></div><div class="hero-top"><b>Этерна.</b><a href="#rsvp">Ответить на приглашение</a></div><div class="hero-layout"><div class="hero-frame" aria-hidden="true"></div><span class="hero-vertical">НАШ ДЕНЬ · НАША ИСТОРИЯ</span><div class="eyebrow">ЭКСКЛЮЗИВНОЕ ПРИГЛАШЕНИЕ · 2027</div><h1 class="serif">Александр<em>и</em>Виктория</h1><div class="hero-date">19 июня 2027 года · Санкт-Петербург</div><a href="#invitation" class="hero-scroll">УЗНАТЬ НАШУ ИСТОРИЮ ↓</a></div></header>
 <main>
-<section class="invitation" id="invitation"><div class="leaf" aria-hidden="true">❧</div><div class="letter paper-texture reveal"><div class="seal" aria-hidden="true">АВ</div><div class="eyebrow">Письмо самым дорогим людям</div><h2 class="serif">Приглашение</h2><p><b>Дорогие родные и друзья!</b></p><p>В нашей жизни скоро произойдёт одно из самых счастливых событий — мы станем семьёй.</p><p>Нам очень хочется разделить этот день с вами. Ведь именно вы делаете нашу историю особенной.</p><div class="line" style="width:100px;margin:27px auto"></div><div class="signature">С любовью, А. и В.</div></div></section>
-<section class="story" id="story"><div class="story-header reveal"><div><div class="eyebrow">Глава первая · С чего всё началось</div><h2 class="serif">Наша<br><em>история</em></h2></div><p>Иногда одна случайная встреча становится началом самой красивой истории.</p></div><div class="story-collage"><div class="story-main reveal"><img loading="lazy" src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=1100&q=83" alt="Романтическая фотография пары"></div><div class="story-aside"><div class="story-small reveal"><img loading="lazy" src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=82" alt="Праздничный свадебный момент"></div><div class="story-note reveal"><strong>Однажды...</strong><p>Мы встретились — и всё вокруг стало немного другим. Теперь хотим сказать друг другу «да» в кругу самых любимых людей.</p></div></div><div class="story-stamp" aria-hidden="true">♥ 2027</div></div></section>
-<section class="day" id="day"><div class="day-top reveal"><div><div class="eyebrow">Глава вторая · Самый важный день</div><h2 class="serif">День<br><em>свадьбы</em></h2></div><div class="date-big">19 · 06 · 27</div></div><div class="day-card reveal"><div class="event"><time>15:00</time><div><h3>Сбор гостей</h3><p>Встречаемся, обнимаемся и наслаждаемся первыми минутами праздника.</p></div></div><div class="event"><time>16:00</time><div><h3>Церемония</h3><p>Момент, когда мы скажем друг другу самое главное «да».</p></div></div><div class="event"><time>17:00</time><div><h3>Праздничный ужин</h3><p>Любимые люди, красивые тосты, музыка и тёплая атмосфера.</p></div></div><div class="event"><time>20:00</time><div><h3>Первый танец</h3><p>Пусть этот вечер останется с нами навсегда.</p></div></div><div class="event"><time>23:00</time><div><h3>Завершение вечера</h3><p>Обнимаемся и забираем с собой воспоминания.</p></div></div></div></section>
-<section class="venue" id="venue"><div class="venue-card reveal"><div class="eyebrow">Глава третья · Где мы встретимся</div><h2 class="serif">Место<br><em>встречи</em></h2><p>Санкт-Петербург</p><p>В персональном приглашении здесь появятся название площадки и точный адрес торжества.</p><a class="btn btn-dark" href="https://yandex.ru/maps/2/saint-petersburg/" target="_blank" rel="noopener noreferrer">Открыть карту ↗</a></div></section>
-<section class="dress" id="dress"><div class="dress-head reveal"><div class="eyebrow">Глава четвёртая · Образы гостей</div><h2 class="serif">Дресс-<em>код</em></h2><p>Мы будем рады, если ваши образы поддержат атмосферу нашего праздника. Мы подготовили небольшую палитру вдохновения.</p></div><div class="mood-grid reveal"><figure><img loading="lazy" src="https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&w=700&q=82" alt="Женский образ в светлой гамме"><figcaption>Нежные оттенки</figcaption></figure><figure><img loading="lazy" src="https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=800&q=82" alt="Классический свадебный образ"><figcaption>Элегантная классика</figcaption></figure><figure><img loading="lazy" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=750&q=82" alt="Детали свадебной атмосферы"><figcaption>Атмосфера вечера</figcaption></figure></div><div class="swatches reveal" aria-label="Цветовая палитра"><span style="background:#e8d9c8"></span><span style="background:#c6af94"></span><span style="background:#b2b5a5"></span><span style="background:#d3b8ac"></span><span style="background:#73665b"></span></div></section>
+<section class="opening-collage" aria-label="Наша история в фотографиях">
+ <div class="opening-rail"><span>19 ИЮНЯ 2027</span><span>ОДИН ДЕНЬ · НАВСЕГДА</span></div>
+ <div class="opening-composition">
+  <div class="opening-image first reveal"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=85" alt="Праздничная атмосфера свадьбы" loading="lazy"><span class="image-label">01 / ВМЕСТЕ</span></div>
+  <div class="opening-center reveal"><div class="ornament-star">✳</div><p class="opening-kicker">ЛИЧНОЕ ПРИГЛАШЕНИЕ</p><div class="opening-poem">Всё самое<br><i>красивое</i><br>впереди.</div><p class="opening-byline">АЛЕКСАНДР <span>♥</span> ВИКТОРИЯ</p></div>
+  <div class="opening-image second reveal"><img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=1200&q=85" alt="Тёплый свадебный момент" loading="lazy"><span class="image-label">02 / ЛЮБОВЬ</span></div>
+ </div>
+ <div class="opening-footer"><span>САНКТ-ПЕТЕРБУРГ</span><span>ПРОДОЛЖЕНИЕ НИЖЕ ↓</span></div>
+</section>
+
+<section class="invitation" id="invitation"><div class="invite-photo invite-photo-left" aria-hidden="true"></div><div class="invite-photo invite-photo-right" aria-hidden="true"></div><div class="leaf" aria-hidden="true">❧</div><div class="letter paper-texture reveal"><div class="seal" aria-hidden="true">АВ</div><div class="eyebrow">Письмо самым дорогим людям</div><h2 class="serif">Приглашение</h2><p><b>Дорогие родные и друзья!</b></p><p>В нашей жизни скоро произойдёт одно из самых счастливых событий — мы станем семьёй.</p><p>Нам очень хочется разделить этот день с вами. Ведь именно вы делаете нашу историю особенной.</p><div class="line" style="width:100px;margin:27px auto"></div><div class="signature">С любовью, А. и В.</div></div></section>
+<section class="story" id="story"><div class="story-header reveal"><div><div class="eyebrow">НАША ИСТОРИЯ · ЧАСТЬ ПЕРВАЯ</div><h2 class="serif">Наша<br><em>история</em></h2></div><p>Иногда одна случайная встреча становится началом самой красивой истории.</p></div><div class="story-collage"><div class="story-main reveal"><img loading="lazy" src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=1100&q=83" alt="Романтическая фотография пары"></div><div class="story-aside"><div class="story-small reveal"><img loading="lazy" src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=82" alt="Праздничный свадебный момент"></div><div class="story-note reveal"><strong>Однажды...</strong><p>Мы встретились — и всё вокруг стало немного другим. Теперь хотим сказать друг другу «да» в кругу самых любимых людей.</p></div></div><div class="story-stamp" aria-hidden="true">♥ 2027</div></div></section>
+
+<section class="memory-banner" aria-label="Ожидание свадебного дня">
+<div class="memory-banner-image"></div><div class="memory-banner-content reveal"><span>НАША ГЛАВНАЯ ГЛАВА</span><h2>Одна любовь.<br><i>Одна история.</i><br>Один день.</h2><p>Мы приглашаем вас стать её частью.</p></div><span class="memory-banner-side">АЛЕКСАНДР · ВИКТОРИЯ · 2027</span>
+</section>
+<section class="day" id="day"><div class="day-top reveal"><div><div class="eyebrow">ДЕНЬ, КОТОРОГО МЫ ЖДЁМ</div><h2 class="serif">День<br><em>свадьбы</em></h2></div><div class="date-big">19 · 06 · 27</div></div><div class="day-card reveal"><div class="event"><time>15:00</time><div><h3>Сбор гостей</h3><p>Встречаемся, обнимаемся и наслаждаемся первыми минутами праздника.</p></div></div><div class="event"><time>16:00</time><div><h3>Церемония</h3><p>Момент, когда мы скажем друг другу самое главное «да».</p></div></div><div class="event"><time>17:00</time><div><h3>Праздничный ужин</h3><p>Любимые люди, красивые тосты, музыка и тёплая атмосфера.</p></div></div><div class="event"><time>20:00</time><div><h3>Первый танец</h3><p>Пусть этот вечер останется с нами навсегда.</p></div></div><div class="event"><time>23:00</time><div><h3>Завершение вечера</h3><p>Обнимаемся и забираем с собой воспоминания.</p></div></div></div></section>
+<section class="venue" id="venue"><span class="venue-edge">МЕСТО, ГДЕ РОЖДАЮТСЯ ВОСПОМИНАНИЯ</span><div class="venue-card reveal"><div class="eyebrow">НАША ВСТРЕЧА · АДРЕС И МАРШРУТ</div><h2 class="serif">Место<br><em>встречи</em></h2><p>Санкт-Петербург</p><p>В персональном приглашении здесь появятся название площадки и точный адрес торжества.</p><a class="btn btn-dark" href="https://yandex.ru/maps/2/saint-petersburg/" target="_blank" rel="noopener noreferrer">Открыть карту ↗</a></div></section>
+<section class="dress" id="dress"><div class="dress-wash" aria-hidden="true"></div><div class="dress-head reveal"><div class="eyebrow">ПАЛИТРА И НАСТРОЕНИЕ ВЕЧЕРА</div><h2 class="serif">Дресс-<em>код</em></h2><p>Мы будем рады, если ваши образы поддержат атмосферу нашего праздника. Мы подготовили небольшую палитру вдохновения.</p></div><div class="mood-grid reveal"><figure><img loading="lazy" src="https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&w=700&q=82" alt="Женский образ в светлой гамме"><figcaption>Нежные оттенки</figcaption></figure><figure><img loading="lazy" src="https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=800&q=82" alt="Классический свадебный образ"><figcaption>Элегантная классика</figcaption></figure><figure><img loading="lazy" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=750&q=82" alt="Детали свадебной атмосферы"><figcaption>Атмосфера вечера</figcaption></figure></div><div class="swatches reveal" aria-label="Цветовая палитра"><span style="background:#e8d9c8"></span><span style="background:#c6af94"></span><span style="background:#b2b5a5"></span><span style="background:#d3b8ac"></span><span style="background:#73665b"></span></div></section>
 <section class="timer-section"><div class="reveal"><div class="eyebrow">До нашей встречи осталось</div><h2>Считаем дни вместе</h2><div class="counter" aria-label="Обратный отсчёт"><div><strong id="days">00</strong><small>дней</small></div><div><strong id="hours">00</strong><small>часов</small></div><div><strong id="minutes">00</strong><small>минут</small></div><div><strong id="seconds">00</strong><small>секунд</small></div></div></div></section>
 <section class="rsvp" id="rsvp"><div class="rsvp-paper paper-texture reveal"><div class="eyebrow" style="text-align:center">Ваш ответ · Нам очень важно знать</div><h2 class="serif">Будете<br><em>с нами?</em></h2><p class="rsvp-sub">Просим подтвердить присутствие до 1 июня 2027 года. Выберите подходящие ответы — это поможет нам всё организовать.</p><div id="rsvpDynamic"></div><p class="demo-note">Демонстрационная версия: ответы никуда не отправляются. Не вводите настоящие персональные данные.</p></div></section>
 <section class="ending"><div class="reveal"><h2>До встречи!</h2><p>С любовью, Александр и Виктория</p></div></section>
