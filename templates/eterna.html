@@ -135,18 +135,49 @@ body{background:#e7ded3}
  .rsvp{padding:70px 14px}.rsvp-paper{padding:40px 28px}
 }
 @media(prefers-reduced-motion:reduce){.opening-image img,.hero-photo{animation:none!important;transition:none!important}}
+
+/* ÉTERNA 4.1 — clear hero, elegant iconography and mobile-fit fixes */
+.hero-top{justify-content:flex-end;z-index:5}
+.hero-layout{width:min(91%,1000px)}
+.hero-layout h1{margin-top:10px}
+.hero-layout .eyebrow{display:none!important}
+.cover-special,.cover-top{display:none!important}
+.ornament-monogram{font:italic 400 31px/1 'Cormorant Garamond',Georgia,serif;color:#a48b73;letter-spacing:-.07em;border:1px solid #bba48a;border-radius:50%;height:62px;width:62px;display:flex;align-items:center;justify-content:center;margin:0 auto 23px;transform:none}
+.invitation,.letter,.rsvp-paper{min-width:0;max-width:100%}
+.letter h2{overflow-wrap:anywhere}
+@media(max-width:700px){
+ .hero-top{padding:calc(17px + env(safe-area-inset-top)) 21px 0}
+ .hero-layout{width:calc(100% - 40px);margin-bottom:max(9svh,50px)}
+ .hero h1{font-size:clamp(57px,13.6vw,88px);line-height:.83;margin:0 auto 22px;overflow-wrap:normal}
+ .hero-date{font-size:10px;letter-spacing:.1em;line-height:1.65}
+ .hero-scroll{font-size:10px;margin-top:24px}
+ .invitation{padding:60px 16px 84px}
+ .letter{width:100%;padding:54px 23px 44px;box-shadow:0 21px 46px #1b120e50,5px 6px 0 #d5c8b5}
+ .letter:before{inset:9px}
+ .letter h2{font-size:clamp(45px,10.3vw,66px)!important;line-height:1.04;letter-spacing:-.04em;margin:13px 0 27px}
+ .letter .eyebrow{font-size:9px;letter-spacing:.13em;line-height:1.7}
+ .letter p{font-size:13px;line-height:1.85}
+ .letter .signature{font-size:clamp(31px,8vw,42px)}
+ .rsvp-paper{width:100%;padding:40px 20px!important}
+ .rsvp-paper h2{font-size:clamp(49px,12vw,72px)!important}
+}
+@media(max-width:380px){
+ .letter{padding:49px 19px 40px}
+ .letter h2{font-size:clamp(39px,10.2vw,53px)!important}
+ .hero h1{font-size:clamp(53px,13vw,70px)}
+}
 </style></head><body class="locked">
-<div class="intro" id="intro" role="dialog" aria-modal="true" aria-labelledby="intro-title"><div class="book-stage"><div class="book-back"></div><div class="book-cover"><div class="cover-contents"><div class="cover-special">ЭКСКЛЮЗИВНО</div><div class="cover-top">ЛИЧНАЯ КОЛЛЕКЦИЯ ВОСПОМИНАНИЙ</div><h2 id="intro-title">Александр<em>и</em>Виктория</h2><div class="cover-bottom">19 июня 2027 · Санкт-Петербург</div></div></div></div><div class="intro-actions"><button type="button" class="intro-open" id="openIntro">Открыть нашу историю ↗</button></div></div>
-<header class="hero" id="top"><div class="hero-photo"></div><div class="hero-top"><b>Этерна.</b><a href="#rsvp">Ответить на приглашение</a></div><div class="hero-layout"><div class="hero-frame" aria-hidden="true"></div><span class="hero-vertical">НАШ ДЕНЬ · НАША ИСТОРИЯ</span><div class="eyebrow">ЭКСКЛЮЗИВНОЕ ПРИГЛАШЕНИЕ · 2027</div><h1 class="serif">Александр<em>и</em>Виктория</h1><div class="hero-date">19 июня 2027 года · Санкт-Петербург</div><a href="#invitation" class="hero-scroll">УЗНАТЬ НАШУ ИСТОРИЮ ↓</a></div></header>
+<div class="intro" id="intro" role="dialog" aria-modal="true" aria-labelledby="intro-title"><div class="book-stage"><div class="book-back"></div><div class="book-cover"><div class="cover-contents"><h2 id="intro-title">Александр<em>и</em>Виктория</h2><div class="cover-bottom">19 июня 2027 · Санкт-Петербург</div></div></div></div><div class="intro-actions"><button type="button" class="intro-open" id="openIntro">Открыть нашу историю</button></div></div>
+<header class="hero" id="top"><div class="hero-photo"></div><div class="hero-top"><a href="#rsvp">Ответить на приглашение</a></div><div class="hero-layout"><div class="hero-frame" aria-hidden="true"></div><span class="hero-vertical">НАШ ДЕНЬ · НАША ИСТОРИЯ</span><h1 class="serif">Александр<em>и</em>Виктория</h1><div class="hero-date">19 июня 2027 года · Санкт-Петербург</div><a href="#invitation" class="hero-scroll">Узнать нашу историю</a></div></header>
 <main>
 <section class="opening-collage" aria-label="Наша история в фотографиях">
  <div class="opening-rail"><span>19 ИЮНЯ 2027</span><span>ОДИН ДЕНЬ · НАВСЕГДА</span></div>
  <div class="opening-composition">
   <div class="opening-image first reveal"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=85" alt="Праздничная атмосфера свадьбы" loading="lazy"><span class="image-label">01 / ВМЕСТЕ</span></div>
-  <div class="opening-center reveal"><div class="ornament-star">✳</div><p class="opening-kicker">ЛИЧНОЕ ПРИГЛАШЕНИЕ</p><div class="opening-poem">Всё самое<br><i>красивое</i><br>впереди.</div><p class="opening-byline">АЛЕКСАНДР <span>♥</span> ВИКТОРИЯ</p></div>
+  <div class="opening-center reveal"><div class="ornament-monogram" aria-hidden="true">АВ</div><p class="opening-kicker">ЛИЧНОЕ ПРИГЛАШЕНИЕ</p><div class="opening-poem">Всё самое<br><i>красивое</i><br>впереди.</div><p class="opening-byline">АЛЕКСАНДР <span>♥</span> ВИКТОРИЯ</p></div>
   <div class="opening-image second reveal"><img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=1200&q=85" alt="Тёплый свадебный момент" loading="lazy"><span class="image-label">02 / ЛЮБОВЬ</span></div>
  </div>
- <div class="opening-footer"><span>САНКТ-ПЕТЕРБУРГ</span><span>ПРОДОЛЖЕНИЕ НИЖЕ ↓</span></div>
+ <div class="opening-footer"><span>САНКТ-ПЕТЕРБУРГ</span><span>ПРОДОЛЖЕНИЕ НИЖЕ</span></div>
 </section>
 
 <section class="invitation" id="invitation"><div class="invite-photo invite-photo-left" aria-hidden="true"></div><div class="invite-photo invite-photo-right" aria-hidden="true"></div><div class="leaf" aria-hidden="true">❧</div><div class="letter paper-texture reveal"><div class="seal" aria-hidden="true">АВ</div><div class="eyebrow">Письмо самым дорогим людям</div><h2 class="serif">Приглашение</h2><p><b>Дорогие родные и друзья!</b></p><p>В нашей жизни скоро произойдёт одно из самых счастливых событий — мы станем семьёй.</p><p>Нам очень хочется разделить этот день с вами. Ведь именно вы делаете нашу историю особенной.</p><div class="line" style="width:100px;margin:27px auto"></div><div class="signature">С любовью, А. и В.</div></div></section>
@@ -156,7 +187,7 @@ body{background:#e7ded3}
 <div class="memory-banner-image"></div><div class="memory-banner-content reveal"><span>НАША ГЛАВНАЯ ГЛАВА</span><h2>Одна любовь.<br><i>Одна история.</i><br>Один день.</h2><p>Мы приглашаем вас стать её частью.</p></div><span class="memory-banner-side">АЛЕКСАНДР · ВИКТОРИЯ · 2027</span>
 </section>
 <section class="day" id="day"><div class="day-top reveal"><div><div class="eyebrow">ДЕНЬ, КОТОРОГО МЫ ЖДЁМ</div><h2 class="serif">День<br><em>свадьбы</em></h2></div><div class="date-big">19 · 06 · 27</div></div><div class="day-card reveal"><div class="event"><time>15:00</time><div><h3>Сбор гостей</h3><p>Встречаемся, обнимаемся и наслаждаемся первыми минутами праздника.</p></div></div><div class="event"><time>16:00</time><div><h3>Церемония</h3><p>Момент, когда мы скажем друг другу самое главное «да».</p></div></div><div class="event"><time>17:00</time><div><h3>Праздничный ужин</h3><p>Любимые люди, красивые тосты, музыка и тёплая атмосфера.</p></div></div><div class="event"><time>20:00</time><div><h3>Первый танец</h3><p>Пусть этот вечер останется с нами навсегда.</p></div></div><div class="event"><time>23:00</time><div><h3>Завершение вечера</h3><p>Обнимаемся и забираем с собой воспоминания.</p></div></div></div></section>
-<section class="venue" id="venue"><span class="venue-edge">МЕСТО, ГДЕ РОЖДАЮТСЯ ВОСПОМИНАНИЯ</span><div class="venue-card reveal"><div class="eyebrow">НАША ВСТРЕЧА · АДРЕС И МАРШРУТ</div><h2 class="serif">Место<br><em>встречи</em></h2><p>Санкт-Петербург</p><p>В персональном приглашении здесь появятся название площадки и точный адрес торжества.</p><a class="btn btn-dark" href="https://yandex.ru/maps/2/saint-petersburg/" target="_blank" rel="noopener noreferrer">Открыть карту ↗</a></div></section>
+<section class="venue" id="venue"><span class="venue-edge">МЕСТО, ГДЕ РОЖДАЮТСЯ ВОСПОМИНАНИЯ</span><div class="venue-card reveal"><div class="eyebrow">НАША ВСТРЕЧА · АДРЕС И МАРШРУТ</div><h2 class="serif">Место<br><em>встречи</em></h2><p>Санкт-Петербург</p><p>В персональном приглашении здесь появятся название площадки и точный адрес торжества.</p><a class="btn btn-dark" href="https://yandex.ru/maps/2/saint-petersburg/" target="_blank" rel="noopener noreferrer">Открыть карту</a></div></section>
 <section class="dress" id="dress"><div class="dress-wash" aria-hidden="true"></div><div class="dress-head reveal"><div class="eyebrow">ПАЛИТРА И НАСТРОЕНИЕ ВЕЧЕРА</div><h2 class="serif">Дресс-<em>код</em></h2><p>Мы будем рады, если ваши образы поддержат атмосферу нашего праздника. Мы подготовили небольшую палитру вдохновения.</p></div><div class="mood-grid reveal"><figure><img loading="lazy" src="https://images.unsplash.com/photo-1539008835657-9e8e9680c956?auto=format&fit=crop&w=700&q=82" alt="Женский образ в светлой гамме"><figcaption>Нежные оттенки</figcaption></figure><figure><img loading="lazy" src="https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=800&q=82" alt="Классический свадебный образ"><figcaption>Элегантная классика</figcaption></figure><figure><img loading="lazy" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=750&q=82" alt="Детали свадебной атмосферы"><figcaption>Атмосфера вечера</figcaption></figure></div><div class="swatches reveal" aria-label="Цветовая палитра"><span style="background:#e8d9c8"></span><span style="background:#c6af94"></span><span style="background:#b2b5a5"></span><span style="background:#d3b8ac"></span><span style="background:#73665b"></span></div></section>
 <section class="timer-section"><div class="reveal"><div class="eyebrow">До нашей встречи осталось</div><h2>Считаем дни вместе</h2><div class="counter" aria-label="Обратный отсчёт"><div><strong id="days">00</strong><small>дней</small></div><div><strong id="hours">00</strong><small>часов</small></div><div><strong id="minutes">00</strong><small>минут</small></div><div><strong id="seconds">00</strong><small>секунд</small></div></div></div></section>
 <section class="rsvp" id="rsvp"><div class="rsvp-paper paper-texture reveal"><div class="eyebrow" style="text-align:center">Ваш ответ · Нам очень важно знать</div><h2 class="serif">Будете<br><em>с нами?</em></h2><p class="rsvp-sub">Просим подтвердить присутствие до 1 июня 2027 года. Выберите подходящие ответы — это поможет нам всё организовать.</p><div id="rsvpDynamic"></div><p class="demo-note">Демонстрационная версия: ответы никуда не отправляются. Не вводите настоящие персональные данные.</p></div></section>
@@ -165,4 +196,9 @@ body{background:#e7ded3}
 <script>
 (()=>{'use strict';const intro=document.querySelector('#intro'),open=document.querySelector('#openIntro');let opened=false;function revealIntro(){if(opened)return;opened=true;intro.classList.add('opening');open.disabled=true;setTimeout(()=>{intro.classList.add('done');intro.setAttribute('aria-hidden','true');document.body.classList.remove('locked')},1300)}open.addEventListener('click',revealIntro);document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!opened)revealIntro()});if(location.hash&&location.hash!=='#top'){revealIntro()}const obs='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target)}}),{threshold:.07}):null;document.querySelectorAll('.reveal').forEach(el=>obs?obs.observe(el):el.classList.add('in'));const date=new Date('2027-06-19T15:00:00+03:00').getTime();function tick(){const delta=Math.max(0,date-Date.now()),v={days:Math.floor(delta/86400000),hours:Math.floor(delta/3600000)%24,minutes:Math.floor(delta/60000)%60,seconds:Math.floor(delta/1000)%60};Object.entries(v).forEach(([id,n])=>{const e=document.getElementById(id);if(e)e.textContent=String(n).padStart(2,'0')})}tick();setInterval(tick,1000)})();
 </script><script src="../rsvp-config.js"></script><script src="../rsvp-renderer.js"></script>
-</body></html>
+<script>
+(()=>{const root=document.getElementById('rsvpDynamic');if(!root)return;
+ const adjust=()=>{root.querySelectorAll('button').forEach(btn=>{if(btn.textContent.includes('Подтвердить ответ')&&btn.textContent.includes('↗'))btn.textContent='Подтвердить ответ';});};
+ const observer=new MutationObserver(adjust);observer.observe(root,{childList:true,subtree:true});adjust();
+})();
+</script></body></html>
