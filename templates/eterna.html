@@ -249,19 +249,84 @@ html{scroll-padding-top:0}
 @media(max-height:700px) and (max-width:700px){.hero-polaroid{bottom:43vh;width:70px}.hero-ornament{display:none}.hero-v5 h1{font-size:clamp(52px,12.7vw,75px)}.hero-v5 .hero-scroll{margin-top:13px!important}}
 @media(prefers-reduced-motion:reduce){.hero-v5 .hero-photo,.hero-topline,.hero-v5 .hero-layout,.hero-v5 h1 span,.hero-v5 h1 em,.hero-v5 .hero-date,.hero-v5 .hero-scroll,.hero-polaroid,.hero-v5 .hero-scroll .cue-line{animation:none!important;filter:none!important;opacity:1!important}}
 
+
+/* ÉTERNA 5.0 — entirely new photo-editorial cover; subsequent sections untouched */
+.editorial-cover{position:relative;isolation:isolate;background:#e6ded2;color:#27231f;height:100svh;min-height:630px;overflow:hidden}
+.editorial-cover *, .editorial-cover *:before,.editorial-cover *:after{box-sizing:border-box}
+.ec-canvas{height:100%;position:relative;width:min(100%,1500px);margin:auto;overflow:hidden;background:radial-gradient(ellipse at 52% 25%,#f9f3eb 0%,#e8ded1 58%,#d7c9b8 100%)}
+.ec-grain{pointer-events:none;position:absolute;inset:0;z-index:7;opacity:.10;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 140 140' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E")}
+.ec-edition{position:absolute;top:clamp(25px,5vh,52px);left:6%;right:6%;display:flex;justify-content:space-between;font:600 10px/1.5 var(--sans,Arial);letter-spacing:.18em;z-index:5;color:#62594d}
+.ec-photo{position:absolute;box-shadow:0 22px 55px #35291f35;overflow:hidden;background:#b6a698;transform-origin:center center}
+.ec-photo img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.74) contrast(.99)}
+.ec-photo-main{z-index:2;top:14%;height:65%;width:39%;left:31%;transform:rotate(-2deg);animation:ecMainIn 1.35s cubic-bezier(.2,.74,.14,1) both}
+.ec-photo-main img{object-position:center 37%;animation:ecDrift 20s ease-in-out infinite alternate}
+.ec-photo-side1{z-index:3;top:27%;left:10%;width:24%;height:32%;border:8px solid #fbf8f2;border-bottom-width:25px;transform:rotate(-10deg);animation:ecSideOne 1.2s .36s cubic-bezier(.2,.74,.14,1) both}
+.ec-photo-side2{z-index:3;top:18%;right:9%;width:22%;height:29%;border:8px solid #fbf8f2;border-bottom-width:25px;transform:rotate(9deg);animation:ecSideTwo 1.2s .58s cubic-bezier(.2,.74,.14,1) both}
+.ec-type{position:absolute;z-index:5;left:4%;right:4%;bottom:10%;text-align:center;pointer-events:none}
+.ec-type h1{font:400 clamp(80px,11vw,175px)/.74 var(--serif,Georgia);letter-spacing:-.058em;margin:0;white-space:normal;color:#fdf9f1;text-shadow:0 4px 30px #28221fc7}
+.ec-type h1 span{display:block;animation:ecWords 1.05s .8s both}
+.ec-type h1 span:last-child{animation-delay:1.05s}
+.ec-type h1 i{display:block;font-size:.42em;line-height:1.05;margin:.08em auto .1em;font-style:italic;animation:ecWords 1s .95s both}
+.ec-date{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;align-items:center;font:600 11px/1.5 var(--sans,Arial);color:#322d28;letter-spacing:.1em;margin:33px 0 0;animation:ecWords 1s 1.2s both}
+.ec-dot{width:3px;height:3px;border-radius:50%;background:currentColor}
+.ec-corner{position:absolute;right:6%;bottom:6%;font:italic 29px var(--serif,Georgia);color:#776859;z-index:4}
+.ec-next{position:absolute;bottom:5.8%;left:6%;z-index:6;text-decoration:none;display:flex;align-items:center;gap:15px;color:#42382f!important;font:600 10px var(--sans,Arial);letter-spacing:.12em}
+.ec-next-line{width:55px;height:1px;background:currentColor;transform-origin:left;animation:ecPulse 2.3s ease-in-out infinite}
+.editorial-cover[data-photo-count="2"] .ec-photo-side2,.editorial-cover[data-photo-count="1"] .ec-photo-side1,.editorial-cover[data-photo-count="1"] .ec-photo-side2{display:none}
+.editorial-cover[data-photo-count="1"] .ec-photo-main{left:27%;width:46%;top:12%;height:68%;transform:rotate(0deg)}
+.editorial-cover[data-photo-count="2"] .ec-photo-main{left:34%;width:42%}
+@keyframes ecMainIn{from{opacity:0;transform:translateY(65px) rotate(-5deg) scale(.94)}to{opacity:1;transform:rotate(-2deg) scale(1)}}
+@keyframes ecSideOne{from{opacity:0;transform:translate(-30px,40px) rotate(-18deg)}to{opacity:1;transform:rotate(-10deg)}}
+@keyframes ecSideTwo{from{opacity:0;transform:translate(30px,40px) rotate(15deg)}to{opacity:1;transform:rotate(9deg)}}
+@keyframes ecWords{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
+@keyframes ecDrift{from{transform:scale(1)}to{transform:scale(1.07)}}
+@keyframes ecPulse{0%,100%{transform:scaleX(.55)}50%{transform:scaleX(1)}}
+@media(max-width:700px){
+  .editorial-cover{height:100svh;min-height:560px}
+  .ec-edition{top:calc(24px + env(safe-area-inset-top,0px));font-size:9px;left:6%;right:6%}
+  .ec-photo-main{top:17%;left:16%;width:72%;height:57%;transform:rotate(-2deg)}
+  .ec-photo-side1{top:32%;left:3%;width:35%;height:26%;border-width:5px;border-bottom-width:16px}
+  .ec-photo-side2{top:13%;right:3%;width:32%;height:24%;border-width:5px;border-bottom-width:16px}
+  .ec-type{bottom:15%;left:2%;right:2%}
+  .ec-type h1{font-size:clamp(60px,16vw,100px);line-height:.79;text-shadow:0 3px 22px #201b19ae}
+  .ec-date{font-size:10px;margin:21px 0 0;gap:8px;letter-spacing:.02em}
+  .ec-next{bottom:calc(23px + env(safe-area-inset-bottom,0px));left:7%}
+  .ec-corner{bottom:calc(22px + env(safe-area-inset-bottom,0px));right:7%;font-size:22px}
+  .editorial-cover[data-photo-count="1"] .ec-photo-main{top:17%;left:12%;width:76%;height:58%}
+  .editorial-cover[data-photo-count="2"] .ec-photo-main{left:20%;width:70%}
+}
+@media(max-width:375px){
+  .ec-type h1{font-size:clamp(54px,15vw,72px)}
+  .ec-photo-main{top:17%;height:55%}
+  .ec-type{bottom:18%}
+  .ec-date{font-size:9px}
+}
+@media(max-height:710px) and (max-width:700px){
+  .ec-photo-main{top:15%;height:53%}
+  .ec-photo-side1{top:29%}
+  .ec-type{bottom:17%}
+  .ec-type h1{font-size:clamp(50px,13vw,79px)}
+}
+@media(prefers-reduced-motion:reduce){
+ .editorial-cover *, .editorial-cover *:before,.editorial-cover *:after{animation:none!important;transition:none!important}
+ .ec-photo-main{transform:rotate(-2deg)}.ec-photo-side1{transform:rotate(-10deg)}.ec-photo-side2{transform:rotate(9deg)}
+}
+
 </style></head><body class="locked">
 <div class="intro" id="intro" role="dialog" aria-modal="true" aria-labelledby="intro-title"><div class="book-stage"><div class="book-back"></div><div class="book-cover"><div class="cover-contents"><h2 id="intro-title">Александр<em>и</em>Виктория</h2><div class="cover-bottom">19 июня 2027 · Санкт-Петербург</div></div></div></div><div class="intro-actions"><button type="button" class="intro-open" id="openIntro">Открыть нашу историю</button></div></div>
-<header class="hero hero-v5" id="top">
-  <div class="hero-photo" role="img" aria-label="Романтическая свадебная фотография"></div>
-  <div class="hero-vignette" aria-hidden="true"></div>
-  <div class="hero-fine-frame" aria-hidden="true"><span class="corner-mark corner-mark--top"></span><span class="corner-mark corner-mark--bottom"></span></div>
-  <div class="hero-topline" aria-hidden="true"><span>19 · 06 · 2027</span><span>А &amp; В</span></div>
-  <figure class="hero-polaroid" aria-hidden="true"><img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&amp;fit=crop&amp;w=650&amp;q=80" alt=""><figcaption>Наша история</figcaption></figure>
-  <div class="hero-layout">
-    <div class="hero-ornament" aria-hidden="true"><span></span><i>А · В</i><span></span></div>
-    <h1 class="serif"><span class="name-first">Александр</span><em>и</em><span class="name-second">Виктория</span></h1>
-    <div class="hero-date"><span>19 июня 2027 года</span><span class="date-point" aria-hidden="true"></span><span>Санкт-Петербург</span></div>
-    <a href="#photo-story" class="hero-scroll" aria-label="Листать к следующему разделу"><span>Листать дальше</span><span class="cue-line" aria-hidden="true"></span></a>
+<header class="editorial-cover" id="top" data-photo-count="3">
+  <div class="ec-grain" aria-hidden="true"></div>
+  <div class="ec-canvas">
+    <div class="ec-edition" aria-hidden="true"><span>НАША СВАДЬБА</span><span>19 / 06 / 2027</span></div>
+    <div class="ec-photo ec-photo-main"><img id="ecMain" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&amp;fit=crop&amp;w=1400&amp;q=85" alt="Александр и Виктория"></div>
+    <div class="ec-photo ec-photo-side1"><img id="ecSide1" src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&amp;fit=crop&amp;w=700&amp;q=83" alt="Совместная фотография"></div>
+    <div class="ec-photo ec-photo-side2"><img id="ecSide2" src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&amp;fit=crop&amp;w=700&amp;q=83" alt="Момент нашей истории"></div>
+    <div class="ec-type">
+      <h1><span id="ecName1">Александр</span><i>и</i><span id="ecName2">Виктория</span></h1>
+      <p class="ec-date"><span id="ecDate">19 июня 2027 года</span><span class="ec-dot"></span><span id="ecCity">Санкт-Петербург</span></p>
+    </div>
+    <div class="ec-corner" aria-hidden="true">А · В</div>
+    <a class="ec-next" href="#photo-story"><span>Листать дальше</span><span class="ec-next-line" aria-hidden="true"></span></a>
   </div>
 </header>
 <main>
@@ -296,4 +361,28 @@ html{scroll-padding-top:0}
  const adjust=()=>{root.querySelectorAll('button').forEach(btn=>{if(btn.textContent.includes('Подтвердить ответ')&&btn.textContent.includes('↗'))btn.textContent='Подтвердить ответ';});};
  const observer=new MutationObserver(adjust);observer.observe(root,{childList:true,subtree:true});adjust();
 })();
-</script></body></html>
+</script><script src="eterna-hero-config.js"></script>
+<script>
+(function(){
+  const c=window.ETERNA_HERO||{};
+  const text=(id,value)=>{if(value!=null){const e=document.getElementById(id);if(e)e.textContent=String(value)}};
+  text('ecName1',c.name1);text('ecName2',c.name2);text('ecDate',c.date);text('ecCity',c.city);
+  const p=c.photos||{},pos=c.positions||{};
+  const specs=[['ecMain',p.main,pos.main],['ecSide1',p.secondary1,pos.secondary1],['ecSide2',p.secondary2,pos.secondary2]];
+  let count=0;
+  specs.forEach(([id,src,position])=>{
+    const img=document.getElementById(id);if(!img)return;
+    if(src){img.src=src;if(position)img.style.objectPosition=position;count++}
+    else img.closest('.ec-photo').style.display='none';
+  });
+  const cover=document.querySelector('.editorial-cover');
+  if(cover)cover.dataset.photoCount=String(count);
+  const mode=new URLSearchParams(location.search).get('photos');
+  if(['1','2','3'].includes(mode)){
+    if(mode==='1'){document.querySelector('.ec-photo-side1').style.display='none';document.querySelector('.ec-photo-side2').style.display='none'}
+    if(mode==='2')document.querySelector('.ec-photo-side2').style.display='none';
+    cover.dataset.photoCount=mode;
+  }
+})();
+</script>
+</body></html>
