@@ -2,9 +2,22 @@
 :root{font-family:system-ui,-apple-system,Arial,sans-serif;color:#282923;background:#f8f5ef}*{box-sizing:border-box}body{margin:0}header{padding:25px 22px;border-bottom:1px solid #dedad2;background:#fff;display:flex;align-items:center;gap:16px;justify-content:space-between}h1{font:400 32px Georgia;margin:0}h2{font:400 23px Georgia;margin:0 0 13px}small,.muted{color:#77746e;font-size:12px}main{max-width:1280px;margin:auto;padding:22px;display:grid;grid-template-columns:minmax(320px,480px) 1fr;gap:22px}.panel,.preview{background:#fff;border:1px solid #e1dbd2;border-radius:16px;padding:20px}.preview{position:sticky;top:12px;align-self:start}.preview iframe{width:100%;height:min(76vh,790px);border:1px solid #e6e2dc;border-radius:14px;background:white}fieldset{border:0;padding:0;margin:0 0 25px}label{font-size:13px;display:block;margin:12px 0 5px;font-weight:550}input:not([type=checkbox]),textarea{width:100%;padding:10px 12px;border:1px solid #d6d2ca;border-radius:8px;background:#fdfcf9;font:14px system-ui;outline-color:#917a64}textarea{min-height:77px;resize:vertical}button{border:0;border-radius:9px;background:#38322d;color:#fff;padding:12px 14px;font-size:13px;font-weight:600;cursor:pointer}button.secondary{background:#e8e2d9;color:#38322d}.actions{display:flex;flex-wrap:wrap;gap:8px}.section-row{padding:10px 0;border-bottom:1px solid #eee9e1;display:flex;align-items:center;gap:12px}.section-row label{margin:0;flex:1}.section-row input{width:20px;height:20px;accent-color:#655645}details{border-top:1px solid #e7e2da;padding:15px 0}summary{cursor:pointer;font:500 17px Georgia}.note{background:#f0ebe3;border-radius:9px;padding:12px;font-size:12px;line-height:1.55}.error{color:#ac3423}.status{font-size:12px;color:#656057}.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:850px){main{display:block;padding:12px}.preview{position:static;margin-top:12px}.preview iframe{height:650px}header{flex-direction:column;align-items:flex-start;padding:18px}}
 
 .photo-card{border:1px solid #e4ded5;border-radius:13px;padding:12px;margin:12px 0;background:#fcfaf6}.photo-card strong{display:block;font-size:13px;margin-bottom:9px}.photo-tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.photo-tools input[type=file]{max-width:100%;font-size:12px}.photo-card img{display:block;width:100%;height:155px;object-fit:cover;border-radius:8px;background:#e7e0d7;margin:8px 0}.photo-card .photo-path{font-size:11px;color:#72685d;overflow-wrap:anywhere}.photo-card button{padding:9px 11px}.photo-card select{padding:8px;border:1px solid #d6d2ca;border-radius:8px;background:#fff}.photo-card input[type=range]{width:100%;accent-color:#76614d}.photo-card .pos-label{font-size:12px;color:#665a50}.photo-card .error{font-size:12px}.upload-help{font-size:12px;line-height:1.5;color:#645d53}
+
+.orders-box{border:1px solid #e5ddd3;border-radius:14px;padding:16px;margin:0 0 24px;background:#faf6ee}
+.orders-box h2{margin-bottom:8px}.orders-line{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.orders-line select{flex:1;min-width:150px;padding:11px;background:white;border:1px solid #d6d2ca;border-radius:9px;font:14px system-ui}
+.orders-identifier{font-size:12px;color:#6e6255;overflow-wrap:anywhere;margin:8px 0 0}
+@media(max-width:420px){.orders-line button{flex:1}}
 </style></head><body>
-<header><div><h1>ÉTERNA · редактор</h1><small>Персонализация свадебного приглашения · загрузка фотографий · версия 2.0</small></div><div class="actions"><button id="previewBtn" class="secondary">Обновить просмотр</button><button id="downloadBtn">Скачать комплект ZIP</button></div></header>
-<main><div class="panel"><p class="note">Загружай фото из галереи iPhone — они сразу появятся в предпросмотре. Фото сохраняются локально в этом браузере; для публикации нажми «Скачать комплект ZIP», распакуй и загрузи файлы на GitHub. Данные никому не отправляются. RSVP настраивается отдельно.</p>
+<header><div><h1>ÉTERNA · редактор</h1><small>Персонализация свадебного приглашения · отдельные заказы</small></div><div class="actions"><button id="previewBtn" class="secondary">Обновить просмотр</button><button id="downloadBtn">Скачать комплект ZIP</button></div></header>
+<main><div class="panel">
+<section class="orders-box" aria-label="Управление заказами">
+<h2>Заказы молодожёнов</h2>
+<p class="muted">Каждая свадьба хранится отдельно в этом браузере. Изменения в одном заказе не затрагивают другие.</p>
+<div class="orders-line"><select id="orderSelect" aria-label="Выбрать заказ"></select><button id="newOrderBtn" type="button">+ Новый заказ</button></div>
+<div class="orders-line"><button id="duplicateOrderBtn" type="button" class="secondary">Сделать копию</button><button id="deleteOrderBtn" type="button" class="secondary">Удалить заказ</button></div>
+<p class="orders-identifier" id="orderUrlLabel"></p>
+</section><p class="note">Загружай фото из галереи iPhone — они сразу появятся в предпросмотре. Фото сохраняются локально в этом браузере; для публикации нажми «Скачать комплект ZIP», распакуй и загрузи файлы на GitHub. Данные никому не отправляются. RSVP настраивается отдельно.</p>
 <h2>Данные пары</h2><fieldset id="couple"></fieldset>
 <h2>Фотографии</h2><fieldset id="photos"></fieldset>
 <h2>Разделы сайта</h2><fieldset id="sections"></fieldset>
@@ -13,10 +26,21 @@
 <div class="preview"><h2>Предпросмотр</h2><p class="muted">Это реальный ÉTERNA. Изменения и фото показываются сразу, без публикации.</p><iframe id="siteFrame" title="Предпросмотр приглашения" src="templates/eterna.html?editor-preview=1#top"></iframe><p class="muted">Фотографии и шрифты демо требуют интернета. Для публикации используется ZIP с настройками и фотографиями.</p></div></main>
 <script src="wedding-config.js"></script><script>
 (()=>{'use strict';
-const KEY='eterna-editor-draft';
+const LEGACY_KEY='eterna-editor-draft';
+const INDEX_KEY='eterna-orders-v1';
 const defaults=JSON.parse(JSON.stringify(window.WEDDING_CONFIG||{}));
-const stored=(()=>{try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch{return null}})();
-let data=stored&&typeof stored==='object'?stored:structuredClone(defaults);
+const copy=x=>JSON.parse(JSON.stringify(x));
+function getJSON(key,fallback){try{const v=JSON.parse(localStorage.getItem(key));return v??fallback}catch{return fallback}}
+let orders=getJSON(INDEX_KEY,[]);
+if(!Array.isArray(orders)||!orders.length){orders=[{id:'demo',label:'Демо — Александр и Виктория'}];localStorage.setItem(INDEX_KEY,JSON.stringify(orders));const legacy=getJSON(LEGACY_KEY,null);if(legacy)localStorage.setItem('eterna-order:demo:config',JSON.stringify(legacy))}
+let orderId=orders[0].id;
+let data=getJSON('eterna-order:'+orderId+':config',copy(defaults));
+function storeOrder(){localStorage.setItem(INDEX_KEY,JSON.stringify(orders))}
+function draftKey(){return 'eterna-order:'+orderId+':config'}
+function photoKey(key){return 'order:'+orderId+':'+key}
+function translit(v){const a={'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'e','ж':'zh','з':'z','и':'i','й':'i','к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f','х':'h','ц':'ts','ч':'ch','ш':'sh','щ':'sch','ы':'y','э':'e','ю':'yu','я':'ya','ь':'','ъ':''};return [...v.toLowerCase()].map(c=>a[c]??c).join('').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,46)||'svadba'}
+function uniqueId(name){const base=translit(name);let x=base,n=2;while(orders.some(o=>o.id===x))x=base+'-'+n++;return x}
+
 const $=id=>document.getElementById(id);
 const PHOTO_KEYS=['main','secondary1','secondary2','storyMain','storySmall'];
 const PHOTO_NAMES={main:'Главная фотография',secondary1:'Дополнительная фотография 1',secondary2:'Дополнительная фотография 2',storyMain:'Наша история — главное фото',storySmall:'Наша история — дополнительное фото'};
@@ -25,16 +49,16 @@ const photoUrls={};
 let db;
 function setStatus(message){$('status').textContent=message}
 function openDB(){return new Promise((resolve,reject)=>{if(!window.indexedDB)return reject(Error('Хранилище недоступно'));const req=indexedDB.open('eterna-photo-editor',1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('photos'))req.result.createObjectStore('photos')};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
-async function storePhoto(key,blob){db??=await openDB();return new Promise((resolve,reject)=>{const tx=db.transaction('photos','readwrite');tx.objectStore('photos').put(blob,key);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)})}
-async function readPhoto(key){db??=await openDB();return new Promise((resolve,reject)=>{const req=db.transaction('photos','readonly').objectStore('photos').get(key);req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
-async function deletePhoto(key){db??=await openDB();return new Promise((resolve,reject)=>{const tx=db.transaction('photos','readwrite');tx.objectStore('photos').delete(key);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)})}
+async function storePhoto(key,blob){db??=await openDB();return new Promise((resolve,reject)=>{const tx=db.transaction('photos','readwrite');tx.objectStore('photos').put(blob,photoKey(key));tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)})}
+async function readPhoto(key){db??=await openDB();return new Promise((resolve,reject)=>{const req=db.transaction('photos','readonly').objectStore('photos').get(photoKey(key));req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
+async function deletePhoto(key){db??=await openDB();return new Promise((resolve,reject)=>{const tx=db.transaction('photos','readwrite');tx.objectStore('photos').delete(photoKey(key));tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)})}
 function photoFileName(key){return 'wedding-photo-'+key+'.jpg'}
 function photoLink(key){return photoFileName(key)}
 function localPhoto(key){return data.photos?.[key]===photoLink(key)}
 function field(parent,obj,key,label,area=false){const wrap=document.createElement('div'),l=document.createElement('label');l.textContent=label||LABELS[key]||key;const input=document.createElement(area?'textarea':'input');if(!area)input.type='text';input.value=obj[key]??'';input.addEventListener('input',()=>{obj[key]=input.value;changed()});wrap.append(l,input);parent.append(wrap)}
 function cachedUrl(key,blob){if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);photoUrls[key]=URL.createObjectURL(blob)}
 function updatePreview(){const cfg=structuredClone(data);for(const key of PHOTO_KEYS)if(localPhoto(key)&&photoUrls[key])cfg.photos[key]=photoUrls[key];try{$('siteFrame').contentWindow.postMessage({type:'eterna-preview',config:cfg},location.origin)}catch{}}
-function changed(note='Черновик сохранён в этом браузере.'){try{localStorage.setItem(KEY,JSON.stringify(data))}catch{};updatePreview();setStatus(note)}
+function changed(note='Черновик сохранён в этом браузере.'){try{localStorage.setItem(draftKey(),JSON.stringify(data))}catch{};updatePreview();setStatus(note)}
 async function compressPhoto(file){return new Promise((resolve,reject)=>{const img=new Image(),url=URL.createObjectURL(file);img.onload=()=>{try{const max=1800,f=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight)),canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(img.naturalWidth*f));canvas.height=Math.max(1,Math.round(img.naturalHeight*f));const context=canvas.getContext('2d');if(!context)throw Error('Нет поддержки обработки фото');context.fillStyle='#fff';context.fillRect(0,0,canvas.width,canvas.height);context.drawImage(img,0,0,canvas.width,canvas.height);canvas.toBlob(blob=>{URL.revokeObjectURL(url);if(blob)resolve(blob);else reject(Error('Не удалось обработать изображение'))},'image/jpeg',.85)}catch(e){URL.revokeObjectURL(url);reject(e)}};img.onerror=()=>{URL.revokeObjectURL(url);reject(Error('Не удалось прочитать фото. Попробуй сохранить его в JPEG.'))};img.src=url})}
 function createPhotoInput(key){const card=document.createElement('div');card.className='photo-card';const title=document.createElement('strong');title.textContent=PHOTO_NAMES[key];card.append(title);
 const shot=document.createElement('img');shot.alt='Предпросмотр: '+PHOTO_NAMES[key];shot.loading='lazy';shot.style.display='none';card.append(shot);
@@ -64,12 +88,57 @@ function crc32(bytes){let c=0xffffffff;for(const b of bytes)c=crcTable[(c^b)&255
 function zip(files){const parts=[],central=[];let offset=0;for(const f of files){const name=enc.encode(f.name),bytes=f.bytes,crc=crc32(bytes),size=bytes.length,flags=0x800;const head=new Uint8Array([80,75,3,4,...u16(20),...u16(flags),...u16(0),...u16(0),...u16(0),...u32(crc),...u32(size),...u32(size),...u16(name.length),...u16(0)]);parts.push(head,name,bytes);const cent=new Uint8Array([80,75,1,2,...u16(20),...u16(20),...u16(flags),...u16(0),...u16(0),...u16(0),...u32(crc),...u32(size),...u32(size),...u16(name.length),...u16(0),...u16(0),...u16(0),...u16(0),...u32(0),...u32(offset)]);central.push(cent,name);offset+=head.length+name.length+size}
 let centerSize=0;for(const p of central)centerSize+=p.length;const end=new Uint8Array([80,75,5,6,...u16(0),...u16(0),...u16(files.length),...u16(files.length),...u32(centerSize),...u32(offset),...u16(0)]);return new Blob([...parts,...central,end],{type:'application/zip'})}
 function download(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000)}
-async function exportPackage(){const buttons=[$('downloadBtn'),$('downloadBtnBottom')];buttons.forEach(b=>b.disabled=true);setStatus('Собираю ZIP с фотографиями…');try{const files=[];for(const key of PHOTO_KEYS){if(!localPhoto(key))continue;const blob=await readPhoto(key);if(!blob)throw Error('Не найдено загруженное фото: '+PHOTO_NAMES[key]+'. Выбери его снова.');files.push({name:'templates/'+photoFileName(key),bytes:new Uint8Array(await blob.arrayBuffer())})}const config='/* Персональная конфигурация ÉTERNA */\nwindow.WEDDING_CONFIG = '+JSON.stringify(data,null,2)+';\n';files.unshift({name:'wedding-config.js',bytes:enc.encode(config)});const readme='ÉTERNA — комплект персонализации\n\n1. Из ZIP возьми wedding-config.js и замени файл в КОРНЕ репозитория.\n2. Фотографии из папки templates/ загрузи в папку templates/ на GitHub.\n3. Сохрани Commit changes.\n4. Открой приглашение и проверь фото и все разделы.\n\nВнимание: обычная выгрузка не создаёт новый сайт клиента автоматически, а заменяет демо-конфигурацию. Для нескольких клиентов нужна отдельная система заказов.\n';files.push({name:'ИНСТРУКЦИЯ.txt',bytes:enc.encode(readme)});download(zip(files),'eterna-svadebnoe-priglashenie.zip');setStatus('Комплект готов. Распакуй ZIP: фотографии в templates/, настройки — в корень GitHub.')}catch(e){setStatus('Не удалось скачать: '+e.message)}finally{buttons.forEach(b=>b.disabled=false)}}
+async function exportPackage(){
+ const buttons=[$('downloadBtn'),$('downloadBtnBottom')];buttons.forEach(b=>b.disabled=true);
+ setStatus('Собираю отдельную свадебную страницу и фотографии…');
+ try{
+   const folder='orders/'+orderId+'/';
+   const files=[];
+   for(const key of PHOTO_KEYS){if(!localPhoto(key))continue;const blob=await readPhoto(key);
+     if(!blob)throw Error('Не найдено фото «'+PHOTO_NAMES[key]+'». Выбери его заново.');
+     files.push({name:folder+photoFileName(key),bytes:new Uint8Array(await blob.arrayBuffer())});
+   }
+   const response=await fetch('templates/eterna.html?order-export='+Date.now(),{cache:'no-store'});
+   if(!response.ok)throw Error('Не удалось загрузить шаблон ÉTERNA ('+response.status+').');
+   let page=await response.text();
+   if(!page.includes('wedding-customizer.js'))throw Error('Шаблон не поддерживает настройки заказа.');
+   // A customer receives a separate, self-contained configuration and photo folder.
+   // Shared RSVP remains a demo until the responses backend is configured.
+   page=page.replaceAll('src="../rsvp-config.js"','src="../../rsvp-config.js"')
+     .replaceAll('src="../rsvp-renderer.js"','src="../../rsvp-renderer.js"')
+     .replaceAll('src="eterna-hero-config.js"','src="../../templates/eterna-hero-config.js"')
+     .replaceAll('src="../wedding-customizer.js"','src="../../wedding-customizer.js"');
+   const safeCfg=JSON.stringify(data).replace(/</g,'\\u003c');
+   const inline='<scr'+'ipt>window.WEDDING_CONFIG='+safeCfg+';</scr'+'ipt>';
+   page=page.replace('<scr'+'ipt src="../../wedding-customizer.js"></scr'+'ipt>',inline+'\n<scr'+'ipt src="../../wedding-customizer.js"></scr'+'ipt>');
+   page=page.replace('(window.WEDDING_CONFIG&&window.WEDDING_CONFIG.dateTime)','(window.WEDDING_CONFIG&&window.WEDDING_CONFIG.couple&&window.WEDDING_CONFIG.couple.dateTime)');
+   page=page.replace('<title>Александр и Виктория — приглашение на свадьбу</title>',
+     '<title>'+escapeHtml(orderName())+' — приглашение на свадьбу</title>');
+   files.unshift({name:folder+'index.html',bytes:enc.encode(page)});
+   files.push({name:folder+'настройки.json',bytes:enc.encode(JSON.stringify(data,null,2))});
+   const readme='ÉTERNA · заказ '+orderId+'\n\n1. Открой ZIP и папку orders/'+orderId+'/\n2. На GitHub создай папку orders/'+orderId+'/ и загрузи туда index.html, все JPEG и настройки.json.\n3. Ничего в templates/eterna.html и wedding-config.js заменять не нужно.\n4. Публичная ссылка после публикации: https://iamvaga17.github.io/eterna-wedding/orders/'+orderId+'/\n5. Важно: RSVP пока демонстрационный и не сохраняет ответы.\n6. Для изменения заказа заново скачай комплект и замени файлы только в его папке.\n7. Не публикуй реальные данные и фото клиентов без разрешения.\n';
+   files.push({name:'ИНСТРУКЦИЯ.txt',bytes:enc.encode(readme)});
+   download(zip(files),'eterna-'+orderId+'.zip');
+   setStatus('Готов отдельный комплект заказа '+orderId+'. Загрузи папку orders/'+orderId+'/ на GitHub.');
+ }catch(e){setStatus('Ошибка экспорта: '+e.message)}
+ finally{buttons.forEach(b=>b.disabled=false)}
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 $('downloadBtn').addEventListener('click',exportPackage);$('downloadBtnBottom').addEventListener('click',exportPackage);
 $('previewBtn').addEventListener('click',()=>{updatePreview();setStatus('Предпросмотр обновлён.')});
 $('siteFrame').addEventListener('load',()=>{updatePreview();setTimeout(updatePreview,350)});
-$('resetBtn').addEventListener('click',async()=>{if(!confirm('Сбросить все изменения, включая загруженные фотографии?'))return;for(const key of PHOTO_KEYS){try{await deletePhoto(key)}catch{}if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key]}data=structuredClone(defaults);localStorage.removeItem(KEY);draw();updatePreview();setStatus('Черновик сброшен.')});
-async function start(){for(const key of PHOTO_KEYS){if(!localPhoto(key))continue;try{const blob=await readPhoto(key);if(blob)cachedUrl(key,blob)}catch(e){setStatus('Для сохранения фотографий разреши хранение данных браузером.')}}draw();updatePreview()}
+$('resetBtn').addEventListener('click',async()=>{if(!confirm('Сбросить все изменения, включая загруженные фотографии?'))return;for(const key of PHOTO_KEYS){try{await deletePhoto(key)}catch{}if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key]}data=structuredClone(defaults);localStorage.removeItem(draftKey());draw();updatePreview();setStatus('Черновик сброшен.')});
+async function loadPhotos(){for(const k of PHOTO_KEYS){if(photoUrls[k])URL.revokeObjectURL(photoUrls[k]);delete photoUrls[k]}
+ for(const key of PHOTO_KEYS){if(!localPhoto(key))continue;try{let blob=await readPhoto(key);if(!blob&&orderId==='demo'){db??=await openDB();blob=await new Promise(resolve=>{let q=db.transaction('photos','readonly').objectStore('photos').get(key);q.onsuccess=()=>resolve(q.result);q.onerror=()=>resolve(null)});if(blob)await storePhoto(key,blob)}if(blob)cachedUrl(key,blob)}catch(e){setStatus('Не удалось восстановить фотографии — проверь хранилище Safari.')}}}
+function showOrder(){const select=$('orderSelect');select.replaceChildren();orders.forEach(o=>{const opt=document.createElement('option');opt.value=o.id;opt.textContent=o.label+' ('+o.id+')';select.append(opt)});select.value=orderId;$('orderUrlLabel').textContent='Адрес после публикации: /orders/'+orderId+'/';}
+async function openOrder(id){if(!orders.some(o=>o.id===id))return;orderId=id;data=getJSON(draftKey(),copy(defaults));await loadPhotos();draw();showOrder();updatePreview();setStatus('Открыт заказ: '+orders.find(o=>o.id===id).label)}
+function orderName(){return [data.couple?.first,data.couple?.second].filter(Boolean).join(' и ')||'Новая свадьба'}
+$('orderSelect').addEventListener('change',e=>openOrder(e.target.value));
+$('newOrderBtn').addEventListener('click',async()=>{const name=prompt('Имя заказа (например: Анна и Максим):');if(!name?.trim())return;const id=uniqueId(name.trim());orders.push({id,label:name.trim()});storeOrder();localStorage.setItem('eterna-order:'+id+':config',JSON.stringify(copy(defaults)));await openOrder(id)});
+$('duplicateOrderBtn').addEventListener('click',async()=>{const name=prompt('Название копии:',orderName()+' — копия');if(!name?.trim())return;const old=orderId;const id=uniqueId(name);const snapshot=copy(data);orders.push({id,label:name.trim()});storeOrder();localStorage.setItem('eterna-order:'+id+':config',JSON.stringify(snapshot));for(const key of PHOTO_KEYS){if(!localPhoto(key))continue;const blob=await readPhoto(key);if(blob){await openOrder(id);await storePhoto(key,blob);await openOrder(old)}}await openOrder(id)});
+$('deleteOrderBtn').addEventListener('click',async()=>{if(orders.length===1){setStatus('Нельзя удалить единственный заказ.');return}if(!confirm('Удалить этот заказ и его фотографии из браузера?'))return;const old=orderId;for(const key of PHOTO_KEYS){try{await deletePhoto(key)}catch{}}localStorage.removeItem(draftKey());orders=orders.filter(o=>o.id!==old);storeOrder();await openOrder(orders[0].id)});
+async function start(){await loadPhotos();showOrder();draw();updatePreview()}
+
 start();
 })();
 </script></body></html>
