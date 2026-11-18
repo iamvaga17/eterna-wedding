@@ -54,7 +54,7 @@
     ], {duration: 1700, easing: 'ease-in-out'});
   });
 
-  // Two staged confetti cannon blasts; all particles are contained in the TV frame.
+  // Efficient two-cannon celebration: one canvas instead of dozens of 3D DOM animations.
   const forecastButton = document.querySelector('[data-forecast]');
   const forecastResult = document.querySelector('[data-forecast-result]');
   const forecastSection = document.querySelector('.forecast');
@@ -63,68 +63,100 @@
   let launchId = 0;
   let hasAutoLaunched = false;
   let cleanupTimer = 0;
+  let animationFrame = 0;
+  let canvas;
+  const random = (min, max) => min + Math.random() * (max - min);
+
+  function stopConfetti() {
+    cancelAnimationFrame(animationFrame);
+    clearTimeout(cleanupTimer);
+    confetti.replaceChildren();
+    confetti.classList.remove('cannon-firing');
+  }
 
   function launchConfetti() {
     forecastResult.textContent = 'Вероятность конфетти — 100%. Берегите причёски.';
-    if (motion.matches || typeof document.createElement('i').animate !== 'function') return;
-    const id = ++launchId;
-    clearTimeout(cleanupTimer);
-    confetti.getAnimations({subtree: true}).forEach(a => a.cancel());
-    confetti.replaceChildren();
-    confetti.classList.remove('cannon-firing');
-    void confetti.offsetWidth;
-    confetti.classList.add('cannon-firing');
+    if (motion.matches || document.hidden) return;
+    ++launchId;
+    stopConfetti();
     const rect = confetti.getBoundingClientRect();
-    if (rect.width < 1 || rect.height < 1) return;
-    const reducedDensity = matchMedia('(max-width: 650px)').matches;
-    const count = reducedDensity ? 64 : 112;
-    const fragment = document.createDocumentFragment();
-    const random = (min, max) => min + Math.random() * (max - min);
-    const position = (x, y, spinY, spinX, roll, scale) =>
-      'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) rotateY(' +
-      spinY.toFixed(0) + 'deg) rotateX(' + spinX.toFixed(0) + 'deg) rotateZ(' +
-      roll.toFixed(0) + 'deg) scale(' + scale + ')';
+    if (!rect.width || !rect.height) return;
+    canvas = document.createElement('canvas');
+    canvas.setAttribute('aria-hidden', 'true');
+    canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;';
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    canvas.width = Math.round(rect.width * dpr);
+    canvas.height = Math.round(rect.height * dpr);
+    const ctx = canvas.getContext('2d', {alpha: true});
+    if (!ctx) return;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    confetti.append(canvas);
+    confetti.classList.add('cannon-firing');
 
-    // Two directional bursts; paper tumbles before gravity takes over.
-    for (let shot = 0; shot < 2; shot++) {
-      const side = shot === 0 ? 1 : -1;
-      const originX = shot === 0 ? rect.width * .02 : rect.width * .98;
-      const originY = rect.height * random(.68, .78);
-      for (let i = 0; i < count / 2; i++) {
-        const piece = document.createElement('i');
-        const near = i % 4 === 0;
-        const w = random(near ? 8 : 3, near ? 13 : 7);
-        const h = w * random(.55, 1.55);
-        const dx = side * random(rect.width * .18, rect.width * .94);
-        const lift = random(rect.height * .25, rect.height * .78);
-        const fall = random(rect.height * .33, rect.height * .82);
-        const wobble = random(-18, 18);
-        const flipY = random(540, 1420) * (i % 2 ? -1 : 1);
-        const flipX = random(200, 840) * (i % 3 ? -1 : 1);
-        const roll = random(-450, 450);
-        const duration = random(2450, 3750);
-        const delay = shot * 340 + random(0, 115);
-        piece.style.cssText = 'left:' + originX + 'px;top:' + originY + 'px;width:' + w +
-          'px;height:' + h + 'px;background:' + colors[(i + shot * 2) % colors.length] +
-          ';opacity:0;position:absolute;backface-visibility:visible;will-change:transform,opacity;';
-        if (i % 11 === 0) piece.style.borderRadius = '45% 20% 35% 10%';
-        fragment.append(piece);
-        const animation = piece.animate([
-          {transform: position(0, 0, 0, 0, 0, 1), opacity: 0, offset: 0},
-          {transform: position(dx * .2, -lift * .5, flipY * .16, flipX * .2, roll * .2, 1.08), opacity: 1, offset: .12},
-          {transform: position(dx * .58, -lift, flipY * .45, flipX * .46, roll * .5, .98), opacity: 1, offset: .42},
-          {transform: position(dx * .82 + wobble, -lift * .58, flipY * .72, flipX * .76, roll * .72, .85), opacity: .98, offset: .69},
-          {transform: position(dx + wobble * 1.8, fall, flipY, flipX, roll, .72), opacity: 0, offset: 1}
-        ], {duration, delay, easing:'cubic-bezier(.24,.4,.45,1)', fill:'both'});
-        animation.onfinish = () => piece.remove();
+    const count = matchMedia('(max-width: 650px)').matches ? 44 : 76;
+    const pieces = Array.from({length: count}, (_, i) => {
+      const shot = i % 2;
+      const dir = shot ? -1 : 1;
+      return {
+        start: shot * 340 + random(0, 130),
+        duration: random(2200, 3400),
+        x: shot ? rect.width * .98 : rect.width * .02,
+        y: rect.height * random(.68, .78),
+        dx: dir * random(rect.width * .17, rect.width * .9),
+        lift: random(rect.height * .26, rect.height * .72),
+        fall: random(rect.height * .28, rect.height * .75),
+        drift: random(-14, 14),
+        w: random(3.5, 9), h: random(4, 12),
+        phase: random(0, Math.PI * 2),
+        spin: random(6, 15) * (i % 2 ? -1 : 1),
+        color: colors[i % colors.length]
+      };
+    });
+    const id = launchId;
+    let startTime = 0;
+    let lastDraw = 0;
+
+    function frame(now) {
+      if (id !== launchId || document.hidden || !canvas.isConnected) return;
+      if (!startTime) startTime = now;
+      const elapsed = now - startTime;
+      if (elapsed - lastDraw < 25 && elapsed < 3850) {
+        animationFrame = requestAnimationFrame(frame);
+        return;
       }
+      lastDraw = elapsed;
+      ctx.clearRect(0, 0, rect.width, rect.height);
+      let active = false;
+      for (const p of pieces) {
+        const t = (elapsed - p.start) / p.duration;
+        if (t < 0) { active = true; continue; }
+        if (t >= 1) continue;
+        active = true;
+        // Initial upward burst then a slower fluttering descent.
+        const x = p.x + p.dx * (1 - Math.pow(1 - t, 2.1)) +
+          Math.sin(t * 14 + p.phase) * p.drift * t;
+        const y = p.y - p.lift * Math.sin(Math.PI * Math.min(1, t * .92)) +
+          p.fall * t * t;
+        const flip = Math.cos(t * p.spin + p.phase);
+        const alpha = Math.min(1, t * 12, (1 - t) * 5);
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(t * p.spin * .38 + p.phase);
+        ctx.globalAlpha = Math.max(0, alpha);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2 * Math.max(.12, Math.abs(flip)), -p.h / 2,
+          p.w * Math.max(.12, Math.abs(flip)), p.h);
+        ctx.restore();
+      }
+      if (active && elapsed < 3900) animationFrame = requestAnimationFrame(frame);
+      else stopConfetti();
     }
-    confetti.append(fragment);
-    cleanupTimer = setTimeout(() => {
-      if (id === launchId) { confetti.replaceChildren(); confetti.classList.remove('cannon-firing'); }
-    }, 4500);
+    animationFrame = requestAnimationFrame(frame);
   }
 
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) { ++launchId; stopConfetti(); }
+  });
   forecastButton.hidden = false;
   forecastButton.textContent = 'Повторить залп ↗';
   forecastButton.addEventListener('click', launchConfetti);
@@ -217,9 +249,7 @@
   motion.addEventListener?.('change', () => {
     if (motion.matches) {
       ++launchId;
-      clearTimeout(cleanupTimer);
-      confetti.replaceChildren();
-      confetti.classList.remove('cannon-firing');
+      stopConfetti();
       document.querySelectorAll('.editorial-ready').forEach(el => el.classList.add('editorial-visible'));
     }
   });
