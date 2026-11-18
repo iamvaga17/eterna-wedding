@@ -7,9 +7,9 @@
   <meta name="description" content="Свадебное приглашение Валерии и Даниила в формате пародийного выпуска новостей.">
   <title>Срочный выпуск · Свадьба Валерии и Даниила</title>
   <link rel="preload" as="image" href="assets/broadcast-0.webp">
-  <link rel="stylesheet" href="assets/broadcast.26b6f8400c.css">
+  <link rel="stylesheet" href="assets/broadcast.857140a93c.css">
   <script defer src="../rsvp-renderer.js?rev=c6fd7c4166"></script>
-  <script defer src="assets/broadcast.5f073ed26c.js"></script>
+  <script defer src="assets/broadcast.5b7050bd58.js"></script>
 </head>
 <body>
   <header class="opening" id="top">
@@ -39,8 +39,16 @@
       <div class="section-bar"><span class="broadcast-label"><i aria-hidden="true"></i> Прямое включение</span><a href="#rsvp">Ответить на приглашение ↓</a></div>
       <div class="live-grid">
         <figure class="news-photo">
-          <img src="assets/broadcast-0.webp" alt="Жених прикрывает кусок торта от микрофонов, пока невеста смеётся" width="724" height="724" decoding="async">
-          <figcaption><b>Валерия и Даниил</b><span>Торт под охраной. Пара от комментариев отказалась.</span></figcaption>
+          <div class="camera-frame">
+            <img src="assets/broadcast-0.webp" alt="Жених прикрывает кусок торта от микрофонов, пока невеста смеётся" width="724" height="724" decoding="async">
+            <div class="camera-target" aria-hidden="true"></div>
+          </div>
+          <figcaption>
+            <b>Валерия и Даниил</b>
+            <span>Торт под охраной. Пара от комментариев отказалась.</span>
+            <button class="scene-button" type="button" data-cake hidden>Проверить торт <span aria-hidden="true">↗</span></button>
+            <span class="scene-result" data-cake-result role="status"></span>
+          </figcaption>
         </figure>
         <div class="live-copy">
           <p class="mono section-kicker">Санкт-Петербург · 7 августа 2027</p>
@@ -79,7 +87,16 @@
 
     <section class="forecast section" aria-labelledby="forecast-title">
       <div class="wrap forecast-grid">
-        <figure class="forecast-photo"><img src="assets/broadcast-2.webp" alt="Валерия и Даниил у телевизионной карты с облаком конфетти" width="724" height="724" loading="lazy" decoding="async"></figure>
+        <figure class="forecast-photo">
+          <div class="forecast-frame">
+            <img src="assets/broadcast-2.webp" alt="Валерия и Даниил у телевизионной карты с облаком конфетти" width="724" height="724" loading="lazy" decoding="async">
+            <div class="confetti-layer" aria-hidden="true"></div>
+          </div>
+          <figcaption>
+            <button class="scene-button" type="button" data-forecast hidden>Запустить прогноз <span aria-hidden="true">↗</span></button>
+            <span class="scene-result" data-forecast-result role="status"></span>
+          </figcaption>
+        </figure>
         <div class="forecast-copy">
           <p class="mono section-kicker">Прогноз на вечер</p>
           <h2 id="forecast-title">Ожидается конфетти</h2>

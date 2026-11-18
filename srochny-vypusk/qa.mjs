@@ -31,6 +31,14 @@ try {
           return element.naturalWidth > 0;
         }), true);
       }
+      await page.getByRole('button', {name: 'Проверить торт'}).tap();
+      await page.getByText('Торт обнаружен. Целостность крема подтверждена.').waitFor();
+      const motion = name !== 'narrow';
+      assert.equal(await page.locator('.camera-frame img').evaluate(image => image.getAnimations().length > 0), motion);
+      await page.getByRole('button', {name: 'Запустить прогноз'}).tap();
+      await page.getByText('Вероятность конфетти — 100%. Берегите причёски.').waitFor();
+      assert.equal(await page.locator('.confetti-layer i').count(), motion ? 24 : 0);
+      if (motion) await page.locator('.confetti-layer i').first().waitFor({state: 'detached'});
       await page.getByRole('radio', {name: 'В этот раз без меня'}).tap();
       assert.equal(await page.getByText('Чем поднимете бокал?').count(), 0);
       await page.getByRole('radio', {name: 'Буду в кадре'}).tap();
