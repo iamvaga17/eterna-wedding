@@ -7,14 +7,33 @@
 <meta name="robots" content="noindex, nofollow">
 <title>ÉTERNA — свадебное приглашение</title>
 <link rel="preload" as="image" href="assets/cover.webp" fetchpriority="high">
-<link rel="stylesheet" href="assets/style.93ec4880e0.css">
+<link rel="stylesheet" href="assets/style.f9cbd9767d.css">
 <script defer src="../wedding-config.js?rev=65615f2d6a"></script>
 <script defer src="../rsvp-config.js?rev=bcdbb0a934"></script>
 <script defer src="../rsvp-renderer.js?rev=6b409f4760"></script>
 <script defer src="assets/invitation.62c1e35a52.js"></script>
-<script defer src="assets/motion.d2480d60bc.js"></script>
+<script defer src="assets/motion.02a57ba9b9.js"></script>
 </head>
 <body>
+<dialog class="intro-gate" aria-labelledby="intro-title">
+  <div class="intro-door intro-door-left" aria-hidden="true"></div>
+  <div class="intro-door intro-door-right" aria-hidden="true"></div>
+  <form class="intro-content" method="dialog">
+    <p class="intro-monogram" aria-hidden="true">É</p>
+    <h2 id="intro-title">Приглашение</h2>
+    <button class="enter" type="submit" autofocus aria-label="Раскрыть сайт">
+      <span class="entry-knob" aria-hidden="true">É</span>
+      <span class="entry-label" aria-hidden="true">Раскрыть сайт</span>
+      <span class="entry-instruction" aria-hidden="true">Сдвиньте печать</span>
+      <span class="entry-end" aria-hidden="true">›</span>
+    </button>
+  </form>
+</dialog>
+<script>
+  if (!location.hash && !new URLSearchParams(location.search).has('editor-preview')) {
+    document.querySelector('.intro-gate').showModal?.();
+  }
+</script>
 <header class="cover" id="top">
   <div class="cover-bar">
     <a class="mark" href="#top" aria-label="ÉTERNA, начало">É.</a>
@@ -33,17 +52,12 @@
     <p class="masthead" aria-hidden="true">ÉTERNA</p>
     <div class="cover-caption">
       <p class="eyebrow" data-copy="couple.city"></p>
-      <h1 data-names></h1>
+      <h1 data-names tabindex="-1"></h1>
       <p class="cover-date" data-copy="couple.dateLabel"></p>
     </div>
   </div>
   <div class="cover-foot">
-    <a class="enter" data-entry href="#atmosphere" aria-label="Открыть приглашение">
-      <span class="entry-knob" aria-hidden="true" draggable="false">É</span>
-      <span class="entry-label" aria-hidden="true">Открыть приглашение</span>
-      <span class="entry-instruction" aria-hidden="true">Сдвиньте печать</span>
-      <span class="entry-end" aria-hidden="true">›</span>
-    </a>
+    <a class="cover-enter" data-entry href="#atmosphere"><span aria-hidden="true">↓</span> Открыть приглашение</a>
   </div>
 </header>
 <noscript><p class="section-pad">Включите JavaScript, чтобы увидеть информацию о свадьбе и анкету гостя.</p></noscript>
