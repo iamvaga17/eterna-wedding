@@ -417,3 +417,30 @@ h2 { font-size: clamp(3rem, 10vw, 7.75rem); overflow-wrap: anywhere; }
   .desk-headline h2 { font-size:clamp(2.7rem,11vw,4.3rem); }
 }
 @media (prefers-reduced-motion:reduce) { .desk-channel { transition:none; } }
+
+/* V13 newsroom transition: one clipped diagonal TV wipe, no filters on the page. */
+.desk-screen::after {
+  content:"ВНЕОЧЕРЕДНОЙ ВЫПУСК";
+  position:absolute;
+  z-index:3;
+  inset:0;
+  display:grid;
+  place-items:center;
+  padding:1rem;
+  background:linear-gradient(130deg,#a82630 0%,#d13e43 54%,#6c121a 100%);
+  color:#fff6e7;
+  font:800 clamp(1.15rem,5vw,2rem)/1.15 var(--mono);
+  letter-spacing:.09em;
+  text-align:center;
+  transform:translateX(-105%);
+  pointer-events:none;
+}
+.desk-screen.desk-transmitting::after { animation:desk-tv-wipe-v14 1.2s cubic-bezier(.55,.02,.35,1) both; }
+@keyframes desk-tv-wipe-v14 {
+  0% { transform:translateX(-105%); }
+  24%,72% { transform:translateX(0); }
+  100% { transform:translateX(105%); }
+}
+@media (prefers-reduced-motion:reduce) {
+ .desk-screen.desk-transmitting::after { animation:none;transform:translateX(-105%); }
+}
