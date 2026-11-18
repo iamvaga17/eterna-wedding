@@ -29,7 +29,7 @@
 <h2>Разделы сайта</h2><fieldset id="sections"></fieldset>
 <h2>Тексты и программа</h2><fieldset id="texts"></fieldset>
 <div class="actions"><button id="downloadBtnBottom">Скачать комплект ZIP</button><button id="resetBtn" class="secondary">Сбросить изменения</button></div><p id="status" class="status" aria-live="polite"></p></div>
-<div class="preview"><h2>Предпросмотр</h2><p class="muted">Это реальный ÉTERNA. Изменения и фото показываются сразу, без публикации.</p><iframe id="siteFrame" title="Предпросмотр приглашения" src="templates/eterna.html?editor-preview=1#top"></iframe><p class="muted">Фотографии и шрифты демо требуют интернета. Для публикации используется ZIP с настройками и фотографиями.</p></div></main>
+<div class="preview"><h2>Предпросмотр</h2><p class="muted">Это реальный ÉTERNA. Изменения и фото показываются сразу, без публикации.</p><iframe id="siteFrame" title="Предпросмотр приглашения" src="templates/eterna.html?editor-preview=1&amp;dress-build=20261118-5#top"></iframe><p class="muted">Фотографии и шрифты демо требуют интернета. Для публикации используется ZIP с настройками и фотографиями.</p></div></main>
 <script src="wedding-config.js"></script><script>
 (()=>{'use strict';
 const LEGACY_KEY='eterna-editor-draft';
@@ -160,8 +160,30 @@ async function exportPackage(){
 }
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 $('downloadBtn').addEventListener('click',exportPackage);$('downloadBtnBottom').addEventListener('click',exportPackage);
-$('previewBtn').addEventListener('click',()=>{updatePreview();setStatus('Предпросмотр обновлён.')});
-$('siteFrame').addEventListener('load',()=>{updatePreview();setTimeout(updatePreview,350)});
+$('previewBtn').addEventListener('click',()=>{refreshDressPreview();updatePreview();setStatus('Предпросмотр обновляется…')});
+// Force-load the deployed customizer with a unique URL inside the preview iframe.
+// Safari can otherwise reuse the old cached JS even when editor.html itself is fresh.
+const DRESS_PREVIEW_BUILD='20261118-dress-fix-5';
+let previewLoading=false;
+function refreshDressPreview(){
+ const frame=$('siteFrame'),doc=frame.contentDocument;
+ if(!doc||previewLoading)return;
+ previewLoading=true;
+ const existing=doc.getElementById('et-dress-preview-loader');if(existing)existing.remove();
+ const script=doc.createElement('script');script.id='et-dress-preview-loader';
+ script.src='../wedding-customizer.js?version='+DRESS_PREVIEW_BUILD;
+ script.onload=()=>{
+  previewLoading=false;updatePreview();
+  setTimeout(()=>{
+   updatePreview();
+   const ok=Boolean(doc.querySelector('#dress .et-dress-female')&&doc.querySelector('#dress .et-dress-male'));
+   if(!ok)setStatus('Не удалось включить новый дресс-код. Проверь, что wedding-customizer.js обновлён на GitHub.');
+  },450);
+ };
+ script.onerror=()=>{previewLoading=false;setStatus('Ошибка загрузки wedding-customizer.js. Проверь публикацию GitHub Pages.');};
+ doc.body.append(script);
+}
+$('siteFrame').addEventListener('load',()=>{refreshDressPreview();setTimeout(updatePreview,400)});
 $('resetBtn').addEventListener('click',async()=>{if(!confirm('Сбросить все изменения, включая загруженные фотографии?'))return;for(const key of PHOTO_KEYS){try{await deletePhoto(key)}catch{}if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key]}data=normalizeOrder(structuredClone(defaults));localStorage.removeItem(draftKey());draw();updatePreview();setStatus('Черновик сброшен.')});
 async function loadPhotos(){for(const k of PHOTO_KEYS){if(photoUrls[k])URL.revokeObjectURL(photoUrls[k]);delete photoUrls[k]}
  for(const key of PHOTO_KEYS){if(!localPhoto(key))continue;try{let blob=await readPhoto(key);if(!blob&&orderId==='demo'){db??=await openDB();blob=await new Promise(resolve=>{let q=db.transaction('photos','readonly').objectStore('photos').get(key);q.onsuccess=()=>resolve(q.result);q.onerror=()=>resolve(null)});if(blob)await storePhoto(key,blob)}if(blob)cachedUrl(key,blob)}catch(e){setStatus('Не удалось восстановить фотографии — проверь хранилище Safari.')}}}
