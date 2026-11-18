@@ -70,8 +70,30 @@ const photoUrls={};
 let db;
 function setStatus(message){$('status').textContent=message}
 function openDB(){return new Promise((resolve,reject)=>{if(!window.indexedDB)return reject(Error('Хранилище недоступно'));const req=indexedDB.open('eterna-photo-editor',1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('photos'))req.result.createObjectStore('photos')};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
-async function storePhoto(key,blob){db??=await openDB();return new Promise((resolve,reject)=>{const tx=db.transaction('photos','readwrite');tx.objectStore('photos').put(blob,photoKey(key));tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)})}
-async function readPhoto(key){const storageKey=photoKey(key);db??=await openDB();return new Promise((resolve,reject)=>{const req=db.transaction('photos','readonly').objectStore('photos').get(storageKey);req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
+async function storePhoto(key,blob){
+ const storageKey=photoKey(key);
+ const bytes=await blob.arrayBuffer();
+ db??=await openDB();
+ return new Promise((resolve,reject)=>{
+  const tx=db.transaction('photos','readwrite');
+  const request=tx.objectStore('photos').put(bytes,storageKey);
+  request.onerror=()=>reject(request.error||Error('Не удалось сохранить фотографию'));
+  tx.onabort=()=>reject(tx.error||Error('Сохранение фотографии прервано'));
+  tx.oncomplete=resolve;
+ });
+}
+async function readPhoto(key){
+ const storageKey=photoKey(key);
+ db??=await openDB();
+ return new Promise((resolve,reject)=>{
+  const request=db.transaction('photos','readonly').objectStore('photos').get(storageKey);
+  request.onsuccess=()=>{
+   const saved=request.result;
+   resolve(saved instanceof ArrayBuffer ? new Blob([saved],{type:'image/jpeg'}) : saved);
+  };
+  request.onerror=()=>reject(request.error||Error('Не удалось прочитать фотографию'));
+ });
+}
 async function deletePhoto(key){db??=await openDB();return new Promise((resolve,reject)=>{const tx=db.transaction('photos','readwrite');tx.objectStore('photos').delete(photoKey(key));tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)})}
 function photoFileName(key){return 'wedding-photo-'+key+'.jpg'}
 function photoLink(key){return photoFileName(key)}
