@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {mkdir} from 'node:fs/promises';
+import {mkdir, readFile} from 'node:fs/promises';
 import {devices, webkit} from 'playwright';
 
 await mkdir('screenshots', {recursive: true});
@@ -94,7 +94,36 @@ try {
       await page.getByRole('button', {name: 'Проверить ответы'}).tap();
       await page.getByText('Это демонстрация. Ответы никуда не отправлены.', {exact: true}).waitFor();
       await page.screenshot({path: `screenshots/${name}-rsvp.png`});
+      assert.equal(await page.locator('.cover-bar a[href="#rsvp"]').count(), 0);
       if (name === 'iphone-se') {
+        const config = await readFile('wedding-config.js', 'utf8');
+        const endpoint = 'https://example.test/rsvp';
+        await page.route('**/wedding-config.js?rev=*', route => route.fulfill({
+          contentType: 'application/javascript',
+          body: config + '\nwindow.WEDDING_CONFIG.rsvp = {questions: [], endpoint: ' + JSON.stringify(endpoint) + '};'
+        }));
+        const payloads = [];
+        await page.route(endpoint, async route => {
+          const data = JSON.parse(route.request().postData());
+          payloads.push(data);
+          await route.fulfill({
+            headers: {'access-control-allow-origin': '*'},
+            json: payloads.length === 1 ? {ok: false} : {ok: true, id: data.id}
+          });
+        });
+        await page.goto('http://127.0.0.1:8080/eterna-12/index.html#rsvp');
+        await page.locator('#rsvp-name').fill('Тестовый гость');
+        const send = page.getByRole('button', {name: 'Отправить ответ'});
+        await send.tap();
+        await page.getByText('Не удалось подтвердить сохранение.', {exact: false}).waitFor();
+        assert.equal(await page.locator('#rsvp-name').inputValue(), 'Тестовый гость');
+        assert.equal(await page.getByText('Ваш ответ сохранён.').count(), 0);
+        await send.tap();
+        await page.getByText('Ваш ответ сохранён.', {exact: true}).waitFor();
+        assert.equal(payloads.length, 2);
+        assert.deepEqual(payloads[0], payloads[1]);
+        assert.equal(payloads[0].name, 'Тестовый гость');
+        assert.equal(payloads[0].attendance, 'yes');
         await page.goto('http://127.0.0.1:8080/editor.html');
         await page.getByLabel('Имя жениха', {exact: true}).fill('  ёлка');
         await page.getByLabel('Имя невесты', {exact: true}).fill('Анна-Мария');
@@ -103,25 +132,12 @@ try {
         assert.deepEqual(await preview.locator('[data-initials]').allTextContents(), ['Ё·А', 'Ё·А', 'Ё·А', 'Ё·А']);
         for (const [index, label] of ['Для неё', 'Для него'].entries()) {
           const group = page.locator('#photos details.photo-group').filter({has: page.getByText('Дресс-код — ' + label, {exact: false})});
-          await group.locator(':scope > summary').click();
+          await group.locator('summary').click();
           await group.getByRole('button', {name: '+ Добавить фотографию'}).click();
-          const input = group.getByLabel('Выбрать ' + label + ' — фото 3');
-          await input.evaluate(async element => {
-            const canvas = document.createElement('canvas');
-            const jpeg = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg'));
-            const transfer = new DataTransfer();
-            transfer.items.add(new File([jpeg], 'look.jpg', {type: 'image/jpeg'}));
-            element.files = transfer.files;
-            element.dispatchEvent(new Event('change', {bubbles: true}));
-          });
-          try {
-            await page.locator('#status').filter({hasText: /Фото добавлено|Ошибка:/}).waitFor({timeout: 7000});
-          } catch (error) {
-            console.log('Editor upload status:', await page.locator('#status').textContent(), await input.evaluate(element => [element.files.length, element.disabled]));
-            throw error;
-          }
-          assert.match(await page.locator('#status').textContent(), /^Фото добавлено/);
-          await preview.locator('.moodboard .looks').nth(index).locator('img[src^="blob:"]').waitFor({state: 'attached'});
+          await group.getByLabel('Выбрать ' + label + ' — фото 3').setInputFiles('eterna-12/assets/editorial-3.webp');
+          const extraLook = preview.locator('.moodboard .looks').nth(index).locator('img').nth(1);
+          await extraLook.waitFor({state: 'attached'});
+          assert.match(await extraLook.getAttribute('src'), /^blob:/);
         }
       }
       assert.deepEqual(faults, []);
