@@ -1,0 +1,4 @@
+Cloudflare Workers build trigger for eterna-ai-studio.
+Generator source: backend/cloudflare-free-worker-v22.js
+Configuration: backend/wrangler.jsonc
+This file contains no credentials.
