@@ -69,6 +69,14 @@ try {
       assert.equal(await names.evaluate(element => getComputedStyle(element).outlineStyle), 'none');
       await page.getByRole('link', {name: 'Листайте вниз'}).tap();
       await page.waitForURL('**/#atmosphere');
+      if (device.viewport.width < 760) {
+        const gap = await page.locator('.atmosphere').evaluate(section => {
+          const title = section.querySelector('h2').getBoundingClientRect();
+          const photo = section.querySelector('.atmosphere-wide').getBoundingClientRect();
+          return photo.top - title.bottom;
+        });
+        assert.ok(gap >= 12, 'The prologue title needs space above the photo');
+      }
       const letter = page.locator('.letter');
       const greeting = letter.locator('h2');
       if (name === 'iphone-13') {
