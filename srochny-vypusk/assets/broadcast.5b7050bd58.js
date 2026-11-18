@@ -197,9 +197,7 @@
   const chapterObserver = 'IntersectionObserver' in window && !motion.matches
     ? new IntersectionObserver(entries => {
         entries.forEach(entry => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add('chapter-on-air');
-          chapterObserver.unobserve(entry.target);
+          entry.target.classList.toggle('chapter-on-air', entry.isIntersecting);
         });
       }, {threshold: 0, rootMargin: '0px 0px -10% 0px'})
     : null;
