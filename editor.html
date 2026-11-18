@@ -8,7 +8,7 @@
 <h2>Разделы сайта</h2><fieldset id="sections"></fieldset>
 <h2>Тексты и программа</h2><fieldset id="texts"></fieldset>
 <div class="actions"><button id="downloadBtnBottom">Скачать wedding-config.js</button><button id="resetBtn" class="secondary">Сбросить изменения</button></div><p id="status" class="status" aria-live="polite"></p></div>
-<div class="preview"><h2>Предпросмотр</h2><p class="muted">Это реальный ÉTERNA. После первого открытия обложки изменения отображаются здесь.</p><iframe id="siteFrame" title="Предпросмотр приглашения" src="templates/eterna.html#top"></iframe><p class="muted">Фотографии и шрифты демо требуют интернета. Для публикации используется скачанный файл настроек.</p></div></main>
+<div class="preview"><h2>Предпросмотр</h2><p class="muted">Это реальный ÉTERNA. После первого открытия обложки изменения отображаются здесь.</p><iframe id="siteFrame" title="Предпросмотр приглашения" src="templates/eterna.html?editor-preview=1#top"></iframe><p class="muted">Фотографии и шрифты демо требуют интернета. Для публикации используется скачанный файл настроек.</p></div></main>
 <script src="wedding-config.js"></script><script>
 (()=>{'use strict';
 const defaults=JSON.parse(JSON.stringify(window.WEDDING_CONFIG||{}));
@@ -30,6 +30,6 @@ const heading=document.createElement('h2');heading.textContent='Расписан
 function changed(){try{localStorage.setItem('eterna-editor-draft',JSON.stringify(data))}catch{};updatePreview();$('status').textContent='Черновик сохранён только в этом браузере.'}
 function updatePreview(){const frame=$('siteFrame');try{frame.contentWindow.postMessage({type:'eterna-preview',config:JSON.parse(JSON.stringify(data))},location.origin)}catch{}}
 function exportConfig(){const s='/* Настройки свадьбы, созданные в ÉTERNA Editor */\nwindow.WEDDING_CONFIG = '+JSON.stringify(data,null,2)+';\n';const blob=new Blob([s],{type:'text/javascript;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='wedding-config.js';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);$('status').textContent='Настройки скачаны. Загрузите wedding-config.js в корень сайта на GitHub.'}
-$('downloadBtn').addEventListener('click',exportConfig);$('downloadBtnBottom').addEventListener('click',exportConfig);$('previewBtn').addEventListener('click',()=>{$('siteFrame').src='templates/eterna.html#top';});$('siteFrame').addEventListener('load',()=>setTimeout(updatePreview,150));$('resetBtn').addEventListener('click',()=>{if(confirm('Сбросить все изменения черновика?')){data=JSON.parse(JSON.stringify(defaults));localStorage.removeItem('eterna-editor-draft');draw();updatePreview()}});draw();
+$('downloadBtn').addEventListener('click',exportConfig);$('downloadBtnBottom').addEventListener('click',exportConfig);$('previewBtn').addEventListener('click',()=>{updatePreview();$('status').textContent='Изменения отправлены в предпросмотр.';});$('siteFrame').addEventListener('load',()=>{updatePreview();setTimeout(updatePreview,350)});$('resetBtn').addEventListener('click',()=>{if(confirm('Сбросить все изменения черновика?')){data=JSON.parse(JSON.stringify(defaults));localStorage.removeItem('eterna-editor-draft');draw();updatePreview()}});draw();
 })();
 </script></body></html>

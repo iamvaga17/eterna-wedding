@@ -2,7 +2,7 @@
 (function(){
 const set=(selector,value)=>{const el=document.querySelector(selector);if(el&&value!==undefined&&value!==null)el.textContent=String(value)};
 const img=(selector,url,position)=>{const el=document.querySelector(selector);if(!el)return;if(typeof url==='string'&&url.trim())el.src=url.trim();if(position)el.style.objectPosition=position};
-const hide=(selector,enabled)=>{const el=document.querySelector(selector);if(el)el.hidden=!enabled};
+const hide=(selector,enabled)=>{const el=document.querySelector(selector);if(el){el.hidden=!enabled;el.style.setProperty('display',enabled?'':'none',enabled?'':'important')}};
 const d=(o,k)=>o&&Object.prototype.hasOwnProperty.call(o,k)?o[k]:undefined;
 function apply(c){if(!c)return;
 const names=c.couple||{},t=c.text||{},p=c.photos||{},positions=c.photoPosition||{},sections=c.sections||{};
@@ -29,5 +29,5 @@ if(Array.isArray(c.schedule)){const list=document.querySelector('#day .day-card'
 }
 window.ETERNA_APPLY_CONFIG=apply;
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>apply(window.WEDDING_CONFIG));else apply(window.WEDDING_CONFIG);
-window.addEventListener('message',e=>{if(e.origin!==location.origin||!e.data||e.data.type!=='eterna-preview')return;apply(e.data.config)});
+window.addEventListener('message',e=>{if(e.origin!==location.origin||!e.data||e.data.type!=='eterna-preview')return;apply(e.data.config);const intro=document.querySelector('#intro');if(intro){intro.classList.add('done');intro.setAttribute('aria-hidden','true');intro.style.setProperty('display','none','important');document.body.classList.remove('locked')} });
 })();
