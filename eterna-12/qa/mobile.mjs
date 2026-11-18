@@ -103,7 +103,7 @@ try {
         assert.deepEqual(await preview.locator('[data-initials]').allTextContents(), ['Ё·А', 'Ё·А', 'Ё·А', 'Ё·А']);
         for (const [index, label] of ['Для неё', 'Для него'].entries()) {
           const group = page.locator('#photos details.photo-group').filter({has: page.getByText('Дресс-код — ' + label, {exact: false})});
-          await group.locator('summary').click();
+          await group.locator(':scope > summary').click();
           await group.getByRole('button', {name: '+ Добавить фотографию'}).click();
           await group.getByLabel('Выбрать ' + label + ' — фото 3').setInputFiles('eterna-12/assets/editorial-3.webp');
           const extraLook = preview.locator('.moodboard .looks').nth(index).locator('img').nth(1);
