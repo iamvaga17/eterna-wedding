@@ -25,6 +25,9 @@ try {
       await page.locator('.aperture img').evaluate(image => image.decode());
       const gate = page.getByRole('dialog', {name: 'Приглашение'});
       await gate.waitFor();
+      assert.equal(await gate.locator('.intro-names').textContent(), 'Александр & Виктория');
+      assert.deepEqual(await page.locator('[data-initials]').allTextContents(), ['А·В', 'А·В', 'А·В', 'А·В']);
+      assert.equal(await page.title(), 'Александр & Виктория — свадебное приглашение');
       assert.equal(await page.evaluate(() => {
         const intro = document.querySelector('.intro-gate');
         return intro.matches(':modal') && intro.contains(document.elementFromPoint(10, 10));
@@ -80,6 +83,14 @@ try {
       await page.getByRole('button', {name: 'Проверить ответы'}).tap();
       await page.getByText('Это демонстрация. Ответы никуда не отправлены.', {exact: true}).waitFor();
       await page.screenshot({path: `screenshots/${name}-rsvp.png`});
+      if (name === 'iphone-se') {
+        await page.goto('http://127.0.0.1:8080/editor.html');
+        await page.getByLabel('Имя жениха', {exact: true}).fill('  ёлка');
+        await page.getByLabel('Имя невесты', {exact: true}).fill('Анна-Мария');
+        const preview = page.frameLocator('#siteFrame');
+        await preview.locator('.mark').filter({hasText: 'Ё·А'}).waitFor();
+        assert.deepEqual(await preview.locator('[data-initials]').allTextContents(), ['Ё·А', 'Ё·А', 'Ё·А', 'Ё·А']);
+      }
       assert.deepEqual(faults, []);
       console.log(`Passed ${name}`);
     } catch (error) {
