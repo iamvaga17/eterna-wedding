@@ -71,6 +71,9 @@
     clearTimeout(cleanupTimer);
     confetti.getAnimations({subtree: true}).forEach(a => a.cancel());
     confetti.replaceChildren();
+    confetti.classList.remove('cannon-firing');
+    void confetti.offsetWidth;
+    confetti.classList.add('cannon-firing');
     const rect = confetti.getBoundingClientRect();
     if (rect.width < 1 || rect.height < 1) return;
     const reducedDensity = matchMedia('(max-width: 650px)').matches;
@@ -110,7 +113,7 @@
     }
     confetti.append(fragment);
     cleanupTimer = setTimeout(() => {
-      if (id === launchId) confetti.replaceChildren();
+      if (id === launchId) { confetti.replaceChildren(); confetti.classList.remove('cannon-firing'); }
     }, 3800);
   }
 
@@ -163,12 +166,25 @@
     });
   }
 
+  // Reveal the event schedule like a live production rundown.
+  const rundown = document.querySelector('.rundown');
+  if (rundown && 'IntersectionObserver' in window && !motion.matches) {
+    const scheduleObserver = new IntersectionObserver(entries => {
+      if (entries.some(e => e.isIntersecting)) {
+        rundown.classList.add('rundown-on-air');
+        scheduleObserver.disconnect();
+      }
+    }, {threshold: .2});
+    scheduleObserver.observe(rundown);
+  }
+
   // Returning to the page after changing motion settings should never trap effects.
   motion.addEventListener?.('change', () => {
     if (motion.matches) {
       ++launchId;
       clearTimeout(cleanupTimer);
       confetti.replaceChildren();
+      confetti.classList.remove('cannon-firing');
       document.querySelectorAll('.editorial-ready').forEach(el => el.classList.add('editorial-visible'));
     }
   });
