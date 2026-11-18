@@ -1,0 +1,80 @@
+/* ÉTERNA 11.5 — ART CHAPTERS. Enhancement only; original editor, RSVP and 11.4 untouched. */
+:root{--et-ease:cubic-bezier(.22,1,.36,1);--et-gold:#bea68b}
+/* A gentle editorial reveal; added after components are in view so nothing starts invisible. */
+.et-chapter-visible .ao-section-label,.et-chapter-visible .day-top,.et-chapter-visible .venue-card,.et-chapter-visible .rsvp-paper,.et-chapter-visible .story-header,.et-chapter-visible .ao-prologue-statement{animation:et-chapter-in 1.15s var(--et-ease) both}
+.et-chapter-visible .ao-section-label{animation-duration:.75s}
+.et-chapter-visible .ao-gallery-shot:first-child,.et-chapter-visible .story-main,.et-chapter-visible .mood-grid figure:nth-child(1){animation:et-image-in-left 1.3s var(--et-ease) both}
+.et-chapter-visible .ao-gallery-shot:last-child,.et-chapter-visible .story-small,.et-chapter-visible .mood-grid figure:nth-child(3){animation:et-image-in-right 1.45s var(--et-ease) both}
+.et-chapter-visible .mood-grid figure:nth-child(2){animation:et-chapter-in 1.3s .15s var(--et-ease) both}
+/* Chapter 1: framing inspired by fine-art galleries. */
+#photo-story.ao-prologue{position:relative;isolation:isolate;overflow:hidden}
+#photo-story.ao-prologue:before{content:'01';position:absolute;right:-.055em;top:4%;font:italic 400 clamp(150px,33vw,560px)/1 'Cormorant Garamond',Georgia,serif;color:#a78e6e12;pointer-events:none;z-index:-1}
+#photo-story .ao-prologue-gallery{perspective:1100px}
+#photo-story .ao-gallery-shot{will-change:transform;filter:drop-shadow(0 22px 30px #37271c26)}
+#photo-story .ao-gallery-shot img{transition:filter 1.2s var(--et-ease),scale 1.5s var(--et-ease)!important;filter:saturate(.8)}
+#photo-story .ao-gallery-shot:hover img{scale:1.055;filter:saturate(1.05)}
+/* Chapter 2: ceremonial letter with moving light. */
+#invitation.ao-invitation{position:relative;isolation:isolate;overflow:hidden}
+#invitation .ao-invitation-stage{transform-style:preserve-3d}
+#invitation .letter{position:relative;overflow:hidden}
+#invitation .letter:after{content:'';position:absolute;inset:-100%;transform:translateX(-90%) rotate(23deg);pointer-events:none;background:linear-gradient(90deg,transparent 43%,#fff6 50%,transparent 57%);animation:et-letter-glint 11s 2s ease-in-out infinite}
+#invitation .invite-photo{transition:transform 1s var(--et-ease),filter 1s!important}
+#invitation .invite-photo:hover{transform:translateY(-9px) rotate(-2deg)!important;filter:saturate(1.1)}
+/* Chapter 3: the images move with scroll, but keep original readable positions. */
+#story.ao-story{position:relative;isolation:isolate;overflow:hidden}
+#story.ao-story:after{content:'&';position:absolute;right:3%;top:20%;font:italic 400 clamp(150px,30vw,470px)/1 'Cormorant Garamond',Georgia,serif;color:#b6987040;pointer-events:none;z-index:0}
+#story .story-collage{position:relative;z-index:1}
+#story .story-main img,#story .story-small img{transition:scale 1.6s var(--et-ease)!important}
+#story .story-main:hover img,#story .story-small:hover img{scale:1.045}
+/* Chapter 4: animated event progress and asymmetrical cards. */
+#day.day{position:relative;isolation:isolate;overflow:hidden}
+#day.day:before{content:'THE DAY';position:absolute;top:2%;left:-2%;font:italic 400 clamp(90px,20vw,280px)/1 'Cormorant Garamond',Georgia,serif;color:#8f74501b;white-space:nowrap;pointer-events:none;z-index:-1}
+#day .day-card{position:relative}
+#day .event{position:relative;overflow:hidden;transition:transform .65s var(--et-ease),box-shadow .65s var(--et-ease)!important}
+#day .event:after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 45%,#fff6 52%,transparent 59%);transform:translateX(-160%);transition:transform .9s var(--et-ease)}
+#day .event:hover:after{transform:translateX(160%)}
+#day.et-chapter-visible .event{animation:et-card-arrive .9s var(--et-ease) both}
+#day.et-chapter-visible .event:nth-child(2){animation-delay:.12s}
+#day.et-chapter-visible .event:nth-child(3){animation-delay:.24s}
+#day.et-chapter-visible .event:nth-child(4){animation-delay:.36s}
+/* Chapter 5: majestic architectural arch. */
+#venue.venue{position:relative;isolation:isolate;overflow:hidden}
+#venue .venue-card{position:relative;transition:transform .8s var(--et-ease),box-shadow .8s var(--et-ease)!important}
+#venue .venue-card:hover{transform:translateY(-8px);box-shadow:0 40px 95px #0009!important}
+#venue:after{content:'✦';position:absolute;right:8%;top:13%;font:400 clamp(36px,8vw,100px)/1 Georgia,serif;color:#f2e6d084;animation:et-star 22s linear infinite;pointer-events:none}
+/* Chapter 6: fashion-editorial dress code. */
+#dress.dress{position:relative;isolation:isolate;overflow:hidden}
+#dress.dress:before{content:'DRESS CODE';position:absolute;top:5%;left:50%;transform:translateX(-50%);font:italic 400 clamp(66px,13vw,200px)/1 'Cormorant Garamond',Georgia,serif;white-space:nowrap;color:#8f755423;pointer-events:none;z-index:-1}
+#dress .mood-grid figure{transition:transform .8s var(--et-ease),box-shadow .8s var(--et-ease)!important}
+#dress .mood-grid img{transition:filter .8s,scale 1s var(--et-ease)!important}
+#dress .mood-grid figure:hover img{scale:1.07;filter:saturate(1.1)}
+/* RSVP: shimmer around paper and a satisfying hover on controls; do not touch form state. */
+#rsvp.rsvp{position:relative;isolation:isolate;overflow:hidden}
+#rsvp.rsvp:before{content:'R.S.V.P.';position:absolute;top:2%;left:50%;transform:translateX(-50%);font:italic 400 clamp(80px,18vw,250px)/1 'Cormorant Garamond',Georgia,serif;white-space:nowrap;color:#866c4a21;pointer-events:none;z-index:-1}
+#rsvp .rsvp-paper{transition:box-shadow .75s var(--et-ease),transform .75s var(--et-ease)!important}
+#rsvp .rsvp-paper:focus-within{box-shadow:12px 17px 0 #a18a6c88!important}
+#rsvp button,#rsvp .choice{transition:transform .28s var(--et-ease),background .28s,box-shadow .28s!important}
+#rsvp button:active{transform:scale(.97)}
+/* Closing curtain: subtle radiating aura. */
+.ending{position:relative;isolation:isolate;overflow:hidden}
+.ending:before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 55%,#dcb99835,transparent 60%);animation:et-aura 9s ease-in-out infinite alternate;pointer-events:none}
+@keyframes et-chapter-in{from{opacity:.2;transform:translateY(34px);filter:blur(7px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+@keyframes et-image-in-left{from{opacity:.2;filter:blur(5px);translate:-25px 25px}to{opacity:1;filter:blur(0);translate:0 0}}
+@keyframes et-image-in-right{from{opacity:.2;filter:blur(5px);translate:25px 25px}to{opacity:1;filter:blur(0);translate:0 0}}
+@keyframes et-card-arrive{from{opacity:.3;translate:0 40px}to{opacity:1;translate:0 0}}
+@keyframes et-letter-glint{0%,60%,100%{transform:translateX(-90%) rotate(23deg)}75%{transform:translateX(90%) rotate(23deg)}}
+@keyframes et-star{to{transform:rotate(360deg)}}
+@keyframes et-aura{to{opacity:.25;scale:1.15}}
+@media(max-width:700px){
+ #photo-story.ao-prologue:before{top:5%;font-size:clamp(135px,42vw,270px)}
+ #day.day:before{font-size:24vw;top:5%}
+ #venue:after{right:5%;top:8%;font-size:38px}
+ #dress.dress:before{top:3%;font-size:17vw}
+ #rsvp.rsvp:before{top:5%;font-size:21vw}
+ #day .event:hover{transform:none!important}
+ #invitation .letter:after{animation-duration:16s}
+}
+@media(prefers-reduced-motion:reduce){
+ .et-chapter-visible .ao-section-label,.et-chapter-visible .day-top,.et-chapter-visible .venue-card,.et-chapter-visible .rsvp-paper,.et-chapter-visible .story-header,.et-chapter-visible .ao-prologue-statement,.et-chapter-visible .ao-gallery-shot,.et-chapter-visible .story-main,.et-chapter-visible .story-small,.et-chapter-visible .mood-grid figure,#day.et-chapter-visible .event{animation:none!important}
+ #invitation .letter:after,#venue:after,.ending:before{animation:none!important}
+}
