@@ -334,6 +334,33 @@
     deskButtons.forEach(button => button.addEventListener('click', () => selectStory(Number(button.dataset.desk))));
   }
 
+  // Audience poll is a local interactive fiction, never stored or transmitted.
+  const pollChoices = Array.from(document.querySelectorAll('[data-poll-choice]'));
+  if (pollChoices.length) {
+    const pollResult = document.querySelector('[data-poll-result]');
+    const pollOptions = document.querySelector('.poll-options');
+    const pollScore = document.querySelector('[data-poll-score]');
+    const pollMessage = document.querySelector('[data-poll-message]');
+    const pollReset = document.querySelector('[data-poll-reset]');
+    const messages = [
+      'Наши корреспонденты предупреждают: танцпол может не выдержать такого энтузиазма. Удобная обувь приветствуется.',
+      'Источники сообщают: операция по обнаружению торта неизбежна. Главный свидетель — кондитер.',
+      'Редакция фиксирует повышенную концентрацию любви. Вероятность объятий превышает все допустимые нормы.'
+    ];
+    pollChoices.forEach((button, index) => button.addEventListener('click', () => {
+      pollMessage.textContent = messages[index];
+      pollScore.textContent = '100%';
+      pollOptions.hidden = true;
+      pollResult.hidden = false;
+      pollReset.focus({preventScroll:true});
+    }));
+    pollReset.addEventListener('click', () => {
+      pollResult.hidden = true;
+      pollOptions.hidden = false;
+      pollChoices[0].focus({preventScroll:true});
+    });
+  }
+
   window.ETERNA_MOUNT_RSVP(document.getElementById('rsvpDynamic'), {
     attendancePrompt: 'Будете в кадре?',
     attendanceLabels: {yes: 'Буду в кадре', no: 'В этот раз без меня'},
