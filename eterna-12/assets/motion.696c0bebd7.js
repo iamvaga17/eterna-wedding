@@ -83,7 +83,7 @@
     const finish = () => {
       if (gate.open) gate.close();
     };
-    if (reduced.matches) {
+    if (reduced.matches || Number(gate.style.getPropertyValue('--seal-progress')) >= 1) {
       finish();
       return;
     }
@@ -129,13 +129,11 @@
     if (event.pointerId !== drag?.id) return;
     const released = event.type === 'pointerup';
     const progress = released ? moveSeal(event) : 0;
-    const {travel} = drag;
     drag = null;
     opener.classList.remove('is-dragging');
     gate.classList.remove('is-dragging');
     if (!released) suppressClick = true;
     if (progress >= .8) {
-      setSeal(travel, travel);
       revealCover();
     } else {
       setSeal(0, 1);
