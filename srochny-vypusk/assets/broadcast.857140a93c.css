@@ -273,28 +273,29 @@ h2 { font-size: clamp(3rem, 10vw, 7.75rem); overflow-wrap: anywhere; }
 }
 .forecast-frame { isolation: isolate; }
 .confetti-layer { z-index: 2; }
+/* A confetti cannon ejects paper and a little air, not a burst of light. */
 .confetti-layer::before, .confetti-layer::after {
   content: "";
   position: absolute;
-  z-index: 2;
-  width: 30%;
-  height: 40%;
-  bottom: 3%;
-  background: radial-gradient(ellipse at bottom, #fff9d5ed 0%, #ffdb94b8 18%, #ffd8a33d 45%, transparent 70%);
+  z-index: 1;
+  width: 19%;
+  height: 14%;
+  bottom: 11%;
   opacity: 0;
-  mix-blend-mode: screen;
+  border-radius: 50%;
   pointer-events: none;
+  background: radial-gradient(ellipse, #ddd5bd55 0%, #ddd5bd1c 38%, transparent 70%);
+  filter: blur(9px);
 }
-.confetti-layer::before { left: -9%; transform: rotate(-25deg); transform-origin: bottom left; }
-.confetti-layer::after { right: -9%; transform: rotate(25deg); transform-origin: bottom right; }
+.confetti-layer::before { left: -5%; transform-origin: 0% 100%; }
+.confetti-layer::after { right: -5%; transform-origin: 100% 100%; }
 @media (prefers-reduced-motion: no-preference) {
-  .confetti-layer.cannon-firing::before { animation: cannon-flash .52s ease-out both; }
-  .confetti-layer.cannon-firing::after { animation: cannon-flash .52s .34s ease-out both; }
-  @keyframes cannon-flash {
-    0% { opacity: 0; scale: .45; }
-    16% { opacity: .95; scale: 1.15; }
-    40% { opacity: .54; }
-    100% { opacity: 0; scale: 1.5; }
+  .confetti-layer.cannon-firing::before { animation: cannon-air .45s ease-out both; }
+  .confetti-layer.cannon-firing::after { animation: cannon-air .45s .34s ease-out both; }
+  @keyframes cannon-air {
+    0% { opacity: 0; scale: .65; }
+    22% { opacity: .33; scale: 1; }
+    100% { opacity: 0; scale: 1.65; }
   }
   .opening-copy h1 { animation: headline-appears .9s .12s cubic-bezier(.18,.7,.2,1) both; }
   .opening-copy > p:last-of-type { animation: headline-appears .85s .32s ease-out both; }
