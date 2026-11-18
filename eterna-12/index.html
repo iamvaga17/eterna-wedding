@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1b1010">
 <meta name="robots" content="noindex, nofollow">
-<title>ÉTERNA — свадебное приглашение</title>
+<title>Свадебное приглашение</title>
 <link rel="preload" as="image" href="assets/cover.webp" fetchpriority="high">
-<link rel="stylesheet" href="assets/style.f9cbd9767d.css">
+<link rel="stylesheet" href="assets/style.9c1d5b47ff.css">
 <script defer src="../wedding-config.js?rev=65615f2d6a"></script>
 <script defer src="../rsvp-config.js?rev=bcdbb0a934"></script>
 <script defer src="../rsvp-renderer.js?rev=6b409f4760"></script>
-<script defer src="assets/invitation.62c1e35a52.js"></script>
+<script defer src="assets/invitation.dcff3138e8.js"></script>
 <script defer src="assets/motion.02a57ba9b9.js"></script>
 </head>
 <body>
@@ -19,10 +19,13 @@
   <div class="intro-door intro-door-left" aria-hidden="true"></div>
   <div class="intro-door intro-door-right" aria-hidden="true"></div>
   <form class="intro-content" method="dialog">
-    <p class="intro-monogram" aria-hidden="true">É</p>
-    <h2 id="intro-title">Приглашение</h2>
+    <p class="intro-monogram" data-initials aria-hidden="true"></p>
+    <div class="intro-heading">
+      <h2 id="intro-title">Приглашение</h2>
+      <p class="intro-names" data-names></p>
+    </div>
     <button class="enter" type="submit" autofocus aria-label="Раскрыть сайт">
-      <span class="entry-knob" aria-hidden="true">É</span>
+      <span class="entry-knob" data-initials aria-hidden="true"></span>
       <span class="entry-label" aria-hidden="true">Раскрыть сайт</span>
       <span class="entry-instruction" aria-hidden="true">Сдвиньте печать</span>
       <span class="entry-end" aria-hidden="true">›</span>
@@ -36,7 +39,7 @@
 </script>
 <header class="cover" id="top">
   <div class="cover-bar">
-    <a class="mark" href="#top" aria-label="ÉTERNA, начало">É.</a>
+    <a class="mark" data-initials href="#top" aria-label="К началу приглашения"></a>
     <span class="eyebrow cover-type">Свадебное приглашение</span>
     <a class="nav-link" href="#rsvp">RSVP <span aria-hidden="true">↗</span></a>
   </div>
@@ -49,7 +52,7 @@
       <div class="refraction refraction-right"><img data-photo="secondary2" alt=""></div>
       <span class="light"></span>
     </div>
-    <p class="masthead" aria-hidden="true">ÉTERNA</p>
+    <p class="masthead" aria-hidden="true">Свадьба</p>
     <div class="cover-caption">
       <p class="eyebrow" data-copy="couple.city"></p>
       <h1 data-names tabindex="-1"></h1>
@@ -78,7 +81,7 @@
           <span class="letter-action letter-action-open">Открыть письмо</span>
           <span class="letter-action letter-action-close">Сложить письмо</span>
         </span>
-        <span class="seal" aria-hidden="true">É.</span>
+        <span class="seal" data-initials aria-hidden="true"></span>
       </summary>
       <div class="letter-content">
         <h2 data-copy="text.greeting"></h2>
