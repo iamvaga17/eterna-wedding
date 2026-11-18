@@ -69,9 +69,50 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .cover-caption h1 { font-size: clamp(2rem, 6vw, 5.2rem); line-height: .95; }
 .cover-date { margin-top: .65rem; color: #f0cfac; font-size: .88rem; }
 .cover-foot { justify-content: center; padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
-.enter { display: inline-flex; align-items: center; gap: .8rem; text-decoration: none; }
-.enter span { display: grid; place-items: center; width: 3rem; height: 3rem; border: 1px solid var(--line); border-radius: 50%; font-size: 1rem; transition: background .25s, color .25s; }
-.enter:hover span { background: var(--paper); color: var(--ink); }
+.enter {
+  --seal-x: 0px;
+  position: relative;
+  display: grid;
+  align-items: center;
+  width: min(100%, 19rem);
+  min-height: 3.6rem;
+  padding: .3rem 2.1rem .3rem 4rem;
+  border: 1px solid #d9ad8485;
+  border-radius: 3rem;
+  background: linear-gradient(145deg, #422921a0, #1b1010);
+  text-align: center;
+  text-decoration: none;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+}
+.entry-knob {
+  position: absolute;
+  left: .25rem;
+  top: 50%;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border: 3px double #f3c79a;
+  border-radius: 50%;
+  background: radial-gradient(circle at 36% 23%, #bf9065, #73402e 72%);
+  color: #fff1d9;
+  box-shadow: inset 0 0 0 1px #542a20, 0 .2rem .8rem #08040599;
+  font: 400 1.7rem/1 var(--serif);
+  transform: translate(var(--seal-x), -50%);
+  transition: transform .32s ease-out;
+  cursor: grab;
+}
+.entry-instruction { display: none; }
+.enter.is-interactive .entry-label { display: none; }
+.enter.is-interactive .entry-instruction { display: inline; }
+.entry-end { position: absolute; right: .8rem; font: 1.7rem/1 var(--serif); color: var(--gold); }
+.enter.is-dragging .entry-knob { transition: none; cursor: grabbing; }
+.enter.is-dragging .entry-instruction, .cover.is-opening .entry-instruction { opacity: .38; }
+.cover.is-dragging .aperture { filter: brightness(calc(1 + .24 * var(--seal-progress, 0))); transition: none; }
 .cover.is-opening .aperture { width: min(96vw, 1100px); border-radius: 3%; filter: brightness(1.2); }
 .atmosphere { background: #652d26; display: grid; grid-template-columns: repeat(12,minmax(0,1fr)); align-items: center; }
 .atmosphere-title { grid-area: 1 / 1 / 2 / 13; z-index: 1; align-self: start; margin-bottom: -1rem; }
