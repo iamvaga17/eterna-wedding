@@ -63,7 +63,11 @@ try {
       assert.equal(new URL(page.url()).hash, '');
       assert.equal(await page.evaluate(() => scrollY), 0);
       await page.screenshot({path: `screenshots/${name}-cover.png`});
-      await page.getByRole('link', {name: 'Открыть приглашение'}).tap();
+      assert.equal(await page.locator('.masthead').count(), 0);
+      const names = page.getByRole('heading', {name: 'Александр & Виктория', level: 1});
+      await page.waitForFunction(() => document.activeElement?.matches('.cover-caption h1'));
+      assert.equal(await names.evaluate(element => getComputedStyle(element).outlineStyle), 'none');
+      await page.getByRole('link', {name: 'Листайте вниз'}).tap();
       await page.waitForURL('**/#atmosphere');
       const letter = page.locator('.letter');
       const greeting = letter.locator('h2');
