@@ -77,44 +77,52 @@
     const rect = confetti.getBoundingClientRect();
     if (rect.width < 1 || rect.height < 1) return;
     const reducedDensity = matchMedia('(max-width: 650px)').matches;
-    const count = reducedDensity ? 70 : 126;
+    const count = reducedDensity ? 64 : 112;
     const fragment = document.createDocumentFragment();
     const random = (min, max) => min + Math.random() * (max - min);
+    const position = (x, y, spinY, spinX, roll, scale) =>
+      'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) rotateY(' +
+      spinY.toFixed(0) + 'deg) rotateX(' + spinX.toFixed(0) + 'deg) rotateZ(' +
+      roll.toFixed(0) + 'deg) scale(' + scale + ')';
 
-    // Alternate two cannons. The second shot follows 340ms after the first.
+    // Two directional bursts; paper tumbles before gravity takes over.
     for (let shot = 0; shot < 2; shot++) {
       const side = shot === 0 ? 1 : -1;
       const originX = shot === 0 ? rect.width * .02 : rect.width * .98;
-      const originY = rect.height * random(.68, .8);
+      const originY = rect.height * random(.68, .78);
       for (let i = 0; i < count / 2; i++) {
         const piece = document.createElement('i');
-        const near = i % 3 === 0;
-        const w = random(near ? 8 : 3, near ? 15 : 8);
-        const h = w * random(.65, 1.8);
-        const dx = side * random(rect.width * .14, rect.width * 1.02);
-        const lift = random(rect.height * .28, rect.height * .94);
-        const down = random(rect.height * .11, rect.height * .55);
-        const spin = random(420, 1400) * (i % 2 ? -1 : 1);
-        const duration = random(1600, 3000);
+        const near = i % 4 === 0;
+        const w = random(near ? 8 : 3, near ? 13 : 7);
+        const h = w * random(.55, 1.55);
+        const dx = side * random(rect.width * .18, rect.width * .94);
+        const lift = random(rect.height * .25, rect.height * .78);
+        const fall = random(rect.height * .33, rect.height * .82);
+        const wobble = random(-18, 18);
+        const flipY = random(540, 1420) * (i % 2 ? -1 : 1);
+        const flipX = random(200, 840) * (i % 3 ? -1 : 1);
+        const roll = random(-450, 450);
+        const duration = random(2450, 3750);
+        const delay = shot * 340 + random(0, 115);
         piece.style.cssText = 'left:' + originX + 'px;top:' + originY + 'px;width:' + w +
           'px;height:' + h + 'px;background:' + colors[(i + shot * 2) % colors.length] +
-          ';opacity:0;position:absolute;will-change:transform,opacity;';
-        if (i % 7 === 0) piece.style.borderRadius = '50%';
+          ';opacity:0;position:absolute;backface-visibility:visible;will-change:transform,opacity;';
+        if (i % 11 === 0) piece.style.borderRadius = '45% 20% 35% 10%';
         fragment.append(piece);
-        const delay = shot * 340 + random(0, 120);
         const animation = piece.animate([
-          {transform:'translate3d(0,0,0) rotate(0deg) scale(1)', opacity:0, offset:0},
-          {transform:'translate3d(' + (dx * .17) + 'px,' + (-lift * .48) + 'px,0) rotate(' + (spin * .18) + 'deg) scale(1.12)', opacity:1, offset:.12},
-          {transform:'translate3d(' + (dx * .68) + 'px,' + (-lift) + 'px,0) rotate(' + (spin * .66) + 'deg) scale(.95)', opacity:1, offset:.47},
-          {transform:'translate3d(' + dx + 'px,' + (-lift * .13 + down) + 'px,0) rotate(' + spin + 'deg) scale(.7)', opacity:0, offset:1}
-        ], {duration, delay, easing:'cubic-bezier(.22,.52,.46,1)', fill:'both'});
+          {transform: position(0, 0, 0, 0, 0, 1), opacity: 0, offset: 0},
+          {transform: position(dx * .2, -lift * .5, flipY * .16, flipX * .2, roll * .2, 1.08), opacity: 1, offset: .12},
+          {transform: position(dx * .58, -lift, flipY * .45, flipX * .46, roll * .5, .98), opacity: 1, offset: .42},
+          {transform: position(dx * .82 + wobble, -lift * .58, flipY * .72, flipX * .76, roll * .72, .85), opacity: .98, offset: .69},
+          {transform: position(dx + wobble * 1.8, fall, flipY, flipX, roll, .72), opacity: 0, offset: 1}
+        ], {duration, delay, easing:'cubic-bezier(.24,.4,.45,1)', fill:'both'});
         animation.onfinish = () => piece.remove();
       }
     }
     confetti.append(fragment);
     cleanupTimer = setTimeout(() => {
       if (id === launchId) { confetti.replaceChildren(); confetti.classList.remove('cannon-firing'); }
-    }, 3800);
+    }, 4500);
   }
 
   forecastButton.hidden = false;
@@ -176,6 +184,33 @@
       }
     }, {threshold: .2});
     scheduleObserver.observe(rundown);
+  }
+
+  // Compact broadcast bumpers introduce chapters without interrupting scrolling.
+  const chapters = [
+    ['.archive', 'АРХИВ РЕДАКЦИИ'],
+    ['.field-report', 'СВОДКА СОБЫТИЙ'],
+    ['.forecast', 'ПРОГНОЗ В ЭФИРЕ'],
+    ['.response', 'ВАШ ВЫХОД В ЭФИР']
+  ];
+  if ('IntersectionObserver' in window && !motion.matches) {
+    const chapterObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('chapter-on-air');
+        chapterObserver.unobserve(entry.target);
+      });
+    }, {threshold: .12});
+    chapters.forEach(([selector, caption]) => {
+      const section = document.querySelector(selector);
+      if (!section) return;
+      const bumper = document.createElement('span');
+      bumper.className = 'chapter-bumper';
+      bumper.textContent = caption;
+      bumper.setAttribute('aria-hidden', 'true');
+      section.append(bumper);
+      chapterObserver.observe(section);
+    });
   }
 
   // Returning to the page after changing motion settings should never trap effects.
