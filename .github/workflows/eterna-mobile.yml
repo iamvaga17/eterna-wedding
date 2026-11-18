@@ -5,6 +5,7 @@ on:
   pull_request:
     paths:
       - 'eterna-12/**'
+      - 'srochny-vypusk/**'
       - 'editor.html'
       - 'wedding-config.js'
       - 'rsvp-*.js'
@@ -29,6 +30,7 @@ jobs:
           trap 'kill "$server"' EXIT
           curl --fail --silent --retry 5 --retry-connrefused http://127.0.0.1:8080/eterna-12/ > /dev/null
           node eterna-12/qa/mobile.mjs
+          node srochny-vypusk/qa.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
