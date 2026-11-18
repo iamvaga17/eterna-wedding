@@ -1,0 +1,22 @@
+/* ÉTERNA 11.4 — LIVING COVER. Add after 11.3. Editor/RSVP untouched. */
+#top.ao-hero{isolation:isolate;background:radial-gradient(ellipse at 50% 32%,#44312e 0%,#21191b 44%,#100e13 85%)!important}
+#top.ao-hero:before{content:"ÉTERNA";position:absolute;z-index:1;top:clamp(85px,10svh,145px);left:50%;transform:translateX(-50%);font:italic 400 clamp(125px,24vw,420px)/.72 'Cormorant Garamond',Georgia,serif;letter-spacing:-.11em;white-space:nowrap;color:transparent;-webkit-text-stroke:1px #e8c7a45c;opacity:.8;pointer-events:none;animation:eternaWordReveal 1.7s cubic-bezier(.18,.76,.18,1) both}
+#top.ao-hero:after{content:"ONE DAY · ONE STORY · FOREVER";position:absolute;z-index:6;top:52%;right:clamp(12px,3vw,50px);writing-mode:vertical-rl;font:600 9px/1.4 'Manrope',sans-serif;letter-spacing:.3em;color:#e7d7c2a6;pointer-events:none}
+#top.ao-hero .ao-artboard{position:relative;z-index:3;filter:drop-shadow(0 35px 54px #0007);animation:eternaStageReveal 1.4s .2s both}
+#top.ao-hero .ao-artboard:before{content:"19";position:absolute;z-index:5;top:0;left:-5%;font:italic 400 clamp(70px,11vw,155px)/.85 'Cormorant Garamond',Georgia,serif;color:#f4e4cf;text-shadow:0 8px 32px #000a;pointer-events:none;animation:eternaFloating 7s ease-in-out infinite}
+#top.ao-hero .ao-artboard:after{content:"JUNE · MMXXVII";position:absolute;z-index:6;bottom:5%;right:-8%;padding:12px 15px;border:1px solid #ebd3b399;background:#211915dd;backdrop-filter:blur(10px);font:600 10px/1.2 'Manrope',sans-serif;letter-spacing:.2em;color:#f5e3c8;transform:rotate(7deg);pointer-events:none}
+#top.ao-hero .ao-portrait{border-radius:46% 46% 4px 4px!important;outline:1px solid #eadbc688;outline-offset:7px}
+#top.ao-hero .ao-portrait img{filter:saturate(.68) contrast(1.08) sepia(.08)}
+#top.ao-hero .ao-hero-copy{position:relative;z-index:7}
+#top.ao-hero .ao-hero-copy:before{content:"✳";position:absolute;top:-48px;left:50%;transform:translateX(-50%);font:30px Georgia,serif;color:#dbc1a0;animation:eternaStar 19s linear infinite;pointer-events:none}
+#top.ao-hero .ao-hero-copy h1{text-shadow:0 5px 35px #000a;letter-spacing:-.045em}
+#top.ao-hero .ao-overline{letter-spacing:.24em;text-transform:uppercase}
+#top.ao-hero .ao-interact{border:1px solid #ead4b788!important;backdrop-filter:blur(12px);transition:background .35s,transform .35s!important}
+#top.ao-hero .ao-interact:hover{transform:translateY(-3px);background:#f2dfc522!important;color:#fff!important}
+@keyframes eternaWordReveal{from{opacity:0;transform:translate(-50%,24px) scale(.94)}to{opacity:.8;transform:translate(-50%,0) scale(1)}}
+@keyframes eternaStageReveal{from{opacity:0;transform:translateY(45px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes eternaFloating{0%,100%{transform:translateY(0) rotate(-12deg)}50%{transform:translateY(-12px) rotate(-8deg)}}
+@keyframes eternaStar{to{transform:translateX(-50%) rotate(360deg)}}
+@media(max-width:700px){#top.ao-hero:before{top:clamp(90px,13svh,142px);font-size:clamp(105px,32vw,230px);letter-spacing:-.105em;-webkit-text-stroke:1px #e8c7a466}#top.ao-hero:after{top:26%;right:10px;font-size:7px;letter-spacing:.18em;opacity:.7}#top.ao-hero .ao-artboard{width:min(82vw,470px)!important;margin-left:auto!important;margin-right:auto!important}#top.ao-hero .ao-artboard:before{font-size:clamp(61px,20vw,90px);left:-8%;top:-5%}#top.ao-hero .ao-artboard:after{font-size:7px;letter-spacing:.12em;right:-7%;bottom:2%;padding:9px 10px}#top.ao-hero .ao-portrait{outline-offset:4px}#top.ao-hero .ao-hero-copy:before{top:-35px;font-size:23px}#top.ao-hero .ao-hero-copy h1{font-size:clamp(43px,11.5vw,66px)!important}#top.ao-hero .ao-overline{letter-spacing:.12em;font-size:9px}}
+@media(max-width:380px){#top.ao-hero:after{display:none}#top.ao-hero .ao-artboard:after{right:-4%}}
+@media(prefers-reduced-motion:reduce){#top.ao-hero:before,#top.ao-hero .ao-artboard,#top.ao-hero .ao-artboard:before,#top.ao-hero .ao-hero-copy:before{animation:none!important}}
