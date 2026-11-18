@@ -38,7 +38,7 @@ const defaults=JSON.parse(JSON.stringify(window.WEDDING_CONFIG||{}));
 const copy=x=>JSON.parse(JSON.stringify(x));
 const PHOTO_DEFAULT_KEYS=["introCover", "collage1", "collage2", "invitationBg", "invitationLeft", "invitationRight", "memoryBg", "scheduleBg", "venueBg", "dressBg", "dress1", "dress2", "dress3", "dress4", "countdownBg", "rsvpBg", "endingBg"];
 const DRESS_PALETTES_DEFAULT={female:['#e8d9c8','#c6af94','#b2b5a5','#d3b8ac','#73665b'],male:['#272b2e','#51595b','#9b9d95','#d0c7b9','#f1e9de']};
-function normalizeOrder(d){if(!d||typeof d!=='object')d=copy(defaults);d.photos??={};d.photoPosition??={};d.dressPalettes??={};for(const [group,colors] of Object.entries(DRESS_PALETTES_DEFAULT))if(!Array.isArray(d.dressPalettes[group]))d.dressPalettes[group]=[...colors];for(const k of PHOTO_DEFAULT_KEYS){if(!(k in d.photos))d.photos[k]='';if(!(k in d.photoPosition))d.photoPosition[k]='center 50%'}return d;}
+function normalizeOrder(d){if(!d||typeof d!=='object')d=copy(defaults);d.photos??={};d.photoPosition??={};d.dressPalettes??={};d.dressPhotoCounts??={female:2,male:2};for(const gender of ['female','male'])d.dressPhotoCounts[gender]=Math.min(8,Math.max(2,Number(d.dressPhotoCounts[gender])||2));for(const [group,colors] of Object.entries(DRESS_PALETTES_DEFAULT))if(!Array.isArray(d.dressPalettes[group]))d.dressPalettes[group]=[...colors];for(const k of PHOTO_DEFAULT_KEYS){if(!(k in d.photos))d.photos[k]='';if(!(k in d.photoPosition))d.photoPosition[k]='center 50%'}return d;}
 
 function getJSON(key,fallback){try{const v=JSON.parse(localStorage.getItem(key));return v??fallback}catch{return fallback}}
 let orders=getJSON(INDEX_KEY,[]);
@@ -52,8 +52,8 @@ function translit(v){const a={'а':'a','б':'b','в':'v','г':'g','д':'d','е':
 function uniqueId(name){const base=translit(name);let x=base,n=2;while(orders.some(o=>o.id===x))x=base+'-'+n++;return x}
 
 const $=id=>document.getElementById(id);
-const PHOTO_KEYS=['main','secondary1','secondary2','collage1','collage2','invitationBg','invitationLeft','invitationRight','storyMain','storySmall','memoryBg','scheduleBg','venueBg','dressBg','dress1','dress2','dress3','dress4','countdownBg','rsvpBg','endingBg','introCover'];
-const PHOTO_NAMES={main:'Главная фотография',secondary1:'Дополнительная фотография 1',secondary2:'Дополнительная фотография 2',storyMain:'Наша история — главное фото',storySmall:'Наша история — дополнительное фото',introCover:'Обложка книги — фон',collage1:'Первый фотоколлаж — слева',collage2:'Первый фотоколлаж — справа',invitationBg:'Приглашение — большое фоновое фото',invitationLeft:'Приглашение — левый фотокадр',invitationRight:'Приглашение — правый фотокадр',memoryBg:'Атмосферный блок — фоновое фото',scheduleBg:'День свадьбы — фоновое фото',venueBg:'Место встречи — фон зала',dressBg:'Дресс-код — фон',dress1:'Для неё — фото 1',dress2:'Для него — фото 1',dress3:'Для неё — фото 2',dress4:'Для него — фото 2',countdownBg:'Обратный отсчёт — фон',rsvpBg:'Анкета гостей — фон',endingBg:'До встречи — финальное фото'};
+const PHOTO_KEYS=['main','secondary1','secondary2','collage1','collage2','invitationBg','invitationLeft','invitationRight','storyMain','storySmall','memoryBg','scheduleBg','venueBg','dressBg','dress1','dress2','dress3','dress4','dressFemale3','dressFemale4','dressFemale5','dressFemale6','dressFemale7','dressFemale8','dressMale3','dressMale4','dressMale5','dressMale6','dressMale7','dressMale8','countdownBg','rsvpBg','endingBg','introCover'];
+const PHOTO_NAMES={main:'Главная фотография',secondary1:'Дополнительная фотография 1',secondary2:'Дополнительная фотография 2',storyMain:'Наша история — главное фото',storySmall:'Наша история — дополнительное фото',introCover:'Обложка книги — фон',collage1:'Первый фотоколлаж — слева',collage2:'Первый фотоколлаж — справа',invitationBg:'Приглашение — большое фоновое фото',invitationLeft:'Приглашение — левый фотокадр',invitationRight:'Приглашение — правый фотокадр',memoryBg:'Атмосферный блок — фоновое фото',scheduleBg:'День свадьбы — фоновое фото',venueBg:'Место встречи — фон зала',dressBg:'Дресс-код — фон',dress1:'Для неё — фото 1',dress2:'Для него — фото 1',dress3:'Для неё — фото 2',dress4:'Для него — фото 2',countdownBg:'Обратный отсчёт — фон',rsvpBg:'Анкета гостей — фон',endingBg:'До встречи — финальное фото',dressFemale3:'Для неё — фото 3',dressFemale4:'Для неё — фото 4',dressFemale5:'Для неё — фото 5',dressFemale6:'Для неё — фото 6',dressFemale7:'Для неё — фото 7',dressFemale8:'Для неё — фото 8',dressMale3:'Для него — фото 3',dressMale4:'Для него — фото 4',dressMale5:'Для него — фото 5',dressMale6:'Для него — фото 6',dressMale7:'Для него — фото 7',dressMale8:'Для него — фото 8'};
 const LABELS={first:'Имя жениха',second:'Имя невесты',dateLabel:'Дата на сайте',city:'Город',dateTime:'Дата и время для таймера (ISO)',photoStory:'Первый фотоколлаж',invitation:'Приглашение',story:'Наша история',memory:'Атмосферный блок',schedule:'Программа дня',venue:'Место проведения',dress:'Дресс-код',countdown:'Обратный отсчёт',rsvp:'Анкета гостей (RSVP)',ending:'Финальный экран',greeting:'Обращение к гостям',invitation1:'Приглашение — абзац 1',invitation2:'Приглашение — абзац 2',storyIntro:'Вступление к истории',storyNote:'Текст истории',venueName:'Название площадки или город',venueAddress:'Адрес и описание',venueMap:'Ссылка на карту (https://)',rsvpDeadline:'Срок подтверждения'};
 const photoUrls={};
 let db;
@@ -68,62 +68,58 @@ function localPhoto(key){return data.photos?.[key]===photoLink(key)}
 function field(parent,obj,key,label,area=false){const wrap=document.createElement('div'),l=document.createElement('label');l.textContent=label||LABELS[key]||key;const input=document.createElement(area?'textarea':'input');if(!area)input.type='text';input.value=obj[key]??'';input.addEventListener('input',()=>{obj[key]=input.value;changed()});wrap.append(l,input);parent.append(wrap)}
 function cachedUrl(key,blob){if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);photoUrls[key]=URL.createObjectURL(blob)}
 function ensureDressLayout(){
-  const frame=$('siteFrame'),doc=frame.contentDocument;
-  if(!doc||!doc.querySelector('#dress .mood-grid'))return;
-  const mood=doc.querySelector('#dress .mood-grid');
-  if(!mood.querySelector('.et-dress-female')||!mood.querySelector('.et-dress-male')){
-    const oldImages=Array.from(mood.querySelectorAll('img')).map(i=>i.getAttribute('src')||'');
-    const makeGroup=(cls,title,keys,alts)=>{
-      const section=doc.createElement('section');section.className='et-dress-group '+cls;
-      const h=doc.createElement('h3');h.textContent=title;section.append(h);
-      const grid=doc.createElement('div');grid.className='et-dress-pictures';
-      keys.forEach((key,i)=>{
-        const fig=doc.createElement('figure'),img=doc.createElement('img'),cap=doc.createElement('figcaption');
-        img.loading='lazy';img.alt=title+' — образ '+(i+1);img.dataset.etKey=key;
-        img.src=alts[i]||oldImages[0]||'';
-        cap.textContent=title+' · '+String(i+1).padStart(2,'0');
-        fig.append(img,cap);grid.append(fig);
-      });
-      section.append(grid);
-      const pal=doc.createElement('div');pal.className='et-dress-colors';
-      for(let i=0;i<5;i++)pal.append(doc.createElement('span'));
-      section.append(pal);return section;
-    };
-    mood.replaceChildren(
-      makeGroup('et-dress-female','Для неё',['dress1','dress3'],[oldImages[0],oldImages[2]]),
-      makeGroup('et-dress-male','Для него',['dress2','dress4'],[oldImages[1],oldImages[1]])
-    );
-    mood.dataset.etSplit='yes';
+ const frame=$('siteFrame'),doc=frame.contentDocument;
+ if(!doc)return;
+ const mood=doc.querySelector('#dress .mood-grid');if(!mood)return;
+ // Reuse the photos already present in the template as defaults.
+ if(!mood.dataset.etOriginalImages){mood.dataset.etOriginalImages=JSON.stringify(Array.from(mood.querySelectorAll('img')).map(el=>el.src));}
+ const original=JSON.parse(mood.dataset.etOriginalImages||'[]');
+ for(const [gender,cls,title] of [['female','et-dress-female','Для неё'],['male','et-dress-male','Для него']]){
+  let group=mood.querySelector('.'+cls);
+  if(!group){group=doc.createElement('section');group.className='et-dress-group '+cls;
+    const h=doc.createElement('h3');h.textContent=title;group.append(h);
+    const grid=doc.createElement('div');grid.className='et-dress-pictures';group.append(grid);
+    const palette=doc.createElement('div');palette.className='et-dress-colors';palette.setAttribute('aria-label','Палитра '+title.toLowerCase());
+    for(let i=0;i<5;i++)palette.append(doc.createElement('span'));group.append(palette);
   }
-  let style=doc.getElementById('et-dress-editor-direct');
-  if(!style){style=doc.createElement('style');style.id='et-dress-editor-direct';doc.head.append(style)}
-  style.textContent=`
-    #dress .mood-grid{display:grid!important;grid-template-columns:1fr 1fr!important;gap:36px!important;max-width:1120px!important}
-    #dress .et-dress-group{text-align:center;min-width:0}
-    #dress .et-dress-group h3{font:italic 400 clamp(38px,5vw,62px)/1.15 Georgia,serif;color:#453b34;margin:0 0 22px}
-    #dress .et-dress-pictures{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;align-items:start}
-    #dress .et-dress-pictures figure,#dress .et-dress-pictures figure:nth-child(n){margin:0!important;transform:none!important;position:relative!important;grid-column:auto!important;min-width:0!important;width:100%!important;height:clamp(180px,25vw,300px)!important;border:5px solid #faf4ec!important;overflow:hidden!important;box-shadow:0 12px 25px #382d2630!important;background:#c5b7a9}
-    #dress .et-dress-pictures figure:nth-child(2){margin-top:18px!important}
-    #dress .et-dress-pictures figure img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important}
-    #dress .et-dress-pictures figure figcaption{position:absolute!important;bottom:0!important;left:0!important;right:0!important;color:white!important;font-size:9px!important;padding:25px 6px 9px!important;background:linear-gradient(transparent,#241e1c9c)!important}
-    #dress .et-dress-colors{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin:30px 0 0}
-    #dress .et-dress-colors span{aspect-ratio:1/1;display:block;border:2px solid #f8efe6;box-shadow:0 3px 10px #30221922}
-    #dress>.swatches{display:none!important}
-    @media(max-width:700px){#dress .mood-grid{grid-template-columns:1fr!important;gap:40px!important}#dress .et-dress-pictures figure,#dress .et-dress-pictures figure:nth-child(n){height:clamp(200px,62vw,350px)!important}#dress .et-dress-group h3{font-size:48px}}
-  `;
-  const p=data.photos||{},pos=data.photoPosition||{};
-  for(const img of mood.querySelectorAll('[data-et-key]')){
-    const key=img.dataset.etKey;
-    if(!img.dataset.defaultSrc)img.dataset.defaultSrc=img.getAttribute('src')||'';
-    const url=localPhoto(key)?photoUrls[key]:p[key];
-    img.src=(typeof url==='string'&&url.trim())?url:img.dataset.defaultSrc;
-    img.style.objectPosition=pos[key]||'center';
+  const grid=group.querySelector('.et-dress-pictures');
+  const count=data.dressPhotoCounts?.[gender]||2;
+  while(grid.children.length>count)grid.lastElementChild.remove();
+  for(let i=0;i<count;i++){
+    let figure=grid.children[i];
+    if(!figure){figure=doc.createElement('figure');const image=doc.createElement('img');image.loading='lazy';const label=doc.createElement('figcaption');figure.append(image,label);grid.append(figure);}
+    const image=figure.querySelector('img');
+    const key=gender==='female'?(i===0?'dress1':i===1?'dress3':'dressFemale'+(i+1)):(i===0?'dress2':i===1?'dress4':'dressMale'+(i+1));
+    image.dataset.etKey=key;image.alt=title+' — образ '+(i+1);
+    const fallback=i<2?(gender==='female'?(i===0?original[0]:original[2]||original[0]):original[1]):'';
+    const value=localPhoto(key)?photoUrls[key]:data.photos?.[key];
+    if(value){if(image.getAttribute('src')!==value)image.src=value;figure.style.display='';}
+    else if(fallback){if(image.getAttribute('src')!==fallback)image.src=fallback;figure.style.display='';}
+    else {image.removeAttribute('src');figure.style.display='none';}
+    image.style.objectPosition=data.photoPosition?.[key]||'center';
+    figure.querySelector('figcaption').textContent=title+' · '+String(i+1).padStart(2,'0');
   }
-  const defaultsPal={female:['#e8d9c8','#c6af94','#b2b5a5','#d3b8ac','#73665b'],male:['#272b2e','#51595b','#9b9d95','#d0c7b9','#f1e9de']};
-  for(const type of ['female','male']){
-    const pal=Array.isArray(data.dressPalettes?.[type])?data.dressPalettes[type]:defaultsPal[type];
-    mood.querySelectorAll('.et-dress-'+type+' .et-dress-colors span').forEach((el,i)=>{const c=pal[i];el.style.backgroundColor=/^#[0-9a-f]{6}$/i.test(c||'')?c:defaultsPal[type][i]});
-  }
+  mood.append(group);
+  const defaultsPal=DRESS_PALETTES_DEFAULT[gender],colors=data.dressPalettes?.[gender]||defaultsPal;
+  group.querySelectorAll('.et-dress-colors span').forEach((el,i)=>{const color=colors[i];el.style.backgroundColor=/^#[0-9a-f]{6}$/i.test(color||'')?color:defaultsPal[i]});
+ }
+ mood.dataset.etSplit='yes';
+ let style=doc.getElementById('et-dress-editor-direct');
+ if(!style){style=doc.createElement('style');style.id='et-dress-editor-direct';doc.head.append(style);}
+ style.textContent=`
+ #dress .mood-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:36px!important;max-width:1120px!important;align-items:start!important}
+ #dress .et-dress-group{min-width:0;text-align:center}
+ #dress .et-dress-group h3{font:italic 400 clamp(38px,5vw,62px)/1.15 Georgia,serif;color:#453b34;margin:0 0 22px}
+ #dress .et-dress-pictures{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important;align-items:start}
+ #dress .et-dress-pictures figure,#dress .et-dress-pictures figure:nth-child(n){margin:0!important;transform:none!important;position:relative!important;grid-column:auto!important;min-width:0!important;width:100%!important;height:clamp(180px,25vw,300px)!important;border:5px solid #faf4ec!important;overflow:hidden!important;box-shadow:0 12px 25px #382d2630!important;background:#c5b7a9}
+ #dress .et-dress-pictures figure:nth-child(even){margin-top:18px!important}
+ #dress .et-dress-pictures figure img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important}
+ #dress .et-dress-pictures figure figcaption{position:absolute!important;bottom:0!important;left:0!important;right:0!important;color:white!important;font-size:9px!important;padding:25px 6px 9px!important;background:linear-gradient(transparent,#241e1c9c)!important}
+ #dress .et-dress-colors{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin:30px 0 0}
+ #dress .et-dress-colors span{aspect-ratio:1/1;display:block;border:2px solid #f8efe6;box-shadow:0 3px 10px #30221922}
+ #dress>.swatches{display:none!important}
+ @media(max-width:700px){#dress .mood-grid{grid-template-columns:1fr!important;gap:40px!important}#dress .et-dress-pictures figure,#dress .et-dress-pictures figure:nth-child(n){height:clamp(200px,62vw,350px)!important}#dress .et-dress-group h3{font-size:48px}}
+ `;
 }
 function updatePreview(){const cfg=structuredClone(data);for(const key of PHOTO_KEYS)if(localPhoto(key)&&photoUrls[key])cfg.photos[key]=photoUrls[key];try{$('siteFrame').contentWindow.postMessage({type:'eterna-preview',config:cfg},location.origin);ensureDressLayout()}catch{}}
 function changed(note='Черновик сохранён в этом браузере.'){try{localStorage.setItem(draftKey(),JSON.stringify(data))}catch{};updatePreview();setStatus(note)}
@@ -151,10 +147,21 @@ const PHOTO_GROUPS=[
   ['История',['storyMain','storySmall','memoryBg']],
   ['Программа и место',['scheduleBg','venueBg']],
   ['Дресс-код — фон',['dressBg']],
-  ['Дресс-код — для неё (2 фото)',['dress1','dress3']],
-  ['Дресс-код — для него (2 фото)',['dress2','dress4']],
   ['Таймер, RSVP и финал',['countdownBg','rsvpBg','endingBg']]
 ];
+for(const [gender,title,baseKeys,prefix] of [['female','Для неё',['dress1','dress3'],'dressFemale'],['male','Для него',['dress2','dress4'],'dressMale']]){
+ const count=data.dressPhotoCounts[gender];
+ const details=document.createElement('details');details.className='photo-group';
+ const summary=document.createElement('summary');summary.textContent='Дресс-код — '+title+' · '+count+' фото';details.append(summary);
+ const keys=[...baseKeys,...Array.from({length:count-2},(_,i)=>prefix+(i+3))];
+ for(const key of keys)details.append(createPhotoInput(key));
+ const controls=document.createElement('div');controls.className='actions';controls.style.padding='12px 0 20px';
+ const add=document.createElement('button');add.type='button';add.textContent='+ Добавить фотографию';add.disabled=count>=8;
+ add.onclick=()=>{data.dressPhotoCounts[gender]=Math.min(8,count+1);changed('Добавлено место для фото №'+(count+1)+'.');draw();const groups=Array.from(document.querySelectorAll('#photos .photo-group'));const found=groups.find(g=>g.querySelector('summary')?.textContent?.includes('Дресс-код — '+title));if(found)found.open=true};
+ const remove=document.createElement('button');remove.type='button';remove.className='secondary';remove.textContent='− Убрать последнюю';remove.disabled=count<=2;
+ remove.onclick=async()=>{const key=prefix+count;if(count<=2)return;try{await deletePhoto(key)}catch{}if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key];delete data.photos[key];data.dressPhotoCounts[gender]=count-1;changed('Последняя фотография удалена из подборки.');draw();const groups=Array.from(document.querySelectorAll('#photos .photo-group'));const found=groups.find(g=>g.querySelector('summary')?.textContent?.includes('Дресс-код — '+title));if(found)found.open=true};
+ controls.append(add,remove);details.append(controls);$('photos').append(details);
+}
 for(const [group,keys] of PHOTO_GROUPS){
  const details=document.createElement('details');details.className='photo-group';details.open=group==='Первый экран';
  const summary=document.createElement('summary');summary.textContent=group+' · '+keys.length+' фото';details.append(summary);
@@ -221,7 +228,7 @@ $('downloadBtn').addEventListener('click',exportPackage);$('downloadBtnBottom').
 $('previewBtn').addEventListener('click',()=>{refreshDressPreview();updatePreview();setStatus('Предпросмотр обновляется…')});
 // Force-load the deployed customizer with a unique URL inside the preview iframe.
 // Safari can otherwise reuse the old cached JS even when editor.html itself is fresh.
-const DRESS_PREVIEW_BUILD='20261118-dress-fix-5';
+const DRESS_PREVIEW_BUILD='20261118-dynamic-dress-8';
 let previewLoading=false;
 function refreshDressPreview(){
  const frame=$('siteFrame'),doc=frame.contentDocument;
