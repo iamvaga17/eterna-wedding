@@ -165,6 +165,39 @@ try {
           await preview.locator('.moodboard .looks').nth(index).locator('img[src^="blob:"]').waitFor({state: 'attached'});
         }
       }
+      if (name === 'iphone-se') {
+        const music = page.getByLabel('Загрузить или заменить трек');
+        const preview = page.frameLocator('#siteFrame');
+        await page.getByText('Фоновая музыка', {exact: true}).click();
+        const tone = Buffer.from('SUQzBAAAAAAAIlRTU0UAAAAOAAADTGF2ZjYxLjcuMTAzAAAAAAAAAAAAAAD/+0DAAAAAAAAAAAAAAAAAAAAAAABJbmZvAAAADwAAAAsAAAUzADc3Nzc3Nzc3N0tLS0tLS0tLS19fX19fX19fX3Nzc3Nzc3Nzc4eHh4eHh4eHh5ubm5ubm5ubm6+vr6+vr6+vr8PDw8PDw8PDw9fX19fX19fX1+vr6+vr6+vr6////////////wAAAABMYXZjNjEuMTkAAAAAAAAAAAAAAAAkBC8AAAAAAAAFMwdtESkAAAAAAP/7EMQAAASQHUVU8YAolAZoQzYgAAAAHUwAAADVkvYhuBHAcgSAcCER83fxw8e6AAOdmHv/4Aj/8PMLKDwWkgPzVXQmAA31AAG6SQ/iwh7vP9//4UB8BBrhUFfER761MD0JIwsxIDJZ//sSxASDxbQbFB3gAACaA2KBn2gIQCNMP2I9lCqTKaHVBwrhgHgKGBqCQYFAC6arCFYuz/9TtX//QGQgPMwnAUDMZbsP1QKww7wHzpBjRgTFAC6imb6V//v9XV9X//2WqjUHznqDAugH//sQxAQDxOgbEg1/QECkA2JBr+gIcw4khZNFoA1zBEQCYBwStOEEEbFG3iq//36vd6/+mk1jM4NwwJIENMLNRkzN1gd8wNMByOInMqEUi3JdrXpb/93q63f/+m37KjQNzQ8jAQAVcwX/+xLEBQPFDBsSDX8gQLkDYcG/6AhNZFMa6CZTAWQJozvRCsgjV+q1oUh7f+7VXX//0f2mJIJJMGAZg45gvjpaY9eGVmA1AaRobpkFhjSoGFiwRUcI7P77tVdb/X/yHbZbbRUSZqAYNof/+xDEA4PEiBsUDXsgQKCDYkGv6AhJkrf4nduNeYVwMx90mwgZI5ctMBx5Z//6vf6v+kSVHCHGBZgPJhvxLCaJ6B5mCHAGR4SJqgxkQ5Z9Lxw6T/7r9XV//00KNigO4pMDbAbjEFh74//7EsQGg8VkHRANf0BAp4NiQa/oCFBMDEMFAAIQfmGsgGRlz1UG6zX6f6fkeQt7v/7tVRrWBxK5gTYH8YXchWGc8g4hgbwDWclEZYCnk3VdzXZd/992p/d6v+jo7DLUIy6HMBdBhDByGP/7EMQGA8WIHRAN/0BApINiQa/oCPoyPEK0MB+AsTPyAQbGACzE4l+yL9X9FHI8lZ2//fd6zGrBTiYAcCuGBtrWBiUATgYBqBPmKhGDOmAEF2Eg2gSft//U/X//000VJCDP5MFQNQx7//sSxASDxDAbFgz7IECUA2KBn2gIelDm2GIMI0F07IjRNMQJBxXb8W//v+/W8mVPVEwlgejMBlsPtwPQw5wMzoEDRhTFAi4CgbsU///39////tU1iz1KMIoC0ywT5T2qBXMNEAAfGjTM//sQxAsDxHQbFgz7QEB9A2MBn2QIICJyM/j13/7vv1fV/0Gouc9xgxBMmQPU2dFAi5hKgcHUWGJKefB2Y1Z//+/UMgdMnCMDINcxKehzX4GHMEsFo2fC4mjve3sDTv/3/f3cMAcA8wH/+xLEEwNEDBsYDXsAQPmOJQa8MAKwQTCLC1BCkZgJAFA4EkwJQGwEAWrWYAIAoKADUvmn8hyx+gMW5wIACKACCrmhUAAE3dzjuc9zgd4Aaj0ej0fDgUAAAAAABW17df/nNZGlXP7V/zH/+xDEDYAICGVfuakAEAAANIOAAAQpzLFL2X+CigMkk+FlIN9DvK+HJkDFUN+uvxQQxo+CUIn8EQqJKkxBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqg==', 'base64');
+        await music.setInputFiles({name: 'Тест.mp3', mimeType: 'audio/mpeg', buffer: tone});
+        await page.locator('#musicStatus').filter({hasText: 'Тест.mp3'}).waitFor();
+        const audio = preview.locator('audio');
+        const toggle = preview.getByRole('button', {name: 'Музыка'});
+        await toggle.waitFor();
+        assert.equal(await audio.evaluate(element => element.paused), true);
+        await toggle.tap();
+        await preview.getByRole('button', {name: 'Музыка', pressed: true}).waitFor();
+        await toggle.tap();
+        await preview.getByRole('button', {name: 'Музыка', pressed: false}).waitFor();
+        const previous = await audio.getAttribute('src');
+        await music.setInputFiles({name: 'Новый трек.mp3', mimeType: 'audio/mpeg', buffer: tone});
+        await page.locator('#musicStatus').filter({hasText: 'Новый трек.mp3'}).waitFor();
+        await page.waitForFunction(oldSource => {
+          const current = document.getElementById('siteFrame').contentDocument.querySelector('audio').getAttribute('src');
+          return current?.startsWith('blob:') && current !== oldSource;
+        }, previous);
+        await page.reload();
+        await page.locator('#musicStatus').filter({hasText: 'Новый трек.mp3'}).waitFor({state: 'attached'});
+        const downloaded = page.waitForEvent('download');
+        await page.locator('#downloadBtn').click();
+        const zip = await readFile(await (await downloaded).path());
+        assert.ok(zip.includes(Buffer.from('orders/demo/wedding-music.mp3')));
+        assert.ok(zip.includes(tone));
+        await page.getByText('Фоновая музыка', {exact: true}).click();
+        await page.getByRole('button', {name: 'Убрать музыку'}).click();
+        await toggle.waitFor({state: 'hidden'});
+      }
       assert.deepEqual(faults, []);
       console.log(`Passed ${name}`);
     } catch (error) {

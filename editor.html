@@ -26,6 +26,12 @@
 </section><p class="note">Загружай фото из галереи iPhone — они сразу появятся в предпросмотре. Фото сохраняются локально в этом браузере; для публикации нажми «Скачать комплект ZIP», распакуй и загрузи файлы на GitHub. Данные никому не отправляются. Анкету для 12.0 можно настроить в этом заказе.</p>
 <h2>Данные пары</h2><fieldset id="couple"></fieldset>
 <h2>Фотографии</h2><fieldset id="photos"></fieldset>
+<details><summary>Фоновая музыка</summary>
+<label for="musicFile">Загрузить или заменить трек</label>
+<input id="musicFile" type="file" accept=".mp3,.m4a,audio/mpeg,audio/mp4">
+<p class="muted">MP3 или M4A до 25 МБ. Музыка включается гостем вручную. Файл сохраняется в заказе и попадёт в ZIP для 12.0.</p>
+<div class="actions"><button id="removeMusic" type="button" class="secondary" disabled>Убрать музыку</button></div>
+<p id="musicStatus" class="status" role="status"></p></details>
 <h2>Разделы сайта</h2><fieldset id="sections"></fieldset>
 <h2>Тексты и программа</h2><fieldset id="texts"></fieldset>
 <details><summary>Настройки RSVP для 12.0</summary>
@@ -56,7 +62,7 @@ let orderId=orders[0].id;
 let data=normalizeOrder(getJSON('eterna-order:'+orderId+':config',copy(defaults)));
 function storeOrder(){localStorage.setItem(INDEX_KEY,JSON.stringify(orders))}
 function draftKey(){return 'eterna-order:'+orderId+':config'}
-function photoKey(key){return 'order:'+orderId+':'+key}
+function mediaKey(key,id=orderId){return 'order:'+id+':'+key}
 function translit(v){const a={'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'e','ж':'zh','з':'z','и':'i','й':'i','к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f','х':'h','ц':'ts','ч':'ch','ш':'sh','щ':'sch','ы':'y','э':'e','ю':'yu','я':'ya','ь':'','ъ':''};return [...v.toLowerCase()].map(c=>a[c]??c).join('').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,46)||'svadba'}
 function uniqueId(name){const base=translit(name);let x=base,n=2;while(orders.some(o=>o.id===x))x=base+'-'+n++;return x}
 
@@ -70,31 +76,41 @@ const photoUrls={};
 let db;
 function setStatus(message){$('status').textContent=message}
 function openDB(){return new Promise((resolve,reject)=>{if(!window.indexedDB)return reject(Error('Хранилище недоступно'));const req=indexedDB.open('eterna-photo-editor',1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('photos'))req.result.createObjectStore('photos')};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
-async function storePhoto(key,blob){
- const storageKey=photoKey(key);
+async function storeMedia(key,blob,id=orderId){
+ const storageKey=mediaKey(key,id);
  const bytes=await blob.arrayBuffer();
  db??=await openDB();
  return new Promise((resolve,reject)=>{
   const tx=db.transaction('photos','readwrite');
   const request=tx.objectStore('photos').put(bytes,storageKey);
-  request.onerror=()=>reject(request.error||Error('Не удалось сохранить фотографию'));
-  tx.onabort=()=>reject(tx.error||Error('Сохранение фотографии прервано'));
+  request.onerror=()=>reject(request.error||Error('Не удалось сохранить файл'));
+  tx.onabort=()=>reject(tx.error||Error('Сохранение файла прервано'));
   tx.oncomplete=resolve;
  });
 }
-async function readPhoto(key){
- const storageKey=photoKey(key);
+async function readMedia(key,type='image/jpeg',id=orderId){
+ const storageKey=mediaKey(key,id);
  db??=await openDB();
  return new Promise((resolve,reject)=>{
   const request=db.transaction('photos','readonly').objectStore('photos').get(storageKey);
   request.onsuccess=()=>{
    const saved=request.result;
-   resolve(saved instanceof ArrayBuffer ? new Blob([saved],{type:'image/jpeg'}) : saved);
+   resolve(saved instanceof ArrayBuffer ? new Blob([saved],{type}) : saved);
   };
-  request.onerror=()=>reject(request.error||Error('Не удалось прочитать фотографию'));
+  request.onerror=()=>reject(request.error||Error('Не удалось прочитать файл'));
  });
 }
-async function deletePhoto(key){db??=await openDB();return new Promise((resolve,reject)=>{const tx=db.transaction('photos','readwrite');tx.objectStore('photos').delete(photoKey(key));tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)})}
+async function deleteMedia(key,id=orderId){
+ const storageKey=mediaKey(key,id);
+ db??=await openDB();
+ return new Promise((resolve,reject)=>{
+  const tx=db.transaction('photos','readwrite');
+  const request=tx.objectStore('photos').delete(storageKey);
+  request.onerror=()=>reject(request.error||Error('Не удалось удалить файл'));
+  tx.onabort=()=>reject(tx.error||Error('Удаление файла прервано'));
+  tx.oncomplete=resolve;
+ });
+}
 function photoFileName(key){return 'wedding-photo-'+key+'.jpg'}
 function photoLink(key){return photoFileName(key)}
 function localPhoto(key){return data.photos?.[key]===photoLink(key)}
@@ -162,7 +178,82 @@ function ensureDressLayout(){
  @media(max-width:700px){#dress .mood-grid{grid-template-columns:1fr!important;gap:40px!important}#dress .et-dress-pictures figure,#dress .et-dress-pictures figure:nth-child(n){height:clamp(200px,62vw,350px)!important}#dress .et-dress-group h3{font-size:48px}}
  `;
 }
-function updatePreview(){const cfg=structuredClone(data);for(const key of PHOTO_KEYS)if(localPhoto(key)&&photoUrls[key])cfg.photos[key]=photoUrls[key];try{$('siteFrame').contentWindow.postMessage({type:'eterna-preview',config:cfg},location.origin);ensureDressLayout()}catch{}}
+function updatePreview(){const cfg=structuredClone(data);if(cfg.music){if(photoUrls.music)cfg.music.source=photoUrls.music;else delete cfg.music;}for(const key of PHOTO_KEYS)if(localPhoto(key)&&photoUrls[key])cfg.photos[key]=photoUrls[key];try{$('siteFrame').contentWindow.postMessage({type:'eterna-preview',config:cfg},location.origin);ensureDressLayout()}catch{}}
+const musicTypes={mp3:'audio/mpeg',m4a:'audio/mp4'};
+let musicBusy=false;
+function setMusicBusy(busy){
+ musicBusy=busy;
+ for(const id of ['musicFile','orderSelect','newOrderBtn','duplicateOrderBtn','deleteOrderBtn','resetBtn']){
+   $(id).disabled=busy;
+ }
+ $('removeMusic').disabled=busy||!data.music;
+}
+function musicType(music){
+ const ext=music?.source?.match(/^wedding-music\.(mp3|m4a)$/)?.[1];
+ return musicTypes[ext];
+}
+function renderMusic(){
+ $('removeMusic').disabled=musicBusy||!data.music;
+ $('musicStatus').textContent=data.music
+   ? (photoUrls.music?data.music.name:'Трек не найден. Загрузите его заново.')
+   : 'Музыка не выбрана.';
+}
+$('musicFile').addEventListener('change',async event=>{
+ const input=event.currentTarget;
+ const file=input.files?.[0];
+ if(!file)return;
+ if($('downloadBtn').disabled){input.value='';return;}
+ const id=orderId;
+ const ext=file.name.toLowerCase().split('.').pop();
+ if(!Object.hasOwn(musicTypes,ext)||file.size===0||file.size>25*1024*1024){
+   $('musicStatus').textContent='Выберите непустой файл MP3 или M4A до 25 МБ.';
+   input.value='';
+   return;
+ }
+ setMusicBusy(true);
+ $('musicStatus').textContent='Сохраняю трек…';
+ try{
+   await storeMedia('music',file,id);
+   data.music={name:file.name,source:'wedding-music.'+ext};
+   cachedUrl('music',new Blob([file],{type:musicTypes[ext]}));
+   changed('Трек сохранён в заказе.');
+   renderMusic();
+ }catch(error){
+   $('musicStatus').textContent=error?.message||'Не удалось сохранить трек.'
+ }finally{
+   setMusicBusy(false);
+   input.value='';
+ }
+});
+$('removeMusic').addEventListener('click',async()=>{
+ if($('downloadBtn').disabled)return;
+ setMusicBusy(true);
+ try{
+   await deleteMedia('music');
+   delete data.music;
+   if(photoUrls.music)URL.revokeObjectURL(photoUrls.music);
+   delete photoUrls.music;
+   changed('Музыка убрана.');
+   renderMusic();
+ }catch(error){
+   $('musicStatus').textContent=error?.message||'Не удалось убрать трек.';
+ }finally{
+   setMusicBusy(false);
+ }
+});
+async function loadMusic(){
+ const id=orderId;
+ if(photoUrls.music)URL.revokeObjectURL(photoUrls.music);
+ delete photoUrls.music;
+ const type=musicType(data.music);
+ if(!type)return;
+ try{
+   const blob=await readMedia('music',type,id);
+   if(blob&&orderId===id)cachedUrl('music',blob);
+ }catch(error){
+   if(orderId===id)setStatus('Не удалось восстановить музыку.');
+ }
+}
 function changed(note='Черновик сохранён в этом браузере.'){try{localStorage.setItem(draftKey(),JSON.stringify(data))}catch{};updatePreview();setStatus(note)}
 async function compressPhoto(file){return new Promise((resolve,reject)=>{const img=new Image(),url=URL.createObjectURL(file);img.onload=()=>{try{const max=1800,f=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight)),canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(img.naturalWidth*f));canvas.height=Math.max(1,Math.round(img.naturalHeight*f));const context=canvas.getContext('2d');if(!context)throw Error('Нет поддержки обработки фото');context.fillStyle='#fff';context.fillRect(0,0,canvas.width,canvas.height);context.drawImage(img,0,0,canvas.width,canvas.height);canvas.toBlob(blob=>{URL.revokeObjectURL(url);if(blob)resolve(blob);else reject(Error('Не удалось обработать изображение'))},'image/jpeg',.85)}catch(e){URL.revokeObjectURL(url);reject(e)}};img.onerror=()=>{URL.revokeObjectURL(url);reject(Error('Не удалось прочитать фото. Попробуй сохранить его в JPEG.'))};img.src=url})}
 function createPhotoInput(key){const card=document.createElement('div');card.className='photo-card';const title=document.createElement('strong');title.textContent=PHOTO_NAMES[key];card.append(title);
@@ -174,8 +265,8 @@ const manual=document.createElement('details'),sum=document.createElement('summa
 const label=document.createElement('label');label.textContent='Кадрирование по вертикали';card.append(label);
 const range=document.createElement('input');range.type='range';range.min='0';range.max='100';range.step='5';const p=data.photoPosition||{};range.value=Number.parseInt((p[key]||'center 50%').match(/(\d+)%/)?.[1]||50);const rangeText=document.createElement('div');rangeText.className='pos-label';rangeText.textContent=range.value+'%';range.addEventListener('input',()=>{data.photoPosition[key]='center '+range.value+'%';rangeText.textContent=range.value+'%';changed();shot.style.objectPosition=data.photoPosition[key]});card.append(range,rangeText);
 function show(){const src=localPhoto(key)?photoUrls[key]:data.photos?.[key];if(src){shot.src=src;shot.style.display='block';shot.style.objectPosition=data.photoPosition?.[key]||'center';path.textContent=localPhoto(key)?'Фотография загружена из галереи':String(data.photos?.[key]||'')}else{shot.removeAttribute('src');shot.style.display='none';path.textContent='Используется фотография из шаблона (можно заменить)'}}
-input.addEventListener('change',async()=>{const file=input.files?.[0];if(!file)return;input.disabled=true;setStatus('Обрабатываю фотографию…');try{const blob=await compressPhoto(file);await storePhoto(key,blob);cachedUrl(key,blob);data.photos[key]=photoLink(key);changed('Фото добавлено. Оно сохранено в браузере и войдёт в ZIP.');show()}catch(e){setStatus('Ошибка: '+e.message)}finally{input.disabled=false;input.value=''}});
-remove.addEventListener('click',async()=>{try{await deletePhoto(key)}catch{}if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key];data.photos[key]='';changed('Фото убрано.');show()});
+input.addEventListener('change',async()=>{const file=input.files?.[0];if(!file)return;input.disabled=true;setStatus('Обрабатываю фотографию…');try{const blob=await compressPhoto(file);await storeMedia(key,blob);cachedUrl(key,blob);data.photos[key]=photoLink(key);changed('Фото добавлено. Оно сохранено в браузере и войдёт в ZIP.');show()}catch(e){setStatus('Ошибка: '+e.message)}finally{input.disabled=false;input.value=''}});
+remove.addEventListener('click',async()=>{try{await deleteMedia(key)}catch{}if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key];data.photos[key]='';changed('Фото убрано.');show()});
 manual.addEventListener('input',()=>{if(!localPhoto(key)&&photoUrls[key]){URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key]}show()});show();return card}
 function showRsvp(){
  const {endpoint='',...questions}=data.rsvp||window.WEDDING_RSVP_CONFIG;
@@ -215,7 +306,7 @@ $('saveRsvp').onclick=()=>{
  }catch(error){$('rsvpStatus').textContent=error.message}
 };
 $('resetRsvp').onclick=()=>{delete data.rsvp;changed();showRsvp()};
-function draw(){showRsvp();for(const id of ['couple','photos','sections','texts'])$(id).replaceChildren();
+function draw(){showRsvp();renderMusic();for(const id of ['couple','photos','sections','texts'])$(id).replaceChildren();
 for(const key of ['first','second','dateLabel','city','dateTime'])field($('couple'),data.couple,key);
 const help=document.createElement('p');help.className='upload-help';help.textContent='Теперь редактируются все фотографии сайта, включая фон зала, финал и дресс-код. Открой нужную группу, выбери фото из галереи iPhone и проверь результат. Если фото не выбрано, останется изображение из шаблона.';$('photos').append(help);
 const PHOTO_GROUPS=[
@@ -238,7 +329,7 @@ for(const [gender,title,baseKeys,prefix] of [['female','Для неё',['dress1'
  const add=document.createElement('button');add.type='button';add.textContent='+ Добавить фотографию';add.disabled=count>=8;
  add.onclick=()=>{data.dressPhotoCounts[gender]=Math.min(8,count+1);changed('Добавлено место для фото №'+(count+1)+'.');draw();const groups=Array.from(document.querySelectorAll('#photos .photo-group'));const found=groups.find(g=>g.querySelector('summary')?.textContent?.includes('Дресс-код — '+title));if(found)found.open=true};
  const remove=document.createElement('button');remove.type='button';remove.className='secondary';remove.textContent='− Убрать последнюю';remove.disabled=count<=2;
- remove.onclick=async()=>{const key=prefix+count;if(count<=2)return;try{await deletePhoto(key)}catch{}if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key];delete data.photos[key];data.dressPhotoCounts[gender]=count-1;changed('Последняя фотография удалена из подборки.');draw();const groups=Array.from(document.querySelectorAll('#photos .photo-group'));const found=groups.find(g=>g.querySelector('summary')?.textContent?.includes('Дресс-код — '+title));if(found)found.open=true};
+ remove.onclick=async()=>{const key=prefix+count;if(count<=2)return;try{await deleteMedia(key)}catch{}if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key];delete data.photos[key];data.dressPhotoCounts[gender]=count-1;changed('Последняя фотография удалена из подборки.');draw();const groups=Array.from(document.querySelectorAll('#photos .photo-group'));const found=groups.find(g=>g.querySelector('summary')?.textContent?.includes('Дресс-код — '+title));if(found)found.open=true};
  controls.append(add,remove);details.append(controls);$('photos').append(details);
 }
 for(const [group,keys] of PHOTO_GROUPS){
@@ -291,6 +382,7 @@ async function exportV12(folder, files, config){
  files.push({name:folder+'настройки.json',bytes:enc.encode(JSON.stringify(config,null,2))});
 }
 async function exportPackage(){
+ if(musicBusy){setStatus('Дождитесь сохранения музыки и повторите экспорт.');return;}
  const buttons=[$('downloadBtn'),$('downloadBtnBottom')];buttons.forEach(b=>b.disabled=true);
  setStatus('Собираю отдельную свадебную страницу и фотографии…');
  try{
@@ -300,12 +392,18 @@ async function exportPackage(){
    const folder='orders/'+id+'/';
    const files=[];
    const uploaded=PHOTO_KEYS.filter(localPhoto);
-   const blobs=await Promise.all(uploaded.map(readPhoto));
+   const blobs=await Promise.all(uploaded.map(key=>readMedia(key)));
    for(const [index,key] of uploaded.entries()){const blob=blobs[index];
      if(!blob)throw Error('Не найдено фото «'+PHOTO_NAMES[key]+'». Выбери его заново.');
      files.push({name:folder+photoFileName(key),bytes:new Uint8Array(await blob.arrayBuffer())});
    }
    if(!legacy){
+     const type=musicType(config.music);
+     if(type){
+       const audio=await readMedia('music',type,id);
+       if(!audio)throw Error('Трек не найден. Загрузите его заново.');
+       files.push({name:folder+config.music.source,bytes:new Uint8Array(await audio.arrayBuffer())});
+     }
      await exportV12(folder,files,config);
      const readme='ÉTERNA 12.0 · заказ '+id+'\n\nОпубликуйте папку '+folder+' целиком, сохранив её структуру. Входная страница — index.html.\n'+(config.rsvp?.endpoint?'RSVP отправляет ответы на указанный в настройках адрес.':'RSVP демонстрационный. Ответы не отправляются.')+'\n';
      files.push({name:'ИНСТРУКЦИЯ.txt',bytes:enc.encode(readme)});
@@ -369,17 +467,38 @@ $('siteFrame').addEventListener('load',()=>{
  updatePreview();
  if(isLegacy()){refreshDressPreview();setTimeout(updatePreview,400)}
 });
-$('resetBtn').addEventListener('click',async()=>{if(!confirm('Сбросить все изменения, включая загруженные фотографии?'))return;for(const key of PHOTO_KEYS){try{await deletePhoto(key)}catch{}if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key]}data=normalizeOrder(structuredClone(defaults));localStorage.removeItem(draftKey());draw();updatePreview();setStatus('Черновик сброшен.')});
+$('resetBtn').addEventListener('click',async()=>{if(!confirm('Сбросить все изменения, включая фотографии и музыку?'))return;for(const key of [...PHOTO_KEYS,'music']){try{await deleteMedia(key)}catch{}if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key]}data=normalizeOrder(structuredClone(defaults));localStorage.removeItem(draftKey());draw();updatePreview();setStatus('Черновик сброшен.')});
 async function loadPhotos(){for(const k of PHOTO_KEYS){if(photoUrls[k])URL.revokeObjectURL(photoUrls[k]);delete photoUrls[k]}
- for(const key of PHOTO_KEYS){if(!localPhoto(key))continue;try{let blob=await readPhoto(key);if(!blob&&orderId==='demo'){db??=await openDB();blob=await new Promise(resolve=>{let q=db.transaction('photos','readonly').objectStore('photos').get(key);q.onsuccess=()=>resolve(q.result);q.onerror=()=>resolve(null)});if(blob)await storePhoto(key,blob)}if(blob)cachedUrl(key,blob)}catch(e){setStatus('Не удалось восстановить фотографии — проверь хранилище Safari.')}}}
+ for(const key of PHOTO_KEYS){if(!localPhoto(key))continue;try{let blob=await readMedia(key);if(!blob&&orderId==='demo'){db??=await openDB();blob=await new Promise(resolve=>{let q=db.transaction('photos','readonly').objectStore('photos').get(key);q.onsuccess=()=>resolve(q.result);q.onerror=()=>resolve(null)});if(blob)await storeMedia(key,blob)}if(blob)cachedUrl(key,blob)}catch(e){setStatus('Не удалось восстановить фотографии — проверь хранилище Safari.')}}}
 function showOrder(){const select=$('orderSelect');select.replaceChildren();orders.forEach(o=>{const opt=document.createElement('option');opt.value=o.id;opt.textContent=o.label+' ('+o.id+')';select.append(opt)});select.value=orderId;$('orderUrlLabel').textContent='Адрес после публикации: /orders/'+orderId+'/';}
-async function openOrder(id){if(!orders.some(o=>o.id===id))return;orderId=id;data=normalizeOrder(getJSON(draftKey(),copy(defaults)));await loadPhotos();draw();showOrder();updatePreview();setStatus('Открыт заказ: '+orders.find(o=>o.id===id).label)}
+async function openOrder(id){if(!orders.some(o=>o.id===id))return;orderId=id;data=normalizeOrder(getJSON(draftKey(),copy(defaults)));await Promise.all([loadPhotos(),loadMusic()]);draw();showOrder();updatePreview();setStatus('Открыт заказ: '+orders.find(o=>o.id===id).label)}
 function orderName(){return [data.couple?.first,data.couple?.second].filter(Boolean).join(' и ')||'Новая свадьба'}
 $('orderSelect').addEventListener('change',e=>openOrder(e.target.value));
 $('newOrderBtn').addEventListener('click',async()=>{const name=prompt('Имя заказа (например: Анна и Максим):');if(!name?.trim())return;const id=uniqueId(name.trim());orders.push({id,label:name.trim()});storeOrder();localStorage.setItem('eterna-order:'+id+':config',JSON.stringify(copy(defaults)));await openOrder(id)});
-$('duplicateOrderBtn').addEventListener('click',async()=>{const name=prompt('Название копии:',orderName()+' — копия');if(!name?.trim())return;const old=orderId;const id=uniqueId(name);const snapshot=copy(data);orders.push({id,label:name.trim()});storeOrder();localStorage.setItem('eterna-order:'+id+':config',JSON.stringify(snapshot));for(const key of PHOTO_KEYS){if(!localPhoto(key))continue;const blob=await readPhoto(key);if(blob){await openOrder(id);await storePhoto(key,blob);await openOrder(old)}}await openOrder(id)});
-$('deleteOrderBtn').addEventListener('click',async()=>{if(orders.length===1){setStatus('Нельзя удалить единственный заказ.');return}if(!confirm('Удалить этот заказ и его фотографии из браузера?'))return;const old=orderId;for(const key of PHOTO_KEYS){try{await deletePhoto(key)}catch{}}localStorage.removeItem(draftKey());orders=orders.filter(o=>o.id!==old);storeOrder();await openOrder(orders[0].id)});
-async function start(){await loadPhotos();showOrder();draw();updatePreview()}
+$('duplicateOrderBtn').addEventListener('click',async()=>{
+ const name=prompt('Название копии:',orderName()+' — копия');
+ if(!name?.trim())return;
+ const from=orderId;
+ const id=uniqueId(name.trim());
+ const snapshot=copy(data);
+ const keys=PHOTO_KEYS.filter(localPhoto);
+ const type=musicType(snapshot.music);
+ try{
+   for(const key of [...keys,...(type?['music']:[])]){
+     const blob=await readMedia(key,key==='music'?type:'image/jpeg',from);
+     if(!blob)throw Error('Не найден файл в исходном заказе.');
+     await storeMedia(key,blob,id);
+   }
+   orders.push({id,label:name.trim()});
+   storeOrder();
+   localStorage.setItem('eterna-order:'+id+':config',JSON.stringify(snapshot));
+   await openOrder(id);
+ }catch(error){
+   setStatus('Не удалось скопировать заказ: '+error.message);
+ }
+});
+$('deleteOrderBtn').addEventListener('click',async()=>{if(orders.length===1){setStatus('Нельзя удалить единственный заказ.');return}if(!confirm('Удалить этот заказ и его файлы из браузера?'))return;const old=orderId;for(const key of [...PHOTO_KEYS,'music']){try{await deleteMedia(key)}catch{}}localStorage.removeItem(draftKey());orders=orders.filter(o=>o.id!==old);storeOrder();await openOrder(orders[0].id)});
+async function start(){await Promise.all([loadPhotos(),loadMusic()]);showOrder();draw();updatePreview()}
 
 start();
 })();
