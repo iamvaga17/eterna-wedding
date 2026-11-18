@@ -23,9 +23,15 @@ try {
     try {
       await page.goto('http://127.0.0.1:8080/eterna-12/');
       await page.locator('.aperture img').evaluate(image => image.decode());
-      await page.screenshot({path: `screenshots/${name}-cover.png`});
+      const gate = page.getByRole('dialog', {name: 'Приглашение'});
+      await gate.waitFor();
+      assert.equal(await page.evaluate(() => {
+        const intro = document.querySelector('.intro-gate');
+        return intro.matches(':modal') && intro.contains(document.elementFromPoint(10, 10));
+      }), true);
+      await page.screenshot({path: `screenshots/${name}-intro.png`});
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'Horizontal overflow');
-      const enter = page.getByRole('link', {name: 'Открыть приглашение'});
+      const enter = gate.getByRole('button', {name: 'Раскрыть сайт'});
       if (name === 'iphone-13') {
         const knob = enter.locator('.entry-knob');
         await enter.scrollIntoViewIfNeeded();
@@ -38,8 +44,8 @@ try {
         await page.mouse.move(start + 45, y, {steps: 5});
         assert.ok(Math.abs((await knob.boundingBox()).x - seal.x - 45) < 3);
         await page.mouse.up();
-        assert.equal(new URL(page.url()).hash, '');
-        await page.waitForFunction(() => document.querySelector('[data-entry]').style.getPropertyValue('--seal-x') === '0px');
+        assert.equal(await gate.isVisible(), true);
+        await page.waitForFunction(() => document.querySelector('.entry-knob').parentElement.style.getPropertyValue('--seal-x') === '0px');
         await knob.evaluate(element => Promise.all(element.getAnimations().map(animation => animation.finished)));
         await page.mouse.move(start, y);
         await page.mouse.down();
@@ -50,6 +56,11 @@ try {
       } else {
         await enter.tap();
       }
+      await gate.waitFor({state: 'hidden'});
+      assert.equal(new URL(page.url()).hash, '');
+      assert.equal(await page.evaluate(() => scrollY), 0);
+      await page.screenshot({path: `screenshots/${name}-cover.png`});
+      await page.getByRole('link', {name: 'Открыть приглашение'}).tap();
       await page.waitForURL('**/#atmosphere');
       const letter = page.locator('.letter');
       const greeting = letter.locator('h2');
