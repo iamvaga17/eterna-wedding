@@ -84,7 +84,7 @@
     canvas = document.createElement('canvas');
     canvas.setAttribute('aria-hidden', 'true');
     canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;';
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    const dpr = 1;
     canvas.width = Math.round(rect.width * dpr);
     canvas.height = Math.round(rect.height * dpr);
     const ctx = canvas.getContext('2d', {alpha: true});
@@ -93,34 +93,42 @@
     confetti.append(canvas);
     confetti.classList.add('cannon-firing');
 
-    const count = matchMedia('(max-width: 650px)').matches ? 44 : 76;
+    // Time-based trajectories: fast launch, brief peak, then gravity and flutter.
+    // Canvas stays at DPR 1 to avoid retina fill-rate spikes in iOS Safari.
+    const count = matchMedia('(max-width: 650px)').matches ? 42 : 70;
     const pieces = Array.from({length: count}, (_, i) => {
       const shot = i % 2;
-      const dir = shot ? -1 : 1;
+      const side = shot ? -1 : 1;
+      const lifetime = random(1.45, 2.4);
       return {
-        start: shot * 340 + random(0, 130),
-        duration: random(2200, 3400),
-        x: shot ? rect.width * .98 : rect.width * .02,
-        y: rect.height * random(.68, .78),
-        dx: dir * random(rect.width * .17, rect.width * .9),
-        lift: random(rect.height * .26, rect.height * .72),
-        fall: random(rect.height * .28, rect.height * .75),
-        drift: random(-14, 14),
-        w: random(3.5, 9), h: random(4, 12),
+        start: shot * 290 + random(0, 95),
+        lifetime,
+        x: shot ? rect.width * .97 : rect.width * .03,
+        y: rect.height * random(.74, .84),
+        vx: side * random(rect.width * .49, rect.width * 1.03),
+        vy: -random(rect.height * .82, rect.height * 1.37),
+        gravity: random(rect.height * .95, rect.height * 1.68),
+        drift: random(4, 15),
+        w: random(3.5, 9),
+        h: random(5, 11),
         phase: random(0, Math.PI * 2),
-        spin: random(6, 15) * (i % 2 ? -1 : 1),
+        flutter: random(9, 16),
+        flutterPhase: random(0, Math.PI * 2),
+        flutterStrength: random(.5, 1),
+        spin: random(6, 12) * (i % 2 ? -1 : 1),
         color: colors[i % colors.length]
       };
     });
     const id = launchId;
     let startTime = 0;
-    let lastDraw = 0;
+    let lastDraw = -50;
 
     function frame(now) {
       if (id !== launchId || document.hidden || !canvas.isConnected) return;
       if (!startTime) startTime = now;
       const elapsed = now - startTime;
-      if (elapsed - lastDraw < 25 && elapsed < 3850) {
+      // ~40fps: smoother than v9's 25fps without individual DOM animations.
+      if (elapsed - lastDraw < 24 && elapsed < 2800) {
         animationFrame = requestAnimationFrame(frame);
         return;
       }
@@ -128,30 +136,37 @@
       ctx.clearRect(0, 0, rect.width, rect.height);
       let active = false;
       for (const p of pieces) {
-        const t = (elapsed - p.start) / p.duration;
+        const t = (elapsed - p.start) / 1000;
         if (t < 0) { active = true; continue; }
-        if (t >= 1) continue;
+        if (t > p.lifetime) continue;
         active = true;
-        // Initial upward burst then a slower fluttering descent.
-        const x = p.x + p.dx * (1 - Math.pow(1 - t, 2.1)) +
-          Math.sin(t * 14 + p.phase) * p.drift * t;
-        const y = p.y - p.lift * Math.sin(Math.PI * Math.min(1, t * .92)) +
-          p.fall * t * t;
-        const flip = Math.cos(t * p.spin + p.phase);
-        const alpha = Math.min(1, t * 12, (1 - t) * 5);
+        const drag = 1 - Math.exp(-2.1 * t);
+        const x = p.x + (p.vx / 2.1) * drag +
+          Math.sin(t * p.flutter + p.flutterPhase) * p.drift * Math.min(t, 1) * p.flutterStrength;
+        const y = p.y + p.vy * t + .5 * p.gravity * t * t +
+          Math.sin(t * (p.flutter * .6) + p.phase) * 3.5 * Math.min(t, 1);
+        const fade = Math.min(1, t * 12, (p.lifetime - t) * 5);
+        const face = Math.max(.13, Math.abs(Math.cos(t * p.spin + p.phase)));
         ctx.save();
         ctx.translate(x, y);
-        ctx.rotate(t * p.spin * .38 + p.phase);
-        ctx.globalAlpha = Math.max(0, alpha);
+        ctx.rotate(t * p.spin * .45 + p.phase);
+        ctx.globalAlpha = Math.max(0, fade);
         ctx.fillStyle = p.color;
-        ctx.fillRect(-p.w / 2 * Math.max(.12, Math.abs(flip)), -p.h / 2,
-          p.w * Math.max(.12, Math.abs(flip)), p.h);
+        ctx.fillRect(-p.w * face / 2, -p.h / 2, p.w * face, p.h);
         ctx.restore();
       }
-      if (active && elapsed < 3900) animationFrame = requestAnimationFrame(frame);
+      if (active && elapsed < 2900) animationFrame = requestAnimationFrame(frame);
       else stopConfetti();
     }
     animationFrame = requestAnimationFrame(frame);
+  }
+
+  // Avoid drawing particles while the effect is completely outside the viewport.
+  if ('IntersectionObserver' in window) {
+    const confettiVisibility = new IntersectionObserver(entries => {
+      if (entries.some(e => !e.isIntersecting)) { ++launchId; stopConfetti(); }
+    }, {threshold: 0});
+    confettiVisibility.observe(forecastSection);
   }
 
   document.addEventListener('visibilitychange', () => {
