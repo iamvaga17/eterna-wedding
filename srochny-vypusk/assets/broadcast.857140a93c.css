@@ -227,3 +227,110 @@ h2 { font-size: clamp(3rem, 10vw, 7.75rem); overflow-wrap: anywhere; }
 @media (prefers-reduced-motion: reduce) {
   .archive-photo, .archive-photo img, .editorial-ready, .editorial-visible { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; }
 }
+
+
+/* Broadcast motion package v3: studio graphics, cannon muzzle flashes and clean pacing. */
+.opening { overflow: clip; }
+.opening::before {
+  content: "";
+  position: absolute;
+  width: min(70vw, 720px);
+  aspect-ratio: 1;
+  right: -21%;
+  top: 6%;
+  background: radial-gradient(circle, #587da126 0%, #587da108 42%, transparent 70%);
+  pointer-events: none;
+}
+.opening-grid, .channel-bar { position: relative; z-index: 1; }
+.monitor-picture { overflow: hidden; isolation: isolate; }
+.monitor-picture::before {
+  content: "●  LIVE   /   КАНАЛ СВ";
+  position: absolute;
+  z-index: 2;
+  top: .75rem;
+  left: .75rem;
+  color: #fff;
+  background: #b3262be6;
+  padding: .4rem .55rem;
+  font: 600 clamp(.58rem, 1.9vw, .7rem)/1.2 var(--mono);
+  letter-spacing: .04em;
+  box-shadow: 0 2px 12px #0005;
+}
+.newsline { overflow: hidden; }
+.newsline p { min-width: 0; }
+.news-photo .camera-frame::before {
+  content: "●  ПРЯМОЙ ЭФИР";
+  position: absolute;
+  z-index: 2;
+  right: .85rem;
+  top: .85rem;
+  padding: .38rem .55rem;
+  color: #fff;
+  background: #a52529ec;
+  font: 600 .64rem/1.25 var(--mono);
+  letter-spacing: .08em;
+  pointer-events: none;
+}
+.forecast-frame { isolation: isolate; }
+.confetti-layer { z-index: 2; }
+.confetti-layer::before, .confetti-layer::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  width: 30%;
+  height: 40%;
+  bottom: 3%;
+  background: radial-gradient(ellipse at bottom, #fff9d5ed 0%, #ffdb94b8 18%, #ffd8a33d 45%, transparent 70%);
+  opacity: 0;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+.confetti-layer::before { left: -9%; transform: rotate(-25deg); transform-origin: bottom left; }
+.confetti-layer::after { right: -9%; transform: rotate(25deg); transform-origin: bottom right; }
+@media (prefers-reduced-motion: no-preference) {
+  .confetti-layer.cannon-firing::before { animation: cannon-flash .52s ease-out both; }
+  .confetti-layer.cannon-firing::after { animation: cannon-flash .52s .34s ease-out both; }
+  @keyframes cannon-flash {
+    0% { opacity: 0; scale: .45; }
+    16% { opacity: .95; scale: 1.15; }
+    40% { opacity: .54; }
+    100% { opacity: 0; scale: 1.5; }
+  }
+  .opening-copy h1 { animation: headline-appears .9s .12s cubic-bezier(.18,.7,.2,1) both; }
+  .opening-copy > p:last-of-type { animation: headline-appears .85s .32s ease-out both; }
+  .opening-copy .primary { animation: headline-appears .85s .46s ease-out both; }
+  .monitor { animation: monitor-arrives 1s .24s cubic-bezier(.16,.8,.26,1) both; }
+  @keyframes headline-appears {
+    from { opacity: 0; transform: translate3d(0,20px,0); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes monitor-arrives {
+    from { opacity: 0; transform: translate3d(0,20px,0) scale(.97); }
+    to { opacity: 1; transform: none; }
+  }
+  .signal-in .news-photo { animation: live-signal-v3 .85s ease-out both; }
+  @keyframes live-signal-v3 {
+    0% { opacity:.1; filter: grayscale(1) contrast(1.7); clip-path: inset(42% 0); transform: scale(1.035); }
+    25% { opacity:.9; filter: grayscale(1) contrast(1.5); clip-path: inset(20% 0); }
+    52% { filter: saturate(.55); clip-path: inset(0); }
+    100% { opacity:1; filter:none; clip-path: inset(0); transform: none; }
+  }
+  .rundown-on-air li { animation: line-on-air .5s cubic-bezier(.2,.75,.3,1) both; }
+  .rundown-on-air li:nth-child(2) { animation-delay: .12s; }
+  .rundown-on-air li:nth-child(3) { animation-delay: .24s; }
+  @keyframes line-on-air {
+    from { opacity:.2; transform:translate3d(-12px,0,0); }
+    to { opacity:1; transform:none; }
+  }
+  .scene-button { transition: background .2s ease, transform .2s ease, box-shadow .2s ease; }
+  .scene-button:active { transform: scale(.97); }
+  @media (hover:hover) {
+    .scene-button:hover { transform: translateY(-2px); box-shadow: 0 4px 0 #63252b; }
+    .primary { transition: transform .2s ease, background .2s ease; }
+    .primary:hover { transform: translateY(-2px); }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .opening-copy h1, .opening-copy > p:last-of-type, .opening-copy .primary, .monitor, .rundown-on-air li { animation: none !important; opacity: 1 !important; transform: none !important; }
+  .confetti-layer::before, .confetti-layer::after { display: none; }
+}
