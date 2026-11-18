@@ -101,15 +101,25 @@ try {
         const preview = page.frameLocator('#siteFrame');
         await preview.locator('.mark').filter({hasText: 'Ё·А'}).waitFor();
         assert.deepEqual(await preview.locator('[data-initials]').allTextContents(), ['Ё·А', 'Ё·А', 'Ё·А', 'Ё·А']);
-        const jpeg = await page.evaluate(() => document.createElement('canvas').toDataURL('image/jpeg').split(',')[1]);
         for (const [index, label] of ['Для неё', 'Для него'].entries()) {
           const group = page.locator('#photos details.photo-group').filter({has: page.getByText('Дресс-код — ' + label, {exact: false})});
           await group.locator(':scope > summary').click();
           await group.getByRole('button', {name: '+ Добавить фотографию'}).click();
-          await group.getByLabel('Выбрать ' + label + ' — фото 3').setInputFiles({
-            name: 'look.jpg', mimeType: 'image/jpeg', buffer: Buffer.from(jpeg, 'base64')
+          const input = group.getByLabel('Выбрать ' + label + ' — фото 3');
+          await input.evaluate(async element => {
+            const canvas = document.createElement('canvas');
+            const jpeg = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg'));
+            const transfer = new DataTransfer();
+            transfer.items.add(new File([jpeg], 'look.jpg', {type: 'image/jpeg'}));
+            element.files = transfer.files;
+            element.dispatchEvent(new Event('change', {bubbles: true}));
           });
-          await page.locator('#status').filter({hasText: /Фото добавлено|Ошибка:/}).waitFor();
+          try {
+            await page.locator('#status').filter({hasText: /Фото добавлено|Ошибка:/}).waitFor({timeout: 7000});
+          } catch (error) {
+            console.log('Editor upload status:', await page.locator('#status').textContent(), await input.evaluate(element => [element.files.length, element.disabled]));
+            throw error;
+          }
           assert.match(await page.locator('#status').textContent(), /^Фото добавлено/);
           await preview.locator('.moodboard .looks').nth(index).locator('img[src^="blob:"]').waitFor({state: 'attached'});
         }
