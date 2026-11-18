@@ -186,32 +186,34 @@
     scheduleObserver.observe(rundown);
   }
 
-  // Compact broadcast bumpers introduce chapters without interrupting scrolling.
+  // Make broadcast chapter labels visible and persistent once their own position
+  // enters the viewport; observing the entire section caused premature animation.
   const chapters = [
     ['.archive', 'АРХИВ РЕДАКЦИИ'],
     ['.field-report', 'СВОДКА СОБЫТИЙ'],
     ['.forecast', 'ПРОГНОЗ В ЭФИРЕ'],
     ['.response', 'ВАШ ВЫХОД В ЭФИР']
   ];
-  if ('IntersectionObserver' in window && !motion.matches) {
-    const chapterObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('chapter-on-air');
-        chapterObserver.unobserve(entry.target);
-      });
-    }, {threshold: .12});
-    chapters.forEach(([selector, caption]) => {
-      const section = document.querySelector(selector);
-      if (!section) return;
-      const bumper = document.createElement('span');
-      bumper.className = 'chapter-bumper';
-      bumper.textContent = caption;
-      bumper.setAttribute('aria-hidden', 'true');
-      section.append(bumper);
-      chapterObserver.observe(section);
-    });
-  }
+  const chapterObserver = 'IntersectionObserver' in window && !motion.matches
+    ? new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('chapter-on-air');
+          chapterObserver.unobserve(entry.target);
+        });
+      }, {threshold: 0, rootMargin: '0px 0px -10% 0px'})
+    : null;
+  chapters.forEach(([selector, caption]) => {
+    const section = document.querySelector(selector);
+    if (!section) return;
+    const bumper = document.createElement('span');
+    bumper.className = 'chapter-bumper';
+    bumper.textContent = caption;
+    bumper.setAttribute('aria-hidden', 'true');
+    section.append(bumper);
+    if (chapterObserver) chapterObserver.observe(bumper);
+    else bumper.classList.add('chapter-on-air');
+  });
 
   // Returning to the page after changing motion settings should never trap effects.
   motion.addEventListener?.('change', () => {
