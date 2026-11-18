@@ -7,12 +7,12 @@
 <meta name="robots" content="noindex, nofollow">
 <title>ÉTERNA — свадебное приглашение</title>
 <link rel="preload" as="image" href="assets/cover.webp" fetchpriority="high">
-<link rel="stylesheet" href="assets/style.99c643b03c.css">
+<link rel="stylesheet" href="assets/style.93ec4880e0.css">
 <script defer src="../wedding-config.js?rev=65615f2d6a"></script>
 <script defer src="../rsvp-config.js?rev=bcdbb0a934"></script>
 <script defer src="../rsvp-renderer.js?rev=6b409f4760"></script>
 <script defer src="assets/invitation.62c1e35a52.js"></script>
-<script defer src="assets/motion.9930ffc020.js"></script>
+<script defer src="assets/motion.d2480d60bc.js"></script>
 </head>
 <body>
 <header class="cover" id="top">
@@ -38,7 +38,12 @@
     </div>
   </div>
   <div class="cover-foot">
-    <a class="enter" data-entry href="#atmosphere"><span aria-hidden="true">↓</span> Открыть приглашение</a>
+    <a class="enter" data-entry href="#atmosphere" aria-label="Открыть приглашение">
+      <span class="entry-knob" aria-hidden="true" draggable="false">É</span>
+      <span class="entry-label" aria-hidden="true">Открыть приглашение</span>
+      <span class="entry-instruction" aria-hidden="true">Сдвиньте печать</span>
+      <span class="entry-end" aria-hidden="true">›</span>
+    </a>
   </div>
 </header>
 <noscript><p class="section-pad">Включите JavaScript, чтобы увидеть информацию о свадьбе и анкету гостя.</p></noscript>
@@ -52,8 +57,15 @@
     <img class="backdrop" data-photo="invitationBg" alt="" loading="lazy" hidden>
     <img class="letter-photo left" data-photo="invitationLeft" alt="" loading="lazy" hidden>
     <img class="letter-photo right" data-photo="invitationRight" alt="" loading="lazy" hidden>
-    <details class="letter" open>
-      <summary><span class="eyebrow">Личное письмо</span><span class="seal" aria-hidden="true">É.</span></summary>
+    <details class="letter">
+      <summary>
+        <span class="letter-label">
+          <span class="eyebrow">Личное письмо</span>
+          <span class="letter-action letter-action-open">Открыть письмо</span>
+          <span class="letter-action letter-action-close">Сложить письмо</span>
+        </span>
+        <span class="seal" aria-hidden="true">É.</span>
+      </summary>
       <div class="letter-content">
         <h2 data-copy="text.greeting"></h2>
         <p data-copy="text.invitation1"></p><p data-copy="text.invitation2"></p>
