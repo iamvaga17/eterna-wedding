@@ -101,14 +101,17 @@ try {
         const preview = page.frameLocator('#siteFrame');
         await preview.locator('.mark').filter({hasText: 'Ё·А'}).waitFor();
         assert.deepEqual(await preview.locator('[data-initials]').allTextContents(), ['Ё·А', 'Ё·А', 'Ё·А', 'Ё·А']);
+        const jpeg = await page.evaluate(() => document.createElement('canvas').toDataURL('image/jpeg').split(',')[1]);
         for (const [index, label] of ['Для неё', 'Для него'].entries()) {
           const group = page.locator('#photos details.photo-group').filter({has: page.getByText('Дресс-код — ' + label, {exact: false})});
           await group.locator(':scope > summary').click();
           await group.getByRole('button', {name: '+ Добавить фотографию'}).click();
-          await group.getByLabel('Выбрать ' + label + ' — фото 3').setInputFiles('eterna-12/assets/editorial-3.webp');
-          const extraLook = preview.locator('.moodboard .looks').nth(index).locator('img').nth(1);
-          await extraLook.waitFor({state: 'attached'});
-          assert.match(await extraLook.getAttribute('src'), /^blob:/);
+          await group.getByLabel('Выбрать ' + label + ' — фото 3').setInputFiles({
+            name: 'look.jpg', mimeType: 'image/jpeg', buffer: Buffer.from(jpeg, 'base64')
+          });
+          await page.locator('#status').filter({hasText: /Фото добавлено|Ошибка:/}).waitFor();
+          assert.match(await page.locator('#status').textContent(), /^Фото добавлено/);
+          await preview.locator('.moodboard .looks').nth(index).locator('img[src^="blob:"]').waitFor({state: 'attached'});
         }
       }
       assert.deepEqual(faults, []);
