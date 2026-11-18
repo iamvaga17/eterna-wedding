@@ -29,11 +29,14 @@ const mood=document.querySelector('#dress .mood-grid');
 if(mood){
  if(!mood.dataset.etOriginalImages)mood.dataset.etOriginalImages=JSON.stringify(Array.from(mood.querySelectorAll('img')).map(el=>el.src));
  const originals=JSON.parse(mood.dataset.etOriginalImages);
+ // Older ÉTERNA templates have three direct image cards. Once the editable
+ // galleries exist these legacy cards must not remain in the layout.
+ Array.from(mood.children).filter(el=>el.matches('figure')).forEach(el=>el.remove());
  const palettes=c.dressPalettes||{},defaults={female:['#e8d9c8','#c6af94','#b2b5a5','#d3b8ac','#73665b'],male:['#272b2e','#51595b','#9b9d95','#d0c7b9','#f1e9de']};
  for(const [gender,label] of [['female','Для неё'],['male','Для него']]){
   const cls='et-dress-'+gender;let group=mood.querySelector('.'+cls);
   if(!group){group=document.createElement('section');group.className='et-dress-group '+cls;const h=document.createElement('h3');h.textContent=label;group.append(h);const g=document.createElement('div');g.className='et-dress-pictures';group.append(g);const pal=document.createElement('div');pal.className='et-dress-colors';for(let i=0;i<5;i++)pal.append(document.createElement('span'));group.append(pal)}
-  const grid=group.querySelector('.et-dress-pictures');const count=Math.min(8,Math.max(2,Number(c.dressPhotoCounts?.[gender])||2));
+  const grid=group.querySelector('.et-dress-pictures');const count=Math.min(8,Math.max(2,Number(c.dressPhotoCounts?.[gender])||2));grid.dataset.count=String(count);
   while(grid.children.length>count)grid.lastElementChild.remove();
   for(let i=0;i<count;i++){
    let figure=grid.children[i];if(!figure){figure=document.createElement('figure');const im=document.createElement('img');im.loading='lazy';figure.append(im,document.createElement('figcaption'));grid.append(figure)}
@@ -55,6 +58,12 @@ if(mood){
  #dress .et-dress-pictures{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start}
  #dress .et-dress-pictures figure,#dress .et-dress-pictures figure:nth-child(n){height:clamp(180px,27vw,330px)!important;width:100%!important;grid-column:auto!important;margin:0!important;transform:none!important;border:5px solid #f5eee5;box-shadow:0 18px 35px #392d2630;overflow:hidden;position:relative;background:#c4b5a8}
  #dress .et-dress-pictures figure:nth-child(even){margin-top:24px!important}
+
+ /* Three photos: two equal portraits above, one centered below. */
+ #dress .et-dress-pictures[data-count="3"] > figure:nth-child(3){grid-column:1 / -1!important;justify-self:center!important;width:min(75%,340px)!important;height:clamp(220px,30vw,385px)!important;margin:10px auto 0!important}
+ #dress .et-dress-pictures[data-count="3"] > figure:nth-child(2){margin-top:0!important}
+ #dress .et-dress-pictures[data-count="3"] > figure:nth-child(1){margin-top:0!important}
+
  #dress .et-dress-pictures img{width:100%;height:100%;object-fit:cover;display:block}
  #dress .et-dress-pictures figcaption{position:absolute;bottom:0;left:0;right:0;color:white;font-size:9px;padding:25px 6px 9px;background:linear-gradient(transparent,#241e1c9c)}
  #dress .et-dress-colors{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin:30px 0 0}

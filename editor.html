@@ -74,6 +74,8 @@ function ensureDressLayout(){
  // Reuse the photos already present in the template as defaults.
  if(!mood.dataset.etOriginalImages){mood.dataset.etOriginalImages=JSON.stringify(Array.from(mood.querySelectorAll('img')).map(el=>el.src));}
  const original=JSON.parse(mood.dataset.etOriginalImages||'[]');
+ // Remove the three original direct image cards, not the new editable galleries.
+ Array.from(mood.children).filter(el=>el.matches('figure')).forEach(el=>el.remove());
  for(const [gender,cls,title] of [['female','et-dress-female','Для неё'],['male','et-dress-male','Для него']]){
   let group=mood.querySelector('.'+cls);
   if(!group){group=doc.createElement('section');group.className='et-dress-group '+cls;
@@ -83,7 +85,7 @@ function ensureDressLayout(){
     for(let i=0;i<5;i++)palette.append(doc.createElement('span'));group.append(palette);
   }
   const grid=group.querySelector('.et-dress-pictures');
-  const count=data.dressPhotoCounts?.[gender]||2;
+  const count=data.dressPhotoCounts?.[gender]||2;grid.dataset.count=String(count);
   while(grid.children.length>count)grid.lastElementChild.remove();
   for(let i=0;i<count;i++){
     let figure=grid.children[i];
@@ -113,6 +115,11 @@ function ensureDressLayout(){
  #dress .et-dress-pictures{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important;align-items:start}
  #dress .et-dress-pictures figure,#dress .et-dress-pictures figure:nth-child(n){margin:0!important;transform:none!important;position:relative!important;grid-column:auto!important;min-width:0!important;width:100%!important;height:clamp(180px,25vw,300px)!important;border:5px solid #faf4ec!important;overflow:hidden!important;box-shadow:0 12px 25px #382d2630!important;background:#c5b7a9}
  #dress .et-dress-pictures figure:nth-child(even){margin-top:18px!important}
+
+ /* Exactly 3 photos: balanced editorial triptych, not an orphan left card. */
+ #dress .et-dress-pictures[data-count="3"] > figure:nth-child(3){grid-column:1/-1!important;justify-self:center!important;width:min(75%,340px)!important;height:clamp(220px,30vw,385px)!important;margin:10px auto 0!important}
+ #dress .et-dress-pictures[data-count="3"] > figure:nth-child(1),#dress .et-dress-pictures[data-count="3"] > figure:nth-child(2){margin-top:0!important}
+
  #dress .et-dress-pictures figure img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important}
  #dress .et-dress-pictures figure figcaption{position:absolute!important;bottom:0!important;left:0!important;right:0!important;color:white!important;font-size:9px!important;padding:25px 6px 9px!important;background:linear-gradient(transparent,#241e1c9c)!important}
  #dress .et-dress-colors{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin:30px 0 0}
