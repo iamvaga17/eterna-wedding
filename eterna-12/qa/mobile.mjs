@@ -38,7 +38,8 @@ try {
       if (name === 'iphone-13') {
         const knob = enter.locator('.entry-knob');
         await enter.scrollIntoViewIfNeeded();
-        const bounds = await enter.boundingBox();
+        const door = gate.locator('.intro-door-left');
+        const initialDoor = await door.boundingBox();
         const seal = await knob.boundingBox();
         const start = seal.x + seal.width / 2;
         const y = seal.y + seal.height / 2;
@@ -46,13 +47,16 @@ try {
         await page.mouse.down();
         await page.mouse.move(start + 45, y, {steps: 5});
         assert.ok(Math.abs((await knob.boundingBox()).x - seal.x - 45) < 3);
+        assert.ok((await door.boundingBox()).x < initialDoor.x - 15);
+        assert.equal(await gate.isVisible(), true);
         await page.mouse.up();
         assert.equal(await gate.isVisible(), true);
         await page.waitForFunction(() => document.querySelector('.entry-knob').parentElement.style.getPropertyValue('--seal-x') === '0px');
-        await knob.evaluate(element => Promise.all(element.getAnimations().map(animation => animation.finished)));
-        await page.mouse.move(start, y);
+        await door.evaluate(element => Promise.all(element.getAnimations().map(animation => animation.finished)));
+        assert.ok(Math.abs((await door.boundingBox()).x - initialDoor.x) < 1);
+        await page.mouse.move(35, 130);
         await page.mouse.down();
-        await page.mouse.move(bounds.x + bounds.width - seal.width / 2 - 5, y, {steps: 10});
+        await page.mouse.move(device.viewport.width * .72, 130, {steps: 10});
         await page.mouse.up();
       } else if (name === 'iphone-13-landscape') {
         await enter.press('Enter');
