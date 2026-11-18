@@ -1,7 +1,10 @@
 /* ÉTERNA — управление содержимым, без изменения структуры RSVP */
 (function(){
 const set=(selector,value)=>{const el=document.querySelector(selector);if(el&&value!==undefined&&value!==null)el.textContent=String(value)};
-const img=(selector,url,position)=>{const el=document.querySelector(selector);if(!el)return;if(typeof url==='string'&&url.trim())el.src=url.trim();if(position)el.style.objectPosition=position};
+const img=(selector,url,position)=>{const el=document.querySelector(selector);if(!el)return;
+ if(!el.dataset.etOriginalSrc)el.dataset.etOriginalSrc=el.getAttribute('src')||'';
+ if(typeof url==='string'&&url.trim())el.src=url.trim();else if(el.dataset.etOriginalSrc)el.src=el.dataset.etOriginalSrc;
+ if(position)el.style.objectPosition=position;else el.style.removeProperty('object-position');};
 const hide=(selector,enabled)=>{const el=document.querySelector(selector);if(el){el.hidden=!enabled;el.style.setProperty('display',enabled?'':'none',enabled?'':'important')}};
 const d=(o,k)=>o&&Object.prototype.hasOwnProperty.call(o,k)?o[k]:undefined;
 function apply(c){if(!c)return;
@@ -16,6 +19,53 @@ set('.ec-corner',names.first&&names.second?names.first.charAt(0)+' · '+names.se
 img('#ecMain',p.main,positions.main);img('#ecSide1',p.secondary1,positions.secondary1);img('#ecSide2',p.secondary2,positions.secondary2);
 const cover=document.querySelector('.editorial-cover');if(cover){let count=0;[['#ecMain','main'],['#ecSide1','secondary1'],['#ecSide2','secondary2']].forEach(([selector,k])=>{const el=document.querySelector(selector),wrap=el&&el.closest('.ec-photo');if(!wrap)return;const valid=typeof p[k]==='string'&&!!p[k].trim();if(!valid&&k!=='main')wrap.style.display='none';else{wrap.style.display='';count++}});cover.dataset.photoCount=String(Math.max(count,1))}
 img('.story-main img',p.storyMain);img('.story-small img',p.storySmall);
+
+// All sections — photo replacement. Empty values preserve the template's original photo.
+const replaceImage=(selector,key)=>{img(selector,p[key],positions[key])};
+replaceImage('.opening-image.first img','collage1');
+replaceImage('.opening-image.second img','collage2');
+replaceImage('.mood-grid figure:nth-child(1) img','dress1');
+replaceImage('.mood-grid figure:nth-child(2) img','dress2');
+replaceImage('.mood-grid figure:nth-child(3) img','dress3');
+const bg=(selector,key,overlay='')=>{
+ const el=document.querySelector(selector);
+ if(!el)return;
+ const url=p[key];
+ // URL may be a GitHub-hosted relative JPEG or a temporary blob: URL in preview.
+ // JSON.stringify produces a properly quoted CSS URL argument.
+ if(typeof url==='string'&&url.trim()){
+  el.style.setProperty('background-image',overlay+'url('+JSON.stringify(url.trim())+')','important');
+  el.style.setProperty('background-position',positions[key]||'center','important');
+  el.style.setProperty('background-size','cover','important');
+ }else{
+  el.style.removeProperty('background-image');
+  el.style.removeProperty('background-position');
+  el.style.removeProperty('background-size');
+ }
+};
+bg('.book-cover','introCover');
+bg('.invitation','invitationBg','linear-gradient(#29231c50,#29231c50),');
+bg('.invite-photo-left','invitationLeft');
+bg('.invite-photo-right','invitationRight');
+bg('.memory-banner-image','memoryBg');
+bg('.dress-wash','dressBg','linear-gradient(#dac9b9dd,#dac9b9dd),');
+bg('.rsvp','rsvpBg','linear-gradient(#1d1916b8,#1d1916b8),');
+// Pseudo-element backgrounds cannot be assigned as inline element styles.
+// Replace the extension stylesheet on every preview update, so clearing a photo restores the original.
+let style=document.getElementById('eterna-photo-backgrounds');
+if(!style){style=document.createElement('style');style.id='eterna-photo-backgrounds';document.head.append(style)}
+const pseudo=[
+ ['.day::before','scheduleBg','linear-gradient(110deg,#110d11ef,#1b1119c9),'],
+ ['.venue::before','venueBg',''],
+ ['.timer-section::before','countdownBg',''],
+ ['.ending::before','endingBg','']
+];
+style.textContent=pseudo.map(([selector,key,overlay])=>{
+ const url=p[key];if(typeof url!=='string'||!url.trim())return '';
+ const position=positions[key]||'center';
+ return selector+'{background-image:'+overlay+'url('+JSON.stringify(url.trim())+') !important;background-position:'+position+' !important;background-size:cover !important;}';
+}).join('\n');
+
 const map={photoStory:'.opening-collage',invitation:'#invitation',story:'#story',memory:'.memory-banner',schedule:'#day',venue:'#venue',dress:'#dress',countdown:'.timer-section',rsvp:'#rsvp',ending:'.ending'};
 Object.entries(map).forEach(([key,selector])=>{if(typeof sections[key]==='boolean')hide(selector,sections[key])});
 // Keep the scroll link directed to the next visible block even when photo story is disabled.

@@ -8,6 +8,10 @@
 .orders-line select{flex:1;min-width:150px;padding:11px;background:white;border:1px solid #d6d2ca;border-radius:9px;font:14px system-ui}
 .orders-identifier{font-size:12px;color:#6e6255;overflow-wrap:anywhere;margin:8px 0 0}
 @media(max-width:420px){.orders-line button{flex:1}}
+
+.photo-group{border:1px solid #e6e0d7;border-radius:12px;margin:12px 0;padding:0 12px;background:#fdfbf7}
+.photo-group>summary{padding:16px 6px;font-weight:600;font-size:14px;cursor:pointer}
+.photo-group .photo-card{margin:12px 0 18px}
 </style></head><body>
 <header><div><h1>ÉTERNA · редактор</h1><small>Персонализация свадебного приглашения · отдельные заказы</small></div><div class="actions"><button id="previewBtn" class="secondary">Обновить просмотр</button><button id="downloadBtn">Скачать комплект ZIP</button></div></header>
 <main><div class="panel">
@@ -30,11 +34,14 @@ const LEGACY_KEY='eterna-editor-draft';
 const INDEX_KEY='eterna-orders-v1';
 const defaults=JSON.parse(JSON.stringify(window.WEDDING_CONFIG||{}));
 const copy=x=>JSON.parse(JSON.stringify(x));
+const PHOTO_DEFAULT_KEYS=["introCover", "collage1", "collage2", "invitationBg", "invitationLeft", "invitationRight", "memoryBg", "scheduleBg", "venueBg", "dressBg", "dress1", "dress2", "dress3", "countdownBg", "rsvpBg", "endingBg"];
+function normalizeOrder(d){if(!d||typeof d!=='object')d=copy(defaults);d.photos??={};d.photoPosition??={};for(const k of PHOTO_DEFAULT_KEYS){if(!(k in d.photos))d.photos[k]='';if(!(k in d.photoPosition))d.photoPosition[k]='center 50%'}return d;}
+
 function getJSON(key,fallback){try{const v=JSON.parse(localStorage.getItem(key));return v??fallback}catch{return fallback}}
 let orders=getJSON(INDEX_KEY,[]);
 if(!Array.isArray(orders)||!orders.length){orders=[{id:'demo',label:'Демо — Александр и Виктория'}];localStorage.setItem(INDEX_KEY,JSON.stringify(orders));const legacy=getJSON(LEGACY_KEY,null);if(legacy)localStorage.setItem('eterna-order:demo:config',JSON.stringify(legacy))}
 let orderId=orders[0].id;
-let data=getJSON('eterna-order:'+orderId+':config',copy(defaults));
+let data=normalizeOrder(getJSON('eterna-order:'+orderId+':config',copy(defaults)));
 function storeOrder(){localStorage.setItem(INDEX_KEY,JSON.stringify(orders))}
 function draftKey(){return 'eterna-order:'+orderId+':config'}
 function photoKey(key){return 'order:'+orderId+':'+key}
@@ -42,8 +49,8 @@ function translit(v){const a={'а':'a','б':'b','в':'v','г':'g','д':'d','е':
 function uniqueId(name){const base=translit(name);let x=base,n=2;while(orders.some(o=>o.id===x))x=base+'-'+n++;return x}
 
 const $=id=>document.getElementById(id);
-const PHOTO_KEYS=['main','secondary1','secondary2','storyMain','storySmall'];
-const PHOTO_NAMES={main:'Главная фотография',secondary1:'Дополнительная фотография 1',secondary2:'Дополнительная фотография 2',storyMain:'Наша история — главное фото',storySmall:'Наша история — дополнительное фото'};
+const PHOTO_KEYS=['main','secondary1','secondary2','collage1','collage2','invitationBg','invitationLeft','invitationRight','storyMain','storySmall','memoryBg','scheduleBg','venueBg','dressBg','dress1','dress2','dress3','countdownBg','rsvpBg','endingBg','introCover'];
+const PHOTO_NAMES={main:'Главная фотография',secondary1:'Дополнительная фотография 1',secondary2:'Дополнительная фотография 2',storyMain:'Наша история — главное фото',storySmall:'Наша история — дополнительное фото',introCover:'Обложка книги — фон',collage1:'Первый фотоколлаж — слева',collage2:'Первый фотоколлаж — справа',invitationBg:'Приглашение — большое фоновое фото',invitationLeft:'Приглашение — левый фотокадр',invitationRight:'Приглашение — правый фотокадр',memoryBg:'Атмосферный блок — фоновое фото',scheduleBg:'День свадьбы — фоновое фото',venueBg:'Место встречи — фон зала',dressBg:'Дресс-код — фон',dress1:'Дресс-код — образ 1',dress2:'Дресс-код — образ 2',dress3:'Дресс-код — образ 3',countdownBg:'Обратный отсчёт — фон',rsvpBg:'Анкета гостей — фон',endingBg:'До встречи — финальное фото'};
 const LABELS={first:'Имя жениха',second:'Имя невесты',dateLabel:'Дата на сайте',city:'Город',dateTime:'Дата и время для таймера (ISO)',photoStory:'Первый фотоколлаж',invitation:'Приглашение',story:'Наша история',memory:'Атмосферный блок',schedule:'Программа дня',venue:'Место проведения',dress:'Дресс-код',countdown:'Обратный отсчёт',rsvp:'Анкета гостей (RSVP)',ending:'Финальный экран',greeting:'Обращение к гостям',invitation1:'Приглашение — абзац 1',invitation2:'Приглашение — абзац 2',storyIntro:'Вступление к истории',storyNote:'Текст истории',venueName:'Название площадки или город',venueAddress:'Адрес и описание',venueMap:'Ссылка на карту (https://)',rsvpDeadline:'Срок подтверждения'};
 const photoUrls={};
 let db;
@@ -68,14 +75,28 @@ const path=document.createElement('p');path.className='photo-path';card.append(p
 const manual=document.createElement('details'),sum=document.createElement('summary');sum.textContent='Или вставить ссылку на фото';manual.append(sum);field(manual,data.photos,key,'Адрес фотографии');card.append(manual);
 const label=document.createElement('label');label.textContent='Кадрирование по вертикали';card.append(label);
 const range=document.createElement('input');range.type='range';range.min='0';range.max='100';range.step='5';const p=data.photoPosition||{};range.value=Number.parseInt((p[key]||'center 50%').match(/(\d+)%/)?.[1]||50);const rangeText=document.createElement('div');rangeText.className='pos-label';rangeText.textContent=range.value+'%';range.addEventListener('input',()=>{data.photoPosition[key]='center '+range.value+'%';rangeText.textContent=range.value+'%';changed();shot.style.objectPosition=data.photoPosition[key]});card.append(range,rangeText);
-function show(){const src=localPhoto(key)?photoUrls[key]:data.photos?.[key];if(src){shot.src=src;shot.style.display='block';shot.style.objectPosition=data.photoPosition?.[key]||'center';path.textContent=localPhoto(key)?'Фотография загружена из галереи':String(data.photos?.[key]||'')}else{shot.removeAttribute('src');shot.style.display='none';path.textContent='Фото не выбрано'}}
+function show(){const src=localPhoto(key)?photoUrls[key]:data.photos?.[key];if(src){shot.src=src;shot.style.display='block';shot.style.objectPosition=data.photoPosition?.[key]||'center';path.textContent=localPhoto(key)?'Фотография загружена из галереи':String(data.photos?.[key]||'')}else{shot.removeAttribute('src');shot.style.display='none';path.textContent='Используется фотография из шаблона (можно заменить)'}}
 input.addEventListener('change',async()=>{const file=input.files?.[0];if(!file)return;input.disabled=true;setStatus('Обрабатываю фотографию…');try{const blob=await compressPhoto(file);await storePhoto(key,blob);cachedUrl(key,blob);data.photos[key]=photoLink(key);changed('Фото добавлено. Оно сохранено в браузере и войдёт в ZIP.');show()}catch(e){setStatus('Ошибка: '+e.message)}finally{input.disabled=false;input.value=''}});
 remove.addEventListener('click',async()=>{try{await deletePhoto(key)}catch{}if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key];data.photos[key]='';changed('Фото убрано.');show()});
 manual.addEventListener('input',()=>{if(!localPhoto(key)&&photoUrls[key]){URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key]}show()});show();return card}
 function draw(){for(const id of ['couple','photos','sections','texts'])$(id).replaceChildren();
 for(const key of ['first','second','dateLabel','city','dateTime'])field($('couple'),data.couple,key);
-const help=document.createElement('p');help.className='upload-help';help.textContent='Нажми «Выбрать файл» — откроется галерея iPhone. Можно сразу проверить кадрирование. Фото сжимаются до 1800 пикселей и сохраняются локально.';$('photos').append(help);
-for(const key of PHOTO_KEYS)$('photos').append(createPhotoInput(key));
+const help=document.createElement('p');help.className='upload-help';help.textContent='Теперь редактируются все фотографии сайта, включая фон зала, финал и дресс-код. Открой нужную группу, выбери фото из галереи iPhone и проверь результат. Если фото не выбрано, останется изображение из шаблона.';$('photos').append(help);
+const PHOTO_GROUPS=[
+  ['Первый экран',['main','secondary1','secondary2']],
+  ['Вступительная обложка',['introCover']],
+  ['Фотоколлаж',['collage1','collage2']],
+  ['Приглашение',['invitationBg','invitationLeft','invitationRight']],
+  ['История',['storyMain','storySmall','memoryBg']],
+  ['Программа и место',['scheduleBg','venueBg']],
+  ['Дресс-код',['dressBg','dress1','dress2','dress3']],
+  ['Таймер, RSVP и финал',['countdownBg','rsvpBg','endingBg']]
+];
+for(const [group,keys] of PHOTO_GROUPS){
+ const details=document.createElement('details');details.className='photo-group';details.open=group==='Первый экран';
+ const summary=document.createElement('summary');summary.textContent=group+' · '+keys.length+' фото';details.append(summary);
+ keys.forEach(key=>details.append(createPhotoInput(key)));$('photos').append(details);
+}
 for(const [key,value] of Object.entries(data.sections)){const row=document.createElement('div');row.className='section-row';const check=document.createElement('input');check.type='checkbox';check.checked=Boolean(value);check.addEventListener('change',()=>{data.sections[key]=check.checked;changed()});const label=document.createElement('label');label.textContent=LABELS[key]||key;row.append(check,label);$('sections').append(row)}
 for(const key of Object.keys(data.text)){field($('texts'),data.text,key,LABELS[key]||key,key!=='venueName'&&key!=='venueMap')}
 const heading=document.createElement('h2');heading.textContent='Расписание дня';$('texts').append(heading);
@@ -127,11 +148,11 @@ function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':
 $('downloadBtn').addEventListener('click',exportPackage);$('downloadBtnBottom').addEventListener('click',exportPackage);
 $('previewBtn').addEventListener('click',()=>{updatePreview();setStatus('Предпросмотр обновлён.')});
 $('siteFrame').addEventListener('load',()=>{updatePreview();setTimeout(updatePreview,350)});
-$('resetBtn').addEventListener('click',async()=>{if(!confirm('Сбросить все изменения, включая загруженные фотографии?'))return;for(const key of PHOTO_KEYS){try{await deletePhoto(key)}catch{}if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key]}data=structuredClone(defaults);localStorage.removeItem(draftKey());draw();updatePreview();setStatus('Черновик сброшен.')});
+$('resetBtn').addEventListener('click',async()=>{if(!confirm('Сбросить все изменения, включая загруженные фотографии?'))return;for(const key of PHOTO_KEYS){try{await deletePhoto(key)}catch{}if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key]}data=normalizeOrder(structuredClone(defaults));localStorage.removeItem(draftKey());draw();updatePreview();setStatus('Черновик сброшен.')});
 async function loadPhotos(){for(const k of PHOTO_KEYS){if(photoUrls[k])URL.revokeObjectURL(photoUrls[k]);delete photoUrls[k]}
  for(const key of PHOTO_KEYS){if(!localPhoto(key))continue;try{let blob=await readPhoto(key);if(!blob&&orderId==='demo'){db??=await openDB();blob=await new Promise(resolve=>{let q=db.transaction('photos','readonly').objectStore('photos').get(key);q.onsuccess=()=>resolve(q.result);q.onerror=()=>resolve(null)});if(blob)await storePhoto(key,blob)}if(blob)cachedUrl(key,blob)}catch(e){setStatus('Не удалось восстановить фотографии — проверь хранилище Safari.')}}}
 function showOrder(){const select=$('orderSelect');select.replaceChildren();orders.forEach(o=>{const opt=document.createElement('option');opt.value=o.id;opt.textContent=o.label+' ('+o.id+')';select.append(opt)});select.value=orderId;$('orderUrlLabel').textContent='Адрес после публикации: /orders/'+orderId+'/';}
-async function openOrder(id){if(!orders.some(o=>o.id===id))return;orderId=id;data=getJSON(draftKey(),copy(defaults));await loadPhotos();draw();showOrder();updatePreview();setStatus('Открыт заказ: '+orders.find(o=>o.id===id).label)}
+async function openOrder(id){if(!orders.some(o=>o.id===id))return;orderId=id;data=normalizeOrder(getJSON(draftKey(),copy(defaults)));await loadPhotos();draw();showOrder();updatePreview();setStatus('Открыт заказ: '+orders.find(o=>o.id===id).label)}
 function orderName(){return [data.couple?.first,data.couple?.second].filter(Boolean).join(' и ')||'Новая свадьба'}
 $('orderSelect').addEventListener('change',e=>openOrder(e.target.value));
 $('newOrderBtn').addEventListener('click',async()=>{const name=prompt('Имя заказа (например: Анна и Максим):');if(!name?.trim())return;const id=uniqueId(name.trim());orders.push({id,label:name.trim()});storeOrder();localStorage.setItem('eterna-order:'+id+':config',JSON.stringify(copy(defaults)));await openOrder(id)});
