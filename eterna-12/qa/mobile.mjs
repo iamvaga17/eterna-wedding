@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {mkdir} from 'node:fs/promises';
+import {mkdir, readFile} from 'node:fs/promises';
 import {devices, webkit} from 'playwright';
 
 await mkdir('screenshots', {recursive: true});
@@ -94,7 +94,36 @@ try {
       await page.getByRole('button', {name: 'Проверить ответы'}).tap();
       await page.getByText('Это демонстрация. Ответы никуда не отправлены.', {exact: true}).waitFor();
       await page.screenshot({path: `screenshots/${name}-rsvp.png`});
+      assert.equal(await page.locator('.cover-bar a[href="#rsvp"]').count(), 0);
       if (name === 'iphone-se') {
+        const config = await readFile('wedding-config.js', 'utf8');
+        const endpoint = 'https://example.test/rsvp';
+        await page.route('**/wedding-config.js?rev=*', route => route.fulfill({
+          contentType: 'application/javascript',
+          body: config + '\nwindow.WEDDING_CONFIG.rsvp = {questions: [], endpoint: ' + JSON.stringify(endpoint) + '};'
+        }));
+        const payloads = [];
+        await page.route(endpoint, async route => {
+          const data = JSON.parse(route.request().postData());
+          payloads.push(data);
+          await route.fulfill({
+            headers: {'access-control-allow-origin': '*'},
+            json: payloads.length === 1 ? {ok: false} : {ok: true, id: data.id}
+          });
+        });
+        await page.goto('http://127.0.0.1:8080/eterna-12/index.html#rsvp');
+        await page.locator('#rsvp-name').fill('Тестовый гость');
+        const send = page.getByRole('button', {name: 'Отправить ответ'});
+        await send.tap();
+        await page.getByText('Не удалось подтвердить сохранение.', {exact: false}).waitFor();
+        assert.equal(await page.locator('#rsvp-name').inputValue(), 'Тестовый гость');
+        assert.equal(await page.getByText('Ваш ответ сохранён.').count(), 0);
+        await send.tap();
+        await page.getByText('Ваш ответ сохранён.', {exact: true}).waitFor();
+        assert.equal(payloads.length, 2);
+        assert.deepEqual(payloads[0], payloads[1]);
+        assert.equal(payloads[0].name, 'Тестовый гость');
+        assert.equal(payloads[0].attendance, 'yes');
         await page.goto('http://127.0.0.1:8080/editor.html');
         await page.getByLabel('Имя жениха', {exact: true}).fill('  ёлка');
         await page.getByLabel('Имя невесты', {exact: true}).fill('Анна-Мария');

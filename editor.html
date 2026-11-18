@@ -30,6 +30,8 @@
 <h2>Тексты и программа</h2><fieldset id="texts"></fieldset>
 <details><summary>Настройки RSVP для 12.0</summary>
 <p class="muted">Измени заголовок, срок и вопросы в <a href="rsvp-builder.html" target="_blank" rel="noopener">конструкторе RSVP</a> либо вставь JSON ниже. Сохрани, чтобы применить настройку к этому заказу.</p>
+<label for="orderRsvpEndpoint">Адрес сбора ответов (HTTPS)</label><input id="orderRsvpEndpoint" type="url" placeholder="https://script.google.com/macros/s/…/exec">
+<p class="muted">Оставь поле пустым для демо. Предпросмотр редактора всегда работает в демо-режиме.</p>
 <label for="orderRsvp">Конфигурация анкеты (JSON)</label><textarea id="orderRsvp" rows="9" spellcheck="false"></textarea>
 <div class="actions"><button type="button" id="saveRsvp">Применить анкету</button><button type="button" class="secondary" id="resetRsvp">Анкета по умолчанию</button></div>
 <p class="status" id="rsvpStatus" role="status"></p></details>
@@ -176,7 +178,9 @@ input.addEventListener('change',async()=>{const file=input.files?.[0];if(!file)r
 remove.addEventListener('click',async()=>{try{await deletePhoto(key)}catch{}if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key];data.photos[key]='';changed('Фото убрано.');show()});
 manual.addEventListener('input',()=>{if(!localPhoto(key)&&photoUrls[key]){URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key]}show()});show();return card}
 function showRsvp(){
- $('orderRsvp').value=JSON.stringify(data.rsvp||window.WEDDING_RSVP_CONFIG,null,2);
+ const {endpoint='',...questions}=data.rsvp||window.WEDDING_RSVP_CONFIG;
+ $('orderRsvpEndpoint').value=endpoint;
+ $('orderRsvp').value=JSON.stringify(questions,null,2);
  $('rsvpStatus').textContent='';
 }
 $('saveRsvp').onclick=()=>{
@@ -199,6 +203,12 @@ $('saveRsvp').onclick=()=>{
        current=cfg.questions.find(item=>item.id===field);
      }
    }
+   const address=$('orderRsvpEndpoint').value.trim();
+   if(address){
+     const url=new URL(address);
+     if(url.protocol!=='https:'||url.username||url.password||url.hash)throw Error('Укажи действующий HTTPS-адрес приёма ответов.');
+     cfg.endpoint=url.href;
+   }else delete cfg.endpoint;
    data.rsvp=cfg;
    changed();
    $('rsvpStatus').textContent='Анкета сохранена в заказе.';
@@ -297,7 +307,7 @@ async function exportPackage(){
    }
    if(!legacy){
      await exportV12(folder,files,config);
-     const readme='ÉTERNA 12.0 · заказ '+id+'\n\nОпубликуйте папку '+folder+' целиком, сохранив её структуру. Входная страница — index.html.\nRSVP демонстрационный. Ответы не отправляются.\n';
+     const readme='ÉTERNA 12.0 · заказ '+id+'\n\nОпубликуйте папку '+folder+' целиком, сохранив её структуру. Входная страница — index.html.\n'+(config.rsvp?.endpoint?'RSVP отправляет ответы на указанный в настройках адрес.':'RSVP демонстрационный. Ответы не отправляются.')+'\n';
      files.push({name:'ИНСТРУКЦИЯ.txt',bytes:enc.encode(readme)});
      download(zip(files),'eterna-12-'+id+'.zip');
      setStatus('Готов комплект 12.0 для заказа '+id+'.');
