@@ -269,6 +269,60 @@
     }
   });
 
+  // Interactive editorial scene: text-only, accessible and intentionally lightweight.
+  const deskButtons = Array.from(document.querySelectorAll('[data-desk]'));
+  if (deskButtons.length) {
+    const deskCategory = document.getElementById('desk-category');
+    const deskNumber = document.getElementById('desk-number');
+    const deskTitle = document.getElementById('desk-story-title');
+    const deskCopy = document.getElementById('desk-story-copy');
+    const deskTicker = document.getElementById('desk-ticker');
+    const deskScreen = document.querySelector('.desk-screen');
+    const stories = [
+      {
+        category: 'СРОЧНО', number: '01',
+        title: 'Двое официально перешли на сторону любви',
+        copy: 'Главные подозреваемые подтвердили: 7 августа 2027 года состоится свадьба. Гостей просят явиться нарядными и голодными.',
+        ticker: 'Наш источник сообщает: любовь победила здравый смысл.'
+      },
+      {
+        category: 'СВОДКА', number: '02',
+        title: 'Установлено местонахождение свадебного торта',
+        copy: 'По предварительным данным, торт прибудет к концу вечера. Редакция рекомендует сохранять спокойствие и не покидать танцпол.',
+        ticker: 'Очевидцы утверждают: первый кусок никто не отдаст без боя.'
+      },
+      {
+        category: 'СЕНСАЦИЯ', number: '03',
+        title: 'Гости приглашены на операцию «Горько!»',
+        copy: 'Специалисты ожидают повышенную концентрацию объятий, смеха и неожиданных танцевальных решений. Присутствие гостей крайне желательно.',
+        ticker: 'Срочно: уровень счастья в регионе может превысить норму.'
+      }
+    ];
+    let deskAnimation;
+    function selectStory(index) {
+      const story = stories[index];
+      if (!story) return;
+      deskButtons.forEach((button, i) => {
+        const selected = i === index;
+        button.classList.toggle('is-active', selected);
+        button.setAttribute('aria-pressed', String(selected));
+      });
+      deskCategory.textContent = story.category;
+      deskNumber.textContent = story.number;
+      deskTitle.textContent = story.title;
+      deskCopy.textContent = story.copy;
+      deskTicker.textContent = story.ticker;
+      if (!motion.matches && deskScreen.animate) {
+        deskAnimation?.cancel();
+        deskAnimation = deskScreen.animate([
+          {opacity: .45, filter: 'grayscale(.6)', transform: 'translateY(5px)'},
+          {opacity: 1, filter: 'grayscale(0)', transform: 'translateY(0)'}
+        ], {duration: 330, easing: 'ease-out'});
+      }
+    }
+    deskButtons.forEach(button => button.addEventListener('click', () => selectStory(Number(button.dataset.desk))));
+  }
+
   window.ETERNA_MOUNT_RSVP(document.getElementById('rsvpDynamic'), {
     attendancePrompt: 'Будете в кадре?',
     attendanceLabels: {yes: 'Буду в кадре', no: 'В этот раз без меня'},
