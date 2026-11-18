@@ -1,7 +1,7 @@
 {
   "name": "eterna-ai-studio",
   "main": "./cloudflare-free-worker-v22.js",
-  "compatibility_date": "2026-11-19",
+  "compatibility_date": "2026-11-18",
   "workers_dev": true,
   "ai": {
     "binding": "AI"
