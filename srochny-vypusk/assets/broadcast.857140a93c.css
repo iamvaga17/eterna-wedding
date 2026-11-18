@@ -335,3 +335,42 @@ h2 { font-size: clamp(3rem, 10vw, 7.75rem); overflow-wrap: anywhere; }
   .opening-copy h1, .opening-copy > p:last-of-type, .opening-copy .primary, .monitor, .rundown-on-air li { animation: none !important; opacity: 1 !important; transform: none !important; }
   .confetti-layer::before, .confetti-layer::after { display: none; }
 }
+
+
+/* Motion v5: paper rotates in perspective, chapter captions act as TV lower-thirds. */
+.confetti-layer { perspective: 680px; perspective-origin: center 40%; }
+.confetti-layer i { transform-style: preserve-3d; }
+.archive, .field-report, .forecast, .response { position: relative; }
+.chapter-bumper {
+  position: absolute;
+  z-index: 4;
+  top: .65rem;
+  right: var(--gutter);
+  max-width: calc(100% - 2 * var(--gutter));
+  padding: .4rem .7rem;
+  color: #fffaf0;
+  background: #a8252b;
+  border-left: 3px solid #efc4aa;
+  font: 600 clamp(.59rem, 2.1vw, .75rem)/1.3 var(--mono);
+  letter-spacing: .075em;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0 4px 10px #12131b1c;
+}
+.field-report .chapter-bumper, .response .chapter-bumper {
+  color: #fffaf0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .chapter-on-air > .chapter-bumper {
+    animation: tv-lower-third 2.2s cubic-bezier(.2,.74,.2,1) both;
+  }
+  @keyframes tv-lower-third {
+    0% { opacity: 0; transform: translate3d(25px,0,0) scaleX(.85); }
+    12% { opacity: 1; transform: none; }
+    72% { opacity: 1; transform: none; }
+    100% { opacity: 0; transform: translate3d(12px,0,0); }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chapter-bumper { display: none; }
+}
