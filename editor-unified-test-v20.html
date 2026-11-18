@@ -1,0 +1,753 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>ТЕСТ V20 · Единый редактор + генерация сцен</title><style>
+:root{font-family:system-ui,-apple-system,Arial,sans-serif;color:#282923;background:#f8f5ef}*{box-sizing:border-box}body{margin:0}header{padding:25px 22px;border-bottom:1px solid #dedad2;background:#fff;display:flex;align-items:center;gap:16px;justify-content:space-between}h1{font:400 32px Georgia;margin:0}h2{font:400 23px Georgia;margin:0 0 13px}small,.muted{color:#77746e;font-size:12px}main{max-width:1280px;margin:auto;padding:22px;display:grid;grid-template-columns:minmax(320px,480px) 1fr;gap:22px}.panel,.preview{background:#fff;border:1px solid #e1dbd2;border-radius:16px;padding:20px}.preview{position:sticky;top:12px;align-self:start}.preview iframe{width:100%;height:min(76vh,790px);border:1px solid #e6e2dc;border-radius:14px;background:white}fieldset{border:0;padding:0;margin:0 0 25px}label{font-size:13px;display:block;margin:12px 0 5px;font-weight:550}input:not([type=checkbox]),textarea{width:100%;padding:10px 12px;border:1px solid #d6d2ca;border-radius:8px;background:#fdfcf9;font:14px system-ui;outline-color:#917a64}textarea{min-height:77px;resize:vertical}button{border:0;border-radius:9px;background:#38322d;color:#fff;padding:12px 14px;font-size:13px;font-weight:600;cursor:pointer}button.secondary{background:#e8e2d9;color:#38322d}.actions{display:flex;flex-wrap:wrap;gap:8px}.section-row{padding:10px 0;border-bottom:1px solid #eee9e1;display:flex;align-items:center;gap:12px}.section-row label{margin:0;flex:1}.section-row input{width:20px;height:20px;accent-color:#655645}details{border-top:1px solid #e7e2da;padding:15px 0}summary{cursor:pointer;font:500 17px Georgia}.note{background:#f0ebe3;border-radius:9px;padding:12px;font-size:12px;line-height:1.55}.error{color:#ac3423}.status{font-size:12px;color:#656057}.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:850px){main{display:block;padding:12px}.preview{position:static;margin-top:12px}.preview iframe{height:650px}header{flex-direction:column;align-items:flex-start;padding:18px}}
+
+.photo-card{border:1px solid #e4ded5;border-radius:13px;padding:12px;margin:12px 0;background:#fcfaf6}.photo-card strong{display:block;font-size:13px;margin-bottom:9px}.photo-tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.photo-tools input[type=file]{max-width:100%;font-size:12px}.photo-card img{display:block;width:100%;height:155px;object-fit:cover;border-radius:8px;background:#e7e0d7;margin:8px 0}.photo-card .photo-path{font-size:11px;color:#72685d;overflow-wrap:anywhere}.photo-card button{padding:9px 11px}.photo-card select{padding:8px;border:1px solid #d6d2ca;border-radius:8px;background:#fff}.photo-card input[type=range]{width:100%;accent-color:#76614d}.photo-card .pos-label{font-size:12px;color:#665a50}.photo-card .error{font-size:12px}.upload-help{font-size:12px;line-height:1.5;color:#645d53}
+
+.orders-box{border:1px solid #e5ddd3;border-radius:14px;padding:16px;margin:0 0 24px;background:#faf6ee}
+.orders-box h2{margin-bottom:8px}.orders-line{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.orders-line select{flex:1;min-width:150px;padding:11px;background:white;border:1px solid #d6d2ca;border-radius:9px;font:14px system-ui}
+.orders-identifier{font-size:12px;color:#6e6255;overflow-wrap:anywhere;margin:8px 0 0}
+@media(max-width:420px){.orders-line button{flex:1}}
+
+.photo-group{border:1px solid #e6e0d7;border-radius:12px;margin:12px 0;padding:0 12px;background:#fdfbf7}
+.photo-group>summary{padding:16px 6px;font-weight:600;font-size:14px;cursor:pointer}
+.photo-group .photo-card{margin:12px 0 18px}
+
+.palette-panel{border:1px solid #e6e0d7;border-radius:12px;background:#fdfbf7;padding:14px;margin:10px 0 18px}.palette-panel strong{font-size:13px}.palette-editor{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin:12px 0}.palette-editor label{font-size:10px;text-align:center;margin:0;min-width:0}.palette-editor input[type=color]{display:block;width:100%;min-width:0;height:48px;border:1px solid #d8d0c4;border-radius:7px;background:white;padding:3px;cursor:pointer}.palette-note{font-size:12px;color:#756a5d;line-height:1.5}.palette-reset{margin-top:8px}
+[hidden]{display:none!important}#broadcastEditorFields fieldset{margin-top:8px}#broadcastEditorFields textarea{min-height:90px}#previewVersion{font:14px system-ui;padding:9px;width:100%;border:1px solid #d6d2ca;border-radius:8px}button:disabled{opacity:.55;cursor:not-allowed}.studio-panel{margin:15px 0 25px;padding:16px;border:1px solid #d5ccc1;border-radius:14px;background:#fbf7f0}.studio-card{border:1px solid #e0d9cd;background:white;border-radius:11px;margin:10px 0;padding:12px}.studio-card strong{display:block;margin-bottom:8px;font-size:13px}.studio-card img{display:block;width:100%;max-height:220px;object-fit:contain;background:#ede8df;border-radius:7px;margin-bottom:8px}.studio-card img[hidden]{display:none!important}.studio-card input{max-width:100%;min-width:0}.studio-panel select{width:100%;padding:10px;border:1px solid #d6d2ca;background:white;border-radius:8px}.studio-panel .photo-tools{align-items:center}.studio-provider{margin:15px 0;padding:12px;border:1px solid #ddd1c5;background:white;border-radius:9px}.studio-provider input{max-width:100%}.studio-permission{display:flex;align-items:flex-start;gap:8px;font-size:12px;line-height:1.5;margin:14px 0}.studio-permission input{flex:none;margin-top:3px}.studio-pending{border:2px solid #b5834a;background:#fff9ed}.studio-pending img{max-height:330px}</style></head><body>
+<header><div><h1>Единый редактор · фотостудия v20</h1><small>ÉTERNA + Срочный выпуск · черновики тестовой версии отдельно от основного редактора</small></div><div class="actions"><button id="previewBtn" class="secondary">Обновить просмотр</button><button id="downloadBtn">Скачать комплект ZIP</button></div></header>
+<main><div class="panel">
+<section class="orders-box" aria-label="Управление заказами">
+<h2>Заказы молодожёнов</h2>
+<p class="muted">Каждая свадьба хранится отдельно в этом браузере. Изменения в одном заказе не затрагивают другие.</p>
+<div class="orders-line"><select id="orderSelect" aria-label="Выбрать заказ"></select><button id="newOrderBtn" type="button">+ Новый заказ</button></div>
+<div class="orders-line"><button id="duplicateOrderBtn" type="button" class="secondary">Сделать копию</button><button id="deleteOrderBtn" type="button" class="secondary">Удалить заказ</button></div>
+<p class="orders-identifier" id="orderUrlLabel"></p>
+</section><p class="note">Загружай фото из галереи iPhone — они сразу появятся в предпросмотре. Фото сохраняются локально в этом браузере; для публикации нажми «Скачать комплект ZIP», распакуй и загрузи файлы на GitHub. Данные никому не отправляются. Анкету для 12.0 можно настроить в этом заказе.</p>
+<div id="broadcastEditorFields" hidden>
+  <h2>Данные пары · Срочный выпуск</h2>
+  <fieldset id="broadcastCouple"></fieldset>
+  <section class="studio-panel" aria-labelledby="studioHeading">
+    <h2 id="studioHeading">Фото и ИИ-фотостудия</h2>
+    <p class="muted">Загрузи исходные фотографии пары. Затем получи задание для ИИ по выбранной сцене и загрузи готовый результат. Только итоговые кадры подставляются в предпросмотр. Автоматическая генерация внутри сайта пока не подключена.</p>
+    <div id="studioImages"></div>
+    <details class="studio-provider">
+      <summary>Подключение генератора (только для владельца редактора)</summary>
+      <p class="muted">Адрес твоего защищённого сервера. Ключ OpenAI сюда не вводи. Отдельный пароль доступа хранится только до закрытия страницы.</p>
+      <label for="studioEndpoint">HTTPS-адрес сервера генерации</label>
+      <input id="studioEndpoint" type="url" placeholder="https://your-worker.workers.dev" autocomplete="off" spellcheck="false">
+      <label for="studioToken">Пароль доступа к серверу</label>
+      <input id="studioToken" type="password" autocomplete="off" placeholder="Отдельный секрет сервера">
+      <p class="muted">Без настроенного сервера кнопка генерации сообщит об отсутствии подключения. Тестовые фото не отправляются автоматически.</p>
+    </details>
+    <label class="studio-permission"><input type="checkbox" id="studioPermission"> Подтверждаю, что пара разрешила использовать фотографии для ИИ-генерации.</label>
+    <div class="actions"><button type="button" id="studioGenerateAll">Сгенерировать все 3 сцены</button></div>
+    <p class="muted">Обе исходные фотографии передаются в каждую генерацию, чтобы пара оставалась узнаваемой. Новые кадры сначала показываются на проверку и не заменяют одобренные без подтверждения.</p>
+    <div id="studioGenerated"></div>
+    <label for="studioScene">Сцена для генерации</label>
+    <select id="studioScene">
+      <option value="sceneCover">Главный репортаж и расследование торта</option>
+      <option value="sceneArchive">Архивное фото знакомства</option>
+      <option value="sceneForecast">Прогноз свадебного вечера</option>
+    </select>
+    <label for="studioBrief">Дополнительные детали сцены</label>
+    <textarea id="studioBrief" rows="3" placeholder="Например: встретились в аэропорту, а не в кафе"></textarea>
+    <div class="actions"><button type="button" id="studioPrompt">Скопировать задание для ИИ</button></div>
+    <p id="studioStatus" class="status" aria-live="polite"></p>
+  </section>
+  <h2>Тексты телевизионного приглашения</h2>
+  <p class="muted">Меняй историю знакомства, заголовки новостей и материалы досье. Справа увидишь результат.</p>
+  <fieldset id="broadcastFields"></fieldset>
+  <p class="note">Это тестовый редактор. Изменения сохраняются в этом браузере. Экспорт «Срочного выпуска» в ZIP пока не подключён.</p>
+</div>
+<div id="eternaEditorFields">
+<h2>Данные пары</h2><fieldset id="couple"></fieldset>
+<h2>Фотографии</h2><fieldset id="photos"></fieldset>
+<details><summary>Фоновая музыка</summary>
+<label for="musicFile">Загрузить или заменить трек</label>
+<input id="musicFile" type="file" accept=".mp3,.m4a,audio/mpeg,audio/mp4">
+<p class="muted">MP3 или M4A до 25 МБ. Музыка включается гостем вручную. Файл сохраняется в заказе и попадёт в ZIP для 12.0.</p>
+<div class="actions"><button id="removeMusic" type="button" class="secondary" disabled>Убрать музыку</button></div>
+<p id="musicStatus" class="status" role="status"></p></details>
+<h2>Разделы сайта</h2><fieldset id="sections"></fieldset>
+<h2>Тексты и программа</h2><fieldset id="texts"></fieldset>
+<details><summary>Настройки RSVP для 12.0</summary>
+<p class="muted">Измени заголовок, срок и вопросы в <a href="rsvp-builder.html" target="_blank" rel="noopener">конструкторе RSVP</a> либо вставь JSON ниже. Сохрани, чтобы применить настройку к этому заказу.</p>
+<label for="orderRsvpEndpoint">Адрес сбора ответов (HTTPS)</label><input id="orderRsvpEndpoint" type="url" placeholder="https://script.google.com/macros/s/…/exec">
+<p class="muted">Оставь поле пустым для демо. Предпросмотр редактора всегда работает в демо-режиме.</p>
+<label for="orderRsvp">Конфигурация анкеты (JSON)</label><textarea id="orderRsvp" rows="9" spellcheck="false"></textarea>
+<div class="actions"><button type="button" id="saveRsvp">Применить анкету</button><button type="button" class="secondary" id="resetRsvp">Анкета по умолчанию</button></div>
+<p class="status" id="rsvpStatus" role="status"></p></details>
+</div>
+<div class="actions"><button id="downloadBtnBottom">Скачать комплект ZIP</button><button id="resetBtn" class="secondary">Сбросить изменения</button></div><p id="status" class="status" aria-live="polite"></p></div>
+<div class="preview"><h2>Предпросмотр</h2><p class="muted">Изменения и фото отображаются в выбранном шаблоне.</p><label for="previewVersion">Шаблон приглашения</label><select id="previewVersion"><option value="12">ÉTERNA 12.0</option><option value="broadcast">Срочный выпуск</option><option value="legacy">ÉTERNA · прежний шаблон</option></select>
+<p><a href="eterna-12/" target="_blank" rel="noopener">Открыть демо 12.0 ↗</a></p>
+<iframe id="siteFrame" title="Предпросмотр приглашения" src="eterna-12/?editor-preview=1"></iframe><p class="muted">Фотографии и шрифты демо требуют интернета. Для публикации используется ZIP с настройками и фотографиями.</p></div></main>
+<script src="wedding-config.js"></script><script src="rsvp-config.js"></script><script>
+(()=>{'use strict';
+const LEGACY_KEY='eterna-unified-test-legacy';
+const INDEX_KEY='eterna-unified-test-orders-v1';
+const defaults=JSON.parse(JSON.stringify(window.WEDDING_CONFIG||{}));
+const copy=x=>JSON.parse(JSON.stringify(x));
+const PHOTO_DEFAULT_KEYS=["introCover", "collage1", "collage2", "invitationBg", "invitationLeft", "invitationRight", "memoryBg", "scheduleBg", "venueBg", "dressBg", "dress1", "dress2", "dress3", "dress4", "countdownBg", "rsvpBg", "endingBg"];
+const DRESS_PALETTES_DEFAULT={female:['#e8d9c8','#c6af94','#b2b5a5','#d3b8ac','#73665b'],male:['#272b2e','#51595b','#9b9d95','#d0c7b9','#f1e9de']};
+function normalizeOrder(d){if(!d||typeof d!=='object')d=copy(defaults);d.photos??={};d.photoPosition??={};d.dressPalettes??={};d.dressPhotoCounts??={female:2,male:2};for(const gender of ['female','male'])d.dressPhotoCounts[gender]=Math.min(8,Math.max(2,Number(d.dressPhotoCounts[gender])||2));for(const [group,colors] of Object.entries(DRESS_PALETTES_DEFAULT))if(!Array.isArray(d.dressPalettes[group]))d.dressPalettes[group]=[...colors];for(const k of PHOTO_DEFAULT_KEYS){if(!(k in d.photos))d.photos[k]='';if(!(k in d.photoPosition))d.photoPosition[k]='center 50%'}d.broadcast??={};d.template??='12';return d;}
+
+function getJSON(key,fallback){try{const v=JSON.parse(localStorage.getItem(key));return v??fallback}catch{return fallback}}
+let orders=getJSON(INDEX_KEY,[]);
+if(!Array.isArray(orders)||!orders.length){orders=[{id:'demo',label:'Демо — Александр и Виктория'}];localStorage.setItem(INDEX_KEY,JSON.stringify(orders));const legacy=getJSON(LEGACY_KEY,null);if(legacy)localStorage.setItem('eterna-unified-test-order:demo:config',JSON.stringify(legacy))}
+let orderId=orders[0].id;
+let data=normalizeOrder(getJSON('eterna-order:'+orderId+':config',copy(defaults)));
+function storeOrder(){localStorage.setItem(INDEX_KEY,JSON.stringify(orders))}
+function draftKey(){return 'eterna-unified-test-order:'+orderId+':config'}
+function mediaKey(key,id=orderId){return 'unified-test-order:'+id+':'+key}
+function translit(v){const a={'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'e','ж':'zh','з':'z','и':'i','й':'i','к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f','х':'h','ц':'ts','ч':'ch','ш':'sh','щ':'sch','ы':'y','э':'e','ю':'yu','я':'ya','ь':'','ъ':''};return [...v.toLowerCase()].map(c=>a[c]??c).join('').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,46)||'svadba'}
+function uniqueId(name){const base=translit(name);let x=base,n=2;while(orders.some(o=>o.id===x))x=base+'-'+n++;return x}
+
+const $=id=>document.getElementById(id);
+const isLegacy=()=>$('previewVersion').value==='legacy';
+const previewUrls={12:'eterna-12/?editor-preview=1',broadcast:'srochny-vypusk/editor-preview-v19.html?editor-preview=1#live',legacy:'templates/eterna.html?editor-preview=1#top'};
+const STUDIO_KEYS=['studio-bride','studio-groom','studio-sceneCover','studio-sceneArchive','studio-sceneForecast','studio-pending-sceneCover','studio-pending-sceneArchive','studio-pending-sceneForecast'];
+const PHOTO_KEYS=['main','secondary1','secondary2','collage1','collage2','invitationBg','invitationLeft','invitationRight','storyMain','storySmall','memoryBg','scheduleBg','venueBg','dressBg','dress1','dress2','dress3','dress4','dressFemale3','dressFemale4','dressFemale5','dressFemale6','dressFemale7','dressFemale8','dressMale3','dressMale4','dressMale5','dressMale6','dressMale7','dressMale8','countdownBg','rsvpBg','endingBg','introCover'];
+const PHOTO_NAMES={main:'Главная фотография',secondary1:'Дополнительная фотография 1',secondary2:'Дополнительная фотография 2',storyMain:'Наша история — главное фото',storySmall:'Наша история — дополнительное фото',introCover:'Обложка книги — фон',collage1:'Первый фотоколлаж — слева',collage2:'Первый фотоколлаж — справа',invitationBg:'Приглашение — большое фоновое фото',invitationLeft:'Приглашение — левый фотокадр',invitationRight:'Приглашение — правый фотокадр',memoryBg:'Атмосферный блок — фоновое фото',scheduleBg:'День свадьбы — фоновое фото',venueBg:'Место встречи — фон зала',dressBg:'Дресс-код — фон',dress1:'Для неё — фото 1',dress2:'Для него — фото 1',dress3:'Для неё — фото 2',dress4:'Для него — фото 2',countdownBg:'Обратный отсчёт — фон',rsvpBg:'Анкета гостей — фон',endingBg:'До встречи — финальное фото',dressFemale3:'Для неё — фото 3',dressFemale4:'Для неё — фото 4',dressFemale5:'Для неё — фото 5',dressFemale6:'Для неё — фото 6',dressFemale7:'Для неё — фото 7',dressFemale8:'Для неё — фото 8',dressMale3:'Для него — фото 3',dressMale4:'Для него — фото 4',dressMale5:'Для него — фото 5',dressMale6:'Для него — фото 6',dressMale7:'Для него — фото 7',dressMale8:'Для него — фото 8'};
+const LABELS={first:'Имя жениха',second:'Имя невесты',dateLabel:'Дата на сайте',city:'Город',dateTime:'Дата и время для таймера (ISO)',photoStory:'Первый фотоколлаж',invitation:'Приглашение',story:'Наша история',memory:'Атмосферный блок',schedule:'Программа дня',venue:'Место проведения',dress:'Дресс-код',countdown:'Обратный отсчёт',rsvp:'Анкета гостей (RSVP)',ending:'Финальный экран',greeting:'Обращение к гостям',invitation1:'Приглашение — абзац 1',invitation2:'Приглашение — абзац 2',storyIntro:'Вступление к истории',storyNote:'Текст истории',venueName:'Название площадки или город',venueAddress:'Адрес и описание',venueMap:'Ссылка на карту (https://)',rsvpDeadline:'Срок подтверждения'};
+const photoUrls={};
+let db;
+function setStatus(message){$('status').textContent=message}
+function openDB(){return new Promise((resolve,reject)=>{if(!window.indexedDB)return reject(Error('Хранилище недоступно'));const req=indexedDB.open('eterna-photo-editor',1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('photos'))req.result.createObjectStore('photos')};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
+async function storeMedia(key,blob,id=orderId){
+ const storageKey=mediaKey(key,id);
+ const bytes=await blob.arrayBuffer();
+ db??=await openDB();
+ return new Promise((resolve,reject)=>{
+  const tx=db.transaction('photos','readwrite');
+  const request=tx.objectStore('photos').put(bytes,storageKey);
+  request.onerror=()=>reject(request.error||Error('Не удалось сохранить файл'));
+  tx.onabort=()=>reject(tx.error||Error('Сохранение файла прервано'));
+  tx.oncomplete=resolve;
+ });
+}
+async function readMedia(key,type='image/jpeg',id=orderId){
+ const storageKey=mediaKey(key,id);
+ db??=await openDB();
+ return new Promise((resolve,reject)=>{
+  const request=db.transaction('photos','readonly').objectStore('photos').get(storageKey);
+  request.onsuccess=()=>{
+   const saved=request.result;
+   resolve(saved instanceof ArrayBuffer ? new Blob([saved],{type}) : saved);
+  };
+  request.onerror=()=>reject(request.error||Error('Не удалось прочитать файл'));
+ });
+}
+async function deleteMedia(key,id=orderId){
+ const storageKey=mediaKey(key,id);
+ db??=await openDB();
+ return new Promise((resolve,reject)=>{
+  const tx=db.transaction('photos','readwrite');
+  const request=tx.objectStore('photos').delete(storageKey);
+  request.onerror=()=>reject(request.error||Error('Не удалось удалить файл'));
+  tx.onabort=()=>reject(tx.error||Error('Удаление файла прервано'));
+  tx.oncomplete=resolve;
+ });
+}
+function photoFileName(key){return 'wedding-photo-'+key+'.jpg'}
+function photoLink(key){return photoFileName(key)}
+function localPhoto(key){return data.photos?.[key]===photoLink(key)}
+function field(parent,obj,key,label,area=false){const wrap=document.createElement('div'),l=document.createElement('label');l.textContent=label||LABELS[key]||key;const input=document.createElement(area?'textarea':'input');if(!area)input.type='text';input.value=obj[key]??'';input.addEventListener('input',()=>{obj[key]=input.value;changed()});l.append(input);wrap.append(l);parent.append(wrap)}
+function cachedUrl(key,blob){if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);photoUrls[key]=URL.createObjectURL(blob)}
+function ensureDressLayout(){
+ if(!isLegacy())return;
+ const frame=$('siteFrame'),doc=frame.contentDocument;
+ if(!doc)return;
+ const mood=doc.querySelector('#dress .mood-grid');if(!mood)return;
+ // Reuse the photos already present in the template as defaults.
+ if(!mood.dataset.etOriginalImages){mood.dataset.etOriginalImages=JSON.stringify(Array.from(mood.querySelectorAll('img')).map(el=>el.src));}
+ const original=JSON.parse(mood.dataset.etOriginalImages||'[]');
+ // Remove the three original direct image cards, not the new editable galleries.
+ Array.from(mood.children).filter(el=>el.matches('figure')).forEach(el=>el.remove());
+ for(const [gender,cls,title] of [['female','et-dress-female','Для неё'],['male','et-dress-male','Для него']]){
+  let group=mood.querySelector('.'+cls);
+  if(!group){group=doc.createElement('section');group.className='et-dress-group '+cls;
+    const h=doc.createElement('h3');h.textContent=title;group.append(h);
+    const grid=doc.createElement('div');grid.className='et-dress-pictures';group.append(grid);
+    const palette=doc.createElement('div');palette.className='et-dress-colors';palette.setAttribute('aria-label','Палитра '+title.toLowerCase());
+    for(let i=0;i<5;i++)palette.append(doc.createElement('span'));group.append(palette);
+  }
+  const grid=group.querySelector('.et-dress-pictures');
+  const count=data.dressPhotoCounts?.[gender]||2;grid.dataset.count=String(count);
+  while(grid.children.length>count)grid.lastElementChild.remove();
+  for(let i=0;i<count;i++){
+    let figure=grid.children[i];
+    if(!figure){figure=doc.createElement('figure');const image=doc.createElement('img');image.loading='lazy';const label=doc.createElement('figcaption');figure.append(image,label);grid.append(figure);}
+    const image=figure.querySelector('img');
+    const key=gender==='female'?(i===0?'dress1':i===1?'dress3':'dressFemale'+(i+1)):(i===0?'dress2':i===1?'dress4':'dressMale'+(i+1));
+    image.dataset.etKey=key;image.alt=title+' — образ '+(i+1);
+    const fallback=i<2?(gender==='female'?(i===0?original[0]:original[2]||original[0]):original[1]):'';
+    const value=localPhoto(key)?photoUrls[key]:data.photos?.[key];
+    if(value){if(image.getAttribute('src')!==value)image.src=value;figure.style.display='';}
+    else if(fallback){if(image.getAttribute('src')!==fallback)image.src=fallback;figure.style.display='';}
+    else {image.removeAttribute('src');figure.style.display='none';}
+    image.style.objectPosition=data.photoPosition?.[key]||'center';
+    figure.querySelector('figcaption').textContent=title+' · '+String(i+1).padStart(2,'0');
+  }
+  mood.append(group);
+  const defaultsPal=DRESS_PALETTES_DEFAULT[gender],colors=data.dressPalettes?.[gender]||defaultsPal;
+  group.querySelectorAll('.et-dress-colors span').forEach((el,i)=>{const color=colors[i];el.style.backgroundColor=/^#[0-9a-f]{6}$/i.test(color||'')?color:defaultsPal[i]});
+ }
+ mood.dataset.etSplit='yes';
+ let style=doc.getElementById('et-dress-editor-direct');
+ if(!style){style=doc.createElement('style');style.id='et-dress-editor-direct';doc.head.append(style);}
+ style.textContent=`
+ #dress .mood-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:36px!important;max-width:1120px!important;align-items:start!important}
+ #dress .et-dress-group{min-width:0;text-align:center}
+ #dress .et-dress-group h3{font:italic 400 clamp(38px,5vw,62px)/1.15 Georgia,serif;color:#453b34;margin:0 0 22px}
+ #dress .et-dress-pictures{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important;align-items:start}
+ #dress .et-dress-pictures figure,#dress .et-dress-pictures figure:nth-child(n){margin:0!important;transform:none!important;position:relative!important;grid-column:auto!important;min-width:0!important;width:100%!important;height:clamp(180px,25vw,300px)!important;border:5px solid #faf4ec!important;overflow:hidden!important;box-shadow:0 12px 25px #382d2630!important;background:#c5b7a9}
+ #dress .et-dress-pictures figure:nth-child(even){margin-top:18px!important}
+
+ /* Exactly 3 photos: balanced editorial triptych, not an orphan left card. */
+ #dress .et-dress-pictures[data-count="3"] > figure:nth-child(3){grid-column:1/-1!important;justify-self:center!important;width:min(75%,340px)!important;height:clamp(220px,30vw,385px)!important;margin:10px auto 0!important}
+ #dress .et-dress-pictures[data-count="3"] > figure:nth-child(1),#dress .et-dress-pictures[data-count="3"] > figure:nth-child(2){margin-top:0!important}
+
+ #dress .et-dress-pictures figure img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important}
+ #dress .et-dress-pictures figure figcaption{position:absolute!important;bottom:0!important;left:0!important;right:0!important;color:white!important;font-size:9px!important;padding:25px 6px 9px!important;background:linear-gradient(transparent,#241e1c9c)!important}
+ #dress .et-dress-colors{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin:30px 0 0}
+ #dress .et-dress-colors span{aspect-ratio:1/1;display:block;border:2px solid #f8efe6;box-shadow:0 3px 10px #30221922}
+ #dress>.swatches{display:none!important}
+ @media(max-width:700px){#dress .mood-grid{grid-template-columns:1fr!important;gap:40px!important}#dress .et-dress-pictures figure,#dress .et-dress-pictures figure:nth-child(n){height:clamp(200px,62vw,350px)!important}#dress .et-dress-group h3{font-size:48px}}
+ `;
+}
+function updatePreview(){const cfg=structuredClone(data);if(cfg.music){if(photoUrls.music)cfg.music.source=photoUrls.music;else delete cfg.music;}for(const key of PHOTO_KEYS)if(localPhoto(key)&&photoUrls[key])cfg.photos[key]=photoUrls[key];if($('previewVersion').value==='broadcast'){cfg.broadcast??={};cfg.broadcast.previewPhotos={};for(const name of ['sceneCover','sceneArchive','sceneForecast']){const key='studio-'+name;if(data.broadcast.photoAssets?.[key]&&photoUrls[key])cfg.broadcast.previewPhotos[name]=photoUrls[key]}}try{const type=$('previewVersion').value==='broadcast'?'broadcast-editor-preview':'eterna-preview';$('siteFrame').contentWindow.postMessage({type,config:cfg},location.origin);if(type==='eterna-preview')ensureDressLayout()}catch{}}
+const musicTypes={mp3:'audio/mpeg',m4a:'audio/mp4'};
+let musicBusy=false;
+function setMusicBusy(busy){
+ musicBusy=busy;
+ for(const id of ['musicFile','orderSelect','newOrderBtn','duplicateOrderBtn','deleteOrderBtn','resetBtn']){
+   $(id).disabled=busy;
+ }
+ $('removeMusic').disabled=busy||!data.music;
+}
+function musicType(music){
+ const ext=music?.source?.match(/^wedding-music\.(mp3|m4a)$/)?.[1];
+ return musicTypes[ext];
+}
+function renderMusic(){
+ $('removeMusic').disabled=musicBusy||!data.music;
+ $('musicStatus').textContent=data.music
+   ? (photoUrls.music?data.music.name:'Трек не найден. Загрузите его заново.')
+   : 'Музыка не выбрана.';
+}
+$('musicFile').addEventListener('change',async event=>{
+ const input=event.currentTarget;
+ const file=input.files?.[0];
+ if(!file)return;
+ if($('downloadBtn').disabled){input.value='';return;}
+ const id=orderId;
+ const ext=file.name.toLowerCase().split('.').pop();
+ if(!Object.hasOwn(musicTypes,ext)||file.size===0||file.size>25*1024*1024){
+   $('musicStatus').textContent='Выберите непустой файл MP3 или M4A до 25 МБ.';
+   input.value='';
+   return;
+ }
+ setMusicBusy(true);
+ $('musicStatus').textContent='Сохраняю трек…';
+ try{
+   await storeMedia('music',file,id);
+   data.music={name:file.name,source:'wedding-music.'+ext};
+   cachedUrl('music',new Blob([file],{type:musicTypes[ext]}));
+   changed('Трек сохранён в заказе.');
+   renderMusic();
+ }catch(error){
+   $('musicStatus').textContent=error?.message||'Не удалось сохранить трек.'
+ }finally{
+   setMusicBusy(false);
+   input.value='';
+ }
+});
+$('removeMusic').addEventListener('click',async()=>{
+ if($('downloadBtn').disabled)return;
+ setMusicBusy(true);
+ try{
+   await deleteMedia('music');
+   delete data.music;
+   if(photoUrls.music)URL.revokeObjectURL(photoUrls.music);
+   delete photoUrls.music;
+   changed('Музыка убрана.');
+   renderMusic();
+ }catch(error){
+   $('musicStatus').textContent=error?.message||'Не удалось убрать трек.';
+ }finally{
+   setMusicBusy(false);
+ }
+});
+async function loadMusic(){
+ const id=orderId;
+ if(photoUrls.music)URL.revokeObjectURL(photoUrls.music);
+ delete photoUrls.music;
+ const type=musicType(data.music);
+ if(!type)return;
+ try{
+   const blob=await readMedia('music',type,id);
+   if(blob&&orderId===id)cachedUrl('music',blob);
+ }catch(error){
+   if(orderId===id)setStatus('Не удалось восстановить музыку.');
+ }
+}
+function changed(note='Черновик сохранён в этом браузере.'){try{localStorage.setItem(draftKey(),JSON.stringify(data))}catch{};updatePreview();setStatus(note)}
+async function compressPhoto(file){return new Promise((resolve,reject)=>{const img=new Image(),url=URL.createObjectURL(file);img.onload=()=>{try{const max=1800,f=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight)),canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(img.naturalWidth*f));canvas.height=Math.max(1,Math.round(img.naturalHeight*f));const context=canvas.getContext('2d');if(!context)throw Error('Нет поддержки обработки фото');context.fillStyle='#fff';context.fillRect(0,0,canvas.width,canvas.height);context.drawImage(img,0,0,canvas.width,canvas.height);canvas.toBlob(blob=>{URL.revokeObjectURL(url);if(blob)resolve(blob);else reject(Error('Не удалось обработать изображение'))},'image/jpeg',.85)}catch(e){URL.revokeObjectURL(url);reject(e)}};img.onerror=()=>{URL.revokeObjectURL(url);reject(Error('Не удалось прочитать фото. Попробуй сохранить его в JPEG.'))};img.src=url})}
+function createPhotoInput(key){const card=document.createElement('div');card.className='photo-card';const title=document.createElement('strong');title.textContent=PHOTO_NAMES[key];card.append(title);
+const shot=document.createElement('img');shot.alt='Предпросмотр: '+PHOTO_NAMES[key];shot.loading='lazy';shot.style.display='none';card.append(shot);
+const row=document.createElement('div');row.className='photo-tools';const input=document.createElement('input');input.type='file';input.accept='image/*,.heic,.heif';input.setAttribute('aria-label','Выбрать '+PHOTO_NAMES[key]);row.append(input);
+const remove=document.createElement('button');remove.className='secondary';remove.type='button';remove.textContent='Убрать фото';row.append(remove);card.append(row);
+const path=document.createElement('p');path.className='photo-path';card.append(path);
+const manual=document.createElement('details'),sum=document.createElement('summary');sum.textContent='Или вставить ссылку на фото';manual.append(sum);field(manual,data.photos,key,'Адрес фотографии');card.append(manual);
+const label=document.createElement('label');label.textContent='Кадрирование по вертикали';card.append(label);
+const range=document.createElement('input');range.type='range';range.min='0';range.max='100';range.step='5';const p=data.photoPosition||{};range.value=Number.parseInt((p[key]||'center 50%').match(/(\d+)%/)?.[1]||50);const rangeText=document.createElement('div');rangeText.className='pos-label';rangeText.textContent=range.value+'%';range.addEventListener('input',()=>{data.photoPosition[key]='center '+range.value+'%';rangeText.textContent=range.value+'%';changed();shot.style.objectPosition=data.photoPosition[key]});card.append(range,rangeText);
+function show(){const src=localPhoto(key)?photoUrls[key]:data.photos?.[key];if(src){shot.src=src;shot.style.display='block';shot.style.objectPosition=data.photoPosition?.[key]||'center';path.textContent=localPhoto(key)?'Фотография загружена из галереи':String(data.photos?.[key]||'')}else{shot.removeAttribute('src');shot.style.display='none';path.textContent='Используется фотография из шаблона (можно заменить)'}}
+input.addEventListener('change',async()=>{const file=input.files?.[0];if(!file)return;input.disabled=true;setStatus('Обрабатываю фотографию…');try{const blob=await compressPhoto(file);await storeMedia(key,blob);cachedUrl(key,blob);data.photos[key]=photoLink(key);changed('Фото добавлено. Оно сохранено в браузере и войдёт в ZIP.');show()}catch(e){setStatus('Ошибка: '+e.message)}finally{input.disabled=false;input.value=''}});
+remove.addEventListener('click',async()=>{try{await deleteMedia(key)}catch{}if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key];data.photos[key]='';changed('Фото убрано.');show()});
+manual.addEventListener('input',()=>{if(!localPhoto(key)&&photoUrls[key]){URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key]}show()});show();return card}
+function showRsvp(){
+ const {endpoint='',...questions}=data.rsvp||window.WEDDING_RSVP_CONFIG;
+ $('orderRsvpEndpoint').value=endpoint;
+ $('orderRsvp').value=JSON.stringify(questions,null,2);
+ $('rsvpStatus').textContent='';
+}
+$('saveRsvp').onclick=()=>{
+ try{
+   const cfg=JSON.parse($('orderRsvp').value);
+   if(typeof cfg?.title!=='string'||typeof cfg.deadline!=='string'||!Array.isArray(cfg.questions))throw Error('Нужны title, deadline и массив questions.');
+   const ids=new Set(['attendance','guestName']);
+   for(const q of cfg.questions){
+     if(typeof q?.id!=='string'||!q.id.trim()||ids.has(q.id)||typeof q.title!=='string'||!q.title.trim()||!['single','multiple','text'].includes(q.type))throw Error('У каждого вопроса должны быть свои ID, заголовок и тип.');
+     if(q.type!=='text'&&(!Array.isArray(q.options)||!q.options.length||q.options.some(o=>typeof o!=='string'||!o.trim())))throw Error('Добавь варианты ответов к вопросу «'+q.title+'».');
+     ids.add(q.id);
+   }
+   for(const q of cfg.questions){
+     const visited=new Set([q.id]);
+     let current=q;
+     while(current?.showIf?.field){
+       const {field,equals}=current.showIf;
+       if(!ids.has(field)||visited.has(field)||typeof equals!=='string')throw Error('Проверь зависимость вопроса «'+q.title+'».');
+       visited.add(field);
+       current=cfg.questions.find(item=>item.id===field);
+     }
+   }
+   const address=$('orderRsvpEndpoint').value.trim();
+   if(address){
+     const url=new URL(address);
+     if(url.protocol!=='https:'||url.username||url.password||url.hash)throw Error('Укажи действующий HTTPS-адрес приёма ответов.');
+     cfg.endpoint=url.href;
+   }else delete cfg.endpoint;
+   data.rsvp=cfg;
+   changed();
+   $('rsvpStatus').textContent='Анкета сохранена в заказе.';
+ }catch(error){$('rsvpStatus').textContent=error.message}
+};
+$('resetRsvp').onclick=()=>{delete data.rsvp;changed();showRsvp()};
+
+const BROADCAST_FIELDS=[
+ ['liveTitle','Заголовок прямого эфира','Свадьба подтверждена'],
+ ['liveText','Текст приглашения','Мы женимся и хотим провести этот день с вами. Приходите обниматься, есть торт и давать показания о том, как хорошо всё было.'],
+ ['storyTitle','Заголовок истории знакомства','Всё началось с кофе'],
+ ['storyText','История знакомства','Встреча планировалась на час. Спустя несколько лет стороны согласовали совместный бюджет на кофе и решили пожениться.'],
+ ['storyCaption','Подпись к архивному фото','Они ещё думали, что просто идут пить кофе.'],
+ ['newsHeader','Заголовок рубрики новостей','Выбирайте новость дня.'],
+ ['newsIntro','Вступление редакции','Свидетели событий сообщают противоречивые подробности. Выберите сюжет — наша редакция покажет, что удалось выяснить.'],
+ ['news0Title','Новость 1 · заголовок','Двое официально перешли на сторону любви'],
+ ['news0Text','Новость 1 · текст','Главные подозреваемые подтвердили: 7 августа 2027 года состоится свадьба. Гостей просят явиться нарядными и голодными.'],
+ ['news1Title','Новость 2 · заголовок','Установлено местонахождение свадебного торта'],
+ ['news1Text','Новость 2 · текст','По предварительным данным, торт прибудет к концу вечера. Редакция рекомендует сохранять спокойствие и не покидать танцпол.'],
+ ['news2Title','Новость 3 · заголовок','Гости приглашены на операцию «Горько!»'],
+ ['news2Text','Новость 3 · текст','Специалисты ожидают повышенную концентрацию объятий, смеха и неожиданных танцевальных решений. Присутствие гостей крайне желательно.'],
+ ['caseIntro','Вступление секретного досье','Редакция рассекретила досье на самую подозрительную пару этого лета. Нажмите на папку, чтобы изучить улики.'],
+ ['case0Title','Папка 1 · название дела','Встреча, вышедшая из-под контроля'],
+ ['case0Text','Папка 1 · содержание','Согласно материалам дела, обычный кофе неожиданно превратился в историю любви. Следствие продолжалось несколько лет и завершилось решением пожениться.'],
+ ['case1Title','Папка 2 · название дела','Установлен сговор двух сердец'],
+ ['case1Text','Папка 2 · содержание','Фигуранты регулярно проводили время вместе, строили общие планы и улыбались без объективной причины.'],
+ ['case2Title','Папка 3 · название дела','В деле появились новые участники'],
+ ['case2Text','Папка 3 · содержание','Круг причастных расширяется: родственники, друзья и самые любимые люди приглашены на торжество.'],
+ ['forecastTitle','Заголовок прогноза','Ожидается конфетти'],
+ ['forecastText','Текст прогноза','Если попадёте в кадр, предлагаем спокойные оттенки. Выбирайте то, в чём удобно танцевать.']
+];
+
+const STUDIO_LABELS={
+  'studio-bride':'Невеста — исходное фото',
+  'studio-groom':'Жених — исходное фото',
+  'studio-sceneCover':'Готовый кадр · главный репортаж',
+  'studio-sceneArchive':'Готовый кадр · архив знакомства',
+  'studio-sceneForecast':'Готовый кадр · прогноз',
+  'studio-pending-sceneCover':'Новая версия · главный репортаж',
+  'studio-pending-sceneArchive':'Новая версия · архив',
+  'studio-pending-sceneForecast':'Новая версия · прогноз'
+};
+const STUDIO_SCENES={
+  sceneCover:'Жених и невеста в комично-серьёзном телевизионном новостном репортаже. Репортёры с микрофонами, свадебный торт, выразительное освещение студии, фотореалистичная киношная фотография, формат 1:1.',
+  sceneArchive:'Жених и невеста на первой встрече. Тёплая постановочная архивная плёночная фотография, лёгкое зерно, мягкая винтажная цветопередача, естественные позы, формат 1:1.',
+  sceneForecast:'Жених и невеста рядом с телевизионной картой прогноза с облаком конфетти. Смешной торжественный выпуск новостей, фотореализм, киношный свет, формат 1:1.'
+};
+async function loadStudioPhotos(){
+  data.broadcast??={};data.broadcast.photoAssets??={};
+  for(const key of STUDIO_KEYS){
+    if(photoUrls[key]){URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key]}
+    if(!data.broadcast.photoAssets[key])continue;
+    try{const blob=await readMedia(key);if(blob)cachedUrl(key,blob)}
+    catch{setStatus('Не удалось восстановить фото из локального хранилища.')}
+  }
+}
+function renderStudioPhotos(){
+  const root=$('studioImages');root.replaceChildren();
+  data.broadcast??={};data.broadcast.photoAssets??={};
+  for(const key of STUDIO_KEYS.filter(key=>!key.startsWith('studio-pending-'))){
+    const card=document.createElement('div');card.className='studio-card';
+    const title=document.createElement('strong');title.textContent=STUDIO_LABELS[key];card.append(title);
+    const img=document.createElement('img');img.alt='Загруженное изображение: '+STUDIO_LABELS[key];img.loading='lazy';
+    if(photoUrls[key]){img.src=photoUrls[key];img.hidden=false}else img.hidden=true;
+    card.append(img);
+    const actions=document.createElement('div');actions.className='photo-tools';
+    const input=document.createElement('input');input.type='file';input.accept='image/*,.heic,.heif';input.setAttribute('aria-label',STUDIO_LABELS[key]);
+    input.addEventListener('change',async()=>{
+      const file=input.files?.[0];if(!file)return;
+      try{
+        const photo=await compressPhoto(file);
+        await storeMedia(key,photo);
+        cachedUrl(key,photo);
+        data.broadcast.photoAssets[key]=true;
+        changed('Фото сохранено локально. Для работы генератора используй исходные фотографии пары только с их согласия.');
+        renderStudioPhotos();
+      }catch(error){$('studioStatus').textContent='Ошибка загрузки: '+error.message}
+    });
+    actions.append(input);
+    const clear=document.createElement('button');clear.type='button';clear.className='secondary';clear.textContent='Убрать';
+    clear.disabled=!data.broadcast.photoAssets[key];
+    clear.addEventListener('click',async()=>{
+      await deleteMedia(key).catch(()=>{});
+      if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key];
+      delete data.broadcast.photoAssets[key];changed('Фото убрано из заказа.');renderStudioPhotos()
+    });
+    actions.append(clear);card.append(actions);root.append(card);
+  }
+  renderGeneratedPhotos();
+}
+
+// AI service integration is private and opt-in. No API keys in the static website.
+let studioGenerating=false;
+const SCENE_NAMES={sceneCover:'Главный репортаж',sceneArchive:'Архив знакомства',sceneForecast:'Свадебный прогноз'};
+function renderGeneratedPhotos(){
+  const root=$('studioGenerated');root.replaceChildren();
+  for(const scene of Object.keys(SCENE_NAMES)){
+    const key='studio-pending-'+scene;
+    if(!photoUrls[key]||!data.broadcast?.photoAssets?.[key])continue;
+    const card=document.createElement('div');card.className='studio-card studio-pending';
+    const title=document.createElement('strong');title.textContent='Новая версия: '+SCENE_NAMES[scene];card.append(title);
+    const img=document.createElement('img');img.src=photoUrls[key];img.alt='Созданный ИИ кадр на проверку';card.append(img);
+    const actions=document.createElement('div');actions.className='actions';
+    const accept=document.createElement('button');accept.type='button';accept.textContent='Применить на сайт';
+    accept.addEventListener('click',async()=>{
+      const blob=await readMedia(key);
+      if(!blob){$('studioStatus').textContent='Не удалось открыть сохранённый вариант.';return}
+      const target='studio-'+scene;
+      await storeMedia(target,blob);
+      cachedUrl(target,blob);
+      data.broadcast.photoAssets[target]=true;
+      await deleteMedia(key);
+      URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key];delete data.broadcast.photoAssets[key];
+      changed('Кадр «'+SCENE_NAMES[scene]+'» применён к предпросмотру.');
+      renderStudioPhotos();
+    });
+    const discard=document.createElement('button');discard.type='button';discard.className='secondary';discard.textContent='Отклонить';
+    discard.addEventListener('click',async()=>{
+      await deleteMedia(key);URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key];delete data.broadcast.photoAssets[key];
+      changed('Вариант отклонён.');renderStudioPhotos();
+    });
+    actions.append(accept,discard);card.append(actions);root.append(card);
+  }
+}
+function decodeBase64Jpeg(uri) {
+  if(typeof uri!=='string'||!uri.startsWith('data:image/jpeg;base64,')||uri.length>16_000_000)throw Error('Сервис вернул изображение в неподдерживаемом формате.');
+  const bytes=atob(uri.split(',')[1]);const data=new Uint8Array(bytes.length);
+  for(let i=0;i<bytes.length;i++)data[i]=bytes.charCodeAt(i);
+  return new Blob([data],{type:'image/jpeg'});
+}
+$('studioGenerateAll').addEventListener('click',async()=>{
+  if(studioGenerating)return;
+  const endpoint=$('studioEndpoint').value.trim().replace(/\/+$/,'');
+  const token=$('studioToken').value;
+  if(!photoUrls['studio-bride']||!photoUrls['studio-groom']){
+    $('studioStatus').textContent='Сначала загрузи оба исходных фото: невесты и жениха.';return;
+  }
+  if(!$('studioPermission').checked){
+    $('studioStatus').textContent='Подтверди согласие пары на ИИ-генерацию.';return;
+  }
+  let url;
+  try{url=new URL(endpoint);if(url.protocol!=='https:'||url.username||url.password||url.hash||url.search)throw Error()}
+  catch{$('studioStatus').textContent='Нужен HTTPS-адрес настроенного сервера генерации.';return}
+  if(!token){$('studioStatus').textContent='Введи пароль доступа к серверу (не ключ OpenAI).';return}
+  if(!confirm('Начать генерацию трёх сцен? Для каждого кадра оба исходных фото будут отправлены выбранному сервису. Каждая генерация может быть платной.'))return;
+  const currentOrder=orderId;
+  studioGenerating=true;$('studioGenerateAll').disabled=true;
+  const names=[data.couple?.first,data.couple?.second].filter(Boolean).join(' и ');
+  let completed=0;
+  for(const scene of Object.keys(SCENE_NAMES)){
+    if(orderId!==currentOrder)break;
+    $('studioStatus').textContent='Создаётся '+SCENE_NAMES[scene]+' ('+(completed+1)+'/3). Исходные лица используются заново в каждой сцене.';
+    try{
+      const form=new FormData();
+      form.append('scene',scene);
+      form.append('names',names);
+      form.append('context',$('studioBrief').value.slice(0,700));
+      form.append('bride',await readMedia('studio-bride'),'bride.jpg');
+      form.append('groom',await readMedia('studio-groom'),'groom.jpg');
+      const response=await fetch(url.href,{method:'POST',headers:{'Authorization':'Bearer '+token},body:form,cache:'no-store'});
+      const result=await response.json().catch(()=>({}));
+      if(!response.ok)throw Error(result.error||('HTTP '+response.status));
+      if(orderId!==currentOrder)break;
+      const blob=decodeBase64Jpeg(result.image);
+      const key='studio-pending-'+scene;
+      await storeMedia(key,blob);
+      cachedUrl(key,blob);
+      data.broadcast.photoAssets[key]=true;
+      changed('ИИ создал «'+SCENE_NAMES[scene]+'». Проверь фото перед применением.');
+      renderGeneratedPhotos();
+      completed++;
+    }catch(err){$('studioStatus').textContent='Не удалось создать «'+SCENE_NAMES[scene]+'»: '+String(err.message||err)+'. Уже готовые кадры остаются доступными.';break}
+  }
+  studioGenerating=false;$('studioGenerateAll').disabled=false;
+  if(completed===3)$('studioStatus').textContent='Все три сцены созданы. Проверь сходство пары на каждом кадре и нажми «Применить на сайт» у одобренных вариантов.';
+});
+
+$('studioPrompt').addEventListener('click',async()=>{
+  const scene=$('studioScene').value;
+  const names=[data.couple?.first,data.couple?.second].filter(Boolean).join(' и ')||'пара';
+  const details=$('studioBrief').value.trim();
+  const prompt='Создай новое фотореалистичное изображение для свадебного сайта «Срочный выпуск». '+
+    'Используй прикреплённые исходные фотографии жениха и невесты как референсы внешности; сохрани узнаваемые черты лица, пропорции и телосложение обоих, без карикатуры, замены возраста и изменения внешности. '+
+    'Сцена: '+STUDIO_SCENES[scene]+' Персонажи: '+names+'. '+
+    (details?'Контекст пары: '+details+'. ':'')+
+    'Не добавляй текст, надписи, логотипы и водяные знаки. Не копируй чужие лица. Сохрани композицию и атмосферу демо-сцены. Создай отдельный квадратный кадр.';
+  try{await navigator.clipboard.writeText(prompt);$('studioStatus').textContent='Задание скопировано. Приложи исходные фото пары в инструмент генерации, создай кадр и загрузи результат в соответствующее поле выше.'}
+  catch{
+    const t=document.createElement('textarea');t.value=prompt;t.rows=9;t.readOnly=true;$('studioStatus').replaceChildren('Скопируй это задание и приложи исходные фото в генератор:',t);t.select()
+  }
+});
+
+function renderBroadcastFields(){
+  data.broadcast??={};
+  $('broadcastCouple').replaceChildren();
+  for(const key of ['first','second','dateLabel','city'])field($('broadcastCouple'),data.couple,key);
+  const container=$('broadcastFields');container.replaceChildren();
+  for(const [key,label,defaultValue] of BROADCAST_FIELDS){
+    if(typeof data.broadcast[key]!=='string')data.broadcast[key]=defaultValue;
+    field(container,data.broadcast,key,label,key.toLowerCase().includes('text')||key==='newsIntro'||key==='caseIntro');
+  }
+}
+function syncEditorMode(){
+  const selected=$('previewVersion').value;
+  const broadcast=selected==='broadcast';
+  $('broadcastEditorFields').hidden=!broadcast;
+  $('eternaEditorFields').hidden=broadcast;
+  for(const id of ['downloadBtn','downloadBtnBottom']){
+    $(id).disabled=broadcast;
+    $(id).title=broadcast?'Экспорт этого шаблона будет подключён на следующем этапе':'';
+  }
+}
+
+function draw(){showRsvp();renderMusic();renderStudioPhotos();for(const id of ['couple','photos','sections','texts'])$(id).replaceChildren();
+for(const key of ['first','second','dateLabel','city','dateTime'])field($('couple'),data.couple,key);
+const help=document.createElement('p');help.className='upload-help';help.textContent='Теперь редактируются все фотографии сайта, включая фон зала, финал и дресс-код. Открой нужную группу, выбери фото из галереи iPhone и проверь результат. Если фото не выбрано, останется изображение из шаблона.';$('photos').append(help);
+const PHOTO_GROUPS=[
+  ['Первый экран',['main','secondary1','secondary2']],
+  ['Вступительная обложка',['introCover']],
+  ['Фотоколлаж',['collage1','collage2']],
+  ['Приглашение',['invitationBg','invitationLeft','invitationRight']],
+  ['История',['storyMain','storySmall','memoryBg']],
+  ['Программа и место',['scheduleBg','venueBg']],
+  ['Дресс-код — фон',['dressBg']],
+  ['Таймер, RSVP и финал',['countdownBg','rsvpBg','endingBg']]
+];
+for(const [gender,title,baseKeys,prefix] of [['female','Для неё',['dress1','dress3'],'dressFemale'],['male','Для него',['dress2','dress4'],'dressMale']]){
+ const count=data.dressPhotoCounts[gender];
+ const details=document.createElement('details');details.className='photo-group';
+ const summary=document.createElement('summary');summary.textContent='Дресс-код — '+title+' · '+count+' фото';details.append(summary);
+ const keys=[...baseKeys,...Array.from({length:count-2},(_,i)=>prefix+(i+3))];
+ for(const key of keys)details.append(createPhotoInput(key));
+ const controls=document.createElement('div');controls.className='actions';controls.style.padding='12px 0 20px';
+ const add=document.createElement('button');add.type='button';add.textContent='+ Добавить фотографию';add.disabled=count>=8;
+ add.onclick=()=>{data.dressPhotoCounts[gender]=Math.min(8,count+1);changed('Добавлено место для фото №'+(count+1)+'.');draw();const groups=Array.from(document.querySelectorAll('#photos .photo-group'));const found=groups.find(g=>g.querySelector('summary')?.textContent?.includes('Дресс-код — '+title));if(found)found.open=true};
+ const remove=document.createElement('button');remove.type='button';remove.className='secondary';remove.textContent='− Убрать последнюю';remove.disabled=count<=2;
+ remove.onclick=async()=>{const key=prefix+count;if(count<=2)return;try{await deleteMedia(key)}catch{}if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key];delete data.photos[key];data.dressPhotoCounts[gender]=count-1;changed('Последняя фотография удалена из подборки.');draw();const groups=Array.from(document.querySelectorAll('#photos .photo-group'));const found=groups.find(g=>g.querySelector('summary')?.textContent?.includes('Дресс-код — '+title));if(found)found.open=true};
+ controls.append(add,remove);details.append(controls);$('photos').append(details);
+}
+for(const [group,keys] of PHOTO_GROUPS){
+ const details=document.createElement('details');details.className='photo-group';details.open=group==='Первый экран';
+ const summary=document.createElement('summary');summary.textContent=group+' · '+keys.length+' фото';details.append(summary);
+ keys.forEach(key=>details.append(createPhotoInput(key)));$('photos').append(details);
+}
+// The palette is per wedding order and updates the live preview immediately.
+const paletteTitle=document.createElement('h3');paletteTitle.textContent='Оттенки дресс-кода';$('photos').append(paletteTitle);
+const tip=document.createElement('p');tip.className='palette-note';tip.textContent='Нажми на любой цвет, чтобы открыть выбор оттенка. Палитры для девушек и мужчин независимые и сохраняются в заказе.';$('photos').append(tip);
+for(const [group,name] of [['female','Для неё'],['male','Для него']]){
+ const card=document.createElement('div');card.className='palette-panel';const heading=document.createElement('strong');heading.textContent=name+' · 5 оттенков';card.append(heading);
+ const grid=document.createElement('div');grid.className='palette-editor';(data.dressPalettes[group]||[]).forEach((color,i)=>{
+   const label=document.createElement('label');label.textContent='Цвет '+(i+1);const input=document.createElement('input');input.type='color';input.value=/^#[0-9a-f]{6}$/i.test(color)?color:DRESS_PALETTES_DEFAULT[group][i];input.addEventListener('input',()=>{data.dressPalettes[group][i]=input.value;changed('Палитра изменена и сохранена в этом заказе.')});label.append(input);grid.append(label)
+ });card.append(grid);const reset=document.createElement('button');reset.type='button';reset.className='secondary palette-reset';reset.textContent='Вернуть стандартные цвета';reset.addEventListener('click',()=>{data.dressPalettes[group]=[...DRESS_PALETTES_DEFAULT[group]];changed();draw()});card.append(reset);$('photos').append(card)
+}
+for(const [key,value] of Object.entries(data.sections)){const row=document.createElement('div');row.className='section-row';const check=document.createElement('input');check.type='checkbox';check.checked=Boolean(value);check.addEventListener('change',()=>{data.sections[key]=check.checked;changed()});const label=document.createElement('label');label.textContent=LABELS[key]||key;row.append(check,label);$('sections').append(row)}
+for(const key of Object.keys(data.text)){field($('texts'),data.text,key,LABELS[key]||key,key!=='venueName'&&key!=='venueMap')}
+const heading=document.createElement('h2');heading.textContent='Расписание дня';$('texts').append(heading);
+(data.schedule||[]).forEach((item,i)=>{const det=document.createElement('details'),s=document.createElement('summary');s.textContent='Событие '+(i+1)+' · '+(item.title||'');det.append(s);for(const k of ['time','title','description'])field(det,item,k,k==='time'?'Время':k==='title'?'Название':'Описание',k==='description');$('texts').append(det)})
+renderBroadcastFields();syncEditorMode();}
+// ZIP without external libraries; STORED entries, photos are JPEG-compressed before packing.
+const enc=new TextEncoder();
+function u16(n){return [n&255,(n>>>8)&255]}function u32(n){return [n&255,(n>>>8)&255,(n>>>16)&255,(n>>>24)&255]}
+const crcTable=Array.from({length:256},(_,i)=>{let c=i;for(let j=0;j<8;j++)c=c&1?0xedb88320^(c>>>1):c>>>1;return c>>>0});
+function crc32(bytes){let c=0xffffffff;for(const b of bytes)c=crcTable[(c^b)&255]^(c>>>8);return (c^0xffffffff)>>>0}
+function zip(files){const parts=[],central=[];let offset=0;for(const f of files){const name=enc.encode(f.name),bytes=f.bytes,crc=crc32(bytes),size=bytes.length,flags=0x800;const head=new Uint8Array([80,75,3,4,...u16(20),...u16(flags),...u16(0),...u16(0),...u16(0),...u32(crc),...u32(size),...u32(size),...u16(name.length),...u16(0)]);parts.push(head,name,bytes);const cent=new Uint8Array([80,75,1,2,...u16(20),...u16(20),...u16(flags),...u16(0),...u16(0),...u16(0),...u32(crc),...u32(size),...u32(size),...u16(name.length),...u16(0),...u16(0),...u16(0),...u16(0),...u32(0),...u32(offset)]);central.push(cent,name);offset+=head.length+name.length+size}
+let centerSize=0;for(const p of central)centerSize+=p.length;const end=new Uint8Array([80,75,5,6,...u16(0),...u16(0),...u16(files.length),...u16(files.length),...u32(centerSize),...u32(offset),...u16(0)]);return new Blob([...parts,...central,end],{type:'application/zip'})}
+function download(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000)}
+async function fetchResource(path){
+ const response=await fetch(path);
+ if(!response.ok)throw Error('Не удалось загрузить '+path+' ('+response.status+').');
+ return response;
+}
+async function exportV12(folder, files, config){
+ const source='eterna-12/';
+ let page=await (await fetchResource(source+'index.html')).text();
+ const resources=[...page.matchAll(/(?:src|href)="((?:assets\/|\.\.\/)[^"]+)"/g)].map(match=>match[1]);
+ resources.push(...Array.from({length:6},(_,i)=>'assets/editorial-'+i+'.webp'));
+ const normalize=path=>path.replace(/^\.\.\//,'').split('?')[0];
+ await Promise.all([...new Set(resources)].map(async path=>{
+   const response=await fetchResource(source+path);
+   files.push({name:folder+normalize(path),bytes:new Uint8Array(await response.arrayBuffer())});
+ }));
+ page=page.replace(/(src|href)="(\.\.\/[^"]+)"/g,(_,attr,path)=>attr+'="'+normalize(path)+'"');
+ // All scripts are deferred in document order. Order data must precede invitation.js.
+ const orderTag='<script defer src="order.js"><'+'/script>';
+ page=page.replace(/<script defer src="assets\/invitation[^"]+"/,match=>orderTag+'\n'+match);
+ files.push({name:folder+'order.js',bytes:enc.encode('window.ETERNA_ORDER = '+JSON.stringify(config,null,2)+';\n')});
+ files.push({name:folder+'index.html',bytes:enc.encode(page)});
+ files.push({name:folder+'настройки.json',bytes:enc.encode(JSON.stringify(config,null,2))});
+}
+async function exportPackage(){
+ if($('previewVersion').value==='broadcast'){setStatus('Экспорт «Срочного выпуска» пока не подключён. Тестируй предпросмотр; изменения сохраняются только в этом браузере.');return;}
+ if(musicBusy){setStatus('Дождитесь сохранения музыки и повторите экспорт.');return;}
+ const buttons=[$('downloadBtn'),$('downloadBtnBottom')];buttons.forEach(b=>b.disabled=true);
+ setStatus('Собираю отдельную свадебную страницу и фотографии…');
+ try{
+   const id=orderId;
+   const config=copy(data);
+   const legacy=isLegacy();
+   const folder='orders/'+id+'/';
+   const files=[];
+   const uploaded=PHOTO_KEYS.filter(localPhoto);
+   const blobs=await Promise.all(uploaded.map(key=>readMedia(key)));
+   for(const [index,key] of uploaded.entries()){const blob=blobs[index];
+     if(!blob)throw Error('Не найдено фото «'+PHOTO_NAMES[key]+'». Выбери его заново.');
+     files.push({name:folder+photoFileName(key),bytes:new Uint8Array(await blob.arrayBuffer())});
+   }
+   if(!legacy){
+     const type=musicType(config.music);
+     if(type){
+       const audio=await readMedia('music',type,id);
+       if(!audio)throw Error('Трек не найден. Загрузите его заново.');
+       files.push({name:folder+config.music.source,bytes:new Uint8Array(await audio.arrayBuffer())});
+     }
+     await exportV12(folder,files,config);
+     const readme='ÉTERNA 12.0 · заказ '+id+'\n\nОпубликуйте папку '+folder+' целиком, сохранив её структуру. Входная страница — index.html.\n'+(config.rsvp?.endpoint?'RSVP отправляет ответы на указанный в настройках адрес.':'RSVP демонстрационный. Ответы не отправляются.')+'\n';
+     files.push({name:'ИНСТРУКЦИЯ.txt',bytes:enc.encode(readme)});
+     download(zip(files),'eterna-12-'+id+'.zip');
+     setStatus('Готов комплект 12.0 для заказа '+id+'.');
+     return;
+   }
+   const response=await fetch('templates/eterna.html?order-export='+Date.now(),{cache:'no-store'});
+   if(!response.ok)throw Error('Не удалось загрузить шаблон ÉTERNA ('+response.status+').');
+   let page=await response.text();
+   if(!page.includes('wedding-customizer.js'))throw Error('Шаблон не поддерживает настройки заказа.');
+   // A customer receives a separate, self-contained configuration and photo folder.
+   // Shared RSVP remains a demo until the responses backend is configured.
+   page=page.replaceAll('src="../rsvp-config.js"','src="../../rsvp-config.js"')
+     .replaceAll('src="../rsvp-renderer.js"','src="../../rsvp-renderer.js"')
+     .replaceAll('src="eterna-hero-config.js"','src="../../templates/eterna-hero-config.js"')
+     .replaceAll('src="../wedding-customizer.js"','src="../../wedding-customizer.js"');
+   const safeCfg=JSON.stringify(data).replace(/</g,'\\u003c');
+   const inline='<scr'+'ipt>window.WEDDING_CONFIG='+safeCfg+';</scr'+'ipt>';
+   page=page.replace('<scr'+'ipt src="../../wedding-customizer.js"></scr'+'ipt>',inline+'\n<scr'+'ipt src="../../wedding-customizer.js"></scr'+'ipt>');
+   page=page.replace('(window.WEDDING_CONFIG&&window.WEDDING_CONFIG.dateTime)','(window.WEDDING_CONFIG&&window.WEDDING_CONFIG.couple&&window.WEDDING_CONFIG.couple.dateTime)');
+   page=page.replace('<title>Александр и Виктория — приглашение на свадьбу</title>',
+     '<title>'+escapeHtml(orderName())+' — приглашение на свадьбу</title>');
+   files.unshift({name:folder+'index.html',bytes:enc.encode(page)});
+   files.push({name:folder+'настройки.json',bytes:enc.encode(JSON.stringify(data,null,2))});
+   const readme='ÉTERNA · заказ '+orderId+'\n\n1. Открой ZIP и папку orders/'+orderId+'/\n2. На GitHub создай папку orders/'+orderId+'/ и загрузи туда index.html, все JPEG и настройки.json.\n3. Ничего в templates/eterna.html и wedding-config.js заменять не нужно.\n4. Публичная ссылка после публикации: https://iamvaga17.github.io/eterna-wedding/orders/'+orderId+'/\n5. Важно: RSVP пока демонстрационный и не сохраняет ответы.\n6. Для изменения заказа заново скачай комплект и замени файлы только в его папке.\n7. Не публикуй реальные данные и фото клиентов без разрешения.\n';
+   files.push({name:'ИНСТРУКЦИЯ.txt',bytes:enc.encode(readme)});
+   download(zip(files),'eterna-'+orderId+'.zip');
+   setStatus('Готов отдельный комплект заказа '+orderId+'. Загрузи папку orders/'+orderId+'/ на GitHub.');
+ }catch(e){setStatus('Ошибка экспорта: '+e.message)}
+ finally{buttons.forEach(b=>b.disabled=false)}
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+$('downloadBtn').addEventListener('click',exportPackage);$('downloadBtnBottom').addEventListener('click',exportPackage);
+$('previewBtn').addEventListener('click',()=>{refreshDressPreview();updatePreview();setStatus('Предпросмотр обновляется…')});
+// Force-load the deployed customizer with a unique URL inside the preview iframe.
+// Safari can otherwise reuse the old cached JS even when editor.html itself is fresh.
+const DRESS_PREVIEW_BUILD='20261118-dynamic-dress-8';
+let previewLoading=false;
+function refreshDressPreview(){
+ if(!isLegacy())return;
+ const frame=$('siteFrame'),doc=frame.contentDocument;
+ if(!doc||previewLoading)return;
+ previewLoading=true;
+ const existing=doc.getElementById('et-dress-preview-loader');if(existing)existing.remove();
+ const script=doc.createElement('script');script.id='et-dress-preview-loader';
+ script.src='../wedding-customizer.js?version='+DRESS_PREVIEW_BUILD;
+ script.onload=()=>{
+  previewLoading=false;updatePreview();
+  setTimeout(()=>{
+   updatePreview();
+   const ok=Boolean(doc.querySelector('#dress .et-dress-female')&&doc.querySelector('#dress .et-dress-male'));
+   if(!ok)setStatus('Не удалось включить новый дресс-код. Проверь, что wedding-customizer.js обновлён на GitHub.');
+  },450);
+ };
+ script.onerror=()=>{previewLoading=false;setStatus('Ошибка загрузки wedding-customizer.js. Проверь публикацию GitHub Pages.');};
+ doc.body.append(script);
+}
+$('previewVersion').addEventListener('change',()=>{data.template=$('previewVersion').value;syncEditorMode();changed();$('siteFrame').src=previewUrls[data.template]});
+$('siteFrame').addEventListener('load',()=>{
+ updatePreview();
+ if(isLegacy()){refreshDressPreview();setTimeout(updatePreview,400)}
+});
+$('resetBtn').addEventListener('click',async()=>{if(studioGenerating){setStatus('Дождись завершения генерации.');return}if(!confirm('Сбросить все изменения, включая фотографии и музыку?'))return;for(const key of [...PHOTO_KEYS,...STUDIO_KEYS,'music']){try{await deleteMedia(key)}catch{}if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key]}data=normalizeOrder(structuredClone(defaults));localStorage.removeItem(draftKey());draw();updatePreview();setStatus('Черновик сброшен.')});
+async function loadPhotos(){for(const k of PHOTO_KEYS){if(photoUrls[k])URL.revokeObjectURL(photoUrls[k]);delete photoUrls[k]}
+ for(const key of PHOTO_KEYS){if(!localPhoto(key))continue;try{let blob=await readMedia(key);if(!blob&&orderId==='demo'){db??=await openDB();blob=await new Promise(resolve=>{let q=db.transaction('photos','readonly').objectStore('photos').get(key);q.onsuccess=()=>resolve(q.result);q.onerror=()=>resolve(null)});if(blob)await storeMedia(key,blob)}if(blob)cachedUrl(key,blob)}catch(e){setStatus('Не удалось восстановить фотографии — проверь хранилище Safari.')}}}
+function showOrder(){const select=$('orderSelect');select.replaceChildren();orders.forEach(o=>{const opt=document.createElement('option');opt.value=o.id;opt.textContent=o.label+' ('+o.id+')';select.append(opt)});select.value=orderId;$('orderUrlLabel').textContent='Адрес после публикации: /orders/'+orderId+'/';}
+async function openOrder(id){if(!orders.some(o=>o.id===id))return;if(studioGenerating){setStatus('Дождись завершения генерации перед сменой заказа.');return}orderId=id;data=normalizeOrder(getJSON(draftKey(),copy(defaults)));$('previewVersion').value=data.template in previewUrls?data.template:'12';$('siteFrame').src=previewUrls[$('previewVersion').value];await Promise.all([loadPhotos(),loadMusic(),loadStudioPhotos()]);draw();showOrder();updatePreview();setStatus('Открыт заказ: '+orders.find(o=>o.id===id).label)}
+function orderName(){return [data.couple?.first,data.couple?.second].filter(Boolean).join(' и ')||'Новая свадьба'}
+$('orderSelect').addEventListener('change',e=>openOrder(e.target.value));
+$('newOrderBtn').addEventListener('click',async()=>{if(studioGenerating){setStatus('Дождись завершения генерации.');return}const name=prompt('Имя заказа (например: Анна и Максим):');if(!name?.trim())return;const id=uniqueId(name.trim());orders.push({id,label:name.trim()});storeOrder();localStorage.setItem('eterna-unified-test-order:'+id+':config',JSON.stringify(copy(defaults)));await openOrder(id)});
+$('duplicateOrderBtn').addEventListener('click',async()=>{
+ if(studioGenerating){setStatus('Дождись завершения генерации.');return}const name=prompt('Название копии:',orderName()+' — копия');
+ if(!name?.trim())return;
+ const from=orderId;
+ const id=uniqueId(name.trim());
+ const snapshot=copy(data);
+ const keys=[...PHOTO_KEYS.filter(localPhoto),...STUDIO_KEYS.filter(key=>snapshot.broadcast?.photoAssets?.[key])];
+ const type=musicType(snapshot.music);
+ try{
+   for(const key of [...keys,...(type?['music']:[])]){
+     const blob=await readMedia(key,key==='music'?type:'image/jpeg',from);
+     if(!blob)throw Error('Не найден файл в исходном заказе.');
+     await storeMedia(key,blob,id);
+   }
+   orders.push({id,label:name.trim()});
+   storeOrder();
+   localStorage.setItem('eterna-unified-test-order:'+id+':config',JSON.stringify(snapshot));
+   await openOrder(id);
+ }catch(error){
+   setStatus('Не удалось скопировать заказ: '+error.message);
+ }
+});
+$('deleteOrderBtn').addEventListener('click',async()=>{if(studioGenerating){setStatus('Дождись завершения генерации.');return}if(orders.length===1){setStatus('Нельзя удалить единственный заказ.');return}if(!confirm('Удалить этот заказ и его файлы из браузера?'))return;const old=orderId;for(const key of [...PHOTO_KEYS,...STUDIO_KEYS,'music']){try{await deleteMedia(key)}catch{}}localStorage.removeItem(draftKey());orders=orders.filter(o=>o.id!==old);storeOrder();await openOrder(orders[0].id)});
+async function start(){$('previewVersion').value=data.template in previewUrls?data.template:'12';$('siteFrame').src=previewUrls[$('previewVersion').value];await Promise.all([loadPhotos(),loadMusic(),loadStudioPhotos()]);showOrder();draw();updatePreview()}
+
+start();
+})();
+</script></body></html>
