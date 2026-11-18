@@ -312,7 +312,9 @@ html{scroll-padding-top:0}
  .ec-photo-main{transform:rotate(-2deg)}.ec-photo-side1{transform:rotate(-10deg)}.ec-photo-side2{transform:rotate(9deg)}
 }
 
+[hidden]{display:none!important}
 </style></head><body class="locked">
+<script src="../wedding-config.js"></script>
 <div class="intro" id="intro" role="dialog" aria-modal="true" aria-labelledby="intro-title"><div class="book-stage"><div class="book-back"></div><div class="book-cover"><div class="cover-contents"><h2 id="intro-title">Александр<em>и</em>Виктория</h2><div class="cover-bottom">19 июня 2027 · Санкт-Петербург</div></div></div></div><div class="intro-actions"><button type="button" class="intro-open" id="openIntro">Открыть нашу историю</button></div></div>
 <header class="editorial-cover" id="top" data-photo-count="3">
   <div class="ec-grain" aria-hidden="true"></div>
@@ -354,7 +356,7 @@ html{scroll-padding-top:0}
 <section class="ending"><div class="reveal"><h2>До встречи!</h2><p>С любовью, Александр и Виктория</p></div></section>
 </main><footer class="site-footer">Демонстрационная версия · Все имена и сведения вымышлены</footer>
 <script>
-(()=>{'use strict';const intro=document.querySelector('#intro'),open=document.querySelector('#openIntro');let opened=false;function revealIntro(){if(opened)return;opened=true;intro.classList.add('opening');open.disabled=true;setTimeout(()=>{intro.classList.add('done');intro.setAttribute('aria-hidden','true');document.body.classList.remove('locked')},1300)}open.addEventListener('click',revealIntro);document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!opened)revealIntro()});if(location.hash&&location.hash!=='#top'){revealIntro()}const obs='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target)}}),{threshold:.07}):null;document.querySelectorAll('.reveal').forEach(el=>obs?obs.observe(el):el.classList.add('in'));const date=new Date('2027-06-19T15:00:00+03:00').getTime();function tick(){const delta=Math.max(0,date-Date.now()),v={days:Math.floor(delta/86400000),hours:Math.floor(delta/3600000)%24,minutes:Math.floor(delta/60000)%60,seconds:Math.floor(delta/1000)%60};Object.entries(v).forEach(([id,n])=>{const e=document.getElementById(id);if(e)e.textContent=String(n).padStart(2,'0')})}tick();setInterval(tick,1000)})();
+(()=>{'use strict';const intro=document.querySelector('#intro'),open=document.querySelector('#openIntro');let opened=false;function revealIntro(){if(opened)return;opened=true;intro.classList.add('opening');open.disabled=true;setTimeout(()=>{intro.classList.add('done');intro.setAttribute('aria-hidden','true');document.body.classList.remove('locked')},1300)}open.addEventListener('click',revealIntro);document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!opened)revealIntro()});if(location.hash&&location.hash!=='#top'){revealIntro()}const obs='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target)}}),{threshold:.07}):null;document.querySelectorAll('.reveal').forEach(el=>obs?obs.observe(el):el.classList.add('in'));const date=new Date((window.WEDDING_CONFIG&&window.WEDDING_CONFIG.dateTime)||'2027-06-19T15:00:00+03:00').getTime();function tick(){const delta=Math.max(0,date-Date.now()),v={days:Math.floor(delta/86400000),hours:Math.floor(delta/3600000)%24,minutes:Math.floor(delta/60000)%60,seconds:Math.floor(delta/1000)%60};Object.entries(v).forEach(([id,n])=>{const e=document.getElementById(id);if(e)e.textContent=String(n).padStart(2,'0')})}tick();setInterval(tick,1000)})();
 </script><script src="../rsvp-config.js"></script><script src="../rsvp-renderer.js"></script>
 <script>
 (()=>{const root=document.getElementById('rsvpDynamic');if(!root)return;
@@ -385,4 +387,5 @@ html{scroll-padding-top:0}
   }
 })();
 </script>
+<script src="../wedding-customizer.js"></script>
 </body></html>
