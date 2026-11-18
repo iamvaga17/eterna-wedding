@@ -298,27 +298,38 @@
         ticker: 'Срочно: уровень счастья в регионе может превысить норму.'
       }
     ];
-    let deskAnimation;
+    let switchTimer = 0;
+    let transitionTimer = 0;
+    let selectedStory = 0;
+    let pendingStory = 0;
     function selectStory(index) {
       const story = stories[index];
-      if (!story) return;
+      if (!story || index === pendingStory) return;
+      pendingStory = index;
+      clearTimeout(switchTimer);
+      clearTimeout(transitionTimer);
+      deskScreen.classList.remove('desk-transmitting');
       deskButtons.forEach((button, i) => {
         const selected = i === index;
         button.classList.toggle('is-active', selected);
         button.setAttribute('aria-pressed', String(selected));
       });
-      deskCategory.textContent = story.category;
-      deskNumber.textContent = story.number;
-      deskTitle.textContent = story.title;
-      deskCopy.textContent = story.copy;
-      deskTicker.textContent = story.ticker;
-      if (!motion.matches && deskScreen.animate) {
-        deskAnimation?.cancel();
-        deskAnimation = deskScreen.animate([
-          {opacity: .45, filter: 'grayscale(.6)', transform: 'translateY(5px)'},
-          {opacity: 1, filter: 'grayscale(0)', transform: 'translateY(0)'}
-        ], {duration: 330, easing: 'ease-out'});
-      }
+      const updateStory = () => {
+        selectedStory = index;
+        deskCategory.textContent = story.category;
+        deskNumber.textContent = story.number;
+        deskTitle.textContent = story.title;
+        deskCopy.textContent = story.copy;
+        deskTicker.textContent = story.ticker;
+      };
+      if (motion.matches) { updateStory(); return; }
+      // V14: enter 0–290ms, legible centered hold, exit after ~850ms.
+      void deskScreen.offsetWidth;
+      deskScreen.classList.add('desk-transmitting');
+      switchTimer = setTimeout(updateStory, 460);
+      transitionTimer = setTimeout(() => {
+        deskScreen.classList.remove('desk-transmitting');
+      }, 1220);
     }
     deskButtons.forEach(button => button.addEventListener('click', () => selectStory(Number(button.dataset.desk))));
   }
