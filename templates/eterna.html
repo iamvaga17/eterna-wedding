@@ -312,21 +312,76 @@ html{scroll-padding-top:0}
  .ec-photo-main{transform:rotate(-2deg)}.ec-photo-side1{transform:rotate(-10deg)}.ec-photo-side2{transform:rotate(9deg)}
 }
 
-[hidden]{display:none!important}
+
+/* ÉTERNA 7.0 · ATELIER — distinct cinematic editorial cover. All content below untouched. */
+.hero-atelier-v7{background:#141311;color:#f4ebe2;min-height:640px;height:100svh;overflow:hidden;isolation:isolate}
+.hero-atelier-v7 .ec-canvas{height:100%;max-width:none;width:100%;overflow:hidden;background:radial-gradient(ellipse at 53% 38%,#51463f 0%,#26211e 50%,#151311 100%);position:relative}
+.hero-atelier-v7 .ec-canvas:before{content:'';position:absolute;inset:2.3%;border:1px solid #dfcdbb3b;z-index:7;pointer-events:none}
+.hero-atelier-v7 .ec-canvas:after{content:'';position:absolute;z-index:4;inset:55% 0 0;background:linear-gradient(to bottom,transparent 0%,#16120f50 48%,#15110ddb 100%);pointer-events:none}
+.hero-atelier-v7 .ec-edition{left:5.2%;right:5.2%;top:7%;z-index:9;color:#eee0d0;font:600 10px/1.5 var(--sans,Arial);letter-spacing:.23em;animation:et7Reveal 1s .85s both}
+.hero-atelier-v7 .ec-side-note{position:absolute;top:28%;left:4.5%;writing-mode:vertical-rl;transform:rotate(180deg);font:600 10px var(--sans,Arial);letter-spacing:.28em;color:#bba68f;z-index:8}
+.hero-atelier-v7 .ec-visual{position:absolute;inset:0;z-index:2}
+.hero-atelier-v7 .ec-photo{overflow:hidden;background:#877a6c;box-shadow:0 32px 65px #0008}
+.hero-atelier-v7 .ec-photo:after{content:'';position:absolute;inset:0;border:1px solid #e6d7c46b;pointer-events:none}
+.hero-atelier-v7 .ec-photo img{height:100%;width:100%;display:block;object-fit:cover;filter:saturate(.75) contrast(1.04)}
+.hero-atelier-v7 .ec-photo-main{top:11%;left:29%;width:42%;height:74%;transform:rotate(-2deg);z-index:2;animation:et7Main 1.45s cubic-bezier(.16,1,.2,1) both}
+.hero-atelier-v7 .ec-photo-main img{object-position:center 38%;animation:et7Zoom 16s ease-in-out infinite alternate}
+.hero-atelier-v7 .ec-photo-side1{left:10%;top:22%;width:24%;height:40%;border:7px solid #ebe3d7;transform:rotate(-9deg);z-index:3;animation:et7SideL 1.3s .35s cubic-bezier(.16,1,.2,1) both}
+.hero-atelier-v7 .ec-photo-side2{right:8%;top:17%;width:24%;height:34%;border:7px solid #ebe3d7;transform:rotate(8deg);z-index:3;animation:et7SideR 1.3s .5s cubic-bezier(.16,1,.2,1) both}
+.hero-atelier-v7 .ec-type{position:absolute;z-index:6;left:2%;right:2%;bottom:13%;color:#fff7ea;pointer-events:none;text-align:center}
+.hero-atelier-v7 .ec-type-kicker{display:block;font:600 10px var(--sans,Arial);letter-spacing:.3em;color:#eee1cf;text-shadow:0 2px 12px #000;animation:et7Reveal .9s .8s both;margin-bottom:19px}
+.hero-atelier-v7 .ec-type h1{font-family:var(--serif,Georgia);font-size:clamp(82px,12vw,187px);font-weight:400;line-height:.69;letter-spacing:-.06em;color:#fff7eb;text-shadow:0 5px 30px #090807a9;margin:0}
+.hero-atelier-v7 .ec-type h1 span{display:block;animation:et7Title 1s .65s both}
+.hero-atelier-v7 .ec-type h1 span:last-child{animation-delay:.98s}
+.hero-atelier-v7 .ec-type h1 i{display:block;font-size:.40em;line-height:1;margin:.10em 0 .05em;color:#dfc8ab;font-weight:400;animation:et7Reveal .8s .8s both}
+.hero-atelier-v7 .ec-date{margin:29px 0 0;color:#f0e5d7;letter-spacing:.14em;font-size:10px;animation:et7Reveal .95s 1.25s both}
+.hero-atelier-v7 .ec-corner{right:5%;bottom:6%;font-size:24px;color:#dbc5a8;z-index:8}
+.hero-atelier-v7 .ec-next{left:5%;bottom:6.2%;font-size:10px;color:#e9dccb!important;z-index:8}
+.hero-atelier-v7 .ec-grain{z-index:8;opacity:.10}
+.hero-atelier-v7[data-photo-count="1"] .ec-photo-main{left:28%;width:44%;transform:rotate(0deg)}
+.hero-atelier-v7[data-photo-count="2"] .ec-photo-main{left:34%;width:42%}
+@keyframes et7Main{from{opacity:0;transform:translateY(85px) scale(.93) rotate(-6deg)}to{opacity:1;transform:rotate(-2deg) scale(1)}}
+@keyframes et7SideL{from{opacity:0;transform:translate(-50px,45px) rotate(-17deg)}to{opacity:1;transform:rotate(-9deg)}}
+@keyframes et7SideR{from{opacity:0;transform:translate(50px,35px) rotate(16deg)}to{opacity:1;transform:rotate(8deg)}}
+@keyframes et7Title{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes et7Reveal{from{opacity:0}to{opacity:1}}
+@keyframes et7Zoom{from{transform:scale(1)}to{transform:scale(1.08)}}
+@media(max-width:700px){
+ .hero-atelier-v7{height:100svh;min-height:540px}
+ .hero-atelier-v7 .ec-canvas:before{inset:3.2% 3.8%}
+ .hero-atelier-v7 .ec-edition{top:calc(5.3% + env(safe-area-inset-top,0px));left:8%;right:8%;font-size:9px;letter-spacing:.13em}
+ .hero-atelier-v7 .ec-side-note{display:none}
+ .hero-atelier-v7 .ec-photo-main{top:15%;left:18%;width:67%;height:60%;transform:rotate(-2deg)}
+ .hero-atelier-v7 .ec-photo-side1{left:3%;top:29%;width:36%;height:26%;border-width:5px;transform:rotate(-10deg)}
+ .hero-atelier-v7 .ec-photo-side2{right:2%;top:13%;width:35%;height:25%;border-width:5px;transform:rotate(9deg)}
+ .hero-atelier-v7 .ec-type{left:2%;right:2%;bottom:16%}
+ .hero-atelier-v7 .ec-type-kicker{font-size:8px;letter-spacing:.26em;margin-bottom:13px}
+ .hero-atelier-v7 .ec-type h1{font-size:clamp(58px,14vw,94px);line-height:.76;letter-spacing:-.07em}
+ .hero-atelier-v7 .ec-type h1 i{font-size:.40em;margin:.05em 0}
+ .hero-atelier-v7 .ec-date{margin:20px 0 0;font-size:9px;letter-spacing:.04em;gap:8px;flex-wrap:wrap}
+ .hero-atelier-v7 .ec-corner{right:8%;bottom:calc(4% + env(safe-area-inset-bottom,0px));font-size:19px}
+ .hero-atelier-v7 .ec-next{left:8%;bottom:calc(4% + env(safe-area-inset-bottom,0px));font-size:9px;gap:11px}
+ .hero-atelier-v7 .ec-next-line{width:30px}
+ .hero-atelier-v7[data-photo-count="1"] .ec-photo-main{top:15%;left:11%;width:78%;height:59%}
+ .hero-atelier-v7[data-photo-count="2"] .ec-photo-main{left:21%;width:72%}
+}
+@media(max-width:390px){.hero-atelier-v7 .ec-type h1{font-size:clamp(49px,13.8vw,64px)}.hero-atelier-v7 .ec-photo-main{top:17%;height:57%}}
+@media(max-width:700px) and (max-height:690px){.hero-atelier-v7 .ec-photo-main{top:15%;height:54%}.hero-atelier-v7 .ec-type{bottom:17%}.hero-atelier-v7 .ec-type h1{font-size:clamp(45px,12vw,70px)}.hero-atelier-v7 .ec-type-kicker{margin-bottom:7px}}
+@media(prefers-reduced-motion:reduce){.hero-atelier-v7 *, .hero-atelier-v7 *:before,.hero-atelier-v7 *:after{animation:none!important;transition:none!important}.hero-atelier-v7 .ec-photo-main{transform:rotate(-2deg)}.hero-atelier-v7 .ec-photo-side1{transform:rotate(-9deg)}.hero-atelier-v7 .ec-photo-side2{transform:rotate(8deg)}}
+
 </style></head><body class="locked">
-<script src="../wedding-config.js"></script>
 <div class="intro" id="intro" role="dialog" aria-modal="true" aria-labelledby="intro-title"><div class="book-stage"><div class="book-back"></div><div class="book-cover"><div class="cover-contents"><h2 id="intro-title">Александр<em>и</em>Виктория</h2><div class="cover-bottom">19 июня 2027 · Санкт-Петербург</div></div></div></div><div class="intro-actions"><button type="button" class="intro-open" id="openIntro">Открыть нашу историю</button></div></div>
-<header class="editorial-cover" id="top" data-photo-count="3">
+<header class="editorial-cover hero-atelier-v7" id="top" data-photo-count="3">
   <div class="ec-grain" aria-hidden="true"></div>
   <div class="ec-canvas">
     <div class="ec-edition" aria-hidden="true"><span>НАША СВАДЬБА</span><span>19 / 06 / 2027</span></div>
-    <div class="ec-photo ec-photo-main"><img id="ecMain" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&amp;fit=crop&amp;w=1400&amp;q=85" alt="Александр и Виктория"></div>
-    <div class="ec-photo ec-photo-side1"><img id="ecSide1" src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&amp;fit=crop&amp;w=700&amp;q=83" alt="Совместная фотография"></div>
-    <div class="ec-photo ec-photo-side2"><img id="ecSide2" src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&amp;fit=crop&amp;w=700&amp;q=83" alt="Момент нашей истории"></div>
-    <div class="ec-type">
-      <h1><span id="ecName1">Александр</span><i>и</i><span id="ecName2">Виктория</span></h1>
-      <p class="ec-date"><span id="ecDate">19 июня 2027 года</span><span class="ec-dot"></span><span id="ecCity">Санкт-Петербург</span></p>
+    <span class="ec-side-note" aria-hidden="true">НАША ИСТОРИЯ · НАШ ДЕНЬ</span>
+    <div class="ec-visual" aria-label="Фотографии молодожёнов">
+      <div class="ec-photo ec-photo-main"><img id="ecMain" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&amp;fit=crop&amp;w=1400&amp;q=85" alt="Александр и Виктория" fetchpriority="high"></div>
+      <div class="ec-photo ec-photo-side1"><img id="ecSide1" src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&amp;fit=crop&amp;w=700&amp;q=83" alt="Совместная фотография"></div>
+      <div class="ec-photo ec-photo-side2"><img id="ecSide2" src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&amp;fit=crop&amp;w=700&amp;q=83" alt="Момент нашей истории"></div>
     </div>
+    <div class="ec-type"><span class="ec-type-kicker">ВМЕСТЕ НАВСЕГДА</span><h1><span id="ecName1">Александр</span><i>и</i><span id="ecName2">Виктория</span></h1><p class="ec-date"><span id="ecDate">19 июня 2027 года</span><span class="ec-dot" aria-hidden="true"></span><span id="ecCity">Санкт-Петербург</span></p></div>
     <div class="ec-corner" aria-hidden="true">А · В</div>
     <a class="ec-next" href="#photo-story"><span>Листать дальше</span><span class="ec-next-line" aria-hidden="true"></span></a>
   </div>
@@ -355,8 +410,9 @@ html{scroll-padding-top:0}
 <section class="rsvp" id="rsvp"><div class="rsvp-paper paper-texture reveal"><div class="eyebrow" style="text-align:center">Ваш ответ · Нам очень важно знать</div><h2 class="serif">Будете<br><em>с нами?</em></h2><p class="rsvp-sub">Просим подтвердить присутствие до 1 июня 2027 года. Выберите подходящие ответы — это поможет нам всё организовать.</p><div id="rsvpDynamic"></div><p class="demo-note">Демонстрационная версия: ответы никуда не отправляются. Не вводите настоящие персональные данные.</p></div></section>
 <section class="ending"><div class="reveal"><h2>До встречи!</h2><p>С любовью, Александр и Виктория</p></div></section>
 </main><footer class="site-footer">Демонстрационная версия · Все имена и сведения вымышлены</footer>
+<script src="../wedding-config.js"></script>
 <script>
-(()=>{'use strict';const intro=document.querySelector('#intro'),open=document.querySelector('#openIntro');let opened=false;function revealIntro(){if(opened)return;opened=true;intro.classList.add('opening');open.disabled=true;setTimeout(()=>{intro.classList.add('done');intro.setAttribute('aria-hidden','true');document.body.classList.remove('locked')},1300)}open.addEventListener('click',revealIntro);document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!opened)revealIntro()});if(location.hash&&location.hash!=='#top'){revealIntro()}const obs='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target)}}),{threshold:.07}):null;document.querySelectorAll('.reveal').forEach(el=>obs?obs.observe(el):el.classList.add('in'));const date=new Date((window.WEDDING_CONFIG&&window.WEDDING_CONFIG.dateTime)||'2027-06-19T15:00:00+03:00').getTime();function tick(){const delta=Math.max(0,date-Date.now()),v={days:Math.floor(delta/86400000),hours:Math.floor(delta/3600000)%24,minutes:Math.floor(delta/60000)%60,seconds:Math.floor(delta/1000)%60};Object.entries(v).forEach(([id,n])=>{const e=document.getElementById(id);if(e)e.textContent=String(n).padStart(2,'0')})}tick();setInterval(tick,1000)})();
+(()=>{'use strict';const intro=document.querySelector('#intro'),open=document.querySelector('#openIntro');let opened=false;function revealIntro(){if(opened)return;opened=true;intro.classList.add('opening');open.disabled=true;setTimeout(()=>{intro.classList.add('done');intro.setAttribute('aria-hidden','true');document.body.classList.remove('locked')},1300)}open.addEventListener('click',revealIntro);document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!opened)revealIntro()});if(location.hash&&location.hash!=='#top'){revealIntro()}const obs='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target)}}),{threshold:.07}):null;document.querySelectorAll('.reveal').forEach(el=>obs?obs.observe(el):el.classList.add('in'));const date=new Date('2027-06-19T15:00:00+03:00').getTime();function tick(){const delta=Math.max(0,date-Date.now()),v={days:Math.floor(delta/86400000),hours:Math.floor(delta/3600000)%24,minutes:Math.floor(delta/60000)%60,seconds:Math.floor(delta/1000)%60};Object.entries(v).forEach(([id,n])=>{const e=document.getElementById(id);if(e)e.textContent=String(n).padStart(2,'0')})}tick();setInterval(tick,1000)})();
 </script><script src="../rsvp-config.js"></script><script src="../rsvp-renderer.js"></script>
 <script>
 (()=>{const root=document.getElementById('rsvpDynamic');if(!root)return;
