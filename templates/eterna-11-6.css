@@ -1,0 +1,39 @@
+/* ÉTERNA 11.6 — LETTER REVEAL + CINEMATIC CHAPTER TRANSITIONS
+   Additive enhancement: no editor, RSVP, image sources or existing swipe handlers modified. */
+:root{--et116-ease:cubic-bezier(.2,.8,.2,1)}
+/* Envelope is an ARIA-hidden visual mask. JS applies this only after first paint. */
+#invitation .letter{isolation:isolate;transform-style:preserve-3d}
+#invitation .et116-envelope{position:absolute;inset:0;z-index:8;pointer-events:none;perspective:1150px;opacity:var(--et116-mask,1);transition:opacity .08s linear;overflow:hidden;border:1px solid #b99b77;box-shadow:inset 0 0 0 12px #e9dbc5;background:#e8d7bb}
+#invitation .et116-envelope:before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent 0 24px,#9e866413 25px 26px);opacity:.65}
+#invitation .et116-fold{position:absolute;left:0;right:0;top:0;height:54%;transform-origin:top center;transform:rotateX(calc(-177deg * var(--et116-fold,0)));backface-visibility:visible;background:linear-gradient(157deg,#f7e9d0,#d2b795);clip-path:polygon(0 0,100% 0,50% 100%);filter:drop-shadow(0 5px 6px #63482a47);z-index:3}
+#invitation .et116-underfold{position:absolute;inset:0;background:linear-gradient(145deg,#d8c5a6 0%,#f6e8d0 48%,#ddc5a5 100%);clip-path:polygon(0 100%,50% 42%,100% 100%);z-index:2}
+#invitation .et116-stamp{position:absolute;z-index:5;left:50%;top:48%;transform:translate(-50%,-50%) scale(var(--et116-stamp-scale,1));display:grid;place-items:center;width:66px;height:66px;border-radius:50%;border:1px solid #aa8063;background:radial-gradient(circle at 28% 25%,#bd8269,#875746 78%);color:#f8ebd7;font:italic 26px 'Cormorant Garamond',serif;box-shadow:0 5px 17px #3c231c55;opacity:var(--et116-stamp-opacity,1)}
+#invitation .et116-caption{position:absolute;bottom:10%;left:0;width:100%;text-align:center;font:600 9px/1.5 'Manrope',sans-serif;letter-spacing:.25em;color:#7c6651;z-index:6;opacity:var(--et116-stamp-opacity,1)}
+/* Cinematic wipe travels over each chapter's top edge, never over the RSVP fields. */
+.et116-chapter{position:relative;isolation:isolate}
+.et116-chapter .et116-film-line{position:absolute;left:0;right:0;top:0;height:2px;z-index:15;pointer-events:none;transform:scaleX(0);transform-origin:left;background:linear-gradient(90deg,transparent,#e8caa4 15%,#fff7e8 50%,#e8caa4 85%,transparent);opacity:0}
+.et116-chapter.et116-entered .et116-film-line{animation:et116-line-sweep 1.25s var(--et116-ease) both}
+.et116-chapter.et116-entered .et116-cinema-label{animation:et116-title-in 1s .12s var(--et116-ease) both}
+.et116-cinema-label{position:absolute;top:25px;right:clamp(20px,5vw,75px);z-index:12;pointer-events:none;letter-spacing:.23em;font:600 9px/1.4 'Manrope',sans-serif;color:#b69b7b;opacity:0}
+#story .et116-cinema-label,#day .et116-cinema-label,#dress .et116-cinema-label{color:#7c6855}
+#invitation .ao-section-label,#story .ao-section-label,#day .day-top,#venue .venue-card,#dress .eyebrow,#rsvp .rsvp-paper{transform-origin:center center}
+.et116-chapter.et116-entered .ao-section-label{animation:et116-title-in 1.0s var(--et116-ease) both}
+#invitation.et116-entered .invite-photo-left{animation:et116-photo-left 1.35s .13s var(--et116-ease) both}
+#invitation.et116-entered .invite-photo-right{animation:et116-photo-right 1.45s .22s var(--et116-ease) both}
+#story.et116-entered .story-stamp{animation:et116-stamp 1.25s .3s var(--et116-ease) both}
+#venue.et116-entered .venue-card{animation:et116-arch-in 1.25s .12s var(--et116-ease) both}
+#dress.et116-entered .mood-grid figure{animation-duration:1.4s;animation-timing-function:var(--et116-ease)}
+#dress.et116-entered .mood-grid figure:nth-child(1){animation-name:et116-gallery-left}
+#dress.et116-entered .mood-grid figure:nth-child(2){animation-name:et116-gallery-center;animation-delay:.11s}
+#dress.et116-entered .mood-grid figure:nth-child(3){animation-name:et116-gallery-right;animation-delay:.2s}
+@keyframes et116-line-sweep{0%{transform:scaleX(0);opacity:0}20%{opacity:1}80%{opacity:1}100%{transform:scaleX(1);opacity:0}}
+@keyframes et116-title-in{from{opacity:0;filter:blur(8px);translate:0 15px}to{opacity:1;filter:blur(0);translate:0 0}}
+@keyframes et116-photo-left{from{opacity:.25;translate:-45px 20px}to{opacity:1;translate:0 0}}
+@keyframes et116-photo-right{from{opacity:.25;translate:45px 20px}to{opacity:1;translate:0 0}}
+@keyframes et116-stamp{from{opacity:0;scale:1.7;rotate:-25deg}to{opacity:1;scale:1;rotate:0}}
+@keyframes et116-arch-in{from{opacity:.55;filter:blur(7px);translate:0 35px}to{opacity:1;filter:blur(0);translate:0 0}}
+@keyframes et116-gallery-left{from{opacity:.3;translate:-28px 25px}to{opacity:1;translate:0 0}}
+@keyframes et116-gallery-center{from{opacity:.3;translate:0 40px}to{opacity:1;translate:0 0}}
+@keyframes et116-gallery-right{from{opacity:.3;translate:28px 25px}to{opacity:1;translate:0 0}}
+@media(max-width:700px){.et116-cinema-label{top:13px;right:18px;font-size:8px;letter-spacing:.1em}#invitation .et116-stamp{width:53px;height:53px;font-size:21px}#invitation .et116-caption{font-size:8px;letter-spacing:.14em}}
+@media(prefers-reduced-motion:reduce){.et116-chapter.et116-entered .et116-film-line,.et116-chapter.et116-entered .et116-cinema-label,.et116-chapter.et116-entered .ao-section-label,#invitation.et116-entered .invite-photo-left,#invitation.et116-entered .invite-photo-right,#story.et116-entered .story-stamp,#venue.et116-entered .venue-card,#dress.et116-entered .mood-grid figure{animation:none!important;opacity:1!important;filter:none!important;translate:none!important}.et116-film-line{display:none!important}.et116-envelope{display:none!important}}
