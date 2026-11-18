@@ -27,6 +27,14 @@ try {
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'Horizontal overflow');
       await page.getByRole('link', {name: 'Открыть приглашение'}).tap();
       await page.waitForURL('**/#atmosphere');
+      const letter = page.locator('.letter');
+      const greeting = letter.locator('h2');
+      assert.equal(await greeting.isVisible(), false);
+      await letter.getByText('Открыть письмо', {exact: true}).tap();
+      await greeting.waitFor();
+      await page.screenshot({path: `screenshots/${name}-letter.png`});
+      await letter.getByText('Сложить письмо', {exact: true}).tap();
+      await greeting.waitFor({state: 'hidden'});
       await page.getByRole('button', {name: '02', exact: true}).tap();
       await page.getByRole('button', {name: '02', exact: true, pressed: true}).waitFor();
       await page.locator('#rsvp-name').fill('Анна Иванова');
