@@ -39,6 +39,8 @@ $raw=file_get_contents('php://input');
 if(!is_string($raw)||strlen($raw)>4096)finish(413,['ok'=>false,'error'=>'Слишком большой запрос']);
 $data=json_decode($raw,true);
 $slug=$data['slug']??null;
+$rotate=($data['action']??'issue')==='rotate';
+if(!in_array(($data['action']??'issue'),['issue','rotate'],true))finish(400,['ok'=>false,'error'=>'Неверная операция']);
 if(!is_array($data)||!is_string($slug)||!preg_match('/^[a-z0-9](?:[a-z0-9-]{0,58}[a-z0-9])?$/D',$slug))
  finish(400,['ok'=>false,'error'=>'Неверный адрес свадьбы']);
 try{
@@ -56,6 +58,11 @@ try{
  $q=$db->prepare('SELECT id,display_name FROM wedletter_weddings WHERE slug=? AND is_active=1 LIMIT 1 FOR UPDATE');
  $q->execute([$slug]);$w=$q->fetch(PDO::FETCH_ASSOC);
  if(!$w){$db->rollBack();finish(404,['ok'=>false,'error'=>'Свадьба не найдена в MySQL']);}
+ if($rotate){
+  // Revoke old links before issuing a new one, in the same DB transaction.
+  $revoke=$db->prepare('UPDATE wedletter_dashboard_access SET revoked_at=NOW() WHERE wedding_id=? AND revoked_at IS NULL');
+  $revoke->execute([(int)$w['id']]);
+ }
  $q=$db->prepare('SELECT COUNT(*) FROM wedletter_dashboard_access WHERE wedding_id=? AND revoked_at IS NULL');
  $q->execute([(int)$w['id']]);
  if((int)$q->fetchColumn()>=5){$db->rollBack();finish(409,['ok'=>false,'error'=>'Для этой свадьбы уже создано 5 активных доступов. Обратись к администратору.']);}
