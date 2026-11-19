@@ -1065,7 +1065,7 @@ function renderPublicationSlug(){
  const input=document.createElement('input');input.type='text';input.value=publicationSlug();input.maxLength=60;
  input.setAttribute('autocapitalize','off');input.spellcheck=false;
  const preview=document.createElement('p');preview.className='workflow-intro';
- function refresh(){const value=input.value.trim().toLowerCase();const valid=/^[a-z0-9](?:[a-z0-9-]{0,58}[a-z0-9])?$/.test(value);preview.textContent=valid?'Адрес SpaceWeb: wedletter.ru/'+value+'/ (до запуска домена проверяй по временному адресу):'Используй только a–z, 0–9 и дефисы.';}
+ function refresh(){const value=input.value.trim().toLowerCase();const valid=/^[a-z0-9](?:[a-z0-9-]{0,58}[a-z0-9])?$/.test(value);preview.textContent=valid?'Адрес SpaceWeb: wedletter.ru/'+value+'/  (до запуска домена проверяй по временному адресу)':'Используй только a–z, 0–9 и дефисы.';}
  input.addEventListener('input',()=>{
   if(data.publicSlugLocked){preview.textContent='Адрес уже опубликован и закреплён. Его нельзя изменить без переноса сайта.';input.value=publicationSlug();return;}
   data.publicSlug=input.value.toLowerCase().trim();changed('Короткий адрес сохранён.');refresh();
