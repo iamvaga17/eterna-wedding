@@ -71,7 +71,7 @@ export default {
       throw e;
     });
     if(currentOwner){
-      const decoded=JSON.parse(atob((currentOwner.content||"").replace(/\\s/g,"")));
+      const decoded=JSON.parse(atob((currentOwner.content||"").replace(/\s/g,"")));
       if(decoded.ownerId!==ownerId)return result({error:"Этот короткий адрес уже занят другим заказом."},409,cors);
     }else{
       const existing=await github(env,"/contents/orders/"+encodeURIComponent(id)+"/index.html").catch(e=>{
