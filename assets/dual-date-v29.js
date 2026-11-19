@@ -15,6 +15,8 @@ function apply(config){
  const site=document.querySelector('.schedule')||document.querySelector('.field-report');
  if(!site)return;
  let cards=site.querySelector('.et-two-events');
+ const storyTitle=document.querySelector('.atmosphere-title h2');
+ if(storyTitle)storyTitle.innerHTML=d.mode==='split'?'Два дня.<br><em>Одна история.</em>':'Один день.<br><em>На всю жизнь.</em>';
  if(d.mode!=='split'){cards?.remove();const agenda=site.querySelector('.rundown');if(agenda)agenda.hidden=false;last='';return;}
  const signature=JSON.stringify(d);
  if(signature===last&&cards)return;last=signature;
