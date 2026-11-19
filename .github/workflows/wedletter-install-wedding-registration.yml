@@ -1,0 +1,80 @@
+name: WEDLETTER | Install wedding registration API
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: 'Type INSTALL REGISTER to install new register-wedding.php'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wedletter-spaceweb-api
+  cancel-in-progress: false
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Confirm exact new file and check syntax
+        env:
+          CONFIRM: ${{ inputs.confirmation }}
+        run: |
+          set -euo pipefail
+          test "$CONFIRM" = 'INSTALL REGISTER' || { echo "::error::Missing installation confirmation"; exit 1; }
+          php -l spaceweb-api-release/register-wedding.php
+          test "$(wc -c < spaceweb-api-release/register-wedding.php)" -lt 300000
+
+      - name: Install only if remote register-wedding.php is absent
+        env:
+          FTP_USER: ${{ secrets.SPACEWEB_API_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SPACEWEB_API_FTP_PASSWORD }}
+        run: |
+          set -euo pipefail
+          test -n "$FTP_USER" && test -n "$FTP_PASSWORD"
+          echo "77.222.40.70 vh404.sweb.ru" | sudo tee -a /etc/hosts >/dev/null
+          python3 - <<'PY'
+          import ftplib
+          import hashlib
+          import io
+          import os
+          import ssl
+
+          target='register-wedding.php'
+          body=open('spaceweb-api-release/'+target,'rb').read()
+          ftp=ftplib.FTP_TLS(context=ssl.create_default_context(),timeout=20)
+          ftp.connect('vh404.sweb.ru',21)
+          ftp.login(os.environ['FTP_USER'],os.environ['FTP_PASSWORD'])
+          ftp.prot_p()
+          uploaded=False
+          try:
+              try:
+                  ftp.retrbinary('RETR '+target,lambda data: None)
+              except ftplib.error_perm as e:
+                  if not str(e).startswith('550'):
+                      raise
+              else:
+                  raise RuntimeError('Registration API already exists. No overwrite permitted.')
+              try:
+                  uploaded=True
+                  ftp.storbinary('STOR '+target,io.BytesIO(body))
+                  contents=[]
+                  ftp.retrbinary('RETR '+target,contents.append)
+                  if hashlib.sha256(b''.join(contents)).digest()!=hashlib.sha256(body).digest():
+                      raise RuntimeError('Readback digest mismatch')
+                  print('New wedding registration endpoint installed and verified. No existing API touched.')
+              except BaseException:
+                  if uploaded:
+                      try: ftp.delete(target); print('Removed failed upload.')
+                      except Exception: print('::error::Could not remove the failed registration endpoint.')
+                  raise
+          finally:
+              try:ftp.quit()
+              except Exception:ftp.close()
+          PY
