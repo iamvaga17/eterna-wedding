@@ -1,0 +1,32 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta name="robots" content="noindex,nofollow"><title>WEDLETTER · Выдать доступ к кабинету</title><style>
+:root{color-scheme:light}*{box-sizing:border-box}body{margin:0;background:#f6f1e9;color:#332b23;font:15px/1.5 system-ui,-apple-system,sans-serif}.wrap{max-width:570px;margin:0 auto;padding:36px 18px 80px}h1{font:400 38px Georgia,serif;margin:0}h2{font:400 25px Georgia,serif;margin:0 0 12px}.sub{color:#756a60;font-size:13px}.box{background:#fffdfa;border:1px solid #e3dacd;border-radius:16px;padding:24px;margin:20px 0}label{display:block;font-weight:600;margin:17px 0 7px}input{width:100%;border:1px solid #d0c2b2;border-radius:9px;padding:12px;font:inherit}button,.btn{border:0;border-radius:10px;padding:13px 17px;background:#332a24;color:white;font:600 14px system-ui;cursor:pointer;text-decoration:none;display:inline-block}button:disabled{opacity:.6}.light{background:#e9e1d8;color:#332a24}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}.result{margin-top:18px}.error{color:#a03228}code{display:block;font:12px/1.6 ui-monospace,monospace;overflow-wrap:anywhere;background:#f2ece3;border-radius:9px;padding:14px;margin:12px 0}a{color:inherit}.hidden{display:none}header{border-bottom:1px solid #ddd2c4;padding-bottom:20px}
+</style></head><body><main class="wrap"><header><h1>WEDLETTER</h1><div class="sub">Администратор · выдача доступа к RSVP</div></header>
+<section class="box"><h2>Кабинет молодожёнов</h2><p class="sub">Создай отдельный код для пары. Для безопасности код показывается только один раз. Сохрани его перед закрытием страницы.</p>
+<form id="form"><label for="slug">Адрес свадьбы (slug)</label><input id="slug" required maxlength="60" pattern="[a-z0-9-]+" spellcheck="false" autocapitalize="off" placeholder="rsvp-auto-test-01" value="rsvp-auto-test-01">
+<label for="publisher">Ключ публикации SpaceWeb</label><input id="publisher" required type="password" autocomplete="off" spellcheck="false" placeholder="Твой обычный ключ публикации">
+<div class="actions"><button id="submit" type="submit">Создать код доступа</button></div></form>
+<p id="status" class="result sub" aria-live="polite"></p>
+<div id="success" class="hidden"><h2>Доступ создан</h2><p>Код для этой свадьбы:</p><code id="token"></code><div class="actions"><button type="button" id="copy" class="light">Скопировать код</button><a class="btn" href="https://wedletter.ru/api/dashboard.php" target="_blank" rel="noopener noreferrer">Открыть кабинет</a></div><p class="sub">Отправь паре только код и ссылку на кабинет. Ключ публикации никому не передавай.</p></div>
+</section></main><script>
+(function(){
+'use strict';
+const form=document.querySelector('#form'),btn=document.querySelector('#submit'),status=document.querySelector('#status'),success=document.querySelector('#success'),code=document.querySelector('#token');
+form.addEventListener('submit',async e=>{
+e.preventDefault();success.classList.add('hidden');code.textContent='';status.className='result sub';status.textContent='Создаю отдельный доступ…';
+btn.disabled=true;
+const slug=document.querySelector('#slug').value.trim();
+const publisher=document.querySelector('#publisher').value.trim();
+try{
+const res=await fetch('https://wedletter.ru/api/create-dashboard-access.php',{method:'POST',mode:'cors',cache:'no-store',credentials:'omit',headers:{'Authorization':'Bearer '+publisher,'Content-Type':'application/json'},body:JSON.stringify({slug})});
+const data=await res.json().catch(()=>({}));
+if(!res.ok||data.ok!==true||!/^[a-f0-9]{64}$/.test(data.token||''))throw new Error(data.error||'Ошибка сервера HTTP '+res.status);
+code.textContent=data.token;success.classList.remove('hidden');status.textContent='Доступ создан для «'+data.displayName+'». Скопируй код сейчас.';
+document.querySelector('#publisher').value='';
+}catch(err){status.className='result error';status.textContent=String(err.message||err);}finally{btn.disabled=false;}
+});
+document.querySelector('#copy').addEventListener('click',async()=>{
+const value=code.textContent;if(!value)return;
+try{await navigator.clipboard.writeText(value);document.querySelector('#copy').textContent='Скопировано ✓';}catch(e){window.prompt('Скопируй код:',value);}
+});
+})();
+</script></body></html>
