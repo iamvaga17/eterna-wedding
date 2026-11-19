@@ -953,7 +953,7 @@ async function buildPublishFiles(id){
   }
   await exportV12(folder,files,cfg);
  }
- return files.filter(f=>f.name.startsWith(folder));
+ return files.filter(f=>f.name.startsWith(folder)&&!f.name.endsWith('/настройки.json'));
 }
 async function publishRequest(route,body,token){
  const res=await fetch(PUBLISH_SERVER+route,{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(body),cache:'no-store'});
