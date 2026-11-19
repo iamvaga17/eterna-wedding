@@ -944,7 +944,39 @@ for(const [group,name] of [['female','Для неё'],['male','Для него']
 for(const [key,value] of Object.entries(data.sections)){const row=document.createElement('div');row.className='section-row';const check=document.createElement('input');check.type='checkbox';check.checked=Boolean(value);check.addEventListener('change',()=>{data.sections[key]=check.checked;changed()});const label=document.createElement('label');label.textContent=LABELS[key]||key;row.append(check,label);$('sections').append(row)}
 for(const key of Object.keys(data.text)){field($('texts'),data.text,key,LABELS[key]||key,key!=='venueName'&&key!=='venueMap')}
 const heading=document.createElement('h2');heading.textContent='Расписание дня';$('texts').append(heading);
-(data.schedule||[]).forEach((item,i)=>{const det=document.createElement('details'),s=document.createElement('summary');s.textContent='Событие '+(i+1)+' · '+(item.title||'');det.append(s);for(const k of ['time','title','description'])field(det,item,k,k==='time'?'Время':k==='title'?'Название':'Описание',k==='description');$('texts').append(det)})
+if(!Array.isArray(data.schedule))data.schedule=[];
+const scheduleEditor=document.createElement('div');scheduleEditor.className='et-schedule-editor';$('texts').append(scheduleEditor);
+function renderScheduleEditor(){
+ scheduleEditor.replaceChildren();
+ const hint=document.createElement('p');hint.className='upload-help';hint.textContent='Добавляй, редактируй, удаляй и меняй порядок событий. Изменения сразу появляются в приглашении.';scheduleEditor.append(hint);
+ data.schedule.forEach((item,i)=>{
+  const det=document.createElement('details');det.className='et-schedule-item';
+  const summary=document.createElement('summary');summary.textContent=(item.time?item.time+' · ':'')+(item.title||'Новое событие');det.append(summary);
+  for(const [key,title] of [['time','Время (например, 16:00)'],['title','Название события'],['description','Описание']]){
+   const lab=document.createElement('label');lab.textContent=title;
+   const input=document.createElement(key==='description'?'textarea':'input');
+   if(key==='time'){input.type='time';input.step=60;}else if(key!=='description')input.type='text';
+   input.value=item[key]||'';
+   input.addEventListener('input',()=>{item[key]=input.value;summary.textContent=(item.time?item.time+' · ':'')+(item.title||'Новое событие');changed('Расписание сохранено.');});
+   lab.append(input);det.append(lab);
+  }
+  const actions=document.createElement('div');actions.className='actions';actions.style.padding='10px 0';
+  function action(label,callback,disabled=false){
+   const btn=document.createElement('button');btn.type='button';btn.className='secondary';btn.textContent=label;btn.disabled=disabled;btn.addEventListener('click',callback);actions.append(btn);
+  }
+  action('↑ Выше',()=>{[data.schedule[i-1],data.schedule[i]]=[data.schedule[i],data.schedule[i-1]];changed('Порядок расписания обновлён.');renderScheduleEditor()},i===0);
+  action('↓ Ниже',()=>{[data.schedule[i],data.schedule[i+1]]=[data.schedule[i+1],data.schedule[i]];changed('Порядок расписания обновлён.');renderScheduleEditor()},i===data.schedule.length-1);
+  action('Удалить',()=>{data.schedule.splice(i,1);changed('Событие удалено.');renderScheduleEditor()});
+  det.append(actions);scheduleEditor.append(det);
+ });
+ const add=document.createElement('button');add.type='button';add.textContent='+ Добавить событие';add.addEventListener('click',()=>{
+  data.schedule.push({time:'',title:'Новое событие',description:''});
+  changed('Новое событие добавлено.');renderScheduleEditor();
+  const entries=scheduleEditor.querySelectorAll('.et-schedule-item');const latest=entries[entries.length-1];if(latest){latest.open=true;latest.querySelector('input')?.focus();}
+ });scheduleEditor.append(add);
+ if(!data.schedule.length){const empty=document.createElement('p');empty.textContent='Расписание пустое. Добавь первое событие.';scheduleEditor.insertBefore(empty,add);}
+}
+renderScheduleEditor()
 renderBroadcastFields();organizeBroadcastTextFields();syncEditorMode();}
 // ZIP without external libraries; STORED entries, photos are JPEG-compressed before packing.
 const enc=new TextEncoder();
