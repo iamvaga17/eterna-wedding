@@ -15,17 +15,17 @@
 
 .palette-panel{border:1px solid #e6e0d7;border-radius:12px;background:#fdfbf7;padding:14px;margin:10px 0 18px}.palette-panel strong{font-size:13px}.palette-editor{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin:12px 0}.palette-editor label{font-size:10px;text-align:center;margin:0;min-width:0}.palette-editor input[type=color]{display:block;width:100%;min-width:0;height:48px;border:1px solid #d8d0c4;border-radius:7px;background:white;padding:3px;cursor:pointer}.palette-note{font-size:12px;color:#756a5d;line-height:1.5}.palette-reset{margin-top:8px}
 [hidden]{display:none!important}#broadcastEditorFields fieldset{margin-top:8px}#broadcastEditorFields textarea{min-height:90px}#previewVersion{font:14px system-ui;padding:9px;width:100%;border:1px solid #d6d2ca;border-radius:8px}button:disabled{opacity:.55;cursor:not-allowed}.studio-panel{margin:15px 0 25px;padding:16px;border:1px solid #d5ccc1;border-radius:14px;background:#fbf7f0}.studio-card{border:1px solid #e0d9cd;background:white;border-radius:11px;margin:10px 0;padding:12px}.studio-card strong{display:block;margin-bottom:8px;font-size:13px}.studio-card img{display:block;width:100%;max-height:220px;object-fit:contain;background:#ede8df;border-radius:7px;margin-bottom:8px}.studio-card img[hidden]{display:none!important}.studio-card input{max-width:100%;min-width:0}.studio-panel select{width:100%;padding:10px;border:1px solid #d6d2ca;background:white;border-radius:8px}.studio-panel .photo-tools{align-items:center}.studio-provider{margin:15px 0;padding:12px;border:1px solid #ddd1c5;background:white;border-radius:9px}.studio-provider input{max-width:100%}.studio-permission{display:flex;align-items:flex-start;gap:8px;font-size:12px;line-height:1.5;margin:14px 0}.studio-permission input{flex:none;margin-top:3px}.studio-pending{border:2px solid #b5834a;background:#fff9ed}.studio-pending img{max-height:330px}/* Manual workflow: cloud controls hidden but JS/IDB legacy retained to avoid breakage */
-#broadcastEditorFields .studio-provider,
-#broadcastEditorFields .studio-permission,
-#broadcastEditorFields #studioGenerateAll,
-#broadcastEditorFields #studioGenerateOne,
-#broadcastEditorFields #studioGenerated,
-#broadcastEditorFields label[for="studioScene"],
-#broadcastEditorFields #studioScene,
-#broadcastEditorFields label[for="studioBrief"],
-#broadcastEditorFields #studioBrief,
-#broadcastEditorFields #studioPrompt,
-#broadcastEditorFields #studioStatus {display:none!important}
+.workflow-broadcast .studio-provider,
+.workflow-broadcast .studio-permission,
+.workflow-broadcast #studioGenerateAll,
+.workflow-broadcast #studioGenerateOne,
+.workflow-broadcast #studioGenerated,
+.workflow-broadcast label[for="studioScene"],
+.workflow-broadcast #studioScene,
+.workflow-broadcast label[for="studioBrief"],
+.workflow-broadcast #studioBrief,
+.workflow-broadcast #studioPrompt,
+.workflow-broadcast #studioStatus {display:none!important}
 body.mobile-preview-mode .panel{display:none}body.mobile-preview-mode main{display:block;max-width:none;padding:0}body.mobile-preview-mode .preview{position:relative;padding:8px;border:0;border-radius:0}body.mobile-preview-mode .preview iframe{height:calc(100dvh - 170px);min-height:480px;border-radius:8px}body.mobile-preview-mode header{padding:10px 16px}#mobilePreviewToggle{margin-bottom:10px}
 /* ÉTERNA STUDIO v26 — compact sequential workflow */
 :root{--ink:#292821;--muted:#817a70;--line:#e4ded4;--accent:#b58b63;--paper:#fffefb}
@@ -108,7 +108,7 @@ main{max-width:1440px;padding:0 clamp(14px,3.2vw,44px) 26px;grid-template-column
   body.mobile-preview-mode .preview iframe{height:calc(100dvh - 250px)}
 }
 @media(max-width:380px){header h1{font-size:23px}.workflow-tab{font-size:9px}.workflow-top .orders-line button{font-size:11px}}
-#broadcastEditorFields .studio-panel>p.muted:not(:first-of-type){display:none!important}.preview .mobile-export-action{display:none}@media(max-width:850px){.preview .mobile-export-action{display:block;width:100%;margin:12px 0 6px;padding:14px}}
+.workflow-broadcast .studio-panel>p.muted:not(:first-of-type){display:none!important}.preview .mobile-export-action{display:none}@media(max-width:850px){.preview .mobile-export-action{display:block;width:100%;margin:12px 0 6px;padding:14px}}
 </style></head><body>
 <header><div><h1>ÉTERNA <span class="brand-slim">STUDIO</span></h1><small>Конструктор свадебных приглашений · версия 26</small></div><div class="actions"><button id="previewBtn" class="secondary">Обновить просмотр</button><button id="downloadBtn">Скачать комплект ZIP</button></div></header>
 <main><div class="panel">
