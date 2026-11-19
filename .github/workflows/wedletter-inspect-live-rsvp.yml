@@ -1,6 +1,10 @@
 name: WEDLETTER | Inspect RSVP slug validation
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/wedletter-inspect-live-rsvp.yml'
   workflow_dispatch:
 
 permissions:
