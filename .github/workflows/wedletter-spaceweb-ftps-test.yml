@@ -1,0 +1,52 @@
+name: WEDLETTER | SpaceWeb FTPS test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-ftps:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check secrets exist (without printing values)
+        env:
+          FTP_USER: ${{ secrets.SPACEWEB_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SPACEWEB_FTP_PASSWORD }}
+        run: |
+          if [ -z "$FTP_USER" ] || [ -z "$FTP_PASSWORD" ]; then
+            echo "::error::Configure SPACEWEB_FTP_USER and SPACEWEB_FTP_PASSWORD in GitHub Actions secrets."
+            exit 1
+          fi
+
+      - name: Install FTPS client
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+
+      - name: Upload harmless marker to restricted deploy directory
+        env:
+          FTP_USER: ${{ secrets.SPACEWEB_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SPACEWEB_FTP_PASSWORD }}
+        run: |
+          set -eu
+          printf 'WEDLETTER FTPS connection test. No private data.\n' > wedletter-deploy-check.txt
+          # The secondary FTP account should be jailed to public_html/deploy.
+          # TLS MUST be used for credentials and data. If unavailable or the
+          # server certificate cannot be verified, fail closed.
+          lftp -u "$FTP_USER","$FTP_PASSWORD" ftp://77.222.40.70 <<'LFTP'
+          set cmd:fail-exit yes
+          set ftp:ssl-force yes
+          set ftp:ssl-protect-data yes
+          set ssl:verify-certificate yes
+          set net:max-retries 1
+          set net:timeout 15
+          put wedletter-deploy-check.txt
+          bye
+          LFTP
+
+      - name: Explain test result
+        run: echo "Secure FTPS upload completed to the restricted FTP account root."
