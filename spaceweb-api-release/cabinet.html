@@ -1,0 +1,18 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta name="robots" content="noindex,nofollow"><title>WEDLETTER · Личный кабинет</title><style>
+:root{color-scheme:light}*{box-sizing:border-box}body{margin:0;background:#f6f1e9;color:#332b25;font:16px/1.5 system-ui,-apple-system,sans-serif}.shell{min-height:100dvh;display:grid;place-items:center;padding:22px}.panel{width:min(100%,450px);background:#fffdf9;border:1px solid #e2d7c8;border-radius:20px;padding:32px;box-shadow:0 22px 55px #3b261016}.brand{font:400 32px Georgia,serif;letter-spacing:2px;margin:0}.label{font-size:13px;color:#887968;margin:8px 0 28px}h1{font:400 27px Georgia,serif;margin:0 0 14px}.status{color:#6d6157}.error{color:#a33830}a{display:inline-block;margin-top:14px;color:#44352b;text-underline-offset:4px}</style></head><body><main class="shell"><section class="panel"><p class="brand">WEDLETTER</p><p class="label">Личный кабинет молодожёнов</p><h1>Открываем ваш кабинет</h1><p id="status" class="status" role="status" aria-live="polite">Проверяем персональную ссылку…</p><a id="fallback" href="/api/dashboard.php" hidden>Перейти к странице входа</a></section></main><script>
+(async function(){
+'use strict';
+const label=document.querySelector('#status'),fallback=document.querySelector('#fallback');
+const token=location.hash.slice(1);
+history.replaceState(null,'',location.pathname);
+if(!/^[a-f0-9]{64}$/.test(token)){
+ label.className='error';label.textContent='Ссылка неполная или повреждена. Попросите у организатора новую персональную ссылку.';fallback.hidden=false;return;
+}
+try{
+const res=await fetch('/api/cabinet-login.php',{method:'POST',credentials:'same-origin',cache:'no-store',referrerPolicy:'no-referrer',headers:{'X-Wedletter-Access':token,'Accept':'application/json'}});
+const data=await res.json();
+if(!res.ok||data.ok!==true||data.redirect!=='/api/dashboard.php')throw new Error('Не удалось открыть кабинет. Ссылка могла быть отозвана.');
+location.replace('/api/dashboard.php');
+}catch(err){label.className='error';label.textContent=err.message||'Не удалось открыть кабинет. Попробуйте позже.';fallback.hidden=false;}
+})();
+</script></body></html>
