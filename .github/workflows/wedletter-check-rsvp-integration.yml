@@ -1,0 +1,38 @@
+name: WEDLETTER | Check RSVP publishing integration
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'spaceweb-api-release/register-wedding.php'
+      - 'editor-unified-spaceweb-v6.html'
+      - '.github/workflows/wedletter-check-rsvp-integration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate registration PHP
+        run: php -l spaceweb-api-release/register-wedding.php
+      - name: Validate editor JavaScript and both RSVP template upgrades
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          import re
+          html=Path('editor-unified-spaceweb-v6.html').read_text()
+          tags=re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>',html,re.I)
+          assert tags,'No inline editor JS found'
+          Path('/tmp/wedletter-editor-v6.js').write_text('\n'.join(tags))
+          assert 'registerWedding(slug,pass)' in html
+          assert 'window.ETERNA_RSVP_ENDPOINT' in html
+          assert 'broadcast-preview-v17.js' in html
+          PY
+          node --check /tmp/wedletter-editor-v6.js
+          echo "PHP & inline JS syntax passed. Registration endpoint NOT installed."
