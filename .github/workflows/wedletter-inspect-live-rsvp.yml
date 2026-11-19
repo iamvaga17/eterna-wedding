@@ -35,6 +35,13 @@ jobs:
           print('RSVP PHP exists; total lines:',len(s))
           hit=[i for i,line in enumerate(s) if 'Неверный адрес свадьбы' in line]
           print('Occurrences of slug error:',len(hit))
+          for i,line in enumerate(s):
+            if ('function validSlug' in line or '$slug = (string)($_GET[' in line):
+              print('SAFE VALIDATION LINE:', line.strip()[:220])
+              if 'function validSlug' in line:
+                for following in s[i+1:i+8]:
+                  print('SAFE VALIDATION FOLLOWUP:',following.strip()[:220])
+
           for i in hit[:3]:
             for line in s[max(0,i-12):min(len(s),i+4)]:
               line=line.strip()
