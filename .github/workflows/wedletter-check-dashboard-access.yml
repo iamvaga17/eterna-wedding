@@ -1,0 +1,32 @@
+name: WEDLETTER | Lint dashboard access issuer
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'spaceweb-api-release/create-dashboard-access.php'
+      - 'wedletter-dashboard-admin.html'
+      - '.github/workflows/wedletter-check-dashboard-access.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check PHP
+        run: php -l spaceweb-api-release/create-dashboard-access.php
+      - name: Check browser script
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('wedletter-dashboard-admin.html').read_text()
+          scripts=re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>',s,re.I)
+          assert len(scripts)==1
+          Path('/tmp/wedletter-dashboard-admin.js').write_text(scripts[0])
+          PY
+          node --check /tmp/wedletter-dashboard-admin.js
