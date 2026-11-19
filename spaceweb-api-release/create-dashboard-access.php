@@ -65,7 +65,7 @@ try{
  $insert=$db->prepare('INSERT INTO wedletter_dashboard_access (wedding_id,label,token_hash) VALUES (?,?,?)');
  $insert->execute([(int)$w['id'],$label,$hash]);
  $db->commit();
- finish(200,['ok'=>true,'slug'=>$slug,'displayName'=>$w['display_name'],'token'=>$token,'dashboardUrl'=>'https://wedletter.ru/api/dashboard.php']);
+ finish(200,['ok'=>true,'slug'=>$slug,'displayName'=>$w['display_name'],'token'=>$token,'dashboardUrl'=>'https://wedletter.ru/api/dashboard.php','cabinetLink'=>'https://wedletter.ru/api/cabinet.html#'.$token]);
 }catch(Throwable $e){
  if(isset($db)&&$db instanceof PDO&&$db->inTransaction())$db->rollBack();
  error_log('WEDLETTER dashboard access creation failure: '.get_class($e));
