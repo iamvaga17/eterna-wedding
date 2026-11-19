@@ -1,0 +1,95 @@
+name: WEDLETTER | Check MySQL columns without phpMyAdmin
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wedletter-spaceweb-api
+  cancel-in-progress: false
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout read-only schema probe
+        uses: actions/checkout@v4
+
+      - name: Run temporary authenticated database probe and clean up
+        env:
+          FTP_USER: ${{ secrets.SPACEWEB_API_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SPACEWEB_API_FTP_PASSWORD }}
+        run: |
+          set -euo pipefail
+          test -n "$FTP_USER" && test -n "$FTP_PASSWORD"
+          echo "77.222.40.70 vh404.sweb.ru" | sudo tee -a /etc/hosts >/dev/null
+          python3 - <<'PY'
+          import ftplib
+          import hashlib
+          import io
+          import json
+          import os
+          import secrets
+          import ssl
+          import urllib.request
+          import urllib.error
+
+          secret=secrets.token_urlsafe(36)
+          checksum=hashlib.sha256(secret.encode()).hexdigest()
+          filename='wedletter_schema_probe_'+secrets.token_hex(16)+'.php'
+          with open('tools/spaceweb-schema-probe.php','rb') as f:
+              source=f.read()
+          if source.count(b'__TOKEN_SHA256__')!=1:
+              raise SystemExit('Probe template invalid')
+          payload=source.replace(b'__TOKEN_SHA256__',checksum.encode())
+          ftp=ftplib.FTP_TLS(context=ssl.create_default_context(),timeout=20)
+          ftp.connect('vh404.sweb.ru',21)
+          ftp.login(os.environ['FTP_USER'],os.environ['FTP_PASSWORD'])
+          ftp.prot_p()
+          uploaded=False
+          try:
+              # The FTP user is restricted to the live /public_html/api folder.
+              ftp.storbinary('STOR '+filename,io.BytesIO(payload))
+              uploaded=True
+              request=urllib.request.Request(
+                  'https://wedletter.ru/api/'+filename,
+                  headers={'X-Wedletter-Probe':secret,'Cache-Control':'no-store'},
+                  method='GET'
+              )
+              try:
+                  with urllib.request.urlopen(request,timeout=25) as response:
+                      raw=response.read(50000)
+              except urllib.error.HTTPError as err:
+                  raw=err.read(50000)
+              try:
+                  data=json.loads(raw)
+              except (ValueError,UnicodeDecodeError):
+                  raise RuntimeError('Endpoint did not return JSON; HTTP/PHP setup should be checked')
+              if data.get('ok') is not True:
+                  print('Schema probe could not run:',str(data.get('code','unknown')))
+                  raise RuntimeError('Read-only database inspection failed')
+              tables=data.get('tables') or {}
+              allowed={'wedletter_weddings','wedletter_rsvp_responses','wedletter_dashboard_access'}
+              for name in sorted(allowed):
+                  print('TABLE:',name)
+                  for column in tables.get(name,[]):
+                      print('  ',column['name'],'|',column['type'],'|','nullable='+column['nullable'],'|','key='+column['key'])
+                  if not tables.get(name):
+                      print('  MISSING or EMPTY SCHEMA')
+              if not all(tables.get(name) for name in allowed):
+                  raise RuntimeError('Some expected tables were not found')
+              print('Schema inspected in read-only mode; no guest records accessed.')
+          finally:
+              if uploaded:
+                  try:
+                      ftp.delete(filename)
+                      print('Temporary probe deleted from SpaceWeb.')
+                  except Exception as error:
+                      print('::error::Temporary probe cleanup failed. Remove the wedletter_schema_probe_*.php file from the API folder immediately.')
+                      raise
+              try: ftp.quit()
+              except Exception: ftp.close()
+          PY
