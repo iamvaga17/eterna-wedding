@@ -25,8 +25,14 @@ function db(): PDO {
   if(!is_readable($file))throw new RuntimeException('Database settings missing');
   $c=require $file;
   if(!is_array($c))throw new RuntimeException('Invalid database settings');
-  foreach(['host','port','database','username','password','charset'] as $key)if(!isset($c[$key])||$c[$key]==='')throw new RuntimeException('Missing database setting');
-  return new PDO(sprintf('mysql:host=%s;port=%d;dbname=%s;charset=%s',$c['host'],(int)$c['port'],$c['database'],$c['charset']),$c['username'],$c['password'],[PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION,PDO::ATTR_EMULATE_PREPARES=>false,PDO::ATTR_TIMEOUT=>5,PDO::ATTR_DEFAULT_FETCH_MODE=>PDO::FETCH_ASSOC]);
+  $get=static function(array $names)use($c){foreach($names as $name)if(isset($c[$name]))return $c[$name];return null;};
+  $host=$get(['host','db_host','DB_HOST']);
+  $port=$get(['port','db_port','DB_PORT'])?:3308;
+  $name=$get(['database','dbname','db_name','DB_NAME']);
+  $user=$get(['username','user','db_user','DB_USER']);
+  $pass=$get(['password','pass','db_password','DB_PASSWORD']);
+  if(!$host||!$name||!$user||$pass===null)throw new RuntimeException('Missing database setting');
+  return new PDO(sprintf('mysql:host=%s;port=%d;dbname=%s;charset=utf8mb4',$host,(int)$port,$name),(string)$user,(string)$pass,[PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION,PDO::ATTR_EMULATE_PREPARES=>false,PDO::ATTR_TIMEOUT=>5,PDO::ATTR_DEFAULT_FETCH_MODE=>PDO::FETCH_ASSOC]);
 }
 function activeGrant(PDO $db, int $grantId): ?array {
   $q=$db->prepare('SELECT a.id, w.id AS wedding_id, w.slug, w.display_name FROM wedletter_dashboard_access a JOIN wedletter_weddings w ON w.id=a.wedding_id WHERE a.id=? AND a.revoked_at IS NULL AND w.is_active=1 LIMIT 1');
