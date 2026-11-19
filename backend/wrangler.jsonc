@@ -1,6 +1,6 @@
 {
   "name": "eterna-ai-studio",
-  "main": "./cloudflare-publisher-v27.js",
+  "main": "./cloudflare-publisher-v31.js",
   "compatibility_date": "2026-11-18",
   "workers_dev": true,
   "ai": {
