@@ -475,15 +475,17 @@ function ensureDressLayout(){
 
 function withEventDates(config){
  const d=config.eventDates;
- if(d?.mode==='split'&&/^\d{4}-\d{2}-\d{2}$/.test(d.partyDate||'')){
-  const date=new Date(d.partyDate+'T12:00:00');
-  if(!Number.isNaN(date.getTime())&&date.toISOString().slice(0,10)===d.partyDate){
-   const label=new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'long',year:'numeric'}).format(date);
-   config.couple??={};
-   config.couple.dateLabel=label;
-   if(/^\d\d:\d\d$/.test(d.partyTime||''))config.couple.dateTime=d.partyDate+'T'+d.partyTime+':00';
-  }
- }
+ if(d?.mode!=='split')return config;
+ const prefix=d.mainEvent==='party'?'party':'ceremony';
+ const dateValue=d[prefix+'Date']||'';
+ const timeValue=d[prefix+'Time']||'';
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(dateValue))return config;
+ const date=new Date(dateValue+'T12:00:00');
+ if(Number.isNaN(date.getTime())||date.getFullYear()!==Number(dateValue.slice(0,4))||date.getMonth()+1!==Number(dateValue.slice(5,7))||date.getDate()!==Number(dateValue.slice(8,10)))return config;
+ config.couple??={};
+ config.couple.dateLabel=new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'long',year:'numeric'}).format(date);
+ // Always update the countdown date too; never leave the other event's timestamp.
+ config.couple.dateTime=dateValue+'T'+(/^([01]\d|2[0-3]):[0-5]\d$/.test(timeValue)?timeValue:'00:00')+':00';
  return config;
 }
 
@@ -857,6 +859,14 @@ function renderDateOptions(){
  selectLabel.append(mode);root.append(selectLabel);
  const intro=document.createElement('p');intro.className='workflow-intro';intro.textContent='Если роспись в другой день, укажи обе даты и адреса. Гости увидят два отдельных события в приглашении.';root.append(intro);
  const fields=document.createElement('div');fields.className='event-date-fields';fields.hidden=mode.value!=='split';root.append(fields);
+ const primaryLabel=document.createElement('label');primaryLabel.textContent='Главное событие на первом экране';
+ const primarySelect=document.createElement('select');primarySelect.id='mainEvent';
+ for(const [value,label] of [['ceremony','Регистрация в ЗАГСе'],['party','Банкет']]){
+  const opt=document.createElement('option');opt.value=value;opt.textContent=label;primarySelect.append(opt);
+ }
+ primarySelect.value=dataDates.mainEvent==='party'?'party':'ceremony';
+ primarySelect.addEventListener('change',()=>{dataDates.mainEvent=primarySelect.value;changed('Главная дата сайта обновлена.');});
+ primaryLabel.append(primarySelect);fields.append(primaryLabel);
  const blocks=[
  ['Роспись','ceremony','ceremonyDate','ceremonyTime','ceremonyVenue','ceremonyAddress'],
  ['Банкет','party','partyDate','partyTime','partyVenue','partyAddress']
