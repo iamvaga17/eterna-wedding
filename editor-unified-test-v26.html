@@ -1011,6 +1011,7 @@ function refreshDressPreview(){
  script.onerror=()=>{previewLoading=false;setStatus('Ошибка загрузки wedding-customizer.js. Проверь публикацию GitHub Pages.');};
  doc.body.append(script);
 }
+setupWorkflow();
 $('previewVersion').addEventListener('change',()=>{data.template=$('previewVersion').value;syncEditorMode();changed();$('siteFrame').src=previewUrls[data.template]});
 $('siteFrame').addEventListener('load',()=>{
  updatePreview();
@@ -1049,7 +1050,6 @@ $('duplicateOrderBtn').addEventListener('click',async()=>{
 $('deleteOrderBtn').addEventListener('click',async()=>{if(studioGenerating){setStatus('Дождись завершения генерации.');return}if(orders.length===1){setStatus('Нельзя удалить единственный заказ.');return}if(!confirm('Удалить этот заказ и его файлы из браузера?'))return;const old=orderId;for(const key of [...PHOTO_KEYS,...STUDIO_KEYS,'music']){try{await deleteMedia(key)}catch{}}localStorage.removeItem(draftKey());orders=orders.filter(o=>o.id!==old);storeOrder();await openOrder(orders[0].id)});
 async function start(){$('previewVersion').value=data.template in previewUrls?data.template:'12';$('siteFrame').src=previewUrls[$('previewVersion').value];await Promise.all([loadPhotos(),loadMusic(),loadStudioPhotos()]);showOrder();draw();updatePreview()}
 
-setupWorkflow();
 start();
 })();
 </script></body></html>
