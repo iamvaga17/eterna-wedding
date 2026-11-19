@@ -31,7 +31,7 @@ const content={name,attendance,details};
 const fp=JSON.stringify(content);
 if(fp!==lastFingerprint){lastFingerprint=fp;lastID=crypto.randomUUID();}
 const payload={...content,id:lastID,slug:'rsvp-test-wedletter'};
-const endpoint='/api/rsvp.php?slug=rsvp-test-wedletter';
+const endpoint='/api/rsvp.php?wedding=rsvp-test-wedletter';
 btn.disabled=true;out.className='';out.textContent='Отправляем ответ…';
 const ctrl=new AbortController();const timer=setTimeout(()=>ctrl.abort(),15000);
 try {
