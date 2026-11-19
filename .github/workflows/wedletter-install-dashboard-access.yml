@@ -1,0 +1,79 @@
+name: WEDLETTER | Install dashboard access issuer
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: 'Type INSTALL ACCESS to install the new API file'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wedletter-spaceweb-api
+  cancel-in-progress: false
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check PHP and authorization
+        env:
+          CONFIRM: ${{ inputs.confirmation }}
+        run: |
+          set -euo pipefail
+          test "$CONFIRM" = 'INSTALL ACCESS' || { echo "::error::Approval required"; exit 1; }
+          php -l spaceweb-api-release/create-dashboard-access.php
+          grep -q 'wedletter-publisher-secret.php' spaceweb-api-release/create-dashboard-access.php
+          grep -q 'random_bytes(32)' spaceweb-api-release/create-dashboard-access.php
+
+      - name: Upload new PHP only, never overwrite existing API
+        env:
+          FTP_USER: ${{ secrets.SPACEWEB_API_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SPACEWEB_API_FTP_PASSWORD }}
+        run: |
+          set -euo pipefail
+          test -n "$FTP_USER" && test -n "$FTP_PASSWORD"
+          echo "77.222.40.70 vh404.sweb.ru" | sudo tee -a /etc/hosts >/dev/null
+          python3 - <<'PY'
+          import ftplib
+          import hashlib
+          import io
+          import os
+          import ssl
+
+          name='create-dashboard-access.php'
+          data=open('spaceweb-api-release/'+name,'rb').read()
+          ftp=ftplib.FTP_TLS(context=ssl.create_default_context(),timeout=20)
+          ftp.connect('vh404.sweb.ru',21)
+          ftp.login(os.environ['FTP_USER'],os.environ['FTP_PASSWORD'])
+          ftp.prot_p()
+          uploaded=False
+          try:
+              try:
+                  ftp.retrbinary('RETR '+name,lambda chunk: None)
+              except ftplib.error_perm as e:
+                  if not str(e).startswith('550'):raise
+              else:
+                  raise RuntimeError('Remote file exists; overwrite refused')
+              try:
+                  uploaded=True
+                  ftp.storbinary('STOR '+name,io.BytesIO(data))
+                  check=[]
+                  ftp.retrbinary('RETR '+name,check.append)
+                  if hashlib.sha256(b''.join(check)).digest()!=hashlib.sha256(data).digest():
+                      raise RuntimeError('Readback mismatch')
+                  print('Dashboard access creation endpoint installed. Other files unchanged.')
+              except BaseException:
+                  if uploaded:
+                      try:ftp.delete(name);print('Failed upload removed.')
+                      except Exception:print('::error::Failed upload cleanup also failed')
+                  raise
+          finally:
+              try:ftp.quit()
+              except Exception:ftp.close()
+          PY
