@@ -4,7 +4,7 @@ const style=document.createElement('style');
 style.textContent='.et-two-events{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:26px auto;max-width:1100px}.et-event{padding:clamp(16px,3vw,28px);border:1px solid rgba(154,126,89,.34);background:#fcf7ee;color:#292923;border-radius:15px;min-width:0}.et-event-number{font:600 11px system-ui;letter-spacing:.16em;color:#a17b55}.et-event h3{font:400 clamp(24px,3vw,37px) Georgia,serif;margin:14px 0 8px}.et-event-date{font:600 clamp(17px,2.3vw,24px) system-ui;margin:8px 0}.et-event-meta{font:400 13px/1.7 system-ui;color:#695e52;margin:8px 0 0}.et-event-venue{font-weight:700;color:#2c2823}.field-report .et-two-events{margin:14px 0 28px}@media(max-width:600px){.et-two-events{grid-template-columns:1fr;gap:9px}.et-event{padding:17px}.et-event h3{font-size:27px}}';
 document.head.append(style);
 const format=value=>{
- if(!/^\\d{4}-\\d\\d-\\d\\d$/.test(value||''))return '';
+ if(!/^\d{4}-\d\d-\d\d$/.test(value||''))return '';
  const date=new Date(value+'T12:00:00');
  if(Number.isNaN(date.getTime())||date.toISOString().slice(0,10)!==value)return '';
  return new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'long',year:'numeric'}).format(date);
