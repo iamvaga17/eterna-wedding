@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WEDLETTER — проверка HTTPS на основном домене</title>
+<style>body{font:16px/1.5 system-ui,sans-serif;max-width:680px;margin:30px auto;padding:0 20px;background:#faf7f2;color:#2e2925}h1{font:36px Georgia,serif}button{background:#674d39;color:#fff;border:0;border-radius:10px;padding:14px 20px;font:inherit;font-weight:bold}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#eee6dc;padding:15px;border-radius:10px}p{color:#635c55}</style></head><body>
+<h1>Проверка соединения WEDLETTER</h1><p>Этот тест не запрашивает и не отправляет секретные ключи. Он только проверяет соединение с сервером SpaceWeb.</p>
+<button id="start" type="button">Проверить соединение</button><pre id="log">Нажми кнопку для проверки.</pre>
+<script>
+const endpoint='https://wedletter.ru/api/publish.php';
+const out=document.getElementById('log');
+document.getElementById('start').onclick=async()=>{
+ const lines=[];function add(s){lines.push(s);out.textContent=lines.join('\n\n');}
+ add('Адрес API: '+endpoint);
+ for(const [name,options] of [
+   ['GET: статус сервера',{method:'GET',cache:'no-store'}],
+   ['POST: проверка CORS без ключа',{method:'POST',headers:{Authorization:'Bearer invalid-test-token','Content-Type':'application/json'},body:JSON.stringify({action:'diagnostic'}),cache:'no-store'}]
+ ]) {
+  const t=Date.now();
+  try{
+   const r=await fetch(endpoint+(name.startsWith('GET')?'?action=status':''),options);
+   let s=await r.text(); if(s.length>350)s=s.slice(0,350)+'...';
+   add(name+'\nHTTP '+r.status+' ('+(Date.now()-t)+' мс)\n'+s);
+  }catch(e){add(name+'\nОШИБКА '+String(e.message||e)+'\nВозможны DNS, SSL или блокировка запроса браузером/CORS.');}
+ }
+ add('Проверка завершена. Сделай скриншот результата — секретов в тесте нет.');
+};
+</script></body></html>
