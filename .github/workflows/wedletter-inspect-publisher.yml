@@ -1,0 +1,48 @@
+name: WEDLETTER | Inspect publisher auth integration (safe)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/wedletter-inspect-publisher.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Inspect publisher structure without emitting credentials
+        env:
+          FTP_USER: ${{ secrets.SPACEWEB_API_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SPACEWEB_API_FTP_PASSWORD }}
+        run: |
+          set -euo pipefail
+          test -n "$FTP_USER" && test -n "$FTP_PASSWORD"
+          echo "77.222.40.70 vh404.sweb.ru" | sudo tee -a /etc/hosts >/dev/null
+          python3 - <<'PY'
+          import ftplib,ssl,os,re
+          ftp=ftplib.FTP_TLS(context=ssl.create_default_context(),timeout=20)
+          ftp.connect('vh404.sweb.ru',21)
+          ftp.login(os.environ['FTP_USER'],os.environ['FTP_PASSWORD'])
+          ftp.prot_p()
+          blocks=[]
+          try: ftp.retrbinary('RETR publish.php',blocks.append)
+          finally:
+            try:ftp.quit()
+            except Exception:ftp.close()
+          s=b''.join(blocks).decode('utf-8','replace')
+          print('PUBLISHER STRUCTURE. Raw PHP not exposed.')
+          print('Length:',len(s),'lines:',len(s.splitlines()))
+          for identifier in ['Authorization','Bearer','hash_equals','password_verify','wedletter-publisher-secret.php','require','include','REQUEST_METHOD','function','action','commit','blob','rsvp','header']:
+            print('FEATURE:',identifier,'count:',s.count(identifier))
+          for m in re.finditer(r'function\s+([a-zA-Z_][a-zA-Z_0-9]*)\s*\(',s):
+            print('FUNCTION:',m.group(1))
+          for m in re.finditer(r'\$(?:config|secret|auth|expected|token|key)\s*=\s*(?:require|include)(?:_once)?\s+[^;]+;',s,re.I):
+            stmt=m.group(0)
+            # Expose no paths or secret names, just require being used.
+            print('AUTH CONFIG REQUIRE DETECTED:',bool(stmt))
+          PY
