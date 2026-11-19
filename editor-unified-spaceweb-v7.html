@@ -1253,14 +1253,14 @@ function renderPublicationSlug(){
 const PUBLISH_SERVER='https://wedletter.ru/api/publish.php';
 const REGISTER_SERVER='https://wedletter.ru/api/register-wedding.php';
 const CABINET_ISSUER='https://wedletter.ru/api/create-dashboard-access.php';
-async function issueCabinetLink(slug,pass){
- const response=await fetch(CABINET_ISSUER,{method:'POST',headers:{Authorization:'Bearer '+pass,'Content-Type':'application/json'},body:JSON.stringify({slug}),cache:'no-store'});
+async function issueCabinetLink(slug,pass,action='issue'){
+ const response=await fetch(CABINET_ISSUER,{method:'POST',headers:{Authorization:'Bearer '+pass,'Content-Type':'application/json'},body:JSON.stringify({slug,action}),cache:'no-store'});
  const result=await response.json().catch(()=>({}));
  if(!response.ok||result.ok!==true||result.slug!==slug||!/^https:\/\/wedletter\.ru\/api\/cabinet\.html#[a-f0-9]{64}$/.test(result.cabinetLink||''))
   throw Error(result.error||'Не удалось создать ссылку кабинета (HTTP '+response.status+')');
  return result.cabinetLink;
 }
-function renderCabinetLink(container,link){
+function renderCabinetLink(container,link,slug){
  const line=document.createElement('div');line.style.cssText='margin-top:13px;display:flex;gap:8px;flex-wrap:wrap;align-items:center';
  const title=document.createElement('span');title.textContent='Личный кабинет молодожёнов: ';
  const button=document.createElement('button');button.type='button';button.className='secondary';button.textContent='Скопировать секретную ссылку';
@@ -1269,7 +1269,21 @@ function renderCabinetLink(container,link){
   catch(e){window.prompt('Скопируй ссылку кабинета:',link)}
  });
  const a=document.createElement('a');a.href=link;a.textContent='Открыть кабинет';a.target='_blank';a.rel='noopener noreferrer';a.referrerPolicy='no-referrer';
- line.append(title,button,a);container.append(line);
+ const rotate=document.createElement('button');rotate.type='button';rotate.className='secondary';rotate.textContent='Перевыпустить ссылку';
+ rotate.addEventListener('click',async()=>{
+   if(!confirm('Старая ссылка перестанет открывать кабинет. Создать новую ссылку для этой пары?'))return;
+   const pass=$('publishPassword')?.value.trim();
+   if(!pass){setStatus('Для перевыпуска ссылки введи ключ публикации SpaceWeb.');return;}
+   rotate.disabled=true;
+   try{
+     const next=await issueCabinetLink(slug,pass,'rotate');
+     localStorage.setItem('wedletter-cabinet-link:'+slug,next);
+     line.remove();
+     renderCabinetLink(container,next,slug);
+     setStatus('Ссылка перевыпущена. Старые ссылки отозваны. Отправь паре новую ссылку.');
+   }catch(e){setStatus('Не удалось перевыпустить ссылку: '+String(e?.message||e));rotate.disabled=false;}
+ });
+ line.append(title,button,a,rotate);container.append(line);
 }
 
 async function registerWedding(slug,pass){
@@ -1356,7 +1370,7 @@ async function publishOrder(){
       link=await issueCabinetLink(slug,pass);
       localStorage.setItem('wedletter-cabinet-link:'+slug,link);
     }
-    renderCabinetLink(p,link);
+    renderCabinetLink(p,link,slug);
     setStatus('Сайт опубликован. RSVP и кабинет молодожёнов готовы. Скопируй персональную ссылку в блоке публикации.');
   }catch(linkError){
     setStatus('Сайт опубликован, RSVP работает. Но ссылка кабинета пока не создана: '+String(linkError?.message||linkError)+'. Повтори публикацию для создания ссылки.');
