@@ -108,6 +108,7 @@ main{max-width:1440px;padding:0 clamp(14px,3.2vw,44px) 26px;grid-template-column
   body.mobile-preview-mode .preview iframe{height:calc(100dvh - 250px)}
 }
 @media(max-width:380px){header h1{font-size:23px}.workflow-tab{font-size:9px}.workflow-top .orders-line button{font-size:11px}}
+#broadcastEditorFields .studio-panel>p.muted:not(:first-of-type){display:none!important}.preview .mobile-export-action{display:none}@media(max-width:850px){.preview .mobile-export-action{display:block;width:100%;margin:12px 0 6px;padding:14px}}
 </style></head><body>
 <header><div><h1>ÉTERNA <span class="brand-slim">STUDIO</span></h1><small>Конструктор свадебных приглашений · версия 26</small></div><div class="actions"><button id="previewBtn" class="secondary">Обновить просмотр</button><button id="downloadBtn">Скачать комплект ZIP</button></div></header>
 <main><div class="panel">
@@ -258,6 +259,8 @@ function setupWorkflow(){
  const buttons=workflowNode('div','workflow-finish-actions');
  buttons.append($('downloadBtnBottom'),$('resetBtn'));finish.append(final,buttons,$('status'));
  // Old structure shells remain empty, preserving IDs for legacy functions that address them.
+ const bottomExport=workflowNode('button','mobile-export-action','Скачать готовый сайт ZIP ↓');bottomExport.type='button';bottomExport.addEventListener('click',exportPackage);
+ document.querySelector('.preview').append(bottomExport);
  const originalBroadcast=$('broadcastEditorFields'),originalEterna=$('eternaEditorFields');
  originalBroadcast.hidden=true;originalEterna.hidden=true;
  // Remove obsolete explanatory paragraphs outside the workflow.
@@ -300,7 +303,7 @@ function openWorkflowStage(stage){
  }
  document.body.classList.toggle('workflow-preview-active',activeWorkflowStage===3);
  if(activeWorkflowStage===3)updatePreview();
- window.scrollTo({top:0,behavior:'instant'});
+ window.scrollTo({top:0,behavior:'auto'});
 }
 
 const LEGACY_KEY='eterna-unified-test-legacy';
@@ -795,6 +798,8 @@ function renderBroadcastFields(){
   $('broadcastCouple').replaceChildren();
   for(const key of ['first','second','dateLabel','city'])field($('broadcastCouple'),data.couple,key);
   const container=$('broadcastFields');container.replaceChildren();
+  // Re-rendering must remove old moved fields to prevent duplicate controls.
+  document.querySelectorAll('.workflow-broadcast.workflow-content > .stage-group .stage-group-inner').forEach(group=>group.replaceChildren());
   for(const [key,label,defaultValue] of BROADCAST_FIELDS){
     if(typeof data.broadcast[key]!=='string')data.broadcast[key]=defaultValue;
     field(container,data.broadcast,key,label,key.toLowerCase().includes('text')||key==='newsIntro'||key==='caseIntro');
