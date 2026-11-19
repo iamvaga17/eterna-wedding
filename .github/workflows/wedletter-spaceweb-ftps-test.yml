@@ -27,6 +27,15 @@ jobs:
       - name: Install FTPS client
         run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
 
+      - name: Inspect FTP TLS certificate names (no credentials)
+        run: |
+          set -euo pipefail
+          echo "Checking certificate served by 77.222.40.70:21 via explicit FTPS."
+          timeout 20 openssl s_client -starttls ftp -connect 77.222.40.70:21 -servername wedletter.ru </dev/null 2>/dev/null | openssl x509 -noout -subject -issuer -ext subjectAltName
+          echo "::notice::Choose a DNS hostname matching this certificate before using FTP credentials."
+          echo "::error::Stopping intentionally until the verified FTPS hostname is configured."
+          exit 1
+
       - name: Upload harmless marker to restricted deploy directory
         env:
           FTP_USER: ${{ secrets.SPACEWEB_FTP_USER }}
