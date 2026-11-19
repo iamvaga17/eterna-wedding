@@ -472,7 +472,22 @@ function ensureDressLayout(){
  @media(max-width:700px){#dress .mood-grid{grid-template-columns:1fr!important;gap:40px!important}#dress .et-dress-pictures figure,#dress .et-dress-pictures figure:nth-child(n){height:clamp(200px,62vw,350px)!important}#dress .et-dress-group h3{font-size:48px}}
  `;
 }
-function updatePreview(){const cfg=structuredClone(data);if(cfg.music){if(photoUrls.music)cfg.music.source=photoUrls.music;else delete cfg.music;}for(const key of PHOTO_KEYS)if(localPhoto(key)&&photoUrls[key])cfg.photos[key]=photoUrls[key];if($('previewVersion').value==='broadcast'){cfg.broadcast??={};cfg.broadcast.previewPhotos={};for(const name of ['sceneCover','sceneCake','sceneArchive','sceneForecast']){const key='studio-'+name;if(data.broadcast.photoAssets?.[key]&&photoUrls[key])cfg.broadcast.previewPhotos[name]=photoUrls[key]}}try{const type=$('previewVersion').value==='broadcast'?'broadcast-editor-preview':'eterna-preview';$('siteFrame').contentWindow.postMessage({type,config:cfg},location.origin);if(type==='eterna-preview')ensureDressLayout()}catch{}}
+
+function withEventDates(config){
+ const d=config.eventDates;
+ if(d?.mode==='split'&&/^\d{4}-\d{2}-\d{2}$/.test(d.partyDate||'')){
+  const date=new Date(d.partyDate+'T12:00:00');
+  if(!Number.isNaN(date.getTime())&&date.toISOString().slice(0,10)===d.partyDate){
+   const label=new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'long',year:'numeric'}).format(date);
+   config.couple??={};
+   config.couple.dateLabel=label;
+   if(/^\d\d:\d\d$/.test(d.partyTime||''))config.couple.dateTime=d.partyDate+'T'+d.partyTime+':00';
+  }
+ }
+ return config;
+}
+
+function updatePreview(){const cfg=withEventDates(structuredClone(data));if(cfg.music){if(photoUrls.music)cfg.music.source=photoUrls.music;else delete cfg.music;}for(const key of PHOTO_KEYS)if(localPhoto(key)&&photoUrls[key])cfg.photos[key]=photoUrls[key];if($('previewVersion').value==='broadcast'){cfg.broadcast??={};cfg.broadcast.previewPhotos={};for(const name of ['sceneCover','sceneCake','sceneArchive','sceneForecast']){const key='studio-'+name;if(data.broadcast.photoAssets?.[key]&&photoUrls[key])cfg.broadcast.previewPhotos[name]=photoUrls[key]}}try{const type=$('previewVersion').value==='broadcast'?'broadcast-editor-preview':'eterna-preview';$('siteFrame').contentWindow.postMessage({type,config:cfg},location.origin);if(type==='eterna-preview')ensureDressLayout()}catch{}}
 const musicTypes={mp3:'audio/mpeg',m4a:'audio/mp4'};
 let musicBusy=false;
 function setMusicBusy(busy){
@@ -1002,7 +1017,7 @@ async function buildPublishFiles(id){
  if(musicBusy)throw Error('Дождись сохранения музыки.');
  if($('previewVersion').value==='legacy')throw Error('Старый шаблон не поддерживает автоматическую публикацию. Выбери ÉTERNA 12.0 или «Срочный выпуск».');
  if(!/^[a-z0-9](?:[a-z0-9-]{0,58}[a-z0-9])?$/.test(id))throw Error('Неверный ID заказа.');
- const folder='orders/'+id+'/',files=[],cfg=copy(data);
+ const folder='orders/'+id+'/',files=[],cfg=withEventDates(copy(data));
  if($('previewVersion').value==='broadcast')await exportBroadcast(folder,files,cfg,id);
  else{
   for(const key of PHOTO_KEYS.filter(localPhoto)){
@@ -1062,7 +1077,7 @@ async function exportPackage(){
  setStatus('Собираю отдельную свадебную страницу и фотографии…');
  try{
    const id=orderId;
-   const config=copy(data);
+   const config=withEventDates(copy(data));
    const legacy=isLegacy();
    const folder='orders/'+id+'/';
    const files=[];
