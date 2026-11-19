@@ -27,14 +27,14 @@ jobs:
       - name: Install FTPS client
         run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
 
-      - name: Inspect FTP TLS certificate names (no credentials)
+      - name: Bind SpaceWeb server name to provider IP for TLS verification
         run: |
-          set -euo pipefail
-          echo "Checking certificate served by 77.222.40.70:21 via explicit FTPS."
-          timeout 20 openssl s_client -starttls ftp -connect 77.222.40.70:21 -servername wedletter.ru </dev/null 2>/dev/null | openssl x509 -noout -subject -issuer -ext subjectAltName
-          echo "::notice::Choose a DNS hostname matching this certificate before using FTP credentials."
-          echo "::error::Stopping intentionally until the verified FTPS hostname is configured."
-          exit 1
+          # SpaceWeb panel lists this hosting server as VH404 and the FTP IP
+          # as 77.222.40.70. The server advertises a certificate for *.sweb.ru.
+          # Bind the hosting-server name explicitly so TLS hostname validation
+          # remains fully enabled, without relying on an unverified DNS record.
+          echo "77.222.40.70 vh404.sweb.ru" | sudo tee -a /etc/hosts
+          getent hosts vh404.sweb.ru
 
       - name: Upload harmless marker to restricted deploy directory
         env:
@@ -46,7 +46,7 @@ jobs:
           # The secondary FTP account should be jailed to public_html/deploy.
           # TLS MUST be used for credentials and data. If unavailable or the
           # server certificate cannot be verified, fail closed.
-          lftp -u "$FTP_USER","$FTP_PASSWORD" ftp://77.222.40.70 <<'LFTP'
+          lftp -u "$FTP_USER","$FTP_PASSWORD" ftp://vh404.sweb.ru <<'LFTP'
           set cmd:fail-exit yes
           set ftp:ssl-force yes
           set ftp:ssl-protect-data yes
