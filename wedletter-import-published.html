@@ -1,0 +1,95 @@
+<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>WEDLETTER — импорт опубликованных проектов</title>
+<style>
+*{box-sizing:border-box}body{margin:0;padding:23px;background:#f5f1eb;color:#312a25;font:16px/1.5 -apple-system,BlinkMacSystemFont,system-ui,sans-serif}main{max-width:680px;margin:auto}h1{font:clamp(34px,9vw,50px) Georgia,serif;line-height:1.08;margin:22px 0}.sub{color:#786d62}.card{background:white;border:1px solid #e1d7cb;border-radius:19px;padding:20px;margin:20px 0}label{font-weight:600;display:block;margin:12px 0 7px}input{width:100%;font-size:16px;padding:13px;border-radius:10px;border:1px solid #c9c0b6}button{padding:14px 16px;width:100%;border:0;border-radius:11px;color:#fff;background:#332e29;font-size:16px;margin-top:12px}button:disabled{opacity:.4}.small{font-size:13px;color:#72665b}#result{white-space:pre-wrap;overflow-wrap:anywhere}.preview{padding:12px;background:#f6f1eb;border-radius:10px;margin-top:12px}a{color:#514334}code{font-size:12px}
+</style>
+<main><div class="small">WEDLETTER · RECOVERY</div><h1>Вернуть опубликованный заказ в редактор</h1><p class="sub">Сохраняем действующие проекты. Никаких удалений, публикаций или изменений на SpaceWeb.</p>
+<section class="card"><label for="slug">Адрес приглашения</label><input id="slug" inputmode="url" placeholder="matvei-viktoriya"><p class="small">Можно вставить полный адрес, например https://wedletter.ru/matvei-viktoriya/</p><button id="load">Найти опубликованный заказ</button><div id="result"></div><button id="save" disabled>Восстановить в списке редактора</button></section>
+<section class="card"><strong>Если серверный импорт ещё не подключён</strong><p class="small">В SpaceWeb можно скачать файл <code>order.js</code> из папки заказа и выбрать его здесь. Это запасной вариант без подключения API.</p><label for="file">Выбрать order.js</label><input id="file" type="file" accept=".js,.json,text/javascript,application/json"></section>
+<p class="small">Важно: открывай эту страницу в обычном Safari, где работал с редактором. Фотографии импортируются только при доступном серверном мосте. Ссылки кабинета молодожёнов из опубликованных файлов не восстанавливаются.</p>
+<p><a href="editor-unified-spaceweb-v15.html">Вернуться в редактор v15</a></p></main>
+<script>
+(function(){
+'use strict';
+const API='https://wedletter.ru/api/recover-public.php',PREFIX='eterna-unified-test-order:',INDEX='eterna-unified-test-orders-v1';
+const $=id=>document.getElementById(id);
+let pending=null;
+function getSlug(){
+ let s=$('slug').value.trim();
+ try{if(s.startsWith('http'))s=new URL(s).pathname.split('/').filter(Boolean)[0]||''}catch{}
+ return /^[a-z0-9](?:[a-z0-9-]{0,58}[a-z0-9])?$/.test(s)?s:'';
+}
+function parseOrderFile(s){
+ const m=s.match(/^\s*window\.(ETERNA_ORDER|ETERNA_BROADCAST_ORDER)\s*=\s*/);
+ if(!m)throw Error('Это не файл order.js опубликованного WEDLETTER');
+ const json=s.slice(m[0].length).trim().replace(/;\s*$/,'');
+ return {config:JSON.parse(json),template:m[1]==='ETERNA_BROADCAST_ORDER'?'broadcast':'12'};
+}
+function showPreview(config,slug,template){
+ const first=String(config.couple?.first||'').trim(),second=String(config.couple?.second||'').trim();
+ const label=[first,second].filter(Boolean).join(' и ')||slug;
+ const div=document.createElement('div');div.className='preview';
+ const strong=document.createElement('strong');strong.textContent=label;div.append(strong);
+ const info=document.createElement('p');info.className='small';info.textContent='Шаблон: '+(template==='broadcast'?'Срочный выпуск':'ÉTERNA')+' · Адрес: '+slug;
+ div.append(info);$('result').replaceChildren(div);$('save').disabled=false;
+}
+$('load').onclick=async()=>{
+ const slug=getSlug();$('save').disabled=true;pending=null;
+ if(!slug){$('result').textContent='Введи корректный адрес приглашения.';return}
+ $('result').textContent='Читаю опубликованный заказ…';
+ try{
+  const r=await fetch(API+'?slug='+encodeURIComponent(slug),{cache:'no-store'});
+  const value=await r.json();
+  if(!r.ok||value.ok!==true)throw Error(value.error||'Ошибка '+r.status);
+  pending={slug,config:value.config,template:value.template,online:true};
+  showPreview(value.config,slug,value.template);
+ }catch(e){$('result').textContent='Не удалось прочитать заказ: '+e.message+'. Если серверный мост ещё не установлен, используй файл order.js.'}
+};
+$('file').onchange=async()=>{
+ const file=$('file').files?.[0];if(!file)return;
+ $('save').disabled=true;pending=null;
+ const slug=getSlug();if(!slug){$('result').textContent='Сначала введи адрес исходного приглашения.';return}
+ try{const parsed=parseOrderFile(await file.text());pending={slug,...parsed,online:false};showPreview(parsed.config,slug,parsed.template)}catch(e){$('result').textContent=e.message}
+};
+function dbOpen(){return new Promise((resolve,reject)=>{const q=indexedDB.open('eterna-photo-editor',1);q.onupgradeneeded=()=>{if(!q.result.objectStoreNames.contains('photos'))q.result.createObjectStore('photos')};q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error)})}
+async function storeImage(db,id,key,bytes){return new Promise((resolve,reject)=>{const tx=db.transaction('photos','readwrite');tx.objectStore('photos').put(bytes,'unified-test-order:'+id+':'+key);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error)})}
+async function recover(){
+ if(!pending)return;const {slug,config,template,online}=pending;
+ const raw=localStorage.getItem(INDEX);let index;try{index=raw?JSON.parse(raw):[]}catch{throw Error('Текущий список повреждён. Ничего не меняем.')}
+ if(!Array.isArray(index))throw Error('Неверный список заказов');
+ const existingSlugs=new Set(index.map(x=>x.publicSlug));
+ if(existingSlugs.has(slug))throw Error('Этот адрес уже есть в списке. Не создаю дубликат.');
+ const base='recovered-'+slug;let id=base,n=2;while(index.some(x=>x.id===id)||localStorage.getItem(PREFIX+id+':config'))id=base+'-'+n++;
+ const data=JSON.parse(JSON.stringify(config));data.template=template;data.publicSlug=slug;data.publicSlugLocked=true;
+ const media=[];
+ if(online){
+  const photoKeys=Object.keys(data.photos||{});
+  for(const key of photoKeys){
+   const value=data.photos[key];const path='wedding-photo-'+key+'.jpg';
+   if(value!==path)continue;
+   try{const r=await fetch(API+'?slug='+encodeURIComponent(slug)+'&file='+encodeURIComponent(path));if(!r.ok)throw Error();const bytes=await r.arrayBuffer();media.push({key,bytes})}
+   catch{data.photos[key]='';}
+  }
+  const b=data.broadcast?.exportPhotos||{};
+  for(const [name,path] of Object.entries(b)){
+   if(!/^assets\/custom-(cover|cake|archive|forecast)\.jpg$/.test(path))continue;
+   try{const r=await fetch(API+'?slug='+encodeURIComponent(slug)+'&file='+encodeURIComponent(path));if(!r.ok)throw Error();const bytes=await r.arrayBuffer();const key='studio-scene'+name.charAt(0).toUpperCase()+name.slice(1);media.push({key,bytes});data.broadcast.photoAssets??={};data.broadcast.photoAssets[key]=true}
+   catch{}
+  }
+ }
+ if(media.length){const db=await dbOpen();try{for(const m of media)await storeImage(db,id,m.key,m.bytes)}finally{db.close()}}
+ const label=[data.couple?.first,data.couple?.second].filter(Boolean).join(' и ')||slug;
+ const backup=raw;
+ try{
+  localStorage.setItem(PREFIX+id+':config',JSON.stringify(data));
+  index.push({id,label,publicSlug:slug});
+  localStorage.setItem(INDEX,JSON.stringify(index));
+ }catch(e){localStorage.removeItem(PREFIX+id+':config');if(backup!==null)localStorage.setItem(INDEX,backup);throw e}
+ return {id,media:media.length};
+}
+$('save').onclick=async()=>{
+ $('save').disabled=true;$('result').textContent='Восстанавливаю заказ…';
+ try{const out=await recover();$('result').textContent='Готово. Заказ восстановлен в списке. Загружено фото: '+out.media+'. Открой редактор и выбери восстановленный заказ.'}
+ catch(e){$('result').textContent='Восстановление остановлено: '+e.message;$('save').disabled=false}
+};
+})();
+</script>
