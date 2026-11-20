@@ -253,11 +253,11 @@ main{max-width:1440px;padding:0 clamp(14px,3.2vw,44px) 26px;grid-template-column
 </style><style>
 /* WEDLETTER Studio v11 — condensed iPhone order controls */
 #workflow-stage-3>h2{font-size:25px;margin:0 0 9px}
-#workflow-stage-3 .stage-contents{display:flex;flex-direction:column;gap:0}
-#workflow-stage-3 .stage-contents>.workflow-finish-actions{order:2}
-#workflow-stage-3 .stage-contents>.publish-settings{order:3}
-#workflow-stage-3 .stage-contents>.publish-result{order:1}
-#workflow-stage-3 .stage-contents>#status{order:4}
+#workflow-stage-3 .stage-finish{display:flex;flex-direction:column;gap:0}
+#workflow-stage-3 .stage-finish>.workflow-finish-actions{order:2}
+#workflow-stage-3 .stage-finish>.publish-settings{order:3}
+#workflow-stage-3 .stage-finish>.publish-result{order:1}
+#workflow-stage-3 .stage-finish>#status{order:4}
 #workflow-stage-3 .publish-settings{border:1px solid #e0d7cc;border-radius:11px}
 #workflow-stage-3 .publish-settings>summary{padding:11px 13px!important}
 #workflow-stage-3 .publish-result:empty{display:none}
@@ -465,7 +465,7 @@ function setupWorkflow(){
    setStatus('Ключ очищен из поля и временной памяти вкладки.');
  });
  const result=workflowNode('p','publish-result');result.id='publishResult';result.setAttribute('aria-live','polite');
- finish.append(final,settings,buttons,result,$('status'));
+ finish.append(result,buttons,settings,$('status'));
  // Stage 4 is moved into the preview pane, because the main panel is hidden on iPhone.
  // The publish password, button, and resulting link are now always visible above the iframe.
  // Surface both links ahead of the advanced publishing controls for existing orders.
