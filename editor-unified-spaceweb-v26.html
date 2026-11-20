@@ -538,7 +538,7 @@ function uniqueId(name){const base=translit(name);let x=base,n=2;while(orders.so
 
 const $=id=>document.getElementById(id);
 const isLegacy=()=>$('previewVersion').value==='legacy';
-const previewUrls={12:'eterna-12/editor-preview-v29.html?editor-preview=1',broadcast:'srochny-vypusk/editor-preview-v37.html?editor-preview=1#live',legacy:'templates/eterna.html?editor-preview=1#top'};
+const previewUrls={12:'eterna-12/editor-preview-v29.html?editor-preview=1',broadcast:'srochny-vypusk/editor-preview-v37.html?editor-preview=1#top',legacy:'templates/eterna.html?editor-preview=1#top'};
 const STUDIO_KEYS=['studio-bride','studio-groom','studio-sceneCover','studio-sceneCake','studio-sceneArchive','studio-sceneForecast','studio-pending-sceneCover','studio-pending-sceneCake','studio-pending-sceneArchive','studio-pending-sceneForecast'];
 const PHOTO_KEYS=['main','secondary1','secondary2','collage1','collage2','invitationBg','invitationLeft','invitationRight','storyMain','storySmall','memoryBg','scheduleBg','venueBg','dressBg','dress1','dress2','dress3','dress4','dressFemale3','dressFemale4','dressFemale5','dressFemale6','dressFemale7','dressFemale8','dressMale3','dressMale4','dressMale5','dressMale6','dressMale7','dressMale8','countdownBg','rsvpBg','endingBg','introCover'];
 const PHOTO_NAMES={main:'Главная фотография',secondary1:'Дополнительная фотография 1',secondary2:'Дополнительная фотография 2',storyMain:'Наша история — главное фото',storySmall:'Наша история — дополнительное фото',introCover:'Обложка книги — фон',collage1:'Первый фотоколлаж — слева',collage2:'Первый фотоколлаж — справа',invitationBg:'Приглашение — большое фоновое фото',invitationLeft:'Приглашение — левый фотокадр',invitationRight:'Приглашение — правый фотокадр',memoryBg:'Атмосферный блок — фоновое фото',scheduleBg:'День свадьбы — фоновое фото',venueBg:'Место встречи — фон зала',dressBg:'Дресс-код — фон',dress1:'Для неё — фото 1',dress2:'Для него — фото 1',dress3:'Для неё — фото 2',dress4:'Для него — фото 2',countdownBg:'Обратный отсчёт — фон',rsvpBg:'Анкета гостей — фон',endingBg:'До встречи — финальное фото',dressFemale3:'Для неё — фото 3',dressFemale4:'Для неё — фото 4',dressFemale5:'Для неё — фото 5',dressFemale6:'Для неё — фото 6',dressFemale7:'Для неё — фото 7',dressFemale8:'Для неё — фото 8',dressMale3:'Для него — фото 3',dressMale4:'Для него — фото 4',dressMale5:'Для него — фото 5',dressMale6:'Для него — фото 6',dressMale7:'Для него — фото 7',dressMale8:'Для него — фото 8'};
@@ -1303,7 +1303,7 @@ async function exportBroadcast(folder,files,config,id){
  page=page.replace(/<title>[^<]*<\/title>/,'<title>Срочный выпуск — свадебное приглашение</title>');
  page=page.replace(/<script defer src="\.\.\/rsvp-renderer\.js\?[^"]*"><\/script>/,
    '<script defer src="rsvp-renderer.js"><'+'/script>');
- page=page.replace(/<script defer src="assets\/broadcast-preview-v17\.js\?[^"]*"><\/script>/,
+ page=page.replace(/<script defer src="assets\/broadcast-preview-v18\.js\?[^"]*"><\/script>/,
    '<script defer src="order.js"><'+'/script>\n<script defer src="assets/broadcast-preview-v18.js"><'+'/script>');
  page=page.replace(/<script defer src="assets\/editor-preview-bridge-v21\.js\?[^"]*"><\/script>/,
    '<script defer src="assets/broadcast-export-v25.js"><'+'/script>');
