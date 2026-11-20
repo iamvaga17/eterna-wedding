@@ -1,0 +1,40 @@
+name: WEDLETTER | Check editor v11 mobile layout
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'editor-unified-spaceweb-v11.html'
+      - '.github/workflows/wedletter-check-editor-v11.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check editor scripts and order links
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          html=Path('editor-unified-spaceweb-v11.html').read_text()
+          scripts=re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>',html,re.I)
+          assert scripts
+          Path('/tmp/wedletter-v11.js').write_text('\n'.join(scripts))
+          for snippet in [
+              'finish.append(result,buttons,settings',
+              "renderShareLinks($('publishResult'),publicationSlug())",
+              "renderShareLinks(p,slug)",
+              "sessionStorage.setItem(TEMP_KEY_NAME,input.value)",
+              "issueCabinetLink(slug,pass,'rotate')",
+              "const files=await buildPublishFiles(id,slug,rsvpEndpoint);",
+              "#workflow-stage-3 .stage-finish",
+              "Управление приглашением",
+          ]:
+              assert snippet in html, 'Missing expected feature: '+snippet
+          assert "finish.append(final,settings,buttons,result" not in html
+          print('Editor v11 structure and source checks passed')
+          PY
+          node --check /tmp/wedletter-v11.js
