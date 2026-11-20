@@ -1664,9 +1664,8 @@ async function start(){$('previewVersion').value=data.template in previewUrls?da
 
 /* WEDLETTER v17 private automatic server backup. Existing v16 remains available. */
 const BACKUP_ENDPOINT='https://wedletter.ru/api/backup.php';
-let backupBusy=false,backupQueued=false;
+let backupBusy=false;
 const backupTimers=new Map();
-let backupRunningId='';
 const backupLastSaved=new Map();
 function cloudPanel(){
  let node=document.getElementById('wedletter-backup-panel');
@@ -1719,7 +1718,7 @@ async function runCloudBackup(manual,id=orderId){
  if(!entry)return;
  const config=id===orderId?copy(data):getJSON('eterna-unified-test-order:'+id+':config',null);
  if(!config){if(id===orderId)cloudMessage('Не найден локальный черновик заказа.');return}
- backupBusy=true;backupRunningId=id;
+ backupBusy=true;
  if(id===orderId)cloudMessage('Сохраняю заказ на SpaceWeb…');
  try{
   const remote=await backupCall({action:'status',orderId:id},key);
@@ -1744,10 +1743,9 @@ async function runCloudBackup(manual,id=orderId){
   backupLastSaved.set(id,stamp);
   if(id===orderId)cloudMessage('Автокопия сохранена на SpaceWeb · '+stamp+' · новых файлов: '+uploaded);
  }catch(error){
-  backupPendingIds.add(id);
   if(id===orderId)cloudMessage('Ошибка копирования: '+String(error.message||error)+'. Черновик остаётся в Safari; повтори «Сохранить сейчас».');
  }finally{
-  backupBusy=false;backupRunningId='';
+  backupBusy=false;
   if(backupPendingIds.size&&cloudKey())setTimeout(flushBackupQueue,1000);
  }
 }
