@@ -1,0 +1,56 @@
+<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>WEDLETTER — восстановление фото</title>
+<style>body{font:16px/1.5 system-ui,-apple-system,sans-serif;background:#f6f2ec;color:#302a26;margin:0;padding:22px}main{max-width:660px;margin:auto}h1{font:clamp(32px,9vw,48px)/1.15 Georgia,serif}.card{background:#fff;border:1px solid #ddd3c7;border-radius:17px;padding:20px;margin:18px 0}button{border:0;background:#332e29;color:white;border-radius:12px;padding:15px;font-size:16px;width:100%;margin:9px 0}button:disabled{opacity:.45}input{font-size:16px;padding:14px;width:100%;box-sizing:border-box;border-radius:10px;border:1px solid #d0c6b9}.small{color:#71675b;font-size:13px}ul{padding-left:20px}li{margin:8px 0}</style>
+<main><h1>Восстановление фотографий</h1><p>Для уже возвращённого заказа. Сначала найдём опубликованные фотографии, затем сохраним в локальном хранилище редактора. Тексты, даты и ссылки не меняем.</p>
+<div class="card"><label for="slug">Адрес опубликованного заказа</label><input id="slug" value="matvei-viktoriya"><button id="scan">Проверить фотографии на сервере</button><div id="report" role="status"></div><button id="apply" disabled>Восстановить найденные фотографии</button></div>
+<p class="small">Работает в том же профиле Safari, где открыт редактор. Фотографии копируются в IndexedDB на твоём устройстве. Существующие фотографии не перезаписываются. Серверные файлы не изменяются.</p><p><a href="editor-unified-spaceweb-v15.html">Открыть редактор v15</a></p></main>
+<script>
+(async function(){
+const API='https://wedletter.ru/api/recover-public.php',INDEX='eterna-unified-test-orders-v1',P='eterna-unified-test-order:';
+const KEYS=['main','secondary1','secondary2','collage1','collage2','invitationBg','invitationLeft','invitationRight','storyMain','storySmall','memoryBg','scheduleBg','venueBg','dressBg','dress1','dress2','dress3','dress4','dressFemale3','dressFemale4','dressFemale5','dressFemale6','dressFemale7','dressFemale8','dressMale3','dressMale4','dressMale5','dressMale6','dressMale7','dressMale8','countdownBg','rsvpBg','endingBg','introCover'];
+const $=x=>document.getElementById(x);let snapshot=null;
+function slug(){const s=$('slug').value.trim().replace(/^https?:\/\/[^/]+\//,'').split('/')[0];return /^[a-z0-9](?:[a-z0-9-]{0,58}[a-z0-9])?$/.test(s)?s:null}
+const report=t=>{$('report').textContent=t};
+function dbOpen(){return new Promise((ok,no)=>{const q=indexedDB.open('eterna-photo-editor',1);q.onupgradeneeded=()=>{if(!q.result.objectStoreNames.contains('photos'))q.result.createObjectStore('photos')};q.onsuccess=()=>ok(q.result);q.onerror=()=>no(q.error)})}
+function read(db,k){return new Promise((ok,no)=>{const q=db.transaction('photos').objectStore('photos').get(k);q.onsuccess=()=>ok(q.result);q.onerror=()=>no(q.error)})}
+function write(db,k,v){return new Promise((ok,no)=>{const tx=db.transaction('photos','readwrite');tx.objectStore('photos').add(v,k);tx.oncomplete=ok;tx.onerror=()=>no(tx.error);tx.onabort=()=>no(tx.error)})}
+$('scan').onclick=async()=>{
+ snapshot=null;$('apply').disabled=true;const s=slug();if(!s){report('Неверный адрес.');return}
+ let orders;try{orders=JSON.parse(localStorage.getItem(INDEX)||'[]')}catch{report('Список заказов повреждён.');return}
+ const order=orders.find(o=>o.publicSlug===s||o.id==='recovered-'+s);
+ if(!order){report('Заказ ещё не найден в списке редактора. Сначала восстанови его импортом.');return}
+ const configKey=P+order.id+':config';let cfg;try{cfg=JSON.parse(localStorage.getItem(configKey)||'null')}catch{}
+ if(!cfg){report('Не найдены настройки этого заказа.');return}
+ report('Проверяю фотографии на SpaceWeb…');
+ const found=[],failed=[];let index=0;
+ for(const key of KEYS){
+  try{
+   const response=await fetch(API+'?slug='+encodeURIComponent(s)+'&file='+encodeURIComponent('wedding-photo-'+key+'.jpg'),{cache:'no-store'});
+   if(response.ok){const bytes=await response.arrayBuffer();if(bytes.byteLength>100){found.push({key,bytes});}}
+  }catch(e){failed.push(String(e));}
+  index++;
+  if(index%8===0)report('Проверено '+index+' из '+KEYS.length+' фотографий…');
+ }
+ snapshot={s,order,cfg,configKey,found};
+ report('Найдено фотографий на сервере: '+found.length+'. '+(failed.length?'Некоторые запросы не прошли: '+failed[0]:'')+(found.length?' Можно восстановить.':' Если на самом опубликованном сайте есть фото, нужно проверить путь их хранения.'));
+ $('apply').disabled=!found.length;
+};
+$('apply').onclick=async()=>{
+ if(!snapshot)return;$('apply').disabled=true;
+ const {order,cfg,configKey,found}=snapshot;
+ try{
+  const db=await dbOpen();let saved=0,existing=0;
+  try{
+   cfg.photos??={};
+   for(const {key,bytes} of found){
+    const k='unified-test-order:'+order.id+':'+key;
+    const prev=await read(db,k);
+    if(prev){existing++;continue}
+    await write(db,k,bytes);cfg.photos[key]='wedding-photo-'+key+'.jpg';saved++;
+   }
+  }finally{db.close()}
+  localStorage.setItem(configKey,JSON.stringify(cfg));
+  report('Готово. Восстановлено фотографий: '+saved+'. Уже были сохранены: '+existing+'. Теперь открой редактор и выбери этот заказ.');
+ }catch(e){report('Не удалось завершить: '+e.message);$('apply').disabled=false}
+};
+})();
+</script>
