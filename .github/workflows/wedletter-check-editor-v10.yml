@@ -1,0 +1,33 @@
+name: WEDLETTER | Check compact Studio v10
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'editor-unified-spaceweb-v10.html'
+      - '.github/workflows/wedletter-check-editor-v10.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check inline JavaScript and mobile copy
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          source=Path('editor-unified-spaceweb-v10.html').read_text()
+          scripts=re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>',source,re.I)
+          assert scripts, 'Missing inline JS'
+          Path('/tmp/editor-v10.js').write_text('\n'.join(scripts))
+          for marker in ['Запомнить в этой вкладке','https://wedletter.ru/','Ссылки заказа','Получить ссылку кабинета','renderShareLinks(p,slug)','sessionStorage.setItem(TEMP_KEY_NAME,input.value)']:
+            assert marker in source, 'Missing feature: '+marker
+          assert 'до запуска домена проверяй по временному адресу' not in source
+          assert 'HTTPS и соединение проверены. Введи секретный ключ SpaceWeb' not in source
+          assert 'Копировать приглашение' not in source
+          print('Copy and editor checks passed.')
+          PY
+          node --check /tmp/editor-v10.js
