@@ -99,7 +99,7 @@ try{
  if(!is_file($gateFile))atomic($gateFile,$gate);
  if(!is_file($htaccess))atomic($htaccess,$rules);
  atomic($state,json_encode(['expiresOn'=>$date,'updatedAt'=>gmdate('c')],JSON_UNESCAPED_SLASHES|JSON_THROW_ON_ERROR));
-}catch(Throwable $e){error_log('WEDLETTER expiry: '.$e->getMessage());respond(500,['error'=>'Не удалось применить срок']);
+}catch(Throwable $e){error_log('WEDLETTER expiry: '.$e->getMessage());respond(500,['error'=>'Не удалось применить срок']);}
 respond(200,['ok'=>true,'slug'=>$slug,'expiresOn'=>$date,'gateInstalled'=>true,'rsvpProtected'=>false]);
 function validDate(string $s):bool{$date=DateTimeImmutable::createFromFormat('!Y-m-d',$s,new DateTimeZone('Europe/Moscow'));return $date!==false&&$date->format('Y-m-d')===$s;}
 function atomic(string $p,string $data):void{$tmp=$p.'.'.bin2hex(random_bytes(6)).'.tmp';if(file_put_contents($tmp,$data,LOCK_EX)!==strlen($data)||!rename($tmp,$p)){@unlink($tmp);throw new RuntimeException('Write failed');}@chmod($p,0600);}
