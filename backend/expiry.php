@@ -1,13 +1,30 @@
 <?php
-/** WEDLETTER expiry manager v1. Install at public_html/api/expiry.php */
+/** WEDLETTER expiry manager v2 (safe diagnostics). Install at public_html/api/expiry.php */
 declare(strict_types=1);
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
 header('X-Content-Type-Options: nosniff');
+/* Public, non-secret health check. No modifications and no credential disclosure. */
+if(($_SERVER['REQUEST_METHOD']??'GET')==='GET'){
+ http_response_code(200);
+ echo json_encode(['ok'=>true,'service'=>'wedletter-expiry','version'=>2,'message'=>'PHP работает; настройка срока выполняется только через редактор'],JSON_UNESCAPED_UNICODE);
+ exit;
+}
+/* Ensure fatal runtime errors are visible as a generic JSON status, not a white page. */
+register_shutdown_function(static function():void {
+ $error=error_get_last();
+ if(!is_array($error)||!in_array($error['type']??0,[E_ERROR,E_PARSE,E_CORE_ERROR,E_COMPILE_ERROR,E_USER_ERROR],true))return;
+ error_log('WEDLETTER expiry fatal: '.($error['message']??'unknown'));
+ if(!headers_sent()){
+  http_response_code(500);
+  header('Content-Type: application/json; charset=utf-8');
+ }
+ echo json_encode(['ok'=>false,'error'=>'Ошибка выполнения PHP (500). Проверь журнал ошибок сайта.'],JSON_UNESCAPED_UNICODE);
+});
 $root=dirname(__DIR__,2);
 $configFile=$root.'/wedletter-publisher-secret.php';
 if(!is_file($configFile))respond(503,['error'=>'Не найден файл настроек сервера']);
-$settings=require $configFile;
+try{$settings=require $configFile;}catch(Throwable $e){error_log('WEDLETTER expiry config: '.$e->getMessage());respond(503,['error'=>'Ошибка конфигурации сервера']);}
 if(!is_array($settings)||empty($settings['token']))respond(503,['error'=>'Ключ сервера недоступен']);
 $allow=(string)($settings['origin']??'https://iamvaga17.github.io');
 $origin=(string)($_SERVER['HTTP_ORIGIN']??'');
