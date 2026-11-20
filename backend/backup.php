@@ -28,11 +28,22 @@ if((int)($_SERVER['CONTENT_LENGTH']??0)>14000000)reply(413,['error'=>'Слишк
 try{$input=json_decode(file_get_contents('php://input')?:'',true,40,JSON_THROW_ON_ERROR);}
 catch(Throwable $e){reply(400,['error'=>'Неверный JSON']);}
 if(!is_array($input))reply(400,['error'=>'Некорректный запрос']);
-$id=$input['orderId']??null;
-if(!is_string($id)||!preg_match('/^[a-z0-9](?:[a-z0-9-]{0,58}[a-z0-9])?$/D',$id))reply(400,['error'=>'Неверный ID заказа']);
 $action=$input['action']??'';
 $private=$accountRoot.'/wedletter-private-backups';
 if(!is_dir($private)&&!mkdir($private,0700,true)&&!is_dir($private))reply(500,['error'=>'Недоступно резервное хранилище']);
+if($action==='list'){
+ $items=[];
+ foreach(glob($private.'/*/current.json')?:[] as $file){
+  $id=basename(dirname($file));
+  if(!preg_match('/^[a-z0-9](?:[a-z0-9-]{0,58}[a-z0-9])?$/D',$id)||is_link($file))continue;
+  $snapshot=json_decode((string)file_get_contents($file),true);
+  if(!is_array($snapshot))continue;
+  $items[]=['id'=>$id,'label'=>$snapshot['label']??$id,'savedAt'=>$snapshot['savedAt']??null];
+ }
+ reply(200,['ok'=>true,'orders'=>$items]);
+}
+$id=$input['orderId']??null;
+if(!is_string($id)||!preg_match('/^[a-z0-9](?:[a-z0-9-]{0,58}[a-z0-9])?$/D',$id))reply(400,['error'=>'Неверный ID заказа']);
 $dir=$private.'/'.$id;
 if(is_link($dir))reply(409,['error'=>'Недопустимый путь']);
 if(!is_dir($dir)&&!mkdir($dir,0700,true)&&!is_dir($dir))reply(500,['error'=>'Невозможно создать папку']);
@@ -50,7 +61,7 @@ try{
  }
  if($action==='config'){
    $config=$input['config']??null;$label=$input['label']??'';
-   if(!is_array($config)||!is_string($label)||mb_strlen($label)>120)reply(400,['error'=>'Некорректный черновик']);
+   if(!is_array($config)||!is_string($label)||strlen($label)>240)reply(400,['error'=>'Некорректный черновик']);
    $json=json_encode(['savedAt'=>gmdate('c'),'label'=>$label,'config'=>$config],JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES|JSON_THROW_ON_ERROR);
    if(strlen($json)>300000)reply(413,['error'=>'Слишком большой черновик']);
    $versions=$dir.'/versions';if(!is_dir($versions))mkdir($versions,0700,true);
