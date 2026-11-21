@@ -957,6 +957,7 @@ window.PREMIERE_APPLY=apply;
 addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==parent||e.data?.type!=='premiere-editor-preview')return;apply(e.data.config)});
 if(window.PREMIERE_ORDER)apply(window.PREMIERE_ORDER);
 $('#rsvpForm').addEventListener('submit',async e=>{e.preventDefault();const status=$('#rsvpStatus'),order=window.PREMIERE_ORDER||{};const endpoint=order.rsvp?.endpoint;const name=$('#guestName').value.trim();const attending=document.querySelector('[name=attend]:checked')?.value;
+const extra=$('#rsvpExtra');
 for(const group of extra.querySelectorAll('[data-required-group]')){
   const name=group.dataset.requiredGroup;
   const selected=[...extra.querySelectorAll('input[type=checkbox]')].some(input=>input.name===name&&input.checked);
