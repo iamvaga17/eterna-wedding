@@ -1559,9 +1559,9 @@ async function exportBroadcast(folder,files,config,id){
    '<script defer src="rsvp-renderer.js"><'+'/script>');
  page=page.replace(/<script defer src="assets\/broadcast-preview-v18\.js\?[^"]*"><\/script>/,
    '<script defer src="order.js"><'+'/script>\n<script defer src="assets/broadcast-preview-v20.js"><'+'/script>');
- page=page.replace(/<script defer src="assets\/editor-preview-bridge-v21\.js\?[^"]*"><\/script>/,
-   '<script defer src="assets/broadcast-export-v25.js"><'+'/script>');
- if(!page.includes('broadcast-export-v25.js')||page.includes('editor-preview-bridge-v22.js')||page.includes('../rsvp-renderer.js'))throw Error('Ошибка сборки шаблона.');
+ page=page.replace(/<script defer src="assets\/editor-preview-bridge-v22\.js\?[^"]*"><\/script>/,
+   '<script defer src="assets/broadcast-export-v26.js"><'+'/script>');
+ if(!page.includes('broadcast-export-v26.js')||page.includes('editor-preview-bridge-v22.js')||page.includes('../rsvp-renderer.js'))throw Error('Ошибка сборки шаблона.');
  const js='window.ETERNA_BROADCAST_ORDER = '+JSON.stringify(config).replace(/</g,'\\u003c')+';\n';
  files.push({name:folder+'order.js',bytes:enc.encode(js)});
  files.push({name:folder+'index.html',bytes:enc.encode(page)});
