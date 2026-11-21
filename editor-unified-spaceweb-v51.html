@@ -1,0 +1,2305 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>WEDLETTER STUDIO · SpaceWeb v11 · Управление заказом</title><style>
+:root{font-family:system-ui,-apple-system,Arial,sans-serif;color:#282923;background:#f8f5ef}*{box-sizing:border-box}body{margin:0}header{padding:25px 22px;border-bottom:1px solid #dedad2;background:#fff;display:flex;align-items:center;gap:16px;justify-content:space-between}h1{font:400 32px Georgia;margin:0}h2{font:400 23px Georgia;margin:0 0 13px}small,.muted{color:#77746e;font-size:12px}main{max-width:1280px;margin:auto;padding:22px;display:grid;grid-template-columns:minmax(320px,480px) 1fr;gap:22px}.panel,.preview{background:#fff;border:1px solid #e1dbd2;border-radius:16px;padding:20px}.preview{position:sticky;top:12px;align-self:start}.preview iframe{width:100%;height:min(76vh,790px);border:1px solid #e6e2dc;border-radius:14px;background:white}fieldset{border:0;padding:0;margin:0 0 25px}label{font-size:13px;display:block;margin:12px 0 5px;font-weight:550}input:not([type=checkbox]),textarea{width:100%;padding:10px 12px;border:1px solid #d6d2ca;border-radius:8px;background:#fdfcf9;font:14px system-ui;outline-color:#917a64}textarea{min-height:77px;resize:vertical}button{border:0;border-radius:9px;background:#38322d;color:#fff;padding:12px 14px;font-size:13px;font-weight:600;cursor:pointer}button.secondary{background:#e8e2d9;color:#38322d}.actions{display:flex;flex-wrap:wrap;gap:8px}.section-row{padding:10px 0;border-bottom:1px solid #eee9e1;display:flex;align-items:center;gap:12px}.section-row label{margin:0;flex:1}.section-row input{width:20px;height:20px;accent-color:#655645}details{border-top:1px solid #e7e2da;padding:15px 0}summary{cursor:pointer;font:500 17px Georgia}.note{background:#f0ebe3;border-radius:9px;padding:12px;font-size:12px;line-height:1.55}.error{color:#ac3423}.status{font-size:12px;color:#656057}.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:850px){main{display:block;padding:12px}.preview{position:static;margin-top:12px}.preview iframe{height:650px}header{flex-direction:column;align-items:flex-start;padding:18px}}
+
+.photo-card{border:1px solid #e4ded5;border-radius:13px;padding:12px;margin:12px 0;background:#fcfaf6}.photo-card strong{display:block;font-size:13px;margin-bottom:9px}.photo-tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.photo-tools input[type=file]{max-width:100%;font-size:12px}.photo-card img{display:block;width:100%;height:155px;object-fit:cover;border-radius:8px;background:#e7e0d7;margin:8px 0}.photo-card .photo-path{font-size:11px;color:#72685d;overflow-wrap:anywhere}.photo-card button{padding:9px 11px}.photo-card select{padding:8px;border:1px solid #d6d2ca;border-radius:8px;background:#fff}.photo-card input[type=range]{width:100%;accent-color:#76614d}.photo-card .pos-label{font-size:12px;color:#665a50}.photo-card .error{font-size:12px}.upload-help{font-size:12px;line-height:1.5;color:#645d53}
+
+.orders-box{border:1px solid #e5ddd3;border-radius:14px;padding:16px;margin:0 0 24px;background:#faf6ee}
+.orders-box h2{margin-bottom:8px}.orders-line{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.orders-line select{flex:1;min-width:150px;padding:11px;background:white;border:1px solid #d6d2ca;border-radius:9px;font:14px system-ui}
+.orders-identifier{font-size:12px;color:#6e6255;overflow-wrap:anywhere;margin:8px 0 0}
+@media(max-width:420px){.orders-line button{flex:1}}
+
+.photo-group{border:1px solid #e6e0d7;border-radius:12px;margin:12px 0;padding:0 12px;background:#fdfbf7}
+.photo-group>summary{padding:16px 6px;font-weight:600;font-size:14px;cursor:pointer}
+.photo-group .photo-card{margin:12px 0 18px}
+
+.palette-panel{border:1px solid #e6e0d7;border-radius:12px;background:#fdfbf7;padding:14px;margin:10px 0 18px}.palette-panel strong{font-size:13px}.palette-editor{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin:12px 0}.palette-editor label{font-size:10px;text-align:center;margin:0;min-width:0}.palette-editor input[type=color]{display:block;width:100%;min-width:0;height:48px;border:1px solid #d8d0c4;border-radius:7px;background:white;padding:3px;cursor:pointer}.palette-note{font-size:12px;color:#756a5d;line-height:1.5}.palette-reset{margin-top:8px}
+[hidden]{display:none!important}#broadcastEditorFields fieldset{margin-top:8px}#broadcastEditorFields textarea{min-height:90px}#previewVersion{font:14px system-ui;padding:9px;width:100%;border:1px solid #d6d2ca;border-radius:8px}button:disabled{opacity:.55;cursor:not-allowed}.studio-panel{margin:15px 0 25px;padding:16px;border:1px solid #d5ccc1;border-radius:14px;background:#fbf7f0}.studio-card{border:1px solid #e0d9cd;background:white;border-radius:11px;margin:10px 0;padding:12px}.studio-card strong{display:block;margin-bottom:8px;font-size:13px}.studio-card img{display:block;width:100%;max-height:220px;object-fit:contain;background:#ede8df;border-radius:7px;margin-bottom:8px}.studio-card img[hidden]{display:none!important}.studio-card input{max-width:100%;min-width:0}.studio-panel select{width:100%;padding:10px;border:1px solid #d6d2ca;background:white;border-radius:8px}.studio-panel .photo-tools{align-items:center}.studio-provider{margin:15px 0;padding:12px;border:1px solid #ddd1c5;background:white;border-radius:9px}.studio-provider input{max-width:100%}.studio-permission{display:flex;align-items:flex-start;gap:8px;font-size:12px;line-height:1.5;margin:14px 0}.studio-permission input{flex:none;margin-top:3px}.studio-pending{border:2px solid #b5834a;background:#fff9ed}.studio-pending img{max-height:330px}/* Manual workflow: cloud controls hidden but JS/IDB legacy retained to avoid breakage */
+.workflow-broadcast .studio-provider,
+.workflow-broadcast .studio-permission,
+.workflow-broadcast #studioGenerateAll,
+.workflow-broadcast #studioGenerateOne,
+.workflow-broadcast #studioGenerated,
+.workflow-broadcast label[for="studioScene"],
+.workflow-broadcast #studioScene,
+.workflow-broadcast label[for="studioBrief"],
+.workflow-broadcast #studioBrief,
+.workflow-broadcast #studioPrompt,
+.workflow-broadcast #studioStatus {display:none!important}
+body.mobile-preview-mode .panel{display:none}body.mobile-preview-mode main{display:block;max-width:none;padding:0}body.mobile-preview-mode .preview{position:relative;padding:8px;border:0;border-radius:0}body.mobile-preview-mode .preview iframe{height:calc(100dvh - 170px);min-height:480px;border-radius:8px}body.mobile-preview-mode header{padding:10px 16px}#mobilePreviewToggle{margin-bottom:10px}
+/* ÉTERNA STUDIO v26 — compact sequential workflow */
+:root{--ink:#292821;--muted:#817a70;--line:#e4ded4;--accent:#b58b63;--paper:#fffefb}
+body{background:#f5f1eb;color:var(--ink);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{padding:16px clamp(16px,3.2vw,44px);border-bottom:1px solid var(--line);background:#fdfbf7;position:relative;z-index:2}
+header h1{font:400 clamp(24px,2.2vw,33px) Georgia;letter-spacing:-.055em}
+.brand-slim{font:600 11px system-ui;letter-spacing:.29em;vertical-align:middle;margin-left:8px;color:#b08766}
+header small{font-size:11px;letter-spacing:.025em}
+header .actions button{padding:11px 15px}
+.workflow-top{padding:16px clamp(14px,3.2vw,44px) 10px;max-width:1440px;margin:auto;display:grid;grid-template-columns:minmax(220px,380px) 1fr;gap:14px;align-items:start}
+.workflow-template,.workflow-order{background:var(--paper);border:1px solid var(--line);border-radius:15px;padding:14px 16px}
+.workflow-template label,.workflow-top .orders-box h2{margin:0 0 8px;color:#72675b;font-size:11px;font-family:system-ui;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.workflow-template select{width:100%;padding:11px 12px;border-radius:10px;border:1px solid #d9d0c4;background:white;font-size:15px;font-weight:600;color:#2d2824}
+.workflow-template p{font-size:11px;color:#83776b;margin:9px 0 0}
+.workflow-top .orders-box{border:0;background:transparent;padding:0;margin:0}
+.workflow-top .orders-box p.muted{display:none}
+.workflow-top .orders-line{margin:0 0 5px;gap:7px}
+.workflow-top .orders-line select{min-width:140px;padding:10px}
+.workflow-top .orders-line button{padding:10px 13px}
+.workflow-top .orders-identifier{font-size:10px;margin:3px 0}
+.workflow-nav{max-width:1440px;margin:0 auto;padding:6px clamp(14px,3.2vw,44px) 12px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.workflow-tab{display:flex;align-items:center;gap:9px;justify-content:center;min-width:0;padding:12px 8px;background:#ebe5dc;color:#645c53;border:1px solid transparent;border-radius:11px;font-size:12px}
+.workflow-tab span{display:inline-flex;align-items:center;justify-content:center;flex:0 0 24px;width:24px;height:24px;border-radius:50%;background:#ffffffaa;font-size:11px}
+.workflow-tab[aria-current="step"]{color:white;background:#292823;border-color:#292823;box-shadow:0 6px 18px #28231c1a}
+.workflow-tab[aria-current="step"] span{background:#ffffff24;color:white}
+main{max-width:1440px;padding:0 clamp(14px,3.2vw,44px) 26px;grid-template-columns:minmax(330px,520px) minmax(0,1fr);gap:16px}
+.panel,.preview{background:var(--paper);border-radius:16px;border:1px solid var(--line);padding:18px}
+.panel> .note{display:none}
+.workflow-page[hidden]{display:none!important}
+.workflow-page h2{font-size:22px;margin-bottom:6px}
+.workflow-intro{color:#837a70;line-height:1.5;font-size:12px;margin:0 0 18px}
+.workflow-page fieldset{margin:6px 0 12px}
+.workflow-page .stage-contents>section{margin:0}
+.workflow-page .studio-panel{border:0;background:transparent;padding:0;margin:0}
+.workflow-page .studio-card{margin:7px 0;padding:12px}
+.workflow-page .studio-card img{max-height:140px}
+.workflow-page .studio-card input{padding:7px}
+.workflow-page .studio-card .photo-tools{align-items:start}
+.stage-footer{display:flex;justify-content:space-between;gap:9px;padding-top:18px;margin-top:14px;border-top:1px solid var(--line)}
+.stage-footer button{flex:1;padding:13px}
+.stage-back{background:#eee9e1;color:#39342f}
+.stage-next{background:#2e2a25}
+.workflow-broadcast .stage-group,.workflow-eterna .stage-group{margin-bottom:12px}
+.workflow-broadcast .stage-group>summary,.workflow-eterna .stage-group>summary{font:600 13px system-ui;padding:15px 14px;cursor:pointer}
+.stage-group{padding:0;border:1px solid var(--line);border-radius:11px;background:#fff;margin-top:9px}
+.stage-group .stage-group-inner{padding:0 14px 14px}
+.stage-group input,.stage-group textarea{background:#fff}
+.workflow-content label{font-size:12px}
+.workflow-content textarea{min-height:65px}
+.stage-finish{background:#f1ece4;padding:14px;border-radius:13px;font-size:12px;line-height:1.55}
+.workflow-finish-actions{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.workflow-finish-actions button{flex:1;min-width:120px}
+.workflow-page .note{line-height:1.5}
+.preview{top:14px}
+.preview h2{font-size:20px}
+.preview iframe{height:min(74vh,760px)}
+#mobilePreviewToggle{margin:8px 0}
+#status{line-height:1.6}
+@media(max-width:850px){
+  header{padding:15px 16px;flex-direction:row;align-items:center}
+  header .actions{margin-left:auto;align-items:center;gap:5px}
+  header .actions button{font-size:11px;padding:9px 10px}
+  header small{display:none}
+  .workflow-top{grid-template-columns:1fr;gap:9px;padding:12px 12px 4px}
+  .workflow-template,.workflow-order{padding:11px 12px}
+  .workflow-nav{padding:7px 12px 10px;gap:5px}
+  .workflow-tab{gap:4px;padding:9px 3px;display:flex;flex-direction:column;font-size:10px;min-height:54px;line-height:1.2}
+  .workflow-tab span{width:21px;height:21px;flex-basis:21px}
+  main{padding:0 12px 22px}
+  .panel{padding:15px}
+  .preview{display:none;margin-top:10px}
+  body.workflow-preview-active .preview{display:block;padding:12px}
+  body.workflow-preview-active .panel{display:none}
+  body.workflow-preview-active .preview iframe{height:calc(100dvh - 325px);min-height:520px;max-height:none}
+  body.workflow-preview-active .preview h2{font-size:18px}
+  body.workflow-preview-active .preview p.muted{font-size:11px}
+  body.mobile-preview-mode .panel{display:none}
+  body.mobile-preview-mode main{padding:0 12px 12px}
+  body.mobile-preview-mode .preview{display:block}
+  body.mobile-preview-mode .preview iframe{height:calc(100dvh - 250px)}
+}
+@media(max-width:380px){header h1{font-size:23px}.workflow-tab{font-size:9px}.workflow-top .orders-line button{font-size:11px}}
+.workflow-broadcast .studio-panel>p.muted:not(:first-of-type){display:none!important}.preview .mobile-export-action{display:none}@media(max-width:850px){.preview .mobile-export-action{display:block;width:100%;margin:12px 0 6px;padding:14px}}
+.publish-now{background:#896d50!important;color:white!important}.publish-settings{margin:12px 0}.publish-result{font-size:13px;line-height:1.6;overflow-wrap:anywhere}.publish-result a{color:#76542d;text-decoration:underline;font-weight:650}.publish-settings .stage-group-inner{padding-top:14px}#workflow-stage-3{padding:0 0 18px;margin:0 0 18px;border-bottom:1px solid var(--line)}
+#workflow-stage-3 .workflow-intro{margin-bottom:10px}
+#workflow-stage-3 .stage-finish{padding:10px 12px}
+#workflow-stage-3 .workflow-finish-actions{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);margin:10px 0}
+#workflow-stage-3 .workflow-finish-actions #publishOrder{grid-column:1/-1;font-size:15px;padding:15px}
+#workflow-stage-3 .workflow-finish-actions #resetBtn{font-size:12px}
+#workflow-stage-3 .publish-settings{margin:10px 0}
+#workflow-stage-3 .publish-result:not(:empty){padding:12px;border:1px solid #d4c3ae;border-radius:10px}
+#workflow-stage-3 #status{padding:8px 0}
+@media(max-width:850px){
+ body.workflow-preview-active #workflow-stage-3{display:block}
+ body.workflow-preview-active .preview{display:flex;flex-direction:column}
+ body.workflow-preview-active .preview #workflow-stage-3{order:0}
+ body.workflow-preview-active .preview>h2{order:1}
+ body.workflow-preview-active .preview>p{order:2}
+ body.workflow-preview-active .preview>#mobilePreviewToggle{order:3}
+ body.workflow-preview-active .preview>#siteFrame{order:4}
+ body.workflow-preview-active .preview iframe{height:610px;min-height:0}
+}
+.event-date-editor{border:1px solid var(--line);border-radius:13px;background:#fffaf4;padding:15px;margin:20px 0}
+.event-date-editor h3{font:400 21px Georgia,serif;margin:0 0 12px}.event-date-editor>label{font-weight:650}.event-date-editor select{display:block;width:100%;border:1px solid #d6d2ca;background:white;border-radius:9px;padding:11px;font:14px system-ui;margin:7px 0 10px}
+.event-date-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.event-date-card{margin:0!important;border:1px solid #e5dbce!important;background:white;padding:13px!important;border-radius:11px}
+.event-date-card strong{display:block;font-size:15px;margin-bottom:10px}
+.event-date-card input{display:block;width:100%;min-width:0;padding:10px;margin-top:5px}
+@media(max-width:600px){.event-date-fields{grid-template-columns:1fr;gap:9px}}
+
+.ssl-pending-note{background:#fff4e3;border:1px solid #e6c89d;color:#604828;border-radius:11px;padding:13px 14px;font-size:13px;line-height:1.5;margin:0 0 14px}
+#publishOrder:disabled{background:#b6aea4!important;color:#473d34!important;opacity:1}
+.workflow-tab:focus-visible,.stage-footer button:focus-visible{outline:3px solid #ad8057;outline-offset:3px}
+@media(max-width:850px){
+ header{flex-direction:column;align-items:stretch;gap:10px}
+ header h1{font-size:clamp(24px,6.4vw,31px);line-height:1.05}
+ header .brand-slim{display:block;margin:6px 0 0;font-size:10px;letter-spacing:.22em}
+ header .actions{display:grid;grid-template-columns:1fr 1fr;width:100%;gap:7px}
+ header .actions button{min-width:0;font-size:12px;line-height:1.3;min-height:44px;padding:10px 8px}
+ .workflow-top{padding-top:8px;gap:7px}
+ .workflow-template,.workflow-order{padding:11px}
+ .workflow-template>p{display:none}
+ .workflow-order .orders-line{gap:7px}
+ .workflow-order .orders-line select{min-width:0;width:100%;flex:1 1 100%;font-size:16px;min-height:46px}
+ .workflow-order .orders-line #newOrderBtn{width:100%;min-height:44px}
+ .workflow-order #duplicateOrderBtn,.workflow-order #deleteOrderBtn{flex:1;min-height:40px}
+ .workflow-nav{position:sticky;top:0;z-index:15;padding:8px 11px;background:#f5f1eb;border-bottom:1px solid #e5ded4;box-shadow:0 6px 14px #3227190c}
+ .workflow-tab{min-height:57px;touch-action:manipulation}
+ .workflow-tab[aria-current="step"]{box-shadow:none}
+ .workflow-page h2{font-size:24px}
+ .stage-footer button{min-height:48px;font-size:14px}
+ .workflow-page input:not([type="checkbox"]):not([type="file"]),.workflow-page textarea,.workflow-page select{font-size:16px}
+ .photo-tools input[type="file"]{font-size:14px;max-width:100%}
+ .publish-settings>summary{padding:15px 8px}
+ .publish-result a{display:inline-block;padding:8px 0}
+ #workflow-stage-3 .workflow-finish-actions #publishOrder{min-height:52px}
+}
+@media(max-width:390px){.workflow-tab{font-size:10px;padding-inline:2px}.workflow-tab span{font-size:10px}}
+
+/* v3: clearer editing hierarchy and compact accordions */
+.native-settings-group{padding:0 14px 14px;margin-bottom:12px}
+.native-settings-group>summary{font:600 14px system-ui;list-style:revert;padding:16px 4px;min-height:48px}
+.native-settings-group>p,.native-settings-group>label,.native-settings-group>.actions,.native-settings-group>textarea,.native-settings-group>input{margin-left:4px;margin-right:4px}
+.native-settings-group textarea{font:14px/1.45 ui-monospace,Menlo,Consolas,monospace}
+.photo-group>summary{font:600 14px/1.35 system-ui;min-height:52px;display:list-item;padding:16px 6px}
+.photo-group .photo-card{background:#fff;border-radius:9px}
+#workflow-stage-1 .upload-help{padding:13px;border:1px solid #e5dcd0;background:#faf7f1;border-radius:10px;margin-bottom:15px}
+#workflow-stage-1 .palette-panel{background:#f9f5ed}
+#workflow-stage-2 .stage-group>summary{min-height:52px;display:list-item}
+#workflow-stage-2 .workflow-intro{margin-bottom:16px}
+@media(max-width:850px){
+ .workflow-nav{scroll-margin-top:0}
+ .workflow-page{scroll-margin-top:80px}
+ .stage-group>summary,.native-settings-group>summary{font-size:14px!important;line-height:1.4}
+ .stage-group .stage-group-inner{padding:0 12px 12px}
+ .workflow-content .native-settings-group{padding:0 13px 13px}
+ #workflow-stage-1 .palette-editor{gap:5px}
+ #workflow-stage-1 .palette-editor input[type=color]{height:43px}
+}
+
+.rsvp-visual{display:grid;gap:13px;margin:14px 0}
+.rsvp-head{display:grid;gap:10px}
+.rsvp-head input,.rsvp-question input,.rsvp-question select{width:100%;min-height:44px}
+.rsvp-fixed{background:#f5f0e8;border-left:3px solid #b18c68;padding:12px;color:#5c5145;font-size:13px;line-height:1.5;margin:0}
+.rsvp-questions{display:grid;gap:8px}
+.rsvp-question{border:1px solid #e0d7cb;border-radius:10px;background:#fff;padding:0 12px}
+.rsvp-question>summary{padding:14px 4px;line-height:1.35;font:600 13px system-ui;cursor:pointer}
+.rsvp-question-body{padding:4px 0 16px}
+.rsvp-question-body>label{margin:10px 0}
+.rsvp-check{display:flex!important;align-items:center;gap:9px}
+.rsvp-check input{width:19px;height:19px}
+.rsvp-options{display:grid;gap:8px;margin:14px 0}
+.rsvp-options strong{font-size:12px}
+.rsvp-option-row{display:grid;grid-template-columns:minmax(0,1fr) 42px;gap:7px}
+.rsvp-option-row button{padding:0;font-size:22px;min-height:44px}
+.rsvp-row-actions{display:flex;gap:8px;margin-top:15px}
+.rsvp-row-actions button{min-height:42px}
+.rsvp-row-actions button:last-child{margin-left:auto}
+.rsvp-advanced{border:1px solid #e8dfd3;padding:9px 12px;border-radius:10px;background:#faf7f2}
+.rsvp-advanced>summary{font:600 13px system-ui;padding:10px 0}
+.rsvp-advanced textarea{min-height:170px;font:12px/1.5 monospace}
+@media(min-width:680px){.rsvp-head{grid-template-columns:1fr 1fr}}
+</style><style>
+.wedletter-share-title{font:400 22px Georgia,serif;margin:16px 0 10px;color:#332b25}
+.wedletter-share-card{display:flex;flex-direction:column;gap:8px;padding:14px 15px;margin:10px 0;background:#fffdf8;border:1px solid #dfd6ca;border-radius:14px;max-width:100%;overflow-wrap:anywhere}
+.wedletter-share-card strong{font-size:15px;color:#302921}
+.wedletter-share-card .wedletter-share-desc,.wedletter-share-card p,.wedletter-share-card small{font-size:12px;color:#756a5f;margin:0}
+.wedletter-share-card input{font-size:12px;width:100%;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;padding:11px!important;background:#f6f2eb!important}
+.wedletter-share-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.wedletter-share-actions button{min-height:40px}
+.wedletter-share-actions a{display:inline-block;padding:10px 5px;color:#41372e;font-size:13px}
+</style><style>.wedletter-remember-label{display:flex!important;align-items:center;gap:10px;cursor:pointer;margin:12px 0!important;font-size:13px!important}.wedletter-remember-label input{width:19px!important;height:19px!important;flex-shrink:0;margin:0}.publish-settings #publishPassword{margin-top:5px}.publish-settings #rememberPublishKey{accent-color:#8f7255}</style><style>
+/* WEDLETTER Studio v10: compact mobile publishing controls */
+#workflow-stage-3 .publish-settings{margin:8px 0!important}
+#workflow-stage-3 .publish-settings>summary{padding:11px 13px!important;font-size:14px;line-height:1.3}
+#workflow-stage-3 .publish-settings .stage-group-inner{padding:10px 12px 11px!important}
+#workflow-stage-3 .publish-settings .wedletter-slug{margin:0!important}
+#workflow-stage-3 .publish-settings .wedletter-slug label{font-size:12px;margin:0 0 5px}
+#workflow-stage-3 .publish-settings input[type=text],
+#workflow-stage-3 .publish-settings input[type=password]{min-height:39px!important;padding:8px 10px!important;margin:0!important;font-size:13px!important}
+#workflow-stage-3 .publish-settings .wedletter-slug .workflow-intro{font-size:11px;line-height:1.35;margin:5px 0 10px;color:#7c7063;overflow-wrap:anywhere}
+#workflow-stage-3 .publish-settings label[for=publishPassword]{margin:7px 0 5px;font-size:12px}
+#workflow-stage-3 .publish-settings .wedletter-remember-label{margin:9px 0 6px!important;font-size:12px!important;gap:8px}
+#workflow-stage-3 .publish-settings #rememberPublishKey{width:17px!important;height:17px!important}
+#workflow-stage-3 .publish-settings .wedletter-key-note{font-size:11px;line-height:1.35;margin:7px 0 0;color:#807367}
+#workflow-stage-3 .publish-settings button.secondary{padding:8px 11px;font-size:11px}
+#workflow-stage-3 .workflow-finish-actions{gap:7px}
+#workflow-stage-3 .publish-now{min-height:49px}
+#workflow-stage-3 .publish-result:not(:empty){padding:10px!important;border-radius:12px!important}
+#workflow-stage-3 .wedletter-share-title{font-size:19px;margin:1px 0 8px}
+#workflow-stage-3 .wedletter-share-card{padding:11px 12px;gap:6px;margin:7px 0;border-radius:12px}
+#workflow-stage-3 .wedletter-share-card strong{font-size:13px}
+#workflow-stage-3 .wedletter-share-card .wedletter-share-desc,
+#workflow-stage-3 .wedletter-share-card p,
+#workflow-stage-3 .wedletter-share-card small{font-size:11px;line-height:1.35}
+#workflow-stage-3 .wedletter-share-card input{font-size:11px;padding:9px!important;min-height:36px}
+#workflow-stage-3 .wedletter-share-actions{gap:6px}
+#workflow-stage-3 .wedletter-share-actions button{min-height:36px;padding:8px 10px;font-size:12px}
+#workflow-stage-3 .wedletter-share-actions a{font-size:12px;padding:7px 5px}
+@media(max-width:850px){
+ #workflow-stage-3{padding-bottom:10px!important;margin-bottom:10px!important}
+ #workflow-stage-3 .workflow-finish-actions{margin:7px 0!important}
+ #workflow-stage-3 .publish-result:not(:empty){margin-top:6px}
+}
+</style><style>
+/* WEDLETTER Studio v11 — condensed iPhone order controls */
+#workflow-stage-3>h2{font-size:25px;margin:0 0 9px}
+#workflow-stage-3 .stage-finish{display:flex;flex-direction:column;gap:0}
+#workflow-stage-3 .stage-finish>.workflow-finish-actions{order:2}
+#workflow-stage-3 .stage-finish>.publish-settings{order:3}
+#workflow-stage-3 .stage-finish>.publish-result{order:1}
+#workflow-stage-3 .stage-finish>#status{order:4}
+#workflow-stage-3 .publish-settings{border:1px solid #e0d7cc;border-radius:11px}
+#workflow-stage-3 .publish-settings>summary{padding:11px 13px!important}
+#workflow-stage-3 .publish-result:empty{display:none}
+#workflow-stage-3 .publish-result:not(:empty){margin:0 0 12px!important}
+#workflow-stage-3 .wedletter-share-card{background:#fcfaf6}
+#workflow-stage-3 .wedletter-share-card .wedletter-share-actions{margin-top:2px}
+#workflow-stage-3 .wedletter-share-card input{font-family:ui-monospace,SFMono-Regular,monospace;letter-spacing:-.2px}
+@media(max-width:850px){
+ #workflow-stage-3{margin-top:0!important;padding-top:0!important}
+ #workflow-stage-3 .workflow-finish-actions{margin:8px 0 6px!important}
+ #workflow-stage-3 .workflow-finish-actions #publishOrder{margin:0!important;min-height:44px!important}
+ #workflow-stage-3 .workflow-finish-actions #downloadBtnBottom,
+ #workflow-stage-3 .workflow-finish-actions #resetBtn{font-size:11px;padding:9px 7px}
+}
+</style></head><body>
+<header><div><h1>WEDLETTER <span class="brand-slim">STUDIO · SpaceWeb</span></h1><small>Конструктор приглашений · SpaceWeb v5</small></div><div class="actions"><button id="previewBtn" class="secondary">Обновить просмотр</button><button id="downloadBtn">Скачать комплект ZIP</button></div></header>
+<main><div class="panel">
+<section class="orders-box" aria-label="Управление заказами">
+<h2>Заказы молодожёнов</h2>
+<p class="muted">Каждая свадьба хранится отдельно в этом браузере. Изменения в одном заказе не затрагивают другие.</p>
+<div class="orders-line"><select id="orderSelect" aria-label="Выбрать заказ"></select><button id="newOrderBtn" type="button">+ Новый заказ</button></div>
+<div class="orders-line"><button id="duplicateOrderBtn" type="button" class="secondary">Сделать копию</button><button id="deleteOrderBtn" type="button" class="secondary">Удалить заказ</button></div>
+<p class="orders-identifier" id="orderUrlLabel"></p>
+</section><p class="note">Загружай фото из галереи iPhone — они сразу появятся в предпросмотре. Фото сохраняются локально в этом браузере. Для публикации скачай самостоятельный сайт клиента ZIP. Фото хранятся в браузере до публикации. Анкету для 12.0 можно настроить в этом заказе.</p>
+<div id="broadcastEditorFields" hidden>
+  <h2>Данные пары · Срочный выпуск</h2>
+  <fieldset id="broadcastCouple"></fieldset>
+  <section class="studio-panel" aria-labelledby="studioHeading">
+    <h2 id="studioHeading">Фотографии «Срочного выпуска»</h2>
+    <p class="muted">Загрузи четыре <b>настоящие фотографии молодожёнов</b>: обложку, крупный план пары, снимок для истории и праздничный кадр. Подойдут обычные фотографии с телефона — генерировать новые лица не нужно. В шаблоне останутся телевизионные плашки, анимация входа, мягкое приближение и конфетти поверх снимка. Каждое фото сохраняется только в выбранном заказе.</p>
+    <div id="studioImages"></div>
+    <details class="studio-provider">
+      <summary>Подключение генератора (только для владельца редактора)</summary>
+      <p class="muted">Адрес твоего защищённого сервера. В этой версии используется Cloudflare Workers AI, отдельный OpenAI API-ключ не требуется. Отдельный пароль доступа хранится только до закрытия страницы.</p>
+      <label for="studioEndpoint">HTTPS-адрес сервера генерации</label>
+      <input id="studioEndpoint" type="url" value="https://eterna-ai-studio.vaga7486.workers.dev" placeholder="https://your-worker.workers.dev" autocomplete="off" spellcheck="false">
+      <label for="studioToken">Пароль доступа к серверу</label>
+      <input id="studioToken" type="password" autocomplete="off" placeholder="Отдельный секрет сервера">
+      <p class="muted">Без настроенного сервера кнопка генерации сообщит об отсутствии подключения. Тестовые фото не отправляются автоматически.</p>
+    </details>
+    <label class="studio-permission"><input type="checkbox" id="studioPermission"> Подтверждаю, что пара разрешила использовать фотографии для ИИ-генерации.</label>
+    <div class="actions"><button type="button" id="studioGenerateAll">Сгенерировать все 4 сцены</button><button type="button" class="secondary" id="studioGenerateOne">Пересоздать выбранную сцену</button></div>
+    <p class="muted">Улучшенный режим: отдельно передаём портреты лиц и фотографии фигуры (4 референса на каждую сцену). Для сходства лучше загружать исходные фото с хорошо видимым лицом; точное совпадение не гарантируется.</p>
+    <p class="muted">Обе исходные фотографии передаются в каждую из четырёх генераций, чтобы пара оставалась узнаваемой. Новые кадры сначала показываются на проверку и не заменяют одобренные без подтверждения.</p>
+    <div id="studioGenerated"></div>
+    <label for="studioScene">Сцена для генерации</label>
+    <select id="studioScene">
+      <option value="sceneCover">Главный репортаж</option>
+      <option value="sceneCake">Расследование свадебного торта</option>
+      <option value="sceneArchive">Архивное фото знакомства</option>
+      <option value="sceneForecast">Прогноз свадебного вечера</option>
+    </select>
+    <label for="studioBrief">Дополнительные детали сцены</label>
+    <textarea id="studioBrief" rows="3" placeholder="Например: встретились в аэропорту, а не в кафе"></textarea>
+    <div class="actions"><button type="button" id="studioPrompt">Скопировать задание для ИИ</button></div>
+    <p id="studioStatus" class="status" aria-live="polite"></p>
+  </section>
+  <h2>Тексты телевизионного приглашения</h2>
+  <p class="muted">Меняй историю знакомства и заголовки новостей. Справа увидишь результат.</p>
+  <fieldset id="broadcastFields"></fieldset>
+  <p class="note">Фотографии остаются оригинальными. Для готового приглашения нажми «Скачать комплект ZIP» — четыре кадра и оформление попадут в сайт без ИИ-генерации.</p>
+</div>
+<div id="eternaEditorFields">
+<h2>Данные пары</h2><fieldset id="couple"></fieldset>
+<h2>Фотографии</h2><fieldset id="photos"></fieldset>
+<details><summary>Фоновая музыка</summary>
+<label for="musicFile">Загрузить или заменить трек</label>
+<input id="musicFile" type="file" accept=".mp3,.m4a,audio/mpeg,audio/mp4">
+<p class="muted">MP3 или M4A до 25 МБ. Музыка включается гостем вручную. Файл сохраняется в заказе и попадёт в ZIP для 12.0.</p>
+<div class="actions"><button id="removeMusic" type="button" class="secondary" disabled>Убрать музыку</button></div>
+<p id="musicStatus" class="status" role="status"></p></details>
+<h2>Разделы сайта</h2><fieldset id="sections"></fieldset>
+<h2>Тексты и программа</h2><fieldset id="texts"></fieldset>
+<details><summary>Настройки RSVP для 12.0</summary>
+<p class="muted">Настрой анкету прямо здесь. Имя гостя и вопрос о присутствии уже включены в каждый сайт. Остальные вопросы добавляй ниже.</p>
+<label for="orderRsvpEndpoint">Адрес сбора ответов (HTTPS)</label><input id="orderRsvpEndpoint" type="url" placeholder="https://script.google.com/macros/s/…/exec">
+<p class="muted">Оставь поле пустым для демо. Предпросмотр редактора всегда работает в демо-режиме.</p>
+<div id="rsvpVisualEditor" class="rsvp-visual"></div><details class="rsvp-advanced"><summary>Для специалистов: JSON анкеты</summary><p class="muted">Меняй JSON только если знаешь формат. Перед сохранением он будет проверен.</p><label for="orderRsvp">Конфигурация анкеты (JSON)</label><textarea id="orderRsvp" rows="9" spellcheck="false"></textarea><button type="button" class="secondary" id="rsvpApplyJson">Применить JSON в конструктор</button></details>
+<div class="actions"><button type="button" id="saveRsvp">Сохранить анкету</button><button type="button" class="secondary" id="resetRsvp">Анкета по умолчанию</button></div>
+<p class="status" id="rsvpStatus" role="status"></p></details>
+</div>
+<div class="actions"><button id="downloadBtnBottom">Скачать комплект ZIP</button><button id="resetBtn" class="secondary">Сбросить изменения</button></div><p id="status" class="status" aria-live="polite"></p></div>
+<div class="preview"><h2>Предпросмотр</h2><p class="muted">Изменения и фото отображаются в выбранном шаблоне.</p><!-- Template selector moved to top by layout setup -->
+
+<button type="button" class="secondary" id="mobilePreviewToggle" aria-pressed="false">На весь экран ↗</button><iframe id="siteFrame" title="Предпросмотр приглашения" src="eterna-12/?editor-preview=1"></iframe><p class="muted">Фотографии и шрифты демо требуют интернета. Для публикации используется ZIP с настройками и фотографиями.</p></div></main>
+<script src="wedding-config.js"></script><script src="rsvp-config.js"></script><script>
+(()=>{'use strict';
+
+const WORKFLOW_TABS=[
+ ['Данные пары','Имена, дата и город'],
+ ['Фотографии','Загрузи готовые кадры'],
+ ['Содержание','Тексты и настройки'],
+ ['Просмотр','Проверь и скачай']
+];
+let activeWorkflowStage=0;
+function workflowNode(tag,className,text){
+ const el=document.createElement(tag);if(className)el.className=className;
+ if(text!==undefined)el.textContent=text;return el;
+}
+function workflowGroup(label,children,opened=false){
+ const details=workflowNode('details','stage-group');
+ details.open=opened;
+ details.append(workflowNode('summary','',label));
+ const inner=workflowNode('div','stage-group-inner');
+ children.forEach(item=>inner.append(item));
+ details.append(inner);
+ return details;
+}
+function setupWorkflow(){
+ // Keep the original IDs and input handlers intact: only relocate them in the DOM.
+ const top=workflowNode('div','workflow-top');
+ const templateBox=workflowNode('section','workflow-template');
+ const title=workflowNode('label','', '01 / ВЫБЕРИ ШАБЛОН');title.htmlFor='previewVersion';
+ const select=workflowNode('select');select.id='previewVersion';
+ for(const [value,label] of [['12','ÉTERNA 12.0 — ART OBJECT'],['broadcast','Срочный выпуск — NEWS'],['premiere','PREMIÈRE — CINEMA'],['legacy','ÉTERNA — классический']]){
+  const option=document.createElement('option');option.value=value;option.textContent=label;select.append(option);
+ }
+ templateBox.append(title,select,workflowNode('p','', 'Шаблон можно менять в рамках заказа. Фотографии и тексты сохраняются.'));
+ const orderBox=workflowNode('section','workflow-order');orderBox.append(document.querySelector('.orders-box'));
+ top.append(templateBox,orderBox);document.querySelector('header').after(top);
+ const tabs=workflowNode('nav','workflow-nav');tabs.setAttribute('aria-label','Этапы создания');
+ WORKFLOW_TABS.forEach(([label],index)=>{
+  const btn=workflowNode('button','workflow-tab');btn.type='button';btn.dataset.stage=String(index);
+  btn.append(workflowNode('span','',String(index+1)),document.createTextNode(label));
+  btn.addEventListener('click',()=>openWorkflowStage(index));tabs.append(btn);
+ });
+ top.after(tabs);
+ const panel=document.querySelector('main .panel');
+ const stack=workflowNode('div','workflow-stack');
+ const sections=WORKFLOW_TABS.map(([label,desc],index)=>{
+  const page=workflowNode('section','workflow-page');
+  page.id='workflow-stage-'+index;page.dataset.stage=String(index);
+  if(index===3){page.append(workflowNode('h2','','Управление приглашением'));}else{page.append(workflowNode('h2','',label),workflowNode('p','workflow-intro',desc));}
+  const body=workflowNode('div','stage-contents');page.append(body);
+  if(index!==3){
+   const foot=workflowNode('div','stage-footer');
+   if(index>0){const back=workflowNode('button','stage-back','← Назад');back.type='button';back.onclick=()=>openWorkflowStage(index-1);foot.append(back)}
+   const next=workflowNode('button','stage-next',index===2?'К просмотру →':'Дальше →');next.type='button';next.onclick=()=>openWorkflowStage(index+1);foot.append(next);page.append(foot)
+  }
+  stack.append(page);return body;
+ });
+ panel.prepend(stack);
+ const [couple,photos,content,finish]=sections;
+ const pc=workflowNode('div','workflow-premiere');pc.dataset.forTemplate='premiere';
+ pc.append(workflowNode('h3','','PREMIÈRE · Данные фильма'));
+ const premiereCouple=document.createElement('fieldset');premiereCouple.id='premiereCouple';
+ pc.append(premiereCouple);couple.append(pc);
+ const bc=workflowNode('div','workflow-broadcast');bc.dataset.forTemplate='broadcast';
+ bc.append(workflowNode('h3','', '«Срочный выпуск»'));
+ bc.append($('broadcastCouple'));couple.append(bc);
+ const ec=workflowNode('div','workflow-eterna');ec.dataset.forTemplate='eterna';ec.append($('couple'));couple.append(ec);
+ const eventBox=workflowNode('section','event-date-editor');eventBox.id='eventDatesEditor';couple.append(eventBox);
+ const bf=workflowNode('div','workflow-broadcast');bf.dataset.forTemplate='broadcast';
+ bf.append(document.querySelector('.studio-panel'));photos.append(bf);
+ const pf=workflowNode('div','workflow-premiere');pf.dataset.forTemplate='premiere';
+ pf.innerHTML='<h3>Фотографии кинокартины</h3><p class="muted">6 отдельных фото: главный кадр, три кадра киноленты, место проведения и финальная рамка. Блок «Любовь · в каждом кадре» после киноленты остаётся с исходным фото шаблона и не меняется.</p><div id="premierePhotoCards"></div>';
+ photos.append(pf);
+ const ef=workflowNode('div','workflow-eterna');ef.dataset.forTemplate='eterna';
+ ef.append($('photos'));photos.append(ef);
+ const bt=workflowNode('div','workflow-broadcast workflow-content');bt.dataset.forTemplate='broadcast';
+ bt.append(workflowGroup('01 · Заставка и вход в эфир',[],true));
+ bt.append(workflowGroup('02 · Прямое включение',[]));
+ bt.append(workflowGroup('03 · История пары',[]));
+ bt.append(workflowGroup('04 · Интерактивные новости',[]));
+ bt.append(workflowGroup('05 · Расписание и адрес',[]));
+ bt.append(workflowGroup('06 · Прогноз и конфетти',[]));
+ bt.append(workflowGroup('07 · Дресс-код и палитра',[]));
+ bt.append(workflowGroup('08 · Ответ гостей и финал',[]));
+ content.append(bt);
+ const pt=workflowNode('div','workflow-premiere workflow-content');pt.dataset.forTemplate='premiere';
+ for(const [title] of PREMIERE_GROUPS)pt.append(workflowGroup(title,[]));
+ pt.querySelector('details').open=true;
+ content.append(pt);
+ const et=workflowNode('div','workflow-eterna workflow-content');et.dataset.forTemplate='eterna';
+ et.append(workflowGroup('Разделы приглашения',[$('sections')],true));
+ et.append(workflowGroup('Все тексты и расписание',[$('texts')],false));
+ const others=[...document.querySelectorAll('#eternaEditorFields > details')];
+ others.forEach((detail,i)=>{
+  // Keep native accordions: wrapping details in details duplicated their labels
+  // and forced guests to open two layers to change a setting.
+  detail.classList.add('stage-group','native-settings-group');
+  detail.open=false;
+  const summary=detail.querySelector(':scope > summary');
+  if(summary)summary.textContent=i===0?'Фоновая музыка':'RSVP — анкета гостей';
+  if(i===0)et.append(detail);else content.append(detail);
+ });
+ content.append(et);
+ const final=workflowNode('div','stage-finish','Проверь фотографии, дату и тексты в предпросмотре. Затем скачай ZIP — готовый комплект отдельного сайта.');
+ const buttons=workflowNode('div','workflow-finish-actions');
+ const pub=workflowNode('button','publish-now','Опубликовать изменения ↗');pub.id='publishOrder';pub.type='button';pub.onclick=publishOrder;pub.disabled=false;pub.title='Опубликовать приглашение на wedletter.ru';buttons.append(pub,$('downloadBtnBottom'),$('resetBtn'));
+ const settings=workflowNode('details','stage-group publish-settings');settings.append(workflowNode('summary','','Настройки публикации · адрес и ключ'));
+ const inside=workflowNode('div','stage-group-inner'),label=workflowNode('label','','Ключ SpaceWeb');label.htmlFor='publishPassword';
+ const input=document.createElement('input');input.type='password';input.id='publishPassword';input.autocomplete='off';input.placeholder='Ключ публикации SpaceWeb';label.append(input);
+ const rememberLabel=workflowNode('label','wedletter-remember-label');
+ const remember=document.createElement('input');remember.type='checkbox';remember.id='rememberPublishKey';
+ const rememberText=document.createElement('span');rememberText.textContent='Запомнить в этой вкладке';
+ rememberLabel.append(remember,rememberText);
+ const forget=document.createElement('button');forget.type='button';forget.className='secondary';forget.textContent='Забыть ключ';forget.title='Очистить ключ из поля и памяти вкладки';
+ const keyNote=workflowNode('p','workflow-intro wedletter-key-note','Временное запоминание только в этой вкладке.');
+ inside.append(label,rememberLabel,forget,keyNote);settings.append(inside);
+ const TEMP_KEY_NAME='wedletter-publisher-session-key-v1';
+ const TEMP_REMEMBER_NAME='wedletter-publisher-session-remember-v1';
+ try{
+   if(sessionStorage.getItem(TEMP_REMEMBER_NAME)==='yes'){
+     remember.checked=true;input.value=sessionStorage.getItem(TEMP_KEY_NAME)||'';
+   }
+ }catch(e){}
+ const syncKey=()=>{
+   try{
+     if(remember.checked && input.value){
+       sessionStorage.setItem(TEMP_REMEMBER_NAME,'yes');
+       sessionStorage.setItem(TEMP_KEY_NAME,input.value);
+     }else{
+       sessionStorage.removeItem(TEMP_KEY_NAME);
+       sessionStorage.removeItem(TEMP_REMEMBER_NAME);
+     }
+   }catch(e){}
+ };
+ input.addEventListener('input',()=>{syncKey();if(input.value.trim())queueCloudBackup()});
+ remember.addEventListener('change',()=>{syncKey();if(input.value.trim())queueCloudBackup()});
+ forget.addEventListener('click',()=>{
+   input.value='';remember.checked=false;syncKey();
+   setStatus('Ключ очищен из поля и временной памяти вкладки.');
+ });
+ const result=workflowNode('p','publish-result');result.id='publishResult';result.setAttribute('aria-live','polite');
+ finish.append(result,buttons,settings,$('status'));
+ // Stage 4 is moved into the preview pane, because the main panel is hidden on iPhone.
+ // The publish password, button, and resulting link are now always visible above the iframe.
+ // Surface both links ahead of the advanced publishing controls for existing orders.
+ // New unpublished orders display links only after a successful publication.
+ const previewPanel=document.querySelector('.preview');
+ previewPanel.prepend($('workflow-stage-3'));
+ const originalBroadcast=$('broadcastEditorFields'),originalEterna=$('eternaEditorFields');
+ originalBroadcast.hidden=true;originalEterna.hidden=true;
+ // Remove obsolete explanatory paragraphs outside the workflow.
+ panel.querySelectorAll(':scope > .note').forEach(node=>node.remove());
+ const broadcastFieldset=$('broadcastFields');broadcastFieldset.hidden=true;
+ bt.append(broadcastFieldset); // Field children are redistributed into grouped accordions after every draw.
+ window.ETERNA_WORKFLOW={broadcastContent:bt,premiereContent:pt};
+ openWorkflowStage(0);
+}
+function organizeBroadcastTextFields(){
+ const parent=$('broadcastFields');
+ const groups=[...document.querySelectorAll('.workflow-broadcast.workflow-content > .stage-group .stage-group-inner')];
+ if(groups.length!==8)return;
+ const explicit={
+   introTag:0,introTitle:0,introText:0,introButton:0,introPhotoCaption:0,tickerLabel:0,tickerText:0,
+   liveTag:1,liveCaption:1,liveButton:1,liveZoomResult:1,liveTitle:1,liveText:1,
+   archiveTag:2,storyTitle:2,storyText:2,storyCaption:2,
+   newsTag:3,newsKicker:3,newsHeader:3,newsIntro:3,
+   scheduleTag:4,scheduleTitle:4,venueText:4,
+   forecastTag:5,forecastButton:5,forecastResult:5,forecastTitle:5,forecastText:6,
+   rsvpTag:7,rsvpTitle:7,rsvpText:7,footerText:7,footerButton:7
+ };
+ for(const item of [...parent.children]){
+  const key=item.dataset.fieldKey||item.querySelector('input,textarea')?.dataset.fieldKey;
+  const target=explicit[key] ?? (key?.startsWith('news')?3:key?.startsWith('schedule')?4:key?.startsWith('palette')?6:1);
+  groups[target].append(item);
+ }
+ renderNewsTools(groups);
+}
+
+const NEWS_SECTIONS=[['archive','История пары'],['news','Интерактивные новости'],['schedule','Расписание и адрес'],['forecast','Прогноз и дресс-код'],['rsvp','Анкета гостей (RSVP)']];
+const NEWS_EVENTS=[{time:'15:30',title:'Сбор гостей',description:'Ищем знакомых и выясняем, кто откуда знает пару.'},{time:'16:30',title:'Церемония',description:'Два коротких комментария. Оба — «да».'},{time:'18:00',title:'Ужин и танцы',description:'Переходим к главной части репортажа.'}];
+function newsSchedule(){
+  data.broadcast??={};
+  if(!Array.isArray(data.broadcast.schedule))data.broadcast.schedule=NEWS_EVENTS.map((e,i)=>({time:data.broadcast['schedule'+i+'Time']??e.time,title:data.broadcast['schedule'+i+'Title']??e.title,description:data.broadcast['schedule'+i+'Text']??e.description}));
+  return data.broadcast.schedule;
+}
+function renderNewsTools(groups){
+ data.broadcast.sections??={};
+ const root=document.createElement('div');root.className='et-schedule-editor';
+ const head=document.createElement('strong');head.textContent='Разделы приглашения';root.append(head);
+ const hint=document.createElement('p');hint.className='muted';hint.textContent='Включай только нужные разделы. Первый экран и прямой эфир всегда остаются.';root.append(hint);
+ for(const [key,title] of NEWS_SECTIONS){
+  const label=document.createElement('label');label.style.cssText='display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #e8e0d6';
+  const box=document.createElement('input');box.type='checkbox';box.checked=data.broadcast.sections[key]!==false;box.style.cssText='width:20px;height:20px;accent-color:#736356';
+  box.onchange=()=>{data.broadcast.sections[key]=box.checked;changed('Раздел обновлён.')};
+  label.append(box,document.createTextNode(title));root.append(label);
+ }
+ groups[0].prepend(root);
+ const list=document.createElement('div');list.className='et-schedule-editor';groups[4].append(list);
+ function render(){
+  list.replaceChildren();
+  const h=document.createElement('h3');h.textContent='Расписание дня';list.append(h);
+  const desc=document.createElement('p');desc.className='muted';desc.textContent='Добавляй, удаляй и меняй порядок событий, как в ÉTERNA.';list.append(desc);
+  const events=newsSchedule();
+  events.forEach((e,i)=>{
+   const det=document.createElement('details');det.className='et-schedule-item';
+   const summary=document.createElement('summary');const refresh=()=>summary.textContent=(e.time?e.time+' · ':'')+(e.title||'Новое событие');refresh();det.append(summary);
+   for(const [key,title] of [['time','Время'],['title','Название события'],['description','Описание']]){
+    const label=document.createElement('label');label.textContent=title;
+    const inp=document.createElement(key==='description'?'textarea':'input');
+    if(key==='time')inp.type='time';else if(key==='title')inp.type='text';
+    inp.value=e[key]||'';inp.oninput=()=>{e[key]=inp.value;refresh();changed('Расписание сохранено.')};label.append(inp);det.append(label);
+   }
+   const row=document.createElement('div');row.className='actions';row.style.padding='12px 0';
+   for(const [text,delta] of [['↑ Выше',-1],['↓ Ниже',1]]){
+    const b=document.createElement('button');b.type='button';b.className='secondary';b.textContent=text;b.disabled=i+delta<0||i+delta>=events.length;
+    b.onclick=()=>{[events[i],events[i+delta]]=[events[i+delta],events[i]];changed('Порядок обновлён.');render()};row.append(b);
+   }
+   const del=document.createElement('button');del.type='button';del.className='secondary';del.textContent='Удалить';
+   del.onclick=()=>{events.splice(i,1);changed('Событие удалено.');render()};row.append(del);det.append(row);list.append(det);
+  });
+  const add=document.createElement('button');add.type='button';add.textContent='+ Добавить событие';
+  add.onclick=()=>{events.push({time:'',title:'Новое событие',description:''});changed('Событие добавлено.');render();const items=list.querySelectorAll('details');if(items.length){items[items.length-1].open=true;items[items.length-1].querySelector('input')?.focus()}};
+  list.append(add);
+ }
+ render();
+}
+
+const PREMIERE_PHOTOS=['cover','story1','story2','story3','venue','final'];
+const PREMIERE_PHOTO_NAMES={cover:'Главный кадр фильма',story1:'Кинолента · кадр 1',story2:'Кинолента · кадр 2',story3:'Кинолента · кадр 3',venue:'Фото места проведения',final:'Фото финального кадра · отдельное'};
+const PREMIERE_GROUPS=[
+ ['01 · Первый экран и приглашение',['introTitle','introText']],
+ ['02 · Плёночная история',['storyTitle','storyText','frame1Title','frame1Text','frame2Title','frame2Text','frame3Title','frame3Text']],
+ ['03 · Программа дня',['scheduleTitle']],
+ ['04 · Место проведения',['venueTitle','venueName','venueAddress','venueMap']],
+ ['05 · Дресс-код',['dressTitle','dressText']],
+ ['06 · RSVP · анкета гостей',['rsvpTitle']],
+ ['07 · Финальные титры',['endTitle','endText']]
+];
+const PREMIERE_DEFAULTS={introTitle:'Это больше, чем история любви.',introText:'В этот день начинается наша новая глава. Нам хочется, чтобы вы стали частью самого важного события в нашем фильме.',storyTitle:'Наша история',storyText:'Несколько важных моментов, которые привели нас к этому дню.',frame1Title:'Встреча',frame1Text:'Случайность, которая всё изменила',frame2Title:'Вместе',frame2Text:'Сотни разговоров и общих мечт',frame3Title:'Решение',frame3Text:'Дальше — только вместе',scheduleTitle:'Программа дня',venueTitle:'Место проведения',venueName:'Усадьба «Лесной берег»',venueAddress:'Московская область, загородная площадка',venueMap:'https://yandex.ru/maps/',dressTitle:'Цвета нашего вечера',dressText:'Будем рады, если ваши образы поддержат цветовую гамму нашего вечера. Но самое главное — ваше присутствие.',rsvpTitle:'Вы разделите этот день с нами?',endTitle:'Спасибо, что вы с нами!',endText:'С нетерпением ждём встречи, чтобы вместе написать новую главу нашей истории.'};
+const PREMIERE_EVENT_DEFAULTS=[{time:'15:00',title:'Сбор гостей',description:'Встречаемся, знакомимся, настраиваемся на праздник'},{time:'16:00',title:'Церемония',description:'Главная сцена нашей истории'},{time:'17:00',title:'Ужин и танцы',description:'Вкусная еда, любимые люди и танцы'},{time:'20:00',title:'Вечеринка',description:'Танцуем до позднего вечера'}];
+function premiereSetup(){
+ data.premiere??={};data.premiere.photoAssets??={};data.premiere.sections??={};
+ if(!Array.isArray(data.premiere.palette))data.premiere.palette=['#eee2cc','#d6bc96','#967962','#6d2731','#2b1d1b'];
+ if(!Array.isArray(data.premiere.schedule))data.premiere.schedule=structuredClone(PREMIERE_EVENT_DEFAULTS);
+ return data.premiere;
+}
+async function loadPremierePhotos(){
+ const config=premiereSetup();
+ for(const name of PREMIERE_PHOTOS){
+  const key='premiere-'+name;
+  if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key];
+  if(!config.photoAssets[key])continue;
+  try{const blob=await readMedia(key);if(blob)cachedUrl(key,blob)}catch{}
+ }
+}
+function renderPremiere(){
+ const p=premiereSetup();
+ const couple=$('premiereCouple');if(!couple)return;couple.replaceChildren();
+ for(const key of ['first','second','dateLabel','city'])field(couple,data.couple,key);
+ const root=$('premierePhotoCards');root?.replaceChildren();
+ if(root)for(const name of PREMIERE_PHOTOS){
+  const key='premiere-'+name;const card=document.createElement('div');card.className='studio-card';
+  const title=document.createElement('strong');title.textContent=PREMIERE_PHOTO_NAMES[name];card.append(title);
+  const image=document.createElement('img');image.loading='lazy';image.alt=PREMIERE_PHOTO_NAMES[name];image.hidden=!photoUrls[key];if(photoUrls[key])image.src=photoUrls[key];card.append(image);
+  const picker=document.createElement('input');picker.type='file';picker.accept='image/*,.heic,.heif';picker.setAttribute('aria-label',title.textContent);
+  picker.onchange=async()=>{const file=picker.files?.[0];if(!file)return;try{const blob=await compressPhoto(file);await storeMedia(key,blob);cachedUrl(key,blob);p.photoAssets[key]=true;changed('Фотография PREMIÈRE сохранена.');renderPremiere()}catch(error){setStatus('Не удалось загрузить фото: '+error.message)}};
+  const remove=document.createElement('button');remove.className='secondary';remove.type='button';remove.textContent='Убрать фотографию';remove.disabled=!p.photoAssets[key];
+  remove.onclick=async()=>{await deleteMedia(key);if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key];delete p.photoAssets[key];changed('Фото удалено.');renderPremiere()};
+  const actions=document.createElement('div');actions.className='photo-tools';actions.append(picker,remove);card.append(actions);root.append(card);
+ }
+ const groups=[...document.querySelectorAll('.workflow-premiere.workflow-content .stage-group-inner')];if(groups.length!==PREMIERE_GROUPS.length)return;
+ groups.forEach(group=>group.replaceChildren());
+ const vis=document.createElement('div');vis.className='news-section-options';const h=document.createElement('strong');h.textContent='Управление разделами PREMIÈRE';vis.append(h);
+ for(const [key,title] of [['intro','Приглашение'],['story','История пары'],['schedule','Программа'],['venue','Место проведения'],['dress','Дресс-код'],['rsvp','RSVP'],['ending','Финальный экран']]){
+  const row=document.createElement('label');row.style.cssText='display:flex;align-items:center;gap:12px;padding:10px;border-bottom:1px solid #ddd';
+  const check=document.createElement('input');check.type='checkbox';check.checked=p.sections[key]!==false;check.onchange=()=>{p.sections[key]=check.checked;changed('Раздел обновлён.');};row.append(check,document.createTextNode(title));vis.append(row);
+ }
+ groups[0].append(vis);
+ PREMIERE_GROUPS.forEach(([,keys],i)=>{for(const key of keys){if(typeof p[key]!=='string')p[key]=PREMIERE_DEFAULTS[key]||'';field(groups[i],p,key,key==='venueMap'?'Ссылка на карту':({
+ introTitle:'Заголовок приглашения',introText:'Текст приглашения',storyTitle:'Название истории',storyText:'Текст истории',
+ frame1Title:'Кадр 1 · название',frame1Text:'Кадр 1 · описание',frame2Title:'Кадр 2 · название',frame2Text:'Кадр 2 · описание',frame3Title:'Кадр 3 · название',frame3Text:'Кадр 3 · описание',
+ scheduleTitle:'Заголовок программы',venueTitle:'Заголовок локации',venueName:'Название площадки',venueAddress:'Адрес площадки',dressTitle:'Заголовок дресс-кода',dressText:'Текст дресс-кода',rsvpTitle:'Заголовок RSVP',endTitle:'Финальная фраза',endText:'Текст титров'
+ })[key]||key,key.endsWith('Text'));}});
+ const events=groups[2],list=document.createElement('div');events.append(list);
+ function renderEvents(){
+  list.replaceChildren();for(const [i,e] of p.schedule.entries()){
+   const det=document.createElement('details');det.className='et-schedule-item';
+   const summary=document.createElement('summary');const update=()=>summary.textContent=(e.time||'--:--')+' · '+(e.title||'Новый акт');update();det.append(summary);
+   for(const [k,label] of [['time','Время'],['title','Название акта'],['description','Описание']]){
+    const wrap=document.createElement('label');wrap.textContent=label;const input=document.createElement(k==='description'?'textarea':'input');if(k==='time')input.type='time';input.value=e[k]||'';input.oninput=()=>{e[k]=input.value;update();changed()};wrap.append(input);det.append(wrap);
+   }
+   const actions=document.createElement('div');actions.className='actions';
+   for(const [text,move] of [['↑ Выше',-1],['↓ Ниже',1]]){const b=document.createElement('button');b.type='button';b.className='secondary';b.textContent=text;b.disabled=i+move<0||i+move>=p.schedule.length;b.onclick=()=>{[p.schedule[i],p.schedule[i+move]]=[p.schedule[i+move],p.schedule[i]];changed();renderEvents()};actions.append(b)}
+   const del=document.createElement('button');del.type='button';del.className='secondary';del.textContent='Удалить';del.onclick=()=>{p.schedule.splice(i,1);changed();renderEvents()};actions.append(del);det.append(actions);list.append(det);
+  }
+  const add=document.createElement('button');add.type='button';add.textContent='+ Добавить акт';add.onclick=()=>{p.schedule.push({time:'',title:'Новый акт',description:''});changed();renderEvents();const last=list.querySelector('details:last-of-type');if(last)last.open=true};list.append(add);
+ }
+ renderEvents();
+ const colorTitle=document.createElement('strong');colorTitle.textContent='Цветовая гамма премьеры';groups[4].append(colorTitle);
+ for(let i=0;i<5;i++){
+  const row=document.createElement('label');row.textContent='Оттенок '+(i+1)+'  ';
+  const color=document.createElement('input');color.type='color';color.value=/^#[0-9a-f]{6}$/i.test(p.palette[i])?p.palette[i]:'#eeeeee';color.style.cssText='width:85px;height:44px;vertical-align:middle;padding:3px';color.oninput=()=>{p.palette[i]=color.value;changed()};row.append(color);groups[4].append(row);
+ }
+ const rsvp=document.createElement('p');rsvp.className='muted';rsvp.textContent='Конструктор RSVP расположен ниже: редактируй вопросы, обязательность, варианты ответов и срок подтверждения, как в других шаблонах.';groups[5].append(rsvp);
+}
+async function exportPremiere(folder,files,config,id){
+ config.premiere??={};delete config.premiere.previewPhotos;
+ const response=await fetchResource('premiere/index-v18.html');let html=await response.text();
+ const photos={};
+ for(const name of PREMIERE_PHOTOS){
+  const key='premiere-'+name;
+  if(!config.premiere.photoAssets?.[key])continue;
+  const blob=await readMedia(key,'image/jpeg',id);if(!blob)throw Error('Не найдено фото PREMIÈRE: '+PREMIERE_PHOTO_NAMES[name]);
+  const path='assets/custom-'+name+'.jpg';
+  files.push({name:folder+path,bytes:new Uint8Array(await blob.arrayBuffer())});photos[name]=path;
+ }
+ config.premiere.exportPhotos=photos;
+ for(let i=0;i<5;i++){
+  const file='editorial-'+i+'.webp';
+  const r=await fetchResource('eterna-12/assets/'+file);
+  files.push({name:folder+'assets/'+file,bytes:new Uint8Array(await r.arrayBuffer())});
+ }
+ for(const name of ['cinema-projector.svg','venue-estate.svg']){
+  const asset=await fetchResource('premiere/assets/'+name);
+  files.push({name:folder+'assets/'+name,bytes:new Uint8Array(await asset.arrayBuffer())});
+ }
+ html=html.replaceAll('../eterna-12/assets/','assets/');
+ const inject='<script>window.PREMIERE_ORDER='+JSON.stringify(config).replace(/</g,'\\u003c')+';'+'<'+'/script>';
+ html=html.replace('</head>',inject+'</head>');
+ files.push({name:folder+'index.html',bytes:enc.encode(html)});
+ files.push({name:folder+'настройки.json',bytes:enc.encode(JSON.stringify(config,null,2))});
+}
+
+function syncWorkflowTemplate(){
+ const selected=$('previewVersion').value;
+ const broadcast=selected==='broadcast',premiere=selected==='premiere';
+ document.querySelectorAll('[data-for-template]').forEach(el=>{
+   if(el.dataset.forTemplate==='shared'){el.hidden=false;return}
+   el.hidden=el.dataset.forTemplate!==selected&&!(el.dataset.forTemplate==='eterna'&&!broadcast&&!premiere)
+ });
+ WORKFLOW_TABS[1][1]=premiere?'6 фотографий: обложка, кинолента, площадка и отдельный финал':broadcast?'4 настоящие фотографии пары':'Фотографии, фоновые сцены и палитра';
+ WORKFLOW_TABS[2][1]=premiere?'Киносцены, расписание, дресс-код и RSVP':broadcast?'Новости, история и прогноз':'Расписание, текстовые блоки и RSVP';
+ const page1=$('workflow-stage-1'),page2=$('workflow-stage-2');
+ if(page1)page1.querySelector('.workflow-intro').textContent=WORKFLOW_TABS[1][1];
+ if(page2)page2.querySelector('.workflow-intro').textContent=WORKFLOW_TABS[2][1];
+ const ready=['downloadBtn','downloadBtnBottom'];
+ ready.forEach(id=>{$(id).disabled=false;$(id).title='Скачать самостоятельный сайт выбранного шаблона'});
+}
+function openWorkflowStage(stage){
+ activeWorkflowStage=Math.max(0,Math.min(3,stage));
+ for(const node of document.querySelectorAll('.workflow-page'))node.hidden=Number(node.dataset.stage)!==activeWorkflowStage;
+ for(const button of document.querySelectorAll('.workflow-tab')){
+  const active=Number(button.dataset.stage)===activeWorkflowStage;
+  if(active)button.setAttribute('aria-current','step');else button.removeAttribute('aria-current');
+ }
+ document.body.classList.toggle('workflow-preview-active',activeWorkflowStage===3);
+ if(activeWorkflowStage===3)updatePreview();
+ window.scrollTo({top:0,behavior:'auto'});
+}
+
+const LEGACY_KEY='eterna-unified-test-legacy';
+const INDEX_KEY='eterna-unified-test-orders-v1';
+const defaults=JSON.parse(JSON.stringify(window.WEDDING_CONFIG||{}));
+const copy=x=>JSON.parse(JSON.stringify(x));
+const PHOTO_DEFAULT_KEYS=["introCover", "collage1", "collage2", "invitationBg", "invitationLeft", "invitationRight", "memoryBg", "scheduleBg", "venueBg", "dressBg", "dress1", "dress2", "dress3", "dress4", "countdownBg", "rsvpBg", "endingBg"];
+const DRESS_PALETTES_DEFAULT={female:['#e8d9c8','#c6af94','#b2b5a5','#d3b8ac','#73665b'],male:['#272b2e','#51595b','#9b9d95','#d0c7b9','#f1e9de']};
+function normalizeOrder(d){if(!d||typeof d!=='object')d=copy(defaults);d.photos??={};d.photoPosition??={};d.dressPalettes??={};d.dressPhotoCounts??={female:2,male:2};for(const gender of ['female','male'])d.dressPhotoCounts[gender]=Math.min(8,Math.max(2,Number(d.dressPhotoCounts[gender])||2));for(const [group,colors] of Object.entries(DRESS_PALETTES_DEFAULT))if(!Array.isArray(d.dressPalettes[group]))d.dressPalettes[group]=[...colors];for(const k of PHOTO_DEFAULT_KEYS){if(!(k in d.photos))d.photos[k]='';if(!(k in d.photoPosition))d.photoPosition[k]='center 50%'}d.broadcast??={};d.eventDates??={mode:'same',ceremonyDate:'',ceremonyTime:'',ceremonyVenue:'',ceremonyAddress:'',partyDate:'',partyTime:'',partyVenue:'',partyAddress:''};d.template??='12';return d;}
+
+function getJSON(key,fallback){try{const v=JSON.parse(localStorage.getItem(key));return v??fallback}catch{return fallback}}
+let orders=getJSON(INDEX_KEY,[]);
+if(!Array.isArray(orders)||!orders.length){orders=[{id:'demo',label:'Демо — Александр и Виктория'}];localStorage.setItem(INDEX_KEY,JSON.stringify(orders));const legacy=getJSON(LEGACY_KEY,null);if(legacy)localStorage.setItem('eterna-unified-test-order:demo:config',JSON.stringify(legacy))}
+let orderId=orders[0].id;
+let data=normalizeOrder(getJSON('eterna-order:'+orderId+':config',copy(defaults)));
+function storeOrder(){localStorage.setItem(INDEX_KEY,JSON.stringify(orders))}
+function draftKey(){return 'eterna-unified-test-order:'+orderId+':config'}
+function mediaKey(key,id=orderId){return 'unified-test-order:'+id+':'+key}
+function translit(v){const a={'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'e','ж':'zh','з':'z','и':'i','й':'i','к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f','х':'h','ц':'ts','ч':'ch','ш':'sh','щ':'sch','ы':'y','э':'e','ю':'yu','я':'ya','ь':'','ъ':''};return [...v.toLowerCase()].map(c=>a[c]??c).join('').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,46)||'svadba'}
+function uniqueId(name){const base=translit(name);let x=base,n=2;while(orders.some(o=>o.id===x))x=base+'-'+n++;return x}
+
+const $=id=>document.getElementById(id);
+const isLegacy=()=>$('previewVersion').value==='legacy';
+const previewUrls={12:'eterna-12/editor-preview-v29.html?editor-preview=1',broadcast:'srochny-vypusk/editor-preview-v40.html?editor-preview=1#top',premiere:'premiere/index-v18.html?editor-preview=1&rsvp-layout=18#top',legacy:'templates/eterna.html?editor-preview=1#top'};
+const STUDIO_KEYS=['studio-bride','studio-groom','studio-sceneCover','studio-sceneCake','studio-sceneArchive','studio-sceneForecast','studio-pending-sceneCover','studio-pending-sceneCake','studio-pending-sceneArchive','studio-pending-sceneForecast'];
+const PHOTO_KEYS=['main','secondary1','secondary2','collage1','collage2','invitationBg','invitationLeft','invitationRight','storyMain','storySmall','memoryBg','scheduleBg','venueBg','dressBg','dress1','dress2','dress3','dress4','dressFemale3','dressFemale4','dressFemale5','dressFemale6','dressFemale7','dressFemale8','dressMale3','dressMale4','dressMale5','dressMale6','dressMale7','dressMale8','countdownBg','rsvpBg','endingBg','introCover'];
+const PHOTO_NAMES={main:'Главная фотография',secondary1:'Дополнительная фотография 1',secondary2:'Дополнительная фотография 2',storyMain:'Наша история — главное фото',storySmall:'Наша история — дополнительное фото',introCover:'Обложка книги — фон',collage1:'Первый фотоколлаж — слева',collage2:'Первый фотоколлаж — справа',invitationBg:'Приглашение — большое фоновое фото',invitationLeft:'Приглашение — левый фотокадр',invitationRight:'Приглашение — правый фотокадр',memoryBg:'Атмосферный блок — фоновое фото',scheduleBg:'День свадьбы — фоновое фото',venueBg:'Место встречи — фон зала',dressBg:'Дресс-код — фон',dress1:'Для неё — фото 1',dress2:'Для него — фото 1',dress3:'Для неё — фото 2',dress4:'Для него — фото 2',countdownBg:'Обратный отсчёт — фон',rsvpBg:'Анкета гостей — фон',endingBg:'До встречи — финальное фото',dressFemale3:'Для неё — фото 3',dressFemale4:'Для неё — фото 4',dressFemale5:'Для неё — фото 5',dressFemale6:'Для неё — фото 6',dressFemale7:'Для неё — фото 7',dressFemale8:'Для неё — фото 8',dressMale3:'Для него — фото 3',dressMale4:'Для него — фото 4',dressMale5:'Для него — фото 5',dressMale6:'Для него — фото 6',dressMale7:'Для него — фото 7',dressMale8:'Для него — фото 8'};
+const LABELS={first:'Имя жениха',second:'Имя невесты',dateLabel:'Дата на сайте',city:'Город',dateTime:'Дата и время для таймера (ISO)',photoStory:'Первый фотоколлаж',invitation:'Приглашение',story:'Наша история',memory:'Атмосферный блок',schedule:'Программа дня',venue:'Место проведения',dress:'Дресс-код',countdown:'Обратный отсчёт',rsvp:'Анкета гостей (RSVP)',ending:'Финальный экран',greeting:'Обращение к гостям',invitation1:'Приглашение — абзац 1',invitation2:'Приглашение — абзац 2',storyIntro:'Вступление к истории',storyNote:'Текст истории',venueName:'Название площадки или город',venueAddress:'Адрес и описание',venueMap:'Ссылка на карту (https://)',rsvpDeadline:'Срок подтверждения'};
+const photoUrls={};
+let db;
+function setStatus(message){$('status').textContent=message}
+function openDB(){return new Promise((resolve,reject)=>{if(!window.indexedDB)return reject(Error('Хранилище недоступно'));const req=indexedDB.open('eterna-photo-editor',1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('photos'))req.result.createObjectStore('photos')};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
+async function storeMedia(key,blob,id=orderId){
+ const storageKey=mediaKey(key,id);
+ const bytes=await blob.arrayBuffer();
+ db??=await openDB();
+ return new Promise((resolve,reject)=>{
+  const tx=db.transaction('photos','readwrite');
+  const request=tx.objectStore('photos').put(bytes,storageKey);
+  request.onerror=()=>reject(request.error||Error('Не удалось сохранить файл'));
+  tx.onabort=()=>reject(tx.error||Error('Сохранение файла прервано'));
+  tx.oncomplete=()=>{resolve();queueCloudBackup(id)};
+ });
+}
+async function readMedia(key,type='image/jpeg',id=orderId){
+ const storageKey=mediaKey(key,id);
+ db??=await openDB();
+ return new Promise((resolve,reject)=>{
+  const request=db.transaction('photos','readonly').objectStore('photos').get(storageKey);
+  request.onsuccess=()=>{
+   const saved=request.result;
+   resolve(saved instanceof ArrayBuffer ? new Blob([saved],{type}) : saved);
+  };
+  request.onerror=()=>reject(request.error||Error('Не удалось прочитать файл'));
+ });
+}
+async function deleteMedia(key,id=orderId){
+ const storageKey=mediaKey(key,id);
+ db??=await openDB();
+ return new Promise((resolve,reject)=>{
+  const tx=db.transaction('photos','readwrite');
+  const request=tx.objectStore('photos').delete(storageKey);
+  request.onerror=()=>reject(request.error||Error('Не удалось удалить файл'));
+  tx.onabort=()=>reject(tx.error||Error('Удаление файла прервано'));
+  tx.oncomplete=resolve;
+ });
+}
+function photoFileName(key){return 'wedding-photo-'+key+'.jpg'}
+function photoLink(key){return photoFileName(key)}
+function localPhoto(key){return data.photos?.[key]===photoLink(key)}
+function field(parent,obj,key,label,area=false){const wrap=document.createElement('div'),l=document.createElement('label');l.textContent=label||LABELS[key]||key;const input=document.createElement(area?'textarea':'input');if(!area)input.type='text';input.value=obj[key]??'';input.addEventListener('input',()=>{obj[key]=input.value;changed()});l.append(input);wrap.append(l);parent.append(wrap)}
+function cachedUrl(key,blob){if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);photoUrls[key]=URL.createObjectURL(blob)}
+function ensureDressLayout(){
+ if(!isLegacy())return;
+ const frame=$('siteFrame'),doc=frame.contentDocument;
+ if(!doc)return;
+ const mood=doc.querySelector('#dress .mood-grid');if(!mood)return;
+ // Reuse the photos already present in the template as defaults.
+ if(!mood.dataset.etOriginalImages){mood.dataset.etOriginalImages=JSON.stringify(Array.from(mood.querySelectorAll('img')).map(el=>el.src));}
+ const original=JSON.parse(mood.dataset.etOriginalImages||'[]');
+ // Remove the three original direct image cards, not the new editable galleries.
+ Array.from(mood.children).filter(el=>el.matches('figure')).forEach(el=>el.remove());
+ for(const [gender,cls,title] of [['female','et-dress-female','Для неё'],['male','et-dress-male','Для него']]){
+  let group=mood.querySelector('.'+cls);
+  if(!group){group=doc.createElement('section');group.className='et-dress-group '+cls;
+    const h=doc.createElement('h3');h.textContent=title;group.append(h);
+    const grid=doc.createElement('div');grid.className='et-dress-pictures';group.append(grid);
+    const palette=doc.createElement('div');palette.className='et-dress-colors';palette.setAttribute('aria-label','Палитра '+title.toLowerCase());
+    for(let i=0;i<5;i++)palette.append(doc.createElement('span'));group.append(palette);
+  }
+  const grid=group.querySelector('.et-dress-pictures');
+  const count=data.dressPhotoCounts?.[gender]||2;grid.dataset.count=String(count);
+  while(grid.children.length>count)grid.lastElementChild.remove();
+  for(let i=0;i<count;i++){
+    let figure=grid.children[i];
+    if(!figure){figure=doc.createElement('figure');const image=doc.createElement('img');image.loading='lazy';const label=doc.createElement('figcaption');figure.append(image,label);grid.append(figure);}
+    const image=figure.querySelector('img');
+    const key=gender==='female'?(i===0?'dress1':i===1?'dress3':'dressFemale'+(i+1)):(i===0?'dress2':i===1?'dress4':'dressMale'+(i+1));
+    image.dataset.etKey=key;image.alt=title+' — образ '+(i+1);
+    const fallback=i<2?(gender==='female'?(i===0?original[0]:original[2]||original[0]):original[1]):'';
+    const value=localPhoto(key)?photoUrls[key]:data.photos?.[key];
+    if(value){if(image.getAttribute('src')!==value)image.src=value;figure.style.display='';}
+    else if(fallback){if(image.getAttribute('src')!==fallback)image.src=fallback;figure.style.display='';}
+    else {image.removeAttribute('src');figure.style.display='none';}
+    image.style.objectPosition=data.photoPosition?.[key]||'center';
+    figure.querySelector('figcaption').textContent=title+' · '+String(i+1).padStart(2,'0');
+  }
+  mood.append(group);
+  const defaultsPal=DRESS_PALETTES_DEFAULT[gender],colors=data.dressPalettes?.[gender]||defaultsPal;
+  group.querySelectorAll('.et-dress-colors span').forEach((el,i)=>{const color=colors[i];el.style.backgroundColor=/^#[0-9a-f]{6}$/i.test(color||'')?color:defaultsPal[i]});
+ }
+ mood.dataset.etSplit='yes';
+ let style=doc.getElementById('et-dress-editor-direct');
+ if(!style){style=doc.createElement('style');style.id='et-dress-editor-direct';doc.head.append(style);}
+ style.textContent=`
+ #dress .mood-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:36px!important;max-width:1120px!important;align-items:start!important}
+ #dress .et-dress-group{min-width:0;text-align:center}
+ #dress .et-dress-group h3{font:italic 400 clamp(38px,5vw,62px)/1.15 Georgia,serif;color:#453b34;margin:0 0 22px}
+ #dress .et-dress-pictures{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important;align-items:start}
+ #dress .et-dress-pictures figure,#dress .et-dress-pictures figure:nth-child(n){margin:0!important;transform:none!important;position:relative!important;grid-column:auto!important;min-width:0!important;width:100%!important;height:clamp(180px,25vw,300px)!important;border:5px solid #faf4ec!important;overflow:hidden!important;box-shadow:0 12px 25px #382d2630!important;background:#c5b7a9}
+ #dress .et-dress-pictures figure:nth-child(even){margin-top:18px!important}
+
+ /* Exactly 3 photos: balanced editorial triptych, not an orphan left card. */
+ #dress .et-dress-pictures[data-count="3"] > figure:nth-child(3){grid-column:1/-1!important;justify-self:center!important;width:min(75%,340px)!important;height:clamp(220px,30vw,385px)!important;margin:10px auto 0!important}
+ #dress .et-dress-pictures[data-count="3"] > figure:nth-child(1),#dress .et-dress-pictures[data-count="3"] > figure:nth-child(2){margin-top:0!important}
+
+ #dress .et-dress-pictures figure img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important}
+ #dress .et-dress-pictures figure figcaption{position:absolute!important;bottom:0!important;left:0!important;right:0!important;color:white!important;font-size:9px!important;padding:25px 6px 9px!important;background:linear-gradient(transparent,#241e1c9c)!important}
+ #dress .et-dress-colors{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin:30px 0 0}
+ #dress .et-dress-colors span{aspect-ratio:1/1;display:block;border:2px solid #f8efe6;box-shadow:0 3px 10px #30221922}
+ #dress>.swatches{display:none!important}
+ @media(max-width:700px){#dress .mood-grid{grid-template-columns:1fr!important;gap:40px!important}#dress .et-dress-pictures figure,#dress .et-dress-pictures figure:nth-child(n){height:clamp(200px,62vw,350px)!important}#dress .et-dress-group h3{font-size:48px}}
+ `;
+}
+
+function withEventDates(config){
+ const d=config.eventDates;
+ if(d?.mode!=='split')return config;
+ const prefix=d.mainEvent==='party'?'party':'ceremony';
+ const dateValue=d[prefix+'Date']||'';
+ const timeValue=d[prefix+'Time']||'';
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(dateValue))return config;
+ const date=new Date(dateValue+'T12:00:00');
+ if(Number.isNaN(date.getTime())||date.getFullYear()!==Number(dateValue.slice(0,4))||date.getMonth()+1!==Number(dateValue.slice(5,7))||date.getDate()!==Number(dateValue.slice(8,10)))return config;
+ config.couple??={};
+ config.couple.dateLabel=new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'long',year:'numeric'}).format(date);
+ // Always update the countdown date too; never leave the other event's timestamp.
+ config.couple.dateTime=dateValue+'T'+(/^([01]\d|2[0-3]):[0-5]\d$/.test(timeValue)?timeValue:'00:00')+':00';
+ return config;
+}
+
+function updatePreview(){const cfg=withEventDates(structuredClone(data));if(cfg.music){if(photoUrls.music)cfg.music.source=photoUrls.music;else delete cfg.music;}for(const key of PHOTO_KEYS)if(localPhoto(key)&&photoUrls[key])cfg.photos[key]=photoUrls[key];if($('previewVersion').value==='premiere'){
+ cfg.premiere??={};cfg.premiere.previewPhotos={};
+ for(const key of PREMIERE_PHOTOS){
+  const k='premiere-'+key;if(data.premiere?.photoAssets?.[k]&&photoUrls[k])cfg.premiere.previewPhotos[key]=photoUrls[k];
+ }
+}
+if($('previewVersion').value==='broadcast'){cfg.broadcast??={};cfg.broadcast.schedule=newsSchedule();cfg.broadcast.previewPhotos={};for(const name of ['sceneCover','sceneCake','sceneArchive','sceneForecast']){const key='studio-'+name;if(data.broadcast.photoAssets?.[key]&&photoUrls[key])cfg.broadcast.previewPhotos[name]=photoUrls[key]}}try{const type=$('previewVersion').value==='premiere'?'premiere-editor-preview':$('previewVersion').value==='broadcast'?'broadcast-editor-preview':'eterna-preview';$('siteFrame').contentWindow.postMessage({type,config:cfg},location.origin);if(type==='eterna-preview')ensureDressLayout()}catch{}}
+const musicTypes={mp3:'audio/mpeg',m4a:'audio/mp4'};
+let musicBusy=false;
+function setMusicBusy(busy){
+ musicBusy=busy;
+ for(const id of ['musicFile','orderSelect','newOrderBtn','duplicateOrderBtn','deleteOrderBtn','resetBtn']){
+   $(id).disabled=busy;
+ }
+ $('removeMusic').disabled=busy||!data.music;
+}
+function musicType(music){
+ const ext=music?.source?.match(/^wedding-music\.(mp3|m4a)$/)?.[1];
+ return musicTypes[ext];
+}
+function renderMusic(){
+ $('removeMusic').disabled=musicBusy||!data.music;
+ $('musicStatus').textContent=data.music
+   ? (photoUrls.music?data.music.name:'Трек не найден. Загрузите его заново.')
+   : 'Музыка не выбрана.';
+}
+$('musicFile').addEventListener('change',async event=>{
+ const input=event.currentTarget;
+ const file=input.files?.[0];
+ if(!file)return;
+ if($('downloadBtn').disabled){input.value='';return;}
+ const id=orderId;
+ const ext=file.name.toLowerCase().split('.').pop();
+ if(!Object.hasOwn(musicTypes,ext)||file.size===0||file.size>25*1024*1024){
+   $('musicStatus').textContent='Выберите непустой файл MP3 или M4A до 25 МБ.';
+   input.value='';
+   return;
+ }
+ setMusicBusy(true);
+ $('musicStatus').textContent='Сохраняю трек…';
+ try{
+   await storeMedia('music',file,id);
+   data.music={name:file.name,source:'wedding-music.'+ext};
+   cachedUrl('music',new Blob([file],{type:musicTypes[ext]}));
+   changed('Трек сохранён в заказе.');
+   renderMusic();
+ }catch(error){
+   $('musicStatus').textContent=error?.message||'Не удалось сохранить трек.'
+ }finally{
+   setMusicBusy(false);
+   input.value='';
+ }
+});
+$('removeMusic').addEventListener('click',async()=>{
+ if($('downloadBtn').disabled)return;
+ setMusicBusy(true);
+ try{
+   await deleteMedia('music');
+   delete data.music;
+   if(photoUrls.music)URL.revokeObjectURL(photoUrls.music);
+   delete photoUrls.music;
+   changed('Музыка убрана.');
+   renderMusic();
+ }catch(error){
+   $('musicStatus').textContent=error?.message||'Не удалось убрать трек.';
+ }finally{
+   setMusicBusy(false);
+ }
+});
+async function loadMusic(){
+ const id=orderId;
+ if(photoUrls.music)URL.revokeObjectURL(photoUrls.music);
+ delete photoUrls.music;
+ const type=musicType(data.music);
+ if(!type)return;
+ try{
+   const blob=await readMedia('music',type,id);
+   if(blob&&orderId===id)cachedUrl('music',blob);
+ }catch(error){
+   if(orderId===id)setStatus('Не удалось восстановить музыку.');
+ }
+}
+function changed(note='Черновик сохранён в этом браузере.'){try{localStorage.setItem(draftKey(),JSON.stringify(data))}catch{};updatePreview();setStatus(note);queueCloudBackup();}
+async function compressPhoto(file){return new Promise((resolve,reject)=>{const img=new Image(),url=URL.createObjectURL(file);img.onload=()=>{try{const max=1800,f=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight)),canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(img.naturalWidth*f));canvas.height=Math.max(1,Math.round(img.naturalHeight*f));const context=canvas.getContext('2d');if(!context)throw Error('Нет поддержки обработки фото');context.fillStyle='#fff';context.fillRect(0,0,canvas.width,canvas.height);context.drawImage(img,0,0,canvas.width,canvas.height);canvas.toBlob(blob=>{URL.revokeObjectURL(url);if(blob)resolve(blob);else reject(Error('Не удалось обработать изображение'))},'image/jpeg',.85)}catch(e){URL.revokeObjectURL(url);reject(e)}};img.onerror=()=>{URL.revokeObjectURL(url);reject(Error('Не удалось прочитать фото. Попробуй сохранить его в JPEG.'))};img.src=url})}
+function createPhotoInput(key){const card=document.createElement('div');card.className='photo-card';const title=document.createElement('strong');title.textContent=PHOTO_NAMES[key];card.append(title);
+const shot=document.createElement('img');shot.alt='Предпросмотр: '+PHOTO_NAMES[key];shot.loading='lazy';shot.style.display='none';card.append(shot);
+const row=document.createElement('div');row.className='photo-tools';const input=document.createElement('input');input.type='file';input.accept='image/*,.heic,.heif';input.setAttribute('aria-label','Выбрать '+PHOTO_NAMES[key]);row.append(input);
+const remove=document.createElement('button');remove.className='secondary';remove.type='button';remove.textContent='Убрать фото';row.append(remove);card.append(row);
+const path=document.createElement('p');path.className='photo-path';card.append(path);
+const manual=document.createElement('details'),sum=document.createElement('summary');sum.textContent='Или вставить ссылку на фото';manual.append(sum);field(manual,data.photos,key,'Адрес фотографии');card.append(manual);
+const label=document.createElement('label');label.textContent='Кадрирование по вертикали';card.append(label);
+const range=document.createElement('input');range.type='range';range.min='0';range.max='100';range.step='5';const p=data.photoPosition||{};range.value=Number.parseInt((p[key]||'center 50%').match(/(\d+)%/)?.[1]||50);const rangeText=document.createElement('div');rangeText.className='pos-label';rangeText.textContent=range.value+'%';range.addEventListener('input',()=>{data.photoPosition[key]='center '+range.value+'%';rangeText.textContent=range.value+'%';changed();shot.style.objectPosition=data.photoPosition[key]});card.append(range,rangeText);
+function show(){const src=localPhoto(key)?photoUrls[key]:data.photos?.[key];if(src){shot.src=src;shot.style.display='block';shot.style.objectPosition=data.photoPosition?.[key]||'center';path.textContent=localPhoto(key)?'Фотография загружена из галереи':String(data.photos?.[key]||'')}else{shot.removeAttribute('src');shot.style.display='none';path.textContent='Используется фотография из шаблона (можно заменить)'}}
+input.addEventListener('change',async()=>{const file=input.files?.[0];if(!file)return;input.disabled=true;setStatus('Обрабатываю фотографию…');try{const blob=await compressPhoto(file);await storeMedia(key,blob);cachedUrl(key,blob);data.photos[key]=photoLink(key);changed('Фото добавлено. Оно сохранено в браузере и войдёт в ZIP.');show()}catch(e){setStatus('Ошибка: '+e.message)}finally{input.disabled=false;input.value=''}});
+remove.addEventListener('click',async()=>{try{await deleteMedia(key)}catch{}if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key];data.photos[key]='';changed('Фото убрано.');show()});
+manual.addEventListener('input',()=>{if(!localPhoto(key)&&photoUrls[key]){URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key]}show()});show();return card}
+function showRsvp(){
+ const {endpoint='',...questions}=data.rsvp||window.WEDDING_RSVP_CONFIG;
+ $('orderRsvpEndpoint').value=endpoint;
+ $('orderRsvp').value=JSON.stringify(questions,null,2);
+ $('rsvpStatus').textContent='';
+ renderRsvpVisual();
+}
+$('saveRsvp').onclick=()=>{
+ try{
+   const cfg=JSON.parse($('orderRsvp').value);
+   if(typeof cfg?.title!=='string'||typeof cfg.deadline!=='string'||!Array.isArray(cfg.questions))throw Error('Нужны title, deadline и массив questions.');
+   const ids=new Set(['attendance','guestName']);
+   for(const q of cfg.questions){
+     if(typeof q?.id!=='string'||!q.id.trim()||ids.has(q.id)||typeof q.title!=='string'||!q.title.trim()||!['single','multiple','text'].includes(q.type))throw Error('У каждого вопроса должны быть свои ID, заголовок и тип.');
+     if(q.type!=='text'&&(!Array.isArray(q.options)||!q.options.length||q.options.some(o=>typeof o!=='string'||!o.trim())))throw Error('Добавь варианты ответов к вопросу «'+q.title+'».');
+     ids.add(q.id);
+   }
+   for(const q of cfg.questions){
+     const visited=new Set([q.id]);
+     let current=q;
+     while(current?.showIf?.field){
+       const {field,equals}=current.showIf;
+       if(!ids.has(field)||visited.has(field)||typeof equals!=='string')throw Error('Проверь зависимость вопроса «'+q.title+'».');
+       visited.add(field);
+       current=cfg.questions.find(item=>item.id===field);
+     }
+   }
+   const address=$('orderRsvpEndpoint').value.trim();
+   if(address){
+     const url=new URL(address);
+     if(url.protocol!=='https:'||url.username||url.password||url.hash)throw Error('Укажи действующий HTTPS-адрес приёма ответов.');
+     cfg.endpoint=url.href;
+   }else delete cfg.endpoint;
+   data.rsvp=cfg;
+   changed();
+   $('rsvpStatus').textContent='Анкета сохранена в заказе.';
+ }catch(error){$('rsvpStatus').textContent=error.message}
+};
+$('resetRsvp').onclick=()=>{if(!confirm('Вернуть стандартные вопросы RSVP для этого заказа?'))return;delete data.rsvp;changed();showRsvp()};
+
+
+function rsvpEl(tag,text,cls){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e;}
+function rsvpLabel(text,control){const l=rsvpEl('label',text);l.append(control);return l;}
+function rsvpCfg(){try{const c=JSON.parse($('orderRsvp').value);if(!c||!Array.isArray(c.questions))throw Error();return c;}catch{return null;}}
+function rsvpUpdate(cfg){$('orderRsvp').value=JSON.stringify(cfg,null,2);$('rsvpStatus').textContent='Изменения анкеты подготовлены. Нажми «Сохранить анкету», чтобы закрепить их в заказе.';}
+function rsvpText(value,change,area=false){const e=rsvpEl(area?'textarea':'input');if(!area)e.type='text';e.value=value||'';e.addEventListener('change',()=>change(e.value));return e;}
+function rsvpSelect(options,value,change){const s=rsvpEl('select');for(const [v,t] of options){const o=rsvpEl('option',t);o.value=v;s.append(o);}s.value=value;s.addEventListener('change',()=>change(s.value));return s;}
+function renderRsvpVisual(){
+ const root=$('rsvpVisualEditor');if(!root)return;
+ root.replaceChildren();
+ const cfg=rsvpCfg();if(!cfg){root.append(rsvpEl('p','Не удалось прочитать анкету. Открой расширенный JSON и проверь формат.','error'));return;}
+ const head=rsvpEl('div',undefined,'rsvp-head');
+ head.append(rsvpLabel('Заголовок анкеты',rsvpText(cfg.title,v=>{cfg.title=v;rsvpUpdate(cfg);})));
+ head.append(rsvpLabel('Срок подтверждения',rsvpText(cfg.deadline,v=>{cfg.deadline=v;rsvpUpdate(cfg);})));
+ root.append(head);
+ const standard=rsvpEl('p','В каждом приглашении автоматически есть обязательные поля: имя гостя и ответ «Приду / Не приду».','rsvp-fixed');
+ root.append(standard);
+ const list=rsvpEl('div',undefined,'rsvp-questions');
+ const typeNames={single:'Один вариант',multiple:'Несколько вариантов',text:'Свободный ответ'};
+ function rerender(){rsvpUpdate(cfg);renderRsvpVisual();}
+ cfg.questions.forEach((q,index)=>{
+  const details=rsvpEl('details',undefined,'rsvp-question');details.open=false;
+  const summary=rsvpEl('summary',(index+1)+'. '+(q.title||'Новый вопрос')+' · '+(typeNames[q.type]||q.type));
+  details.append(summary);
+  const section=rsvpEl('div',undefined,'rsvp-question-body');
+  section.append(rsvpLabel('Текст вопроса',rsvpText(q.title,v=>{q.title=v;rsvpUpdate(cfg);summary.textContent=(index+1)+'. '+(q.title||'Новый вопрос')+' · '+(typeNames[q.type]||q.type);})));
+  section.append(rsvpLabel('Формат ответа',rsvpSelect([['single','Один вариант'],['multiple','Несколько вариантов'],['text','Свободный текст']],q.type,v=>{
+   q.type=v;if(v==='text')q.options=[];else if(!Array.isArray(q.options)||!q.options.length)q.options=['Да','Нет'];rerender();
+  })));
+  const required=rsvpEl('label',undefined,'rsvp-check');
+  const check=rsvpEl('input');check.type='checkbox';check.checked=!!q.required;
+  check.addEventListener('change',()=>{q.required=check.checked;rsvpUpdate(cfg);});
+  required.append(check,document.createTextNode('Обязательный вопрос'));section.append(required);
+  if(q.type!=='text'){
+   const opts=rsvpEl('div',undefined,'rsvp-options');
+   opts.append(rsvpEl('strong','Варианты ответов'));
+   (q.options||[]).forEach((option,oi)=>{
+    const row=rsvpEl('div',undefined,'rsvp-option-row');
+    row.append(rsvpText(option,v=>{q.options[oi]=v;rsvpUpdate(cfg);}));
+    const remove=rsvpEl('button','×','secondary');remove.type='button';remove.title='Удалить вариант';remove.onclick=()=>{q.options.splice(oi,1);rerender();};
+    row.append(remove);opts.append(row);
+   });
+   const add=rsvpEl('button','+ Добавить вариант','secondary');add.type='button';add.onclick=()=>{q.options.push('Новый вариант');rerender();};
+   opts.append(add);section.append(opts);
+  }
+  let condition='always';
+  if(q.showIf?.field==='attendance')condition=q.showIf.equals==='yes'?'attending':q.showIf.equals==='no'?'not-attending':'custom';
+  else if(q.showIf?.field)condition='custom';
+  const conds=[['always','Показывать всем'],['attending','Только тем, кто придёт'],['not-attending','Только тем, кто не придёт']];
+  if(condition==='custom')conds.push(['custom','Особое условие (сохранено)']);
+  section.append(rsvpLabel('Когда показывать вопрос',rsvpSelect(conds,condition,v=>{
+    if(v==='always')delete q.showIf;
+    else if(v==='attending')q.showIf={field:'attendance',equals:'yes'};
+    else if(v==='not-attending')q.showIf={field:'attendance',equals:'no'};
+    rsvpUpdate(cfg);
+  })));
+  const actions=rsvpEl('div',undefined,'rsvp-row-actions');
+  for(const [label,delta] of [['↑',-1],['↓',1]]){
+   const b=rsvpEl('button',label,'secondary');b.type='button';b.title='Переместить вопрос';b.disabled=index+delta<0||index+delta>=cfg.questions.length;
+   b.onclick=()=>{const [item]=cfg.questions.splice(index,1);cfg.questions.splice(index+delta,0,item);rerender();};actions.append(b);
+  }
+  const del=rsvpEl('button','Удалить вопрос','secondary');del.type='button';del.onclick=()=>{
+   if(!confirm('Удалить вопрос «'+q.title+'»?'))return;
+   if(cfg.questions.some(x=>x!==q&&x.showIf?.field===q.id)){alert('Сначала поменяй условие у вопросов, зависящих от этого.');return;}
+   cfg.questions.splice(index,1);rerender();
+  };actions.append(del);section.append(actions);
+  details.append(section);list.append(details);
+ });
+ root.append(list);
+ const add=rsvpEl('button','+ Добавить вопрос');add.type='button';
+ add.onclick=()=>{
+   const used=new Set(cfg.questions.map(q=>q.id));let i=1;while(used.has('question'+i))i++;
+   cfg.questions.push({id:'question'+i,title:'Новый вопрос',type:'single',required:false,options:['Да','Нет']});
+   rerender();
+   const cards=root.querySelectorAll('.rsvp-question');if(cards.length){cards[cards.length-1].open=true;cards[cards.length-1].scrollIntoView({block:'nearest'});}
+ };root.append(add);
+}
+$('rsvpApplyJson').onclick=()=>{
+ const cfg=rsvpCfg();if(!cfg){$('rsvpStatus').textContent='Ошибка JSON: проверь скобки и формат.';return;}
+ renderRsvpVisual();$('rsvpStatus').textContent='JSON загружен в визуальный конструктор. Теперь сохрани анкету.';
+};
+
+const BROADCAST_FIELDS=[
+ ['liveTitle','Заголовок прямого эфира','Свадьба подтверждена'],
+ ['liveText','Текст приглашения','Мы женимся и хотим провести этот день с вами. Приходите обниматься, танцевать и разделить нашу главную новость.'],
+ ['storyTitle','Заголовок истории знакомства','Как всё начиналось'],
+ ['storyText','История знакомства','До главной новости было много важных моментов. Некоторые из них навсегда остались на этих фотографиях.'],
+ ['storyCaption','Подпись к архивному фото','Эксклюзив из личного архива.'],
+ ['newsHeader','Заголовок рубрики новостей','Выбирайте новость дня.'],
+ ['newsIntro','Вступление редакции','Свидетели событий сообщают противоречивые подробности. Выберите сюжет — наша редакция покажет, что удалось выяснить.'],
+ ['news0Title','Новость 1 · заголовок','Двое официально перешли на сторону любви'],
+ ['news0Text','Новость 1 · текст','Главные подозреваемые подтвердили: 7 августа 2027 года состоится свадьба. Гостей просят явиться нарядными и голодными.'],
+ ['news1Title','Новость 2 · заголовок','Установлено местонахождение свадебного торта'],
+ ['news1Text','Новость 2 · текст','По предварительным данным, торт прибудет к концу вечера. Редакция рекомендует сохранять спокойствие и не покидать танцпол.'],
+ ['news2Title','Новость 3 · заголовок','Гости приглашены на операцию «Горько!»'],
+ ['news2Text','Новость 3 · текст','Специалисты ожидают повышенную концентрацию объятий, смеха и неожиданных танцевальных решений. Присутствие гостей крайне желательно.'],
+ ['forecastTitle','Заголовок прогноза','Ожидается конфетти'],
+ ['forecastText','Дресс-код · описание','Если попадёте в кадр, предлагаем спокойные оттенки. Выбирайте то, в чём удобно танцевать.']
+];
+
+const BROADCAST_EXTRA_FIELDS=[
+ [
+  "introTag",
+  "Заставка · метка",
+  "Специальный выпуск"
+ ],
+ [
+  "introTitle",
+  "Заставка · заголовок",
+  "Они решили пожениться."
+ ],
+ [
+  "introText",
+  "Заставка · описание",
+  "Редакция выяснила главное: двое влюблённых готовят событие года."
+ ],
+ [
+  "introButton",
+  "Заставка · кнопка входа",
+  "Выйти в эфир"
+ ],
+ [
+  "introPhotoCaption",
+  "Заставка · подпись к фотографии",
+  "Эксклюзивный кадр"
+ ],
+ [
+  "tickerLabel",
+  "Заставка · метка бегущей строки",
+  "Молния"
+ ],
+ [
+  "tickerText",
+  "Заставка · бегущая строка",
+  "Родственники уже в курсе. Подробности — в прямом эфире."
+ ],
+ [
+  "liveTag",
+  "Прямой эфир · рубрика",
+  "Прямое включение"
+ ],
+ [
+  "liveCaption",
+  "Прямой эфир · подпись под фото",
+  "Главные герои выпуска — без дублёров и фотомонтажа."
+ ],
+ [
+  "liveButton",
+  "Прямой эфир · кнопка",
+  "Крупный план"
+ ],
+ [
+  "liveZoomResult",
+  "Прямой эфир · сообщение после нажатия",
+  "Крупный план: главные герои в центре внимания."
+ ],
+ [
+  "archiveTag",
+  "Архив · рубрика",
+  "Архив редакции"
+ ],
+ [
+  "newsTag",
+  "Новости · рубрика",
+  "Спецрепортаж"
+ ],
+ [
+  "newsKicker",
+  "Новости · подпись над заголовком",
+  "Редакция получила эксклюзив"
+ ],
+ [
+  "news0Button",
+  "Новости · кнопка 1",
+  "Срочная новость"
+ ],
+ [
+  "news1Button",
+  "Новости · кнопка 2",
+  "Оперативная сводка"
+ ],
+ [
+  "news2Button",
+  "Новости · кнопка 3",
+  "Сенсация"
+ ],
+ [
+  "news0Category",
+  "Новости · метка 1",
+  "СРОЧНО"
+ ],
+ [
+  "news1Category",
+  "Новости · метка 2",
+  "СВОДКА"
+ ],
+ [
+  "news2Category",
+  "Новости · метка 3",
+  "СЕНСАЦИЯ"
+ ],
+ [
+  "news0Ticker",
+  "Новости · строка 1",
+  "Наш источник сообщает: любовь победила здравый смысл."
+ ],
+ [
+  "news1Ticker",
+  "Новости · строка 2",
+  "Очевидцы утверждают: первый кусок никто не отдаст без боя."
+ ],
+ [
+  "news2Ticker",
+  "Новости · строка 3",
+  "Срочно: уровень счастья в регионе может превысить норму."
+ ],
+ [
+  "scheduleTag",
+  "Программа · рубрика",
+  "Сводка с места событий"
+ ],
+ [
+  "scheduleTitle",
+  "Программа · заголовок",
+  "Когда и где"
+ ],
+ [
+  "schedule0Time",
+  "Программа · время 1",
+  "15:30"
+ ],
+ [
+  "schedule0Title",
+  "Программа · пункт 1",
+  "Сбор гостей"
+ ],
+ [
+  "schedule0Text",
+  "Программа · описание 1",
+  "Ищем знакомых и выясняем, кто откуда знает пару."
+ ],
+ [
+  "schedule1Time",
+  "Программа · время 2",
+  "16:30"
+ ],
+ [
+  "schedule1Title",
+  "Программа · пункт 2",
+  "Церемония"
+ ],
+ [
+  "schedule1Text",
+  "Программа · описание 2",
+  "Два коротких комментария. Оба — «да»."
+ ],
+ [
+  "schedule2Time",
+  "Программа · время 3",
+  "18:00"
+ ],
+ [
+  "schedule2Title",
+  "Программа · пункт 3",
+  "Ужин и танцы"
+ ],
+ [
+  "schedule2Text",
+  "Программа · описание 3",
+  "Переходим к главной части репортажа."
+ ],
+ [
+  "venueText",
+  "Программа · адрес и маршрут",
+  "Точный адрес и маршрут появятся в персональной версии приглашения."
+ ],
+ [
+  "forecastTag",
+  "Прогноз · рубрика",
+  "Прогноз на вечер"
+ ],
+ [
+  "forecastButton",
+  "Прогноз · кнопка повтора",
+  "Повторить залп"
+ ],
+ [
+  "forecastResult",
+  "Прогноз · сообщение",
+  "Вероятность конфетти — 100%. Берегите причёски."
+ ],
+ [
+  "palette0",
+  "Дресс-код · оттенок 1",
+  "#0d2540"
+ ],
+ [
+  "palette1",
+  "Дресс-код · оттенок 2",
+  "#41516a"
+ ],
+ [
+  "palette2",
+  "Дресс-код · оттенок 3",
+  "#872e35"
+ ],
+ [
+  "palette3",
+  "Дресс-код · оттенок 4",
+  "#c4a990"
+ ],
+ [
+  "palette4",
+  "Дресс-код · оттенок 5",
+  "#eadccb"
+ ],
+ [
+  "rsvpTag",
+  "RSVP · рубрика",
+  "Ответ гостя"
+ ],
+ [
+  "rsvpTitle",
+  "RSVP · заголовок",
+  "Будете в кадре?"
+ ],
+ [
+  "rsvpText",
+  "RSVP · пояснение",
+  "Дайте знать заранее, чтобы мы успели подготовить место за столом."
+ ],
+ [
+  "footerText",
+  "Финал · прощальная фраза",
+  "На этом всё. Увидимся в эфире."
+ ],
+ [
+  "footerButton",
+  "Финал · ссылка наверх",
+  "К началу"
+ ]
+];
+const STUDIO_LABELS={
+  'studio-bride':'Невеста — исходное фото',
+  'studio-groom':'Жених — исходное фото',
+  'studio-sceneCover':'1 · Обложка эфира — лучше совместное вертикальное фото',
+  'studio-sceneCake':'2 · Крупный план — совместный портрет, лица в центре',
+  'studio-sceneArchive':'3 · История пары — любимый совместный кадр',
+  'studio-sceneForecast':'4 · Прогноз — любое живое фото пары (конфетти добавятся на сайте)',
+  'studio-pending-sceneCover':'Новая версия · главный репортаж',
+  'studio-pending-sceneCake':'Новая версия · расследование торта',
+  'studio-pending-sceneArchive':'Новая версия · архив',
+  'studio-pending-sceneForecast':'Новая версия · прогноз'
+};
+const STUDIO_SCENES={
+  sceneCover:'Жених и невеста на официальной пресс-конференции по поводу своей свадьбы. Микрофоны, телекамеры, выразительное освещение студии новостей, фотореалистичная киношная фотография, формат 1:1.',
+  sceneCake:'Жених с юмором защищает свадебный торт от настойчивых журналистов с микрофонами, невеста рядом смеётся. Псевдодокументальный репортаж, очень реалистичная фотография, формат 1:1.',
+  sceneArchive:'Жених и невеста на первой встрече. Тёплая постановочная архивная плёночная фотография, лёгкое зерно, мягкая винтажная цветопередача, естественные позы, формат 1:1.',
+  sceneForecast:'Жених и невеста рядом с телевизионной картой прогноза с облаком конфетти. Смешной торжественный выпуск новостей, фотореализм, киношный свет, формат 1:1.'
+};
+async function loadStudioPhotos(){
+  data.broadcast??={};data.broadcast.photoAssets??={};
+  for(const key of STUDIO_KEYS){
+    if(photoUrls[key]){URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key]}
+    if(!data.broadcast.photoAssets[key])continue;
+    try{const blob=await readMedia(key);if(blob)cachedUrl(key,blob)}
+    catch{setStatus('Не удалось восстановить фото из локального хранилища.')}
+  }
+}
+function renderStudioPhotos(){
+  const root=$('studioImages');root.replaceChildren();
+  data.broadcast??={};data.broadcast.photoAssets??={};
+  for(const key of STUDIO_KEYS.filter(key=>key.startsWith('studio-scene'))){
+    const card=document.createElement('div');card.className='studio-card';
+    const title=document.createElement('strong');title.textContent=STUDIO_LABELS[key];card.append(title);
+    const img=document.createElement('img');img.alt='Загруженное изображение: '+STUDIO_LABELS[key];img.loading='lazy';
+    if(photoUrls[key]){img.src=photoUrls[key];img.hidden=false}else img.hidden=true;
+    card.append(img);
+    const actions=document.createElement('div');actions.className='photo-tools';
+    const input=document.createElement('input');input.type='file';input.accept='image/*,.heic,.heif';input.setAttribute('aria-label',STUDIO_LABELS[key]);
+    input.addEventListener('change',async()=>{
+      const file=input.files?.[0];if(!file)return;
+      try{
+        const photo=await compressPhoto(file);
+        await storeMedia(key,photo);
+        cachedUrl(key,photo);
+        data.broadcast.photoAssets[key]=true;
+        changed('Настоящая фотография пары сохранена и появится в предпросмотре.');
+        renderStudioPhotos();
+      }catch(error){$('studioStatus').textContent='Ошибка загрузки: '+error.message}
+    });
+    actions.append(input);
+    const clear=document.createElement('button');clear.type='button';clear.className='secondary';clear.textContent='Убрать';
+    clear.disabled=!data.broadcast.photoAssets[key];
+    clear.addEventListener('click',async()=>{
+      await deleteMedia(key).catch(()=>{});
+      if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key];
+      delete data.broadcast.photoAssets[key];changed('Фото убрано из заказа.');renderStudioPhotos()
+    });
+    actions.append(clear);card.append(actions);root.append(card);
+  }
+  renderGeneratedPhotos();
+}
+
+// AI service integration is private and opt-in. No API keys in the static website.
+let studioGenerating=false;
+const SCENE_NAMES={sceneCover:'Главный репортаж',sceneCake:'Расследование торта',sceneArchive:'Архив знакомства',sceneForecast:'Свадебный прогноз'};
+function renderGeneratedPhotos(){
+  const root=$('studioGenerated');root.replaceChildren();
+  for(const scene of Object.keys(SCENE_NAMES)){
+    const key='studio-pending-'+scene;
+    if(!photoUrls[key]||!data.broadcast?.photoAssets?.[key])continue;
+    const card=document.createElement('div');card.className='studio-card studio-pending';
+    const title=document.createElement('strong');title.textContent='Новая версия: '+SCENE_NAMES[scene];card.append(title);
+    const img=document.createElement('img');img.src=photoUrls[key];img.alt='Созданный ИИ кадр на проверку';card.append(img);
+    const actions=document.createElement('div');actions.className='actions';
+    const accept=document.createElement('button');accept.type='button';accept.textContent='Применить на сайт';
+    accept.addEventListener('click',async()=>{
+      const blob=await readMedia(key);
+      if(!blob){$('studioStatus').textContent='Не удалось открыть сохранённый вариант.';return}
+      const target='studio-'+scene;
+      await storeMedia(target,blob);
+      cachedUrl(target,blob);
+      data.broadcast.photoAssets[target]=true;
+      await deleteMedia(key);
+      URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key];delete data.broadcast.photoAssets[key];
+      changed('Кадр «'+SCENE_NAMES[scene]+'» применён к предпросмотру.');
+      renderStudioPhotos();
+    });
+    const discard=document.createElement('button');discard.type='button';discard.className='secondary';discard.textContent='Отклонить';
+    discard.addEventListener('click',async()=>{
+      await deleteMedia(key);URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key];delete data.broadcast.photoAssets[key];
+      changed('Вариант отклонён.');renderStudioPhotos();
+    });
+    actions.append(accept,discard);card.append(actions);root.append(card);
+  }
+}
+function decodeImageBase64(uri){
+  const match=typeof uri==='string'&&uri.match(/^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/=]+)$/);
+  if(!match||uri.length>18_000_000)throw Error('ИИ вернул изображение в неподдерживаемом формате.');
+  const bytes=atob(match[2]);const data=new Uint8Array(bytes.length);
+  for(let i=0;i<bytes.length;i++)data[i]=bytes.charCodeAt(i);
+  return new Blob([data],{type:match[1]});
+}
+async function modelReference(blob,face=false){
+  if(!blob)throw Error('Не найдено исходное фото.');
+  const url=URL.createObjectURL(blob);
+  try {
+    const img=new Image();img.src=url;
+    await img.decode();
+    const canvas=document.createElement('canvas');
+    const ctx=canvas.getContext('2d');if(!ctx)throw Error('Нет доступа к обработке фото.');
+    if(face){
+      // Portrait focus: center horizontally, upper torso and head. On iPhone users should
+      // ideally upload a close portrait, avoiding low-resolution full-length shots.
+      const srcSize=Math.max(1,Math.min(img.naturalWidth,Math.round(img.naturalHeight*.55)));
+      const sx=Math.max(0,(img.naturalWidth-srcSize)/2);
+      const sy=Math.max(0,Math.min(img.naturalHeight-srcSize,img.naturalHeight*.06));
+      canvas.width=480;canvas.height=480;
+      ctx.drawImage(img,sx,sy,srcSize,srcSize,0,0,480,480);
+    }else{
+      const factor=Math.min(480/img.naturalWidth,480/img.naturalHeight,1);
+      const width=Math.max(1,Math.round(img.naturalWidth*factor));
+      const height=Math.max(1,Math.round(img.naturalHeight*factor));
+      canvas.width=width;canvas.height=height;
+      ctx.drawImage(img,0,0,width,height);
+    }
+    const output=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',.84));
+    if(!output)throw Error('Не удалось подготовить фото для облачного ИИ.');
+    return output;
+  }finally{URL.revokeObjectURL(url)}
+}
+$('studioGenerateAll').addEventListener('click',()=>runStudioGeneration(false));
+$('studioGenerateOne').addEventListener('click',()=>runStudioGeneration(true));
+async function runStudioGeneration(single){
+  if(studioGenerating)return;
+  const endpoint=$('studioEndpoint').value.trim().replace(/\/+$/,'');
+  const token=$('studioToken').value;
+  if(!photoUrls['studio-bride']||!photoUrls['studio-groom']){
+    $('studioStatus').textContent='Сначала загрузи оба исходных фото: невесты и жениха.';return;
+  }
+  if(!$('studioPermission').checked){
+    $('studioStatus').textContent='Подтверди согласие пары на ИИ-генерацию.';return;
+  }
+  let url;
+  try{url=new URL(endpoint);if(url.protocol!=='https:'||url.username||url.password||url.hash||url.search)throw Error()}
+  catch{$('studioStatus').textContent='Нужен HTTPS-адрес настроенного сервера генерации.';return}
+  if(!token){$('studioStatus').textContent='Введи пароль доступа к серверу (не ключ OpenAI).';return}
+  if(!confirm(single?'Пересоздать одну сцену «'+SCENE_NAMES[$('studioScene').value]+'»? Оба фото пары будут отправлены облачному ИИ.':'Начать генерацию четырёх сцен? Для каждого кадра оба исходных фото будут отправлены выбранному сервису. Cloudflare учитывает бесплатную дневную квоту Workers AI; при превышении лимита запрос будет отклонён.'))return;
+  const currentOrder=orderId;
+  studioGenerating=true;$('studioGenerateAll').disabled=true;$('studioGenerateOne').disabled=true;
+  const names=[data.couple?.first,data.couple?.second].filter(Boolean).join(' и ');
+  let completed=0;
+  const scenes=single?[$('studioScene').value]:Object.keys(SCENE_NAMES);
+  const brideBlob=await readMedia('studio-bride'),groomBlob=await readMedia('studio-groom');
+  const brideBody=await modelReference(brideBlob),groomBody=await modelReference(groomBlob);
+  const brideFace=await modelReference(brideBlob,true),groomFace=await modelReference(groomBlob,true);
+  for(const scene of scenes){
+    if(orderId!==currentOrder)break;
+    $('studioStatus').textContent='Создаётся '+SCENE_NAMES[scene]+' ('+(completed+1)+'/'+scenes.length+'). Используются крупные портретные референсы обоих людей.';
+    try{
+      const form=new FormData();
+      form.append('scene',scene);
+      form.append('names',names);
+      form.append('context',$('studioBrief').value.slice(0,700));
+      form.append('bride',brideBody,'bride.jpg');
+      form.append('groom',groomBody,'groom.jpg');
+      form.append('brideFace',brideFace,'bride-face.jpg');
+      form.append('groomFace',groomFace,'groom-face.jpg');
+      const response=await fetch(url.href,{method:'POST',headers:{'Authorization':'Bearer '+token},body:form,cache:'no-store'});
+      const result=await response.json().catch(()=>({}));
+      if(!response.ok)throw Error(result.error||('HTTP '+response.status));
+      if(orderId!==currentOrder)break;
+      const blob=decodeImageBase64(result.image);
+      const key='studio-pending-'+scene;
+      await storeMedia(key,blob);
+      cachedUrl(key,blob);
+      data.broadcast.photoAssets[key]=true;
+      changed('ИИ создал «'+SCENE_NAMES[scene]+'». Проверь фото перед применением.');
+      renderGeneratedPhotos();
+      completed++;
+    }catch(err){$('studioStatus').textContent='Не удалось создать «'+SCENE_NAMES[scene]+'»: '+String(err.message||err)+'. Уже готовые кадры остаются доступными.';break}
+  }
+  studioGenerating=false;$('studioGenerateAll').disabled=false;$('studioGenerateOne').disabled=false;
+  if(completed===scenes.length)$('studioStatus').textContent=(single?'Сцена создана.':'Все четыре сцены созданы.')+' Проверь сходство пары на каждом кадре и нажми «Применить на сайт» у одобренных вариантов.';
+}
+/**/
+
+$('studioPrompt').addEventListener('click',async()=>{
+  const scene=$('studioScene').value;
+  const names=[data.couple?.first,data.couple?.second].filter(Boolean).join(' и ')||'пара';
+  const details=$('studioBrief').value.trim();
+  const prompt='Создай новое фотореалистичное изображение для свадебного сайта «Срочный выпуск». '+
+    'Используй прикреплённые исходные фотографии жениха и невесты как референсы внешности; сохрани узнаваемые черты лица, пропорции и телосложение обоих, без карикатуры, замены возраста и изменения внешности. '+
+    'Сцена: '+STUDIO_SCENES[scene]+' Персонажи: '+names+'. '+
+    (details?'Контекст пары: '+details+'. ':'')+
+    'Не добавляй текст, надписи, логотипы и водяные знаки. Не копируй чужие лица. Сохрани композицию и атмосферу демо-сцены. Создай отдельный квадратный кадр.';
+  try{await navigator.clipboard.writeText(prompt);$('studioStatus').textContent='Задание скопировано. Приложи исходные фото пары в инструмент генерации, создай кадр и загрузи результат в соответствующее поле выше.'}
+  catch{
+    const t=document.createElement('textarea');t.value=prompt;t.rows=9;t.readOnly=true;$('studioStatus').replaceChildren('Скопируй это задание и приложи исходные фото в генератор:',t);t.select()
+  }
+});
+
+
+function renderDateOptions(){
+ const root=$('eventDatesEditor');
+ root.replaceChildren();
+ const dataDates=data.eventDates??={mode:'same'};
+ const head=document.createElement('h3');head.textContent='Когда роспись и банкет?';root.append(head);
+ const selectLabel=document.createElement('label');selectLabel.textContent='Формат праздника';
+ const mode=document.createElement('select');mode.id='dateMode';
+ for(const [value,label] of [['same','Всё в один день'],['split','Роспись и банкет в разные дни']]){
+  const opt=document.createElement('option');opt.value=value;opt.textContent=label;mode.append(opt);
+ }
+ mode.value=dataDates.mode==='split'?'split':'same';
+ selectLabel.append(mode);root.append(selectLabel);
+ const intro=document.createElement('p');intro.className='workflow-intro';intro.textContent='Если роспись в другой день, укажи обе даты и адреса. Гости увидят два отдельных события в приглашении.';root.append(intro);
+ const fields=document.createElement('div');fields.className='event-date-fields';fields.hidden=mode.value!=='split';root.append(fields);
+ const primaryLabel=document.createElement('label');primaryLabel.textContent='Главное событие на первом экране';
+ const primarySelect=document.createElement('select');primarySelect.id='mainEvent';
+ for(const [value,label] of [['ceremony','Регистрация в ЗАГСе'],['party','Банкет']]){
+  const opt=document.createElement('option');opt.value=value;opt.textContent=label;primarySelect.append(opt);
+ }
+ primarySelect.value=dataDates.mainEvent==='party'?'party':'ceremony';
+ primarySelect.addEventListener('change',()=>{dataDates.mainEvent=primarySelect.value;changed('Главная дата сайта обновлена.');});
+ primaryLabel.append(primarySelect);fields.append(primaryLabel);
+ const blocks=[
+ ['Роспись','ceremony','ceremonyDate','ceremonyTime','ceremonyVenue','ceremonyAddress'],
+ ['Банкет','party','partyDate','partyTime','partyVenue','partyAddress']
+ ];
+ for(const [name,prefix,dateKey,timeKey,venueKey,addressKey] of blocks){
+  const block=document.createElement('fieldset');block.className='event-date-card';
+  const heading=document.createElement('strong');heading.textContent=name;block.append(heading);
+  for(const [key,title,type] of [[dateKey,'Дата','date'],[timeKey,'Время начала','time'],[venueKey,'Место проведения','text'],[addressKey,'Адрес','text']]){
+   const lab=document.createElement('label');lab.textContent=title;
+   const input=document.createElement('input');input.type=type;input.value=dataDates[key]||'';input.dataset.key=key;
+   input.addEventListener('input',()=>{dataDates[key]=input.value;changed('Дата и адрес события сохранены.');});
+   lab.append(input);block.append(lab);
+  }
+  fields.append(block);
+ }
+ mode.addEventListener('change',()=>{dataDates.mode=mode.value;fields.hidden=mode.value!=='split';changed('Режим дат свадьбы сохранён.');});
+}
+
+function renderBroadcastFields(){
+  data.broadcast??={};
+  $('broadcastCouple').replaceChildren();
+  for(const key of ['first','second','dateLabel','city'])field($('broadcastCouple'),data.couple,key);
+  const container=$('broadcastFields');container.replaceChildren();
+  // Re-rendering must remove old moved fields to prevent duplicate controls.
+  document.querySelectorAll('.workflow-broadcast.workflow-content > .stage-group .stage-group-inner').forEach(group=>group.replaceChildren());
+  for(const [key,label,defaultValue] of [...BROADCAST_FIELDS,...BROADCAST_EXTRA_FIELDS]){
+    if(/^schedule[012](Time|Title|Text)$/.test(key))continue;
+    if(typeof data.broadcast[key]!=='string')data.broadcast[key]=defaultValue;
+    if(/^palette[0-4]$/.test(key)){
+      const row=document.createElement('div');row.dataset.fieldKey=key;
+      const labelNode=document.createElement('label');labelNode.textContent=label;
+      const color=document.createElement('input');color.type='color';color.value=/^#[0-9a-fA-F]{6}$/.test(data.broadcast[key])?data.broadcast[key]:defaultValue;
+      color.style.cssText='height:44px;width:75px;padding:2px;margin-left:12px;vertical-align:middle;cursor:pointer';
+      color.oninput=()=>{data.broadcast[key]=color.value;changed('Оттенок обновлён.')};
+      labelNode.append(color);row.append(labelNode);container.append(row);
+    }else field(container,data.broadcast,key,label,key.toLowerCase().includes('text')||key==='newsIntro');
+    container.lastElementChild?.querySelector('input,textarea')?.setAttribute('data-field-key',key);
+  }
+}
+function syncEditorMode(){syncWorkflowTemplate();}
+
+function draw(){showRsvp();renderMusic();renderStudioPhotos();renderPremiere();for(const id of ['couple','photos','sections','texts'])$(id).replaceChildren();
+for(const key of ['first','second','dateLabel','city','dateTime'])field($('couple'),data.couple,key);
+renderDateOptions();renderPublicationSlug();
+const help=document.createElement('p');help.className='upload-help';help.textContent='Сначала загрузи главный кадр, затем фото остальных сцен. Открывай только нужный раздел. Если фото не выбрано, останется изображение из шаблона.';$('photos').append(help);
+const PHOTO_GROUPS=[
+  ['Первый экран',['main','secondary1','secondary2']],
+  ['Вступительная обложка',['introCover']],
+  ['Фотоколлаж',['collage1','collage2']],
+  ['Приглашение',['invitationBg','invitationLeft','invitationRight']],
+  ['История',['storyMain','storySmall','memoryBg']],
+  ['Программа и место',['scheduleBg','venueBg']],
+  ['Дресс-код — фон',['dressBg']],
+  ['Таймер, RSVP и финал',['countdownBg','rsvpBg','endingBg']]
+];
+for(const [gender,title,baseKeys,prefix] of [['female','Для неё',['dress1','dress3'],'dressFemale'],['male','Для него',['dress2','dress4'],'dressMale']]){
+ const count=data.dressPhotoCounts[gender];
+ const details=document.createElement('details');details.className='photo-group';
+ const summary=document.createElement('summary');summary.textContent='Дресс-код — '+title+' · '+count+' фото';details.append(summary);
+ const keys=[...baseKeys,...Array.from({length:count-2},(_,i)=>prefix+(i+3))];
+ for(const key of keys)details.append(createPhotoInput(key));
+ const controls=document.createElement('div');controls.className='actions';controls.style.padding='12px 0 20px';
+ const add=document.createElement('button');add.type='button';add.textContent='+ Добавить фотографию';add.disabled=count>=8;
+ add.onclick=()=>{data.dressPhotoCounts[gender]=Math.min(8,count+1);changed('Добавлено место для фото №'+(count+1)+'.');draw();const groups=Array.from(document.querySelectorAll('#photos .photo-group'));const found=groups.find(g=>g.querySelector('summary')?.textContent?.includes('Дресс-код — '+title));if(found)found.open=true};
+ const remove=document.createElement('button');remove.type='button';remove.className='secondary';remove.textContent='− Убрать последнюю';remove.disabled=count<=2;
+ remove.onclick=async()=>{const key=prefix+count;if(count<=2)return;try{await deleteMedia(key)}catch{}if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key];delete data.photos[key];data.dressPhotoCounts[gender]=count-1;changed('Последняя фотография удалена из подборки.');draw();const groups=Array.from(document.querySelectorAll('#photos .photo-group'));const found=groups.find(g=>g.querySelector('summary')?.textContent?.includes('Дресс-код — '+title));if(found)found.open=true};
+ controls.append(add,remove);details.append(controls);$('photos').append(details);
+}
+for(const [group,keys] of PHOTO_GROUPS){
+ const details=document.createElement('details');details.className='photo-group';details.open=false;
+ const summary=document.createElement('summary');summary.textContent=group+' · '+keys.length+' фото';details.append(summary);
+ keys.forEach(key=>details.append(createPhotoInput(key)));$('photos').append(details);
+}
+// The palette is per wedding order and updates the live preview immediately.
+const paletteTitle=document.createElement('h3');paletteTitle.textContent='Оттенки дресс-кода';$('photos').append(paletteTitle);
+const tip=document.createElement('p');tip.className='palette-note';tip.textContent='Нажми на любой цвет, чтобы открыть выбор оттенка. Палитры для девушек и мужчин независимые и сохраняются в заказе.';$('photos').append(tip);
+for(const [group,name] of [['female','Для неё'],['male','Для него']]){
+ const card=document.createElement('div');card.className='palette-panel';const heading=document.createElement('strong');heading.textContent=name+' · 5 оттенков';card.append(heading);
+ const grid=document.createElement('div');grid.className='palette-editor';(data.dressPalettes[group]||[]).forEach((color,i)=>{
+   const label=document.createElement('label');label.textContent='Цвет '+(i+1);const input=document.createElement('input');input.type='color';input.value=/^#[0-9a-f]{6}$/i.test(color)?color:DRESS_PALETTES_DEFAULT[group][i];input.addEventListener('input',()=>{data.dressPalettes[group][i]=input.value;changed('Палитра изменена и сохранена в этом заказе.')});label.append(input);grid.append(label)
+ });card.append(grid);const reset=document.createElement('button');reset.type='button';reset.className='secondary palette-reset';reset.textContent='Вернуть стандартные цвета';reset.addEventListener('click',()=>{data.dressPalettes[group]=[...DRESS_PALETTES_DEFAULT[group]];changed();draw()});card.append(reset);$('photos').append(card)
+}
+for(const [key,value] of Object.entries(data.sections)){const row=document.createElement('div');row.className='section-row';const check=document.createElement('input');check.type='checkbox';check.checked=Boolean(value);check.addEventListener('change',()=>{data.sections[key]=check.checked;changed()});const label=document.createElement('label');label.textContent=LABELS[key]||key;row.append(check,label);$('sections').append(row)}
+for(const key of Object.keys(data.text)){field($('texts'),data.text,key,LABELS[key]||key,key!=='venueName'&&key!=='venueMap')}
+const heading=document.createElement('h2');heading.textContent='Расписание дня';$('texts').append(heading);
+if(!Array.isArray(data.schedule))data.schedule=[];
+const scheduleEditor=document.createElement('div');scheduleEditor.className='et-schedule-editor';$('texts').append(scheduleEditor);
+function renderScheduleEditor(){
+ scheduleEditor.replaceChildren();
+ const hint=document.createElement('p');hint.className='upload-help';hint.textContent='Добавляй, редактируй, удаляй и меняй порядок событий. Изменения сразу появляются в приглашении.';scheduleEditor.append(hint);
+ data.schedule.forEach((item,i)=>{
+  const det=document.createElement('details');det.className='et-schedule-item';
+  const summary=document.createElement('summary');summary.textContent=(item.time?item.time+' · ':'')+(item.title||'Новое событие');det.append(summary);
+  for(const [key,title] of [['time','Время (например, 16:00)'],['title','Название события'],['description','Описание']]){
+   const lab=document.createElement('label');lab.textContent=title;
+   const input=document.createElement(key==='description'?'textarea':'input');
+   if(key==='time'){input.type='time';input.step=60;}else if(key!=='description')input.type='text';
+   input.value=item[key]||'';
+   input.addEventListener('input',()=>{item[key]=input.value;summary.textContent=(item.time?item.time+' · ':'')+(item.title||'Новое событие');changed('Расписание сохранено.');});
+   lab.append(input);det.append(lab);
+  }
+  const actions=document.createElement('div');actions.className='actions';actions.style.padding='10px 0';
+  function action(label,callback,disabled=false){
+   const btn=document.createElement('button');btn.type='button';btn.className='secondary';btn.textContent=label;btn.disabled=disabled;btn.addEventListener('click',callback);actions.append(btn);
+  }
+  action('↑ Выше',()=>{[data.schedule[i-1],data.schedule[i]]=[data.schedule[i],data.schedule[i-1]];changed('Порядок расписания обновлён.');renderScheduleEditor()},i===0);
+  action('↓ Ниже',()=>{[data.schedule[i],data.schedule[i+1]]=[data.schedule[i+1],data.schedule[i]];changed('Порядок расписания обновлён.');renderScheduleEditor()},i===data.schedule.length-1);
+  action('Удалить',()=>{data.schedule.splice(i,1);changed('Событие удалено.');renderScheduleEditor()});
+  det.append(actions);scheduleEditor.append(det);
+ });
+ const add=document.createElement('button');add.type='button';add.textContent='+ Добавить событие';add.addEventListener('click',()=>{
+  data.schedule.push({time:'',title:'Новое событие',description:''});
+  changed('Новое событие добавлено.');renderScheduleEditor();
+  const entries=scheduleEditor.querySelectorAll('.et-schedule-item');const latest=entries[entries.length-1];if(latest){latest.open=true;latest.querySelector('input')?.focus();}
+ });scheduleEditor.append(add);
+ if(!data.schedule.length){const empty=document.createElement('p');empty.textContent='Расписание пустое. Добавь первое событие.';scheduleEditor.insertBefore(empty,add);}
+}
+renderScheduleEditor()
+renderBroadcastFields();organizeBroadcastTextFields();renderPremiere();syncEditorMode();}
+// ZIP without external libraries; STORED entries, photos are JPEG-compressed before packing.
+const enc=new TextEncoder();
+function u16(n){return [n&255,(n>>>8)&255]}function u32(n){return [n&255,(n>>>8)&255,(n>>>16)&255,(n>>>24)&255]}
+const crcTable=Array.from({length:256},(_,i)=>{let c=i;for(let j=0;j<8;j++)c=c&1?0xedb88320^(c>>>1):c>>>1;return c>>>0});
+function crc32(bytes){let c=0xffffffff;for(const b of bytes)c=crcTable[(c^b)&255]^(c>>>8);return (c^0xffffffff)>>>0}
+function zip(files){const parts=[],central=[];let offset=0;for(const f of files){const name=enc.encode(f.name),bytes=f.bytes,crc=crc32(bytes),size=bytes.length,flags=0x800;const head=new Uint8Array([80,75,3,4,...u16(20),...u16(flags),...u16(0),...u16(0),...u16(0),...u32(crc),...u32(size),...u32(size),...u16(name.length),...u16(0)]);parts.push(head,name,bytes);const cent=new Uint8Array([80,75,1,2,...u16(20),...u16(20),...u16(flags),...u16(0),...u16(0),...u16(0),...u32(crc),...u32(size),...u32(size),...u16(name.length),...u16(0),...u16(0),...u16(0),...u16(0),...u32(0),...u32(offset)]);central.push(cent,name);offset+=head.length+name.length+size}
+let centerSize=0;for(const p of central)centerSize+=p.length;const end=new Uint8Array([80,75,5,6,...u16(0),...u16(0),...u16(files.length),...u16(files.length),...u32(centerSize),...u32(offset),...u16(0)]);return new Blob([...parts,...central,end],{type:'application/zip'})}
+function download(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000)}
+async function fetchResource(path){
+ const response=await fetch(path);
+ if(!response.ok)throw Error('Не удалось загрузить '+path+' ('+response.status+').');
+ return response;
+}
+async function exportV12(folder, files, config){
+ const source='eterna-12/';
+ let page=await (await fetchResource(source+'editor-preview-v29.html')).text();
+ const resources=[...page.matchAll(/(?:src|href)="((?:assets\/|\.\.\/)[^"]+)"/g)].map(match=>match[1]);
+ resources.push(...Array.from({length:6},(_,i)=>'assets/editorial-'+i+'.webp'));
+ const normalize=path=>path.replace(/^\.\.\//,'').split('?')[0];
+ await Promise.all([...new Set(resources)].map(async path=>{
+   const response=await fetchResource(source+path);
+   files.push({name:folder+normalize(path),bytes:new Uint8Array(await response.arrayBuffer())});
+ }));
+ page=page.replace(/(src|href)="(\.\.\/[^"]+)"/g,(_,attr,path)=>attr+'="'+normalize(path)+'"');
+ // All scripts are deferred in document order. Order data must precede invitation.js.
+ const orderTag='<script defer src="order.js"><'+'/script>';
+ page=page.replace(/<script defer src="assets\/invitation[^"]+"/,match=>orderTag+'\n'+match);
+ files.push({name:folder+'order.js',bytes:enc.encode('window.ETERNA_ORDER = '+JSON.stringify(config,null,2)+';\n')});
+ files.push({name:folder+'index.html',bytes:enc.encode(page)});
+ files.push({name:folder+'настройки.json',bytes:enc.encode(JSON.stringify(config,null,2))});
+}
+
+const BROADCAST_SCENES=[['sceneCover','cover','Обложка'],['sceneCake','cake','Крупный план'],['sceneArchive','archive','Архив знакомства'],['sceneForecast','forecast','Свадебный прогноз']];
+async function exportBroadcast(folder,files,config,id){
+ const root='srochny-vypusk/';
+ config.broadcast??={};config.broadcast.schedule=newsSchedule();
+ let page=await (await fetchResource(root+'editor-preview-v40.html')).text();
+ const deps=['broadcast-preview-v24.css','broadcast-preview-v20.js','broadcast-export-v27.js','broadcast-0.webp','broadcast-1.webp','broadcast-2.webp'];
+ for(const file of deps){
+  const response=await fetchResource(root+'assets/'+file);
+  let bytes=new Uint8Array(await response.arrayBuffer());
+  if(file==='broadcast-preview-v20.js' && config.rsvp?.endpoint){
+    let sourceJs=new TextDecoder().decode(bytes);
+    const open="window.ETERNA_MOUNT_RSVP(document.getElementById('rsvpDynamic'), {";
+    const close="  }, {demo: true});";
+    if(!sourceJs.includes(open)||!sourceJs.includes(close))throw Error('Не удалось подключить RSVP «Срочного выпуска».');
+    sourceJs=sourceJs.replace(open,"window.ETERNA_MOUNT_RSVP(document.getElementById('rsvpDynamic'), window.ETERNA_BROADCAST_ORDER?.rsvp || {");
+    sourceJs=sourceJs.replace(close,"  }, {demo: false, endpoint: window.ETERNA_RSVP_ENDPOINT(window.ETERNA_BROADCAST_ORDER?.rsvp?.endpoint)});");
+    bytes=enc.encode(sourceJs);
+  }
+  files.push({name:folder+'assets/'+file,bytes});
+ }
+ const dates=await fetchResource('assets/dual-date-v29.js');
+ files.push({name:folder+'assets/dual-date-v29.js',bytes:new Uint8Array(await dates.arrayBuffer())});
+ page=page.replaceAll('../assets/dual-date-v29.js','assets/dual-date-v29.js');
+ const rsvp=await fetchResource('rsvp-renderer.js');
+ files.push({name:folder+'rsvp-renderer.js',bytes:new Uint8Array(await rsvp.arrayBuffer())});
+ config.broadcast??={};
+ const photos={};
+ for(const [scene,name,title] of BROADCAST_SCENES){
+  const key='studio-'+scene;
+  if(!config.broadcast.photoAssets?.[key])continue;
+  const blob=await readMedia(key,'image/jpeg',id);
+  if(!blob)throw Error('Не найден кадр «'+title+'». Загрузите его заново.');
+  const dest='assets/custom-'+name+'.jpg';
+  photos[scene]=dest;
+  files.push({name:folder+dest,bytes:new Uint8Array(await blob.arrayBuffer())});
+ }
+ config.broadcast.exportPhotos=photos;
+ delete config.broadcast.previewPhotos;
+ page=page.replace(/<title>[^<]*<\/title>/,'<title>Срочный выпуск — свадебное приглашение</title>');
+ page=page.replace(/<script defer src="\.\.\/rsvp-renderer\.js\?[^"]*"><\/script>/,
+   '<script defer src="rsvp-renderer.js"><'+'/script>');
+ page=page.replace(/<script defer src="assets\/broadcast-preview-v18\.js\?[^"]*"><\/script>/,
+   '<script defer src="order.js"><'+'/script>\n<script defer src="assets/broadcast-preview-v20.js"><'+'/script>');
+ page=page.replace(/<script defer src="assets\/editor-preview-bridge-v22\.js\?[^"]*"><\/script>/,
+   '<script defer src="assets/broadcast-export-v27.js"><'+'/script>');
+ if(!page.includes('broadcast-export-v27.js')||page.includes('editor-preview-bridge-v23.js')||page.includes('../rsvp-renderer.js'))throw Error('Ошибка сборки шаблона.');
+ const js='window.ETERNA_BROADCAST_ORDER = '+JSON.stringify(config).replace(/</g,'\\u003c')+';\n';
+ files.push({name:folder+'order.js',bytes:enc.encode(js)});
+ files.push({name:folder+'index.html',bytes:enc.encode(page)});
+ files.push({name:folder+'настройки.json',bytes:enc.encode(JSON.stringify(config,null,2))});
+ const guide='ÉTERNA — Срочный выпуск / заказ '+id+'\n\nРаспакуй ZIP и опубликуй всю папку '+folder+' со всеми подпапками. Входная страница — index.html.\nАдрес после публикации на текущем GitHub Pages: https://iamvaga17.github.io/eterna-wedding/'+folder+'\nRSVP остаётся демонстрационным: ответы гостей НЕ сохраняются и НЕ отправляются.\nНе публикуй частные фотографии без согласия пары.\n';
+ files.push({name:'ИНСТРУКЦИЯ.txt',bytes:enc.encode(guide)});
+}
+
+
+function suggestedSlug(){
+ const names=[data.couple?.first,data.couple?.second].map(s=>translit((s||'').trim())).filter(Boolean);
+ return names.join('-').slice(0,60)||'wedding-'+orderId.slice(0,20);
+}
+function publicationSlug(){return (data.publicSlug||suggestedSlug()).trim().toLowerCase();}
+function renderPublicationSlug(){
+ const settings=document.querySelector('.publish-settings .stage-group-inner');if(!settings)return;
+ settings.querySelector('.wedletter-slug')?.remove();
+ const root=document.createElement('div');root.className='wedletter-slug';
+ const title=document.createElement('label');title.textContent='Адрес сайта';
+ const input=document.createElement('input');input.type='text';input.value=publicationSlug();input.maxLength=60;
+ input.setAttribute('autocapitalize','off');input.spellcheck=false;
+ const preview=document.createElement('p');preview.className='workflow-intro';
+ function refresh(){const value=input.value.trim().toLowerCase();const valid=/^[a-z0-9](?:[a-z0-9-]{0,58}[a-z0-9])?$/.test(value);preview.textContent=valid?'https://wedletter.ru/'+value+'/':'Используй только a–z, 0–9 и дефисы.';}
+ input.addEventListener('input',()=>{
+  if(data.publicSlugLocked){preview.textContent='Адрес уже опубликован и закреплён. Его нельзя изменить без переноса сайта.';input.value=publicationSlug();return;}
+  data.publicSlug=input.value.toLowerCase().trim();changed('Короткий адрес сохранён.');refresh();
+ });
+ if(data.publicSlugLocked){input.readOnly=true;title.textContent+=' · закреплён';const note=document.createElement('p');note.className='workflow-intro';note.textContent='Чтобы изменить опубликованный адрес без потери RSVP и ссылок гостей, нужен серверный перенос. Не создавай второй сайт вручную.';root.append(note);}
+ title.append(input);root.append(title,preview);
+ const expiry=document.createElement('div');expiry.className='wedletter-expiry';
+ expiry.style.cssText='margin:13px 0 9px;padding:13px;border:1px solid #ded6cc;border-radius:12px;background:#faf8f5';
+ const expiryLabel=document.createElement('label');expiryLabel.textContent='Дата окончания действия приглашения';expiryLabel.style.cssText='display:block;font-size:13px;font-weight:600;margin:0 0 7px';
+ const dateInput=document.createElement('input');dateInput.type='date';dateInput.value=/^\\d{4}-\\d{2}-\\d{2}$/.test(data.expiresOn||'')?data.expiresOn:'';
+ dateInput.style.cssText='width:100%;font-size:16px;min-height:44px';
+ const expiryNote=document.createElement('p');expiryNote.className='workflow-intro';expiryNote.style.cssText='font-size:12px;margin:8px 0 0;line-height:1.5';
+ const updateExpiryNote=()=>{expiryNote.textContent=dateInput.value?'Указано: до '+new Date(dateInput.value+'T12:00:00').toLocaleDateString('ru-RU')+' включительно. После подключения модуля expiry.php дата будет применяться при публикации. Для уже опубликованного сайта используй кнопку ниже.':'Не указана — автоматическое завершение не настроено.'};
+ dateInput.addEventListener('change',()=>{if(dateInput.value&&dateInput.value<new Date().toLocaleDateString('en-CA')){dateInput.value=data.expiresOn||'';setStatus('Дата окончания не может быть в прошлом.');return;}data.expiresOn=dateInput.value||'';changed('Дата записана в заказ. Примени срок на сервере или опубликуй сайт.');updateExpiryNote()});
+ const applyButton=document.createElement('button');applyButton.type='button';applyButton.className='secondary';applyButton.textContent='Применить срок на сайте';applyButton.style.cssText='margin-top:9px;width:100%';
+ const applyStatus=document.createElement('p');applyStatus.style.cssText='font-size:12px;margin:8px 0;color:#70655a;white-space:pre-wrap';
+ applyButton.addEventListener('click',async()=>{
+  const key=$('publishPassword')?.value.trim(),slug=publicationSlug();
+  if(!key){applyStatus.textContent='Введи ключ SpaceWeb ниже.';return}
+  if(!data.publicSlugLocked){applyStatus.textContent='Сначала опубликуй этот заказ. Срок можно применять только к опубликованному сайту.';return}
+  applyButton.disabled=true;applyStatus.textContent='Проверяю и применяю срок на SpaceWeb…';
+  try{const result=await applySpaceWebExpiry(slug,data.expiresOn||'',key);
+   applyStatus.textContent='Срок применён на SpaceWeb: '+(result.expiresOn||'без ограничения')+'. Проверь сайт в отдельной вкладке. RSVP пока отдельно не заблокирован.';
+  }catch(error){applyStatus.textContent='Срок не применён: '+String(error.message||error)+'. Сайт не менялся.'}
+  finally{applyButton.disabled=false}
+ });
+ expiry.append(expiryLabel,dateInput,expiryNote,applyButton,applyStatus);root.append(expiry);settings.prepend(root);refresh();updateExpiryNote();
+}
+
+const EXPIRY_SERVER='https://wedletter.ru/api/expiry.php';
+async function applySpaceWebExpiry(slug,expiresOn,key){
+ const response=await fetch(EXPIRY_SERVER,{method:'POST',headers:{Authorization:'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({action:'set',slug,expiresOn}),cache:'no-store'});
+ const body=await response.json().catch(()=>({}));
+ if(!response.ok||body.ok!==true||body.gateInstalled!==true)throw Error(body.error||'Сервер не подтвердил активацию ('+response.status+')');
+ return body;
+}
+const PUBLISH_SERVER='https://wedletter.ru/api/publish.php';
+const REGISTER_SERVER='https://wedletter.ru/api/register-wedding.php';
+const CABINET_ISSUER='https://wedletter.ru/api/create-dashboard-access.php';
+async function issueCabinetLink(slug,pass,action='issue'){
+ const response=await fetch(CABINET_ISSUER,{method:'POST',headers:{Authorization:'Bearer '+pass,'Content-Type':'application/json'},body:JSON.stringify({slug,action}),cache:'no-store'});
+ const result=await response.json().catch(()=>({}));
+ if(!response.ok||result.ok!==true||result.slug!==slug||!/^https:\/\/wedletter\.ru\/api\/cabinet\.html#[a-f0-9]{64}$/.test(result.cabinetLink||''))
+  throw Error(result.error||'Не удалось создать ссылку кабинета (HTTP '+response.status+')');
+ return result.cabinetLink;
+}
+function isCabinetLink(link){
+ return /^https:\/\/wedletter\.ru\/api\/cabinet\.html#[a-f0-9]{64}$/.test(link||'');
+}
+function linkCard(parent,{title,url,privateLink=false,subtitle='',copyLabel='Скопировать ссылку'}){
+ const card=document.createElement('section');
+ card.className='wedletter-share-card';
+ const heading=document.createElement('strong');heading.textContent=title;
+ const desc=document.createElement('span');desc.className='wedletter-share-desc';desc.textContent=subtitle;
+ const input=document.createElement('input');input.type='text';input.readOnly=true;input.value=url;
+ input.setAttribute('aria-label',title);input.autocomplete='off';input.spellcheck=false;
+ const controls=document.createElement('div');controls.className='wedletter-share-actions';
+ const copyBtn=document.createElement('button');copyBtn.type='button';copyBtn.textContent=copyLabel;
+ copyBtn.addEventListener('click',async()=>{
+   try{await navigator.clipboard.writeText(url);copyBtn.textContent='Скопировано ✓'}
+   catch(e){input.focus();input.select();window.prompt('Скопируй ссылку:',url)}
+ });
+ const open=document.createElement('a');open.href=url;open.target='_blank';open.rel='noopener noreferrer';open.referrerPolicy='no-referrer';
+ open.textContent='Открыть ↗';
+ controls.append(copyBtn,open);
+ card.append(heading,desc,input,controls);
+ if(privateLink){const caution=document.createElement('small');caution.textContent='Секретная ссылка: отправляй только молодожёнам.';card.append(caution)}
+ parent.append(card);
+ return controls;
+}
+function renderShareLinks(container,slug){
+ container.replaceChildren();
+ if(!/^[a-z0-9](?:[a-z0-9-]{0,58}[a-z0-9])?$/.test(slug))return;
+ const heading=document.createElement('div');heading.className='wedletter-share-title';heading.textContent='Ссылки для отправки';
+ container.append(heading);
+ linkCard(container,{title:'① Приглашение для гостей',url:'https://wedletter.ru/'+slug+'/',subtitle:'Эту ссылку отправляй всем приглашённым.',copyLabel:'Скопировать'});
+ const cabinetLink=localStorage.getItem('wedletter-cabinet-link:'+slug);
+ if(isCabinetLink(cabinetLink)){
+  const controls=linkCard(container,{title:'② Личный кабинет молодожёнов',url:cabinetLink,privateLink:true,subtitle:'Ответы RSVP, список гостей и выгрузка CSV.',copyLabel:'Скопировать'});
+  renderCabinetActions(controls,cabinetLink,slug,container);
+ }else{
+  const card=document.createElement('section');card.className='wedletter-share-card';
+  const title=document.createElement('strong');title.textContent='② Личный кабинет молодожёнов';
+  const desc=document.createElement('p');desc.textContent='Ссылка ещё не сохранена в этом браузере. Если она уже выдавалась, сначала проверь, нет ли её у молодожёнов. Создание новой не отменит предыдущую.';
+  const btn=document.createElement('button');btn.type='button';btn.textContent='Получить ссылку кабинета';
+  btn.addEventListener('click',async()=>{
+   const pass=$('publishPassword')?.value.trim();
+   if(!pass){setStatus('Введи свой ключ SpaceWeb в поле публикации, чтобы получить кабинет.');return}
+   btn.disabled=true;
+   try{
+    const link=await issueCabinetLink(slug,pass);
+    localStorage.setItem('wedletter-cabinet-link:'+slug,link);
+    renderShareLinks(container,slug);
+    setStatus('Готово: ссылка кабинета создана. Скопируй её в блоке публикации.');
+   }catch(e){setStatus('Ошибка выдачи кабинета: '+String(e?.message||e));btn.disabled=false}
+  });
+  card.append(title,desc,btn);container.append(card);
+ }
+}
+function renderCabinetActions(controls,link,slug,container){
+ const btn=document.createElement('button');btn.type='button';btn.className='secondary';btn.textContent='Перевыпустить';
+ btn.addEventListener('click',async()=>{
+  if(!confirm('Все старые ссылки этого кабинета перестанут работать. Продолжить?'))return;
+  const pass=$('publishPassword')?.value.trim();
+  if(!pass){setStatus('Для перевыпуска введи ключ публикации SpaceWeb.');return;}
+  btn.disabled=true;
+  try{
+   const next=await issueCabinetLink(slug,pass,'rotate');
+   localStorage.setItem('wedletter-cabinet-link:'+slug,next);
+   renderShareLinks(container,slug);
+   setStatus('Новая ссылка готова. Все старые доступы отозваны. Отправь молодожёнам новую ссылку.');
+  }catch(e){setStatus('Ошибка перевыпуска: '+String(e?.message||e));btn.disabled=false;}
+ });
+ controls.append(btn);
+}
+async function fetchWithDeadline(url,options,timeoutMs,stage){
+ const ctrl=new AbortController();
+ const timer=setTimeout(()=>ctrl.abort(),timeoutMs);
+ try{return await fetch(url,{...options,signal:ctrl.signal})}
+ catch(error){
+  if(ctrl.signal.aborted)throw Error(stage+': нет ответа за '+Math.round(timeoutMs/1000)+' секунд. Проверь API SpaceWeb.');
+  throw Error(stage+': ошибка соединения ('+String(error?.message||error)+'). Возможна проблема HTTPS/CORS или сервера.');
+ }finally{clearTimeout(timer)}
+}
+async function registerWedding(slug,pass){
+ const names=[data.couple?.first,data.couple?.second].map(v=>String(v||'').trim()).filter(Boolean);
+ const displayName=names.join(' и ')||'Свадьба '+slug;
+ let response;
+ try{
+  response=await fetchWithDeadline(REGISTER_SERVER,{
+   method:'POST',headers:{Authorization:'Bearer '+pass,'Content-Type':'application/json'},
+   body:JSON.stringify({slug,displayName}),cache:'no-store'
+  },18000,'Регистрация свадьбы и подключение RSVP');
+ }catch(error){throw Error('Публикация остановлена на регистрации: '+String(error?.message||error))}
+ let value;
+ try{value=await response.json()}catch{throw Error('Сервер регистрации вернул неверный JSON (HTTP '+response.status+').')}
+ if(!response.ok||value?.ok!==true||value.slug!==slug)throw Error(value?.error||'Ошибка регистрации свадьбы, HTTP '+response.status);
+ if(typeof value.rsvpEndpoint!=='string'||!value.rsvpEndpoint.startsWith('https://'))throw Error('Сервер не вернул HTTPS-адрес RSVP. Публикация остановлена.');
+ return value.rsvpEndpoint;
+}
+const SPACEWEB_SSL_PENDING=false; // HTTPS and cross-origin GET/POST verified on primary domain.
+let isPublishing=false;
+function publishBase64(bytes){let text='';for(let i=0;i<bytes.length;i+=16384)text+=String.fromCharCode(...bytes.subarray(i,i+16384));return btoa(text)}
+async function buildPublishFiles(id,slug=id,rsvpEndpoint=''){
+ if(musicBusy)throw Error('Дождись сохранения музыки.');
+ if($('previewVersion').value==='legacy')throw Error('Классический шаблон не поддерживает автоматическую публикацию. Выбери ÉTERNA, «Срочный выпуск» или PREMIÈRE.');
+ if(!/^[a-z0-9](?:[a-z0-9-]{0,58}[a-z0-9])?$/.test(id))throw Error('Неверный ID заказа.');
+ const folder='orders/'+slug+'/',files=[],cfg=withEventDates(copy(data));
+ if(rsvpEndpoint){cfg.rsvp??={};cfg.rsvp.endpoint=rsvpEndpoint;}
+ if($('previewVersion').value==='premiere')await exportPremiere(folder,files,cfg,id);
+ else if($('previewVersion').value==='broadcast')await exportBroadcast(folder,files,cfg,id);
+ else{
+  for(const key of PHOTO_KEYS.filter(localPhoto)){
+   const blob=await readMedia(key,'image/jpeg',id);
+   if(!blob)throw Error('Не найдено фото '+(PHOTO_NAMES[key]||key));
+   files.push({name:folder+photoFileName(key),bytes:new Uint8Array(await blob.arrayBuffer())});
+  }
+  const type=musicType(cfg.music);
+  if(type){
+   const audio=await readMedia('music',type,id);
+   if(!audio)throw Error('Не найден файл музыки.');
+   files.push({name:folder+cfg.music.source,bytes:new Uint8Array(await audio.arrayBuffer())});
+  }
+  await exportV12(folder,files,cfg);
+ }
+
+ return files.filter(f=>f.name.startsWith(folder)&&!f.name.endsWith('/настройки.json'));
+}
+async function publishRequest(route,body,token){
+ const action=route==='/publish/blob'?'blob':route==='/publish/commit'?'commit':null;
+ if(!action)throw Error('Неизвестная операция публикации');
+ const res=await fetchWithDeadline(PUBLISH_SERVER,{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({...body,action}),cache:'no-store'},35000,'Отправка файлов или публикация');
+ const value=await res.json().catch(()=>({}));
+ if(!res.ok)throw Error(value.error||'Ошибка сервера '+res.status);
+ return value;
+}
+async function publishOrder(){
+ if(SPACEWEB_SSL_PENDING){setStatus('Публикация временно недоступна до установки SSL и проверки соединения с SpaceWeb.');return;}
+ if(isPublishing)return;
+ const pass=$('publishPassword')?.value.trim();
+ if(!pass){document.querySelector('.publish-settings').open=true;setStatus('Введи секретный ключ SpaceWeb в разделе подключения публикации.');return}
+ const id=orderId,slug=publicationSlug(),expected='https://wedletter.ru/'+encodeURIComponent(slug)+'/';
+ if(data.expiresOn && (!/^\d{4}-\d{2}-\d{2}$/.test(data.expiresOn)||data.expiresOn<new Date().toLocaleDateString('en-CA'))){setStatus('Исправь дату окончания: она не может быть в прошлом.');return;}
+ if(!/^[a-z0-9](?:[a-z0-9-]{0,58}[a-z0-9])?$/.test(slug)){setStatus('Адрес должен содержать латинские буквы, цифры и дефисы (до 60 знаков).');return;}
+ if(orders.some(o=>o.id!==id&&o.publicSlug===slug)){setStatus('Этот адрес уже используется другим заказом в редакторе.');return;}
+ if(!confirm('Опубликовать данные и фотографии пары в открытом интернете? Адрес: '+expected+'. '+(data.expiresOn?'Срок действия включится при установленном обновлении publish.php. Тестируй на отдельном заказе. ':'')+'Получи согласие пары перед публикацией.'))return;
+ isPublishing=true;$('publishOrder').disabled=true;$('publishResult').replaceChildren();
+ try{
+  setStatus('Регистрирую свадьбу в MySQL и подключаю RSVP…');
+  const rsvpEndpoint=await registerWedding(slug,pass);
+  setStatus('Подготавливаю клиентские файлы…');
+  const files=await buildPublishFiles(id,slug,rsvpEndpoint);
+  if(orderId!==id)throw Error('Заказ поменялся во время публикации.');
+  if(files.length>140)throw Error('Слишком много файлов.');
+  const staged=[];
+  for(let i=0;i<files.length;i++){
+   const file=files[i];
+   if(file.bytes.byteLength>10_500_000)throw Error('Файл слишком большой: '+file.name);
+   setStatus('Загружаю '+(i+1)+' из '+files.length+': '+file.name.split('/').pop());
+   const result=await publishRequest('/publish/blob',{orderId:slug,ownerId:id,path:file.name,content:publishBase64(file.bytes)},pass);
+   staged.push({path:file.name,sha:result.sha});
+  }
+  setStatus('Размещаю свадебный сайт на SpaceWeb…');
+  const final=await publishRequest('/publish/commit',{orderId:slug,ownerId:id,files:staged,expiresOn:data.expiresOn||''},pass);
+  if(final.url!==expected)throw Error('Неожиданная ссылка публикации.');
+  let expiryApplied=false,expiryError='';
+  try{await applySpaceWebExpiry(slug,data.expiresOn||'',pass);expiryApplied=true}
+  catch(error){expiryError=String(error.message||error)}
+  data.publicSlug=slug;data.publicSlugLocked=true;changed('Ссылка сохранена за заказом.');
+  const current=orders.find(o=>o.id===id);if(current){current.publicSlug=slug;storeOrder();}
+  const p=$('publishResult');
+  renderShareLinks(p,slug);
+
+  setStatus(expiryApplied?'Сайт опубликован. Срок действия применён на сервере (RSVP пока отдельно не блокируется).':'Сайт опубликован, но срок действия НЕ применён: '+expiryError);
+  // Store cabinet links only in this browser's private editor storage.
+  // Never include these links in wedding order.js, config JSON or published files.
+  try {
+    let link=localStorage.getItem('wedletter-cabinet-link:'+slug);
+    if(!/^https:\/\/wedletter\.ru\/api\/cabinet\.html#[a-f0-9]{64}$/.test(link||'')){
+      setStatus('Сайт опубликован. Создаю отдельную ссылку кабинета молодожёнов…');
+      link=await issueCabinetLink(slug,pass);
+      localStorage.setItem('wedletter-cabinet-link:'+slug,link);
+    }
+    renderShareLinks(p,slug);
+    setStatus(expiryApplied?'Сайт опубликован. Срок действия применён. RSVP пока отдельно не закрывается.':'Сайт опубликован, но срок НЕ применён: '+expiryError+'. Открой настройки срока.');
+  }catch(linkError){
+    setStatus('Сайт опубликован. '+(expiryApplied?'Срок применён.':'Срок НЕ применён: '+expiryError+'. ')+'Ссылка кабинета пока не создана: '+String(linkError?.message||linkError));
+  }
+
+ }catch(e){setStatus('Ошибка публикации: '+String(e?.message||e))}
+ finally{isPublishing=false;$('publishOrder').disabled=SPACEWEB_SSL_PENDING}
+}
+
+async function exportPackage(){
+ if(musicBusy){setStatus('Дождитесь сохранения музыки и повторите экспорт.');return;}
+ const buttons=[$('downloadBtn'),$('downloadBtnBottom')];buttons.forEach(b=>b.disabled=true);
+ setStatus('Собираю отдельную свадебную страницу и фотографии…');
+ try{
+   const id=orderId;
+   const config=withEventDates(copy(data));
+   const legacy=isLegacy();
+   const folder='orders/'+id+'/';
+   const files=[];
+   if($('previewVersion').value==='premiere'){
+      await exportPremiere(folder,files,config,id);
+      download(zip(files),'wedletter-premiere-'+id+'.zip');
+      setStatus('Готов комплект PREMIÈRE для заказа '+id+'.');
+      return;
+   }
+   if($('previewVersion').value==='broadcast'){
+      await exportBroadcast(folder,files,config,id);
+      download(zip(files),'eterna-broadcast-'+id+'.zip');
+      setStatus('Готов персональный сайт «Срочный выпуск» для заказа '+id+'. RSVP пока демонстрационный.');
+      return;
+   }
+   const uploaded=PHOTO_KEYS.filter(localPhoto);
+   const blobs=await Promise.all(uploaded.map(key=>readMedia(key)));
+   for(const [index,key] of uploaded.entries()){const blob=blobs[index];
+     if(!blob)throw Error('Не найдено фото «'+PHOTO_NAMES[key]+'». Выбери его заново.');
+     files.push({name:folder+photoFileName(key),bytes:new Uint8Array(await blob.arrayBuffer())});
+   }
+   if(!legacy){
+     const type=musicType(config.music);
+     if(type){
+       const audio=await readMedia('music',type,id);
+       if(!audio)throw Error('Трек не найден. Загрузите его заново.');
+       files.push({name:folder+config.music.source,bytes:new Uint8Array(await audio.arrayBuffer())});
+     }
+     await exportV12(folder,files,config);
+     const readme='ÉTERNA 12.0 · заказ '+id+'\n\nОпубликуйте папку '+folder+' целиком, сохранив её структуру. Входная страница — index.html.\n'+(config.rsvp?.endpoint?'RSVP отправляет ответы на указанный в настройках адрес.':'RSVP демонстрационный. Ответы не отправляются.')+'\n';
+     files.push({name:'ИНСТРУКЦИЯ.txt',bytes:enc.encode(readme)});
+     download(zip(files),'eterna-12-'+id+'.zip');
+     setStatus('Готов комплект 12.0 для заказа '+id+'.');
+     return;
+   }
+   const response=await fetch('templates/eterna.html?order-export='+Date.now(),{cache:'no-store'});
+   if(!response.ok)throw Error('Не удалось загрузить шаблон ÉTERNA ('+response.status+').');
+   let page=await response.text();
+   if(!page.includes('wedding-customizer.js'))throw Error('Шаблон не поддерживает настройки заказа.');
+   // A customer receives a separate, self-contained configuration and photo folder.
+   // Shared RSVP remains a demo until the responses backend is configured.
+   page=page.replaceAll('src="../rsvp-config.js"','src="../../rsvp-config.js"')
+     .replaceAll('src="../rsvp-renderer.js"','src="../../rsvp-renderer.js"')
+     .replaceAll('src="eterna-hero-config.js"','src="../../templates/eterna-hero-config.js"')
+     .replaceAll('src="../wedding-customizer.js"','src="../../wedding-customizer.js"');
+   const safeCfg=JSON.stringify(data).replace(/</g,'\\u003c');
+   const inline='<scr'+'ipt>window.WEDDING_CONFIG='+safeCfg+';</scr'+'ipt>';
+   page=page.replace('<scr'+'ipt src="../../wedding-customizer.js"></scr'+'ipt>',inline+'\n<scr'+'ipt src="../../wedding-customizer.js"></scr'+'ipt>');
+   page=page.replace('(window.WEDDING_CONFIG&&window.WEDDING_CONFIG.dateTime)','(window.WEDDING_CONFIG&&window.WEDDING_CONFIG.couple&&window.WEDDING_CONFIG.couple.dateTime)');
+   page=page.replace('<title>Александр и Виктория — приглашение на свадьбу</title>',
+     '<title>'+escapeHtml(orderName())+' — приглашение на свадьбу</title>');
+   files.unshift({name:folder+'index.html',bytes:enc.encode(page)});
+   files.push({name:folder+'настройки.json',bytes:enc.encode(JSON.stringify(data,null,2))});
+   const readme='ÉTERNA · заказ '+orderId+'\n\n1. Открой ZIP и папку orders/'+orderId+'/\n2. На GitHub создай папку orders/'+orderId+'/ и загрузи туда index.html, все JPEG и настройки.json.\n3. Ничего в templates/eterna.html и wedding-config.js заменять не нужно.\n4. Публичная ссылка после публикации: https://iamvaga17.github.io/eterna-wedding/orders/'+orderId+'/\n5. Важно: RSVP пока демонстрационный и не сохраняет ответы.\n6. Для изменения заказа заново скачай комплект и замени файлы только в его папке.\n7. Не публикуй реальные данные и фото клиентов без разрешения.\n';
+   files.push({name:'ИНСТРУКЦИЯ.txt',bytes:enc.encode(readme)});
+   download(zip(files),'eterna-'+orderId+'.zip');
+   setStatus('Готов отдельный комплект заказа '+orderId+'. Загрузи папку orders/'+orderId+'/ на GitHub.');
+ }catch(e){setStatus('Ошибка экспорта: '+e.message)}
+ finally{buttons.forEach(b=>b.disabled=false)}
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+$('mobilePreviewToggle').addEventListener('click',()=>{const active=document.body.classList.toggle('mobile-preview-mode');$('mobilePreviewToggle').textContent=active?'Вернуться в редактор ↙':'На весь экран ↗';$('mobilePreviewToggle').setAttribute('aria-pressed',String(active));updatePreview()});
+$('downloadBtn').addEventListener('click',exportPackage);$('downloadBtnBottom').addEventListener('click',exportPackage);
+$('previewBtn').addEventListener('click',()=>{openWorkflowStage(3);refreshDressPreview();updatePreview();setStatus('Предпросмотр обновлён.')});
+// Force-load the deployed customizer with a unique URL inside the preview iframe.
+// Safari can otherwise reuse the old cached JS even when editor.html itself is fresh.
+const DRESS_PREVIEW_BUILD='20261118-dynamic-dress-8';
+let previewLoading=false;
+function refreshDressPreview(){
+ if(!isLegacy())return;
+ const frame=$('siteFrame'),doc=frame.contentDocument;
+ if(!doc||previewLoading)return;
+ previewLoading=true;
+ const existing=doc.getElementById('et-dress-preview-loader');if(existing)existing.remove();
+ const script=doc.createElement('script');script.id='et-dress-preview-loader';
+ script.src='../wedding-customizer.js?version='+DRESS_PREVIEW_BUILD;
+ script.onload=()=>{
+  previewLoading=false;updatePreview();
+  setTimeout(()=>{
+   updatePreview();
+   const ok=Boolean(doc.querySelector('#dress .et-dress-female')&&doc.querySelector('#dress .et-dress-male'));
+   if(!ok)setStatus('Не удалось включить новый дресс-код. Проверь, что wedding-customizer.js обновлён на GitHub.');
+  },450);
+ };
+ script.onerror=()=>{previewLoading=false;setStatus('Ошибка загрузки wedding-customizer.js. Проверь публикацию GitHub Pages.');};
+ doc.body.append(script);
+}
+setupWorkflow();
+$('previewVersion').addEventListener('change',()=>{data.template=$('previewVersion').value;syncEditorMode();changed();$('siteFrame').src=previewUrls[data.template]});
+$('siteFrame').addEventListener('load',()=>{
+ updatePreview();
+ if(isLegacy()){refreshDressPreview();setTimeout(updatePreview,400)}
+});
+$('resetBtn').addEventListener('click',async()=>{if(studioGenerating){setStatus('Дождись завершения генерации.');return}if(!confirm('Сбросить все изменения, включая фотографии и музыку?'))return;for(const key of [...PHOTO_KEYS,...STUDIO_KEYS,...PREMIERE_PHOTOS.map(k=>'premiere-'+k),'music']){try{await deleteMedia(key)}catch{}if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key]}data=normalizeOrder(structuredClone(defaults));localStorage.removeItem(draftKey());draw();updatePreview();setStatus('Черновик сброшен.')});
+async function loadPhotos(){for(const k of PHOTO_KEYS){if(photoUrls[k])URL.revokeObjectURL(photoUrls[k]);delete photoUrls[k]}
+ for(const key of PHOTO_KEYS){if(!localPhoto(key))continue;try{let blob=await readMedia(key);if(!blob&&orderId==='demo'){db??=await openDB();blob=await new Promise(resolve=>{let q=db.transaction('photos','readonly').objectStore('photos').get(key);q.onsuccess=()=>resolve(q.result);q.onerror=()=>resolve(null)});if(blob)await storeMedia(key,blob)}if(blob)cachedUrl(key,blob)}catch(e){setStatus('Не удалось восстановить фотографии — проверь хранилище Safari.')}}}
+function showOrder(){const select=$('orderSelect');select.replaceChildren();orders.forEach(o=>{const opt=document.createElement('option');opt.value=o.id;opt.textContent=o.label+' ('+o.id+')';select.append(opt)});select.value=orderId;$('orderUrlLabel').textContent='Адрес заказа: wedletter.ru/'+publicationSlug()+'/';}
+async function openOrder(id){if(!orders.some(o=>o.id===id))return;if(studioGenerating){setStatus('Дождись завершения генерации перед сменой заказа.');return}orderId=id;data=normalizeOrder(getJSON(draftKey(),copy(defaults)));$('previewVersion').value=data.template in previewUrls?data.template:'12';$('siteFrame').src=previewUrls[$('previewVersion').value];await Promise.all([loadPhotos(),loadMusic(),loadStudioPhotos(),loadPremierePhotos()]);draw();showOrder();updatePreview();if(data.publicSlugLocked&&data.publicSlug)renderShareLinks($('publishResult'),publicationSlug());else $('publishResult').replaceChildren();setStatus('Открыт заказ: '+orders.find(o=>o.id===id).label);
+ if(backupLastSaved.has(id))cloudMessage('Последняя серверная копия: '+backupLastSaved.get(id));
+ else cloudMessage('Проверка копии запланирована после открытия заказа.');
+ queueCloudBackup()}
+function orderName(){return [data.couple?.first,data.couple?.second].filter(Boolean).join(' и ')||'Новая свадьба'}
+$('orderSelect').addEventListener('change',e=>openOrder(e.target.value));
+$('newOrderBtn').addEventListener('click',async()=>{if(studioGenerating){setStatus('Дождись завершения генерации.');return}const name=prompt('Имя заказа (например: Анна и Максим):');if(!name?.trim())return;const id=uniqueId(name.trim());orders.push({id,label:name.trim(),publicSlug:id});storeOrder();const fresh=copy(defaults);fresh.publicSlug=id;localStorage.setItem('eterna-unified-test-order:'+id+':config',JSON.stringify(fresh));await openOrder(id)});
+$('duplicateOrderBtn').addEventListener('click',async()=>{
+ if(studioGenerating){setStatus('Дождись завершения генерации.');return}const name=prompt('Название копии:',orderName()+' — копия');
+ if(!name?.trim())return;
+ const from=orderId;
+ const id=uniqueId(name.trim());
+ const snapshot=copy(data);snapshot.publicSlug=id;delete snapshot.publicSlugLocked;
+ const keys=[...PHOTO_KEYS.filter(localPhoto),...STUDIO_KEYS.filter(key=>snapshot.broadcast?.photoAssets?.[key]),...PREMIERE_PHOTOS.map(name=>'premiere-'+name).filter(key=>snapshot.premiere?.photoAssets?.[key])];
+ const type=musicType(snapshot.music);
+ try{
+   for(const key of [...keys,...(type?['music']:[])]){
+     const blob=await readMedia(key,key==='music'?type:'image/jpeg',from);
+     if(!blob)throw Error('Не найден файл в исходном заказе.');
+     await storeMedia(key,blob,id);
+   }
+   orders.push({id,label:name.trim()});
+   storeOrder();
+   localStorage.setItem('eterna-unified-test-order:'+id+':config',JSON.stringify(snapshot));
+   await openOrder(id);
+ }catch(error){
+   setStatus('Не удалось скопировать заказ: '+error.message);
+ }
+});
+$('deleteOrderBtn').addEventListener('click',async()=>{if(studioGenerating){setStatus('Дождись завершения генерации.');return}if(orders.length===1){setStatus('Нельзя удалить единственный заказ.');return}if(!confirm('Удалить этот заказ и его файлы из браузера?'))return;const old=orderId;if(backupTimers.has(old)){clearTimeout(backupTimers.get(old));backupTimers.delete(old)}backupPendingIds.delete(old);for(const key of [...PHOTO_KEYS,...STUDIO_KEYS,...PREMIERE_PHOTOS.map(name=>'premiere-'+name),'music']){try{await deleteMedia(key)}catch{}}localStorage.removeItem(draftKey());orders=orders.filter(o=>o.id!==old);storeOrder();await openOrder(orders[0].id)});
+async function start(){$('previewVersion').value=data.template in previewUrls?data.template:'12';$('siteFrame').src=previewUrls[$('previewVersion').value];await Promise.all([loadPhotos(),loadMusic(),loadStudioPhotos(),loadPremierePhotos()]);showOrder();draw();updatePreview();if(data.publicSlugLocked&&data.publicSlug)renderShareLinks($('publishResult'),publicationSlug());else $('publishResult').replaceChildren();}
+
+
+/* WEDLETTER v17 private automatic server backup. Existing v16 remains available. */
+const BACKUP_ENDPOINT='https://wedletter.ru/api/backup.php';
+let backupBusy=false;
+const backupTimers=new Map();
+const backupLastSaved=new Map();
+function cloudPanel(){
+ let node=document.getElementById('wedletter-backup-panel');
+ if(node)return node;
+ node=document.createElement('section');node.id='wedletter-backup-panel';
+ node.style.cssText='border:1px solid #d7cabb;background:#fffaf4;border-radius:14px;padding:13px;margin:16px 0;max-width:100%';
+ node.innerHTML='<strong style="display:block;margin-bottom:7px">☁ Автоматическая копия на SpaceWeb</strong><p id="cloud-message" style="font-size:12px;margin:5px 0 12px;color:#73695f">Сохраняется автоматически после изменений, пока редактор открыт и ключ введён.</p><button type="button" id="cloud-save" style="margin:4px 6px 4px 0">Сохранить сейчас</button><button type="button" id="cloud-restore" class="secondary" style="margin:4px 0">Восстановить с сервера</button>';
+ const settings=document.querySelector('.publish-settings');
+ if(settings)settings.parentNode.insertBefore(node,settings);
+ else document.querySelector('main')?.append(node);
+ node.querySelector('#cloud-save').addEventListener('click',()=>runCloudBackup(true));
+ node.querySelector('#cloud-restore').addEventListener('click',restoreCloudBackup);
+ return node;
+}
+function cloudMessage(msg){let n=cloudPanel().querySelector('#cloud-message');if(n)n.textContent=msg}
+function cloudKey(){return document.getElementById('publishPassword')?.value.trim()||''}
+async function backupCall(payload,key){
+ const response=await fetch(BACKUP_ENDPOINT,{method:'POST',headers:{Authorization:'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify(payload),cache:'no-store'});
+ const out=await response.json().catch(()=>({}));
+ if(!response.ok||out.ok!==true)throw Error(out.error||'HTTP '+response.status);
+ return out;
+}
+function queueCloudBackup(id=orderId){
+ if(!orders.some(o=>o.id===id))return;
+ if(backupTimers.has(id))clearTimeout(backupTimers.get(id));
+ backupTimers.set(id,setTimeout(()=>{
+  backupTimers.delete(id);
+  if(!cloudKey()){if(id===orderId)cloudMessage('Ожидается ключ SpaceWeb — копия пока только в Safari.');return}
+  if(id===orderId)runCloudBackup(false);
+  else {backupPendingIds.add(id);if(!backupBusy)flushBackupQueue()}
+ },8000));
+ if(id===orderId)cloudMessage('Есть изменения · автоматическое сохранение через несколько секунд…');
+}
+const backupPendingIds=new Set();
+async function flushBackupQueue(){
+ if(backupBusy||!cloudKey()||!backupPendingIds.size)return;
+ const next=backupPendingIds.values().next().value;
+ backupPendingIds.delete(next);
+ await runCloudBackup(false,next);
+}
+function bytesToBase64(bytes){
+ let str='';for(let i=0;i<bytes.length;i+=16384)str+=String.fromCharCode(...bytes.subarray(i,i+16384));
+ return btoa(str);
+}
+async function runCloudBackup(manual,id=orderId){
+ if(backupBusy){backupPendingIds.add(id);return}
+ const key=cloudKey();
+ if(!key){cloudMessage('Сначала введи секретный ключ в настройках публикации.');if(manual)document.querySelector('.publish-settings').open=true;return}
+ const entry=orders.find(o=>o.id===id);
+ if(!entry)return;
+ const config=id===orderId?copy(data):getJSON('eterna-unified-test-order:'+id+':config',null);
+ if(!config){if(id===orderId)cloudMessage('Не найден локальный черновик заказа.');return}
+ backupBusy=true;
+ if(id===orderId)cloudMessage('Сохраняю заказ на SpaceWeb…');
+ try{
+  const remote=await backupCall({action:'status',orderId:id},key);
+  const remoteHashes=remote.mediaHashes||{};
+  let uploaded=0;
+  const keys=[...new Set([...PHOTO_KEYS,...STUDIO_KEYS,...PREMIERE_PHOTOS.map(k=>'premiere-'+k),'music'])];
+  for(const media of keys){
+   const type=media==='music'?(musicType(config.music)||'audio/mpeg'):'image/jpeg';
+   const blob=await readMedia(media,type,id);
+   if(!blob)continue;
+   const bytes=new Uint8Array(await blob.arrayBuffer());
+   if(!bytes.byteLength||bytes.byteLength>9500000)throw Error('Слишком большой файл: '+media);
+   const shaBytes=new Uint8Array(await crypto.subtle.digest('SHA-256',bytes));
+   const hash=Array.from(shaBytes,b=>b.toString(16).padStart(2,'0')).join('');
+   if(remoteHashes[media]===hash)continue;
+   if(id===orderId)cloudMessage('Загружаю файл: '+media+'…');
+   await backupCall({action:'media',orderId:id,key:media,sha256:hash,content:bytesToBase64(bytes)},key);
+   uploaded++;
+  }
+  await backupCall({action:'config',orderId:id,label:entry?.label||id,config},key);
+  const stamp=new Date().toLocaleString('ru-RU');
+  backupLastSaved.set(id,stamp);
+  if(id===orderId)cloudMessage('Автокопия сохранена на SpaceWeb · '+stamp+' · новых файлов: '+uploaded);
+ }catch(error){
+  if(id===orderId)cloudMessage('Ошибка копирования: '+String(error.message||error)+'. Черновик остаётся в Safari; повтори «Сохранить сейчас».');
+ }finally{
+  backupBusy=false;
+  if(backupPendingIds.size&&cloudKey())setTimeout(flushBackupQueue,1000);
+ }
+}
+async function restoreCloudBackup(){
+ const key=cloudKey();if(!key){cloudMessage('Нужен ключ SpaceWeb.');return}
+ const id=orderId;
+ if(!confirm('Восстановить серверный черновик для текущего заказа '+id+'? Текущая локальная версия будет заменена.'))return;
+ try{
+  const result=await backupCall({action:'restore',orderId:id},key);
+  const backup=result.backup,remote=await backupCall({action:'status',orderId:id},key);
+  if(!backup||!backup.config||typeof backup.config!=='object')throw Error('Неверная структура копии');
+  const imported=copy(backup.config);
+  cloudMessage('Загружаю сохранённые файлы…');
+  for(const media of Object.keys(remote.mediaHashes||{})){
+   if(!/^[a-zA-Z0-9-]{1,64}$/.test(media))continue;
+   const item=await backupCall({action:'media-get',orderId:id,key:media},key);
+   const str=atob(item.content),bytes=Uint8Array.from(str,c=>c.charCodeAt(0));
+   await storeMedia(media,new Blob([bytes]),id);
+  }
+  if(orderId!==id)throw Error('Заказ был переключён, локальные настройки не изменены.');
+  localStorage.setItem(draftKey(),JSON.stringify(imported));
+  cloudMessage('Серверная копия восстановлена. Перезагружаю редактор…');
+  location.reload();
+ }catch(e){cloudMessage('Ошибка восстановления: '+String(e.message||e))}
+}
+
+
+/* WEDLETTER v51: authorization boundary diagnostic, never writes wedding data. */
+(function installRegistrationCheck(){
+ const panel=document.querySelector('.publish-settings');
+ if(!panel)return;
+ const box=document.createElement('div');
+ box.style.cssText='border:1px solid #dfd4c7;border-radius:12px;background:#faf7f1;padding:14px;margin:15px 0';
+ const title=document.createElement('strong');
+ title.textContent='Диагностика регистрации (без публикации)';
+ title.style.cssText='display:block;margin-bottom:8px';
+ const description=document.createElement('p');
+ description.textContent='Проверим действующий ключ SpaceWeb без создания свадьбы. Отправим адрес, который сервер обязан отклонить после проверки авторизации.';
+ description.style.cssText='font-size:13px;color:#75695e;margin:0 0 12px';
+ const btn=document.createElement('button');btn.type='button';btn.className='secondary';btn.textContent='Проверить авторизацию';
+ const output=document.createElement('p');output.setAttribute('role','status');output.style.cssText='font-size:13px;overflow-wrap:anywhere;margin:10px 0 0;white-space:pre-wrap';
+ btn.addEventListener('click',async()=>{
+  const key=document.getElementById('publishPassword')?.value.trim();
+  if(!key){output.textContent='Введи ключ в поле SpaceWeb выше.';return;}
+  btn.disabled=true;output.textContent='Проверяем авторизацию без записи в базу…';
+  const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),14000),started=Date.now();
+  try{
+   const response=await fetch(REGISTER_SERVER,{
+    method:'POST',cache:'no-store',credentials:'omit',
+    headers:{Authorization:'Bearer '+key,'Content-Type':'application/json'},
+    body:JSON.stringify({slug:'INVALID_TEST_SLUG!',displayName:'Диагностика WEDLETTER'}),
+    signal:ctrl.signal
+   });
+   const body=await response.json().catch(()=>({}));
+   const seconds=((Date.now()-started)/1000).toFixed(1);
+   if(response.status===400 && body.error==='Неверный адрес свадьбы')
+    output.textContent='Авторизация успешна: HTTP 400, сервер проверил ключ и правильно отклонил тестовый адрес за '+seconds+' с. База не изменялась.';
+   else if(response.status===401)
+    output.textContent='HTTP 401: сервер отклонил текущий ключ SpaceWeb. Проверь, что в поле введён действующий ключ публикации.';
+   else
+    output.textContent='HTTP '+response.status+': '+String(body.error||'Неожиданный ответ').slice(0,230)+'\nВремя '+seconds+' с. Данные не публиковались.';
+  }catch(error){
+   output.textContent=ctrl.signal.aborted?'Тайм-аут 14 секунд: запрос с ключом не завершился.':'Сетевая ошибка/CORS: '+String(error?.message||error);
+  }finally{clearTimeout(timer);btn.disabled=false}
+ });
+ box.append(title,description,btn,output);panel.append(box);
+})();
+
+start();
+setTimeout(()=>{cloudPanel();if(cloudKey())queueCloudBackup();},1800);
+document.addEventListener('visibilitychange',()=>{
+ if(document.visibilityState==='visible'&&cloudKey())queueCloudBackup();
+});
+window.addEventListener('online',()=>{if(cloudKey())queueCloudBackup()});
+})();
+</script></body></html>
