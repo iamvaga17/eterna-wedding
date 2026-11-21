@@ -1,0 +1,51 @@
+name: WEDLETTER | Inspect live wedding registration safely
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compare live registration PHP to reviewed source without exposing secrets
+        env:
+          FTP_USER: ${{ secrets.SPACEWEB_API_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SPACEWEB_API_FTP_PASSWORD }}
+        run: |
+          set -euo pipefail
+          test -n "$FTP_USER" && test -n "$FTP_PASSWORD"
+          echo "77.222.40.70 vh404.sweb.ru" | sudo tee -a /etc/hosts >/dev/null
+          python3 - <<'PY'
+          import ftplib,hashlib,os,ssl
+          from pathlib import Path
+          reviewed=Path('spaceweb-api-release/register-wedding.php').read_bytes()
+          ftp=ftplib.FTP_TLS(context=ssl.create_default_context(),timeout=20)
+          ftp.connect('vh404.sweb.ru',21)
+          ftp.login(os.environ['FTP_USER'],os.environ['FTP_PASSWORD'])
+          ftp.prot_p()
+          pieces=[]
+          try:ftp.retrbinary('RETR register-wedding.php',pieces.append)
+          finally:
+            try:ftp.quit()
+            except Exception:ftp.close()
+          live=b''.join(pieces)
+          print('LIVE PHP EXISTS:',bool(live))
+          print('LIVE LENGTH:',len(live))
+          print('REVIEWED LENGTH:',len(reviewed))
+          print('MATCHES REVIEWED SOURCE:',hashlib.sha256(live).digest()==hashlib.sha256(reviewed).digest())
+          for label,token in [
+            ('AUTH BEFORE DATABASE',b'hash_equals'),
+            ('DATABASE SECRET PATH',b'wedletter-db-secret.php'),
+            ('PDO CONNECTION',b'new PDO('),
+            ('MYSQL UPSERT',b'INSERT INTO wedletter_weddings'),
+            ('RSVP RETURNED',b'rsvpEndpoint'),
+            ('ERROR HANDLER',b'catch(Throwable'),
+            ('CORS PREFLIGHT',b'Access-Control-Allow-Headers')]:
+            print(label+':',token in live)
+          print('Read-only FTPS inspection complete: no file or database writes.')
+          PY
