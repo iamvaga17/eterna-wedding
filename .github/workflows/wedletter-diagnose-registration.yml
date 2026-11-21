@@ -1,0 +1,74 @@
+name: WEDLETTER | Diagnose wedding registration read-only
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wedletter-spaceweb-api
+  cancel-in-progress: false
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check probe syntax
+        run: php -l tools/spaceweb-registration-probe.php
+      - name: Temporarily run authenticated read-only registration probe, then delete
+        env:
+          FTP_USER: ${{ secrets.SPACEWEB_API_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SPACEWEB_API_FTP_PASSWORD }}
+        run: |
+          set -euo pipefail
+          test -n "$FTP_USER" && test -n "$FTP_PASSWORD"
+          echo "77.222.40.70 vh404.sweb.ru" | sudo tee -a /etc/hosts >/dev/null
+          python3 - <<'PY'
+          import ftplib,hashlib,io,json,os,secrets,ssl,urllib.request,urllib.error
+          from pathlib import Path
+          token=secrets.token_urlsafe(40)
+          checksum=hashlib.sha256(token.encode()).hexdigest()
+          filename='wedletter_registration_probe_'+secrets.token_hex(16)+'.php'
+          source=Path('tools/spaceweb-registration-probe.php').read_bytes()
+          assert source.count(b'__TOKEN_SHA256__')==1
+          contents=source.replace(b'__TOKEN_SHA256__',checksum.encode())
+          ftp=ftplib.FTP_TLS(context=ssl.create_default_context(),timeout=20)
+          ftp.connect('vh404.sweb.ru',21)
+          ftp.login(os.environ['FTP_USER'],os.environ['FTP_PASSWORD'])
+          ftp.prot_p()
+          uploaded=False
+          try:
+              ftp.storbinary('STOR '+filename,io.BytesIO(contents))
+              uploaded=True
+              request=urllib.request.Request('https://wedletter.ru/api/'+filename,headers={'X-Wedletter-Probe':token,'Cache-Control':'no-store'},method='GET')
+              try:
+                  with urllib.request.urlopen(request,timeout=25) as response:
+                      data=json.loads(response.read(10000))
+              except urllib.error.HTTPError as error:
+                  data=json.loads(error.read(10000))
+              if not isinstance(data,dict) or not isinstance(data.get('checks'),dict):
+                  raise RuntimeError('Diagnostic did not return valid check results')
+              for name,value in data['checks'].items():
+                  print('CHECK:',name,'=',value)
+              print('TEST SLUG PRESENT:',data.get('test_slug_exists','unknown'))
+              print('OVERALL:',data.get('ok'))
+              if data.get('error_class'):
+                  print('FAILURE CATEGORY:',data['error_class'])
+                  print('LAST CHECK:',data.get('failure_stage'))
+              if not data.get('ok'):
+                  raise RuntimeError('Registration environment verification failed')
+              print('Read-only registration environment checks passed.')
+          finally:
+              if uploaded:
+                  try:
+                      ftp.delete(filename)
+                      print('Temporary registration probe deleted from live API.')
+                  except Exception as error:
+                      print('::error::Remove temporary registration probe from /public_html/api: '+filename)
+                      raise
+              try:ftp.quit()
+              except Exception:ftp.close()
+          PY
