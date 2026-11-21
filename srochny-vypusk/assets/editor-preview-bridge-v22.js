@@ -28,7 +28,7 @@
     window.ETERNA_BROADCAST_LIVE_ZOOM_TEXT = b.liveZoomResult;
     window.ETERNA_BROADCAST_FORECAST_RESULT = b.forecastResult;
     // Every visible editorial section is configurable from the same order data.
-    const contentMap={"introTag":".opening .broadcast-label","introTitle":".opening h1","introText":".opening-copy > p:not(.broadcast-label)","introPhotoCaption":".monitor figcaption span:first-child","tickerLabel":".newsline-label","tickerText":".newsline p","liveTag":".live .section-bar .broadcast-label","liveCaption":".news-photo figcaption > span:first-of-type","archiveTag":".archive .section-kicker","newsTag":".desk-topline .broadcast-label","newsKicker":".desk-headline .section-kicker","scheduleTag":".field-report-head .section-kicker","scheduleTitle":"#schedule-title","venueText":".venue-note","forecastTag":".forecast .section-kicker","rsvpTag":".response .section-kicker","rsvpTitle":"#response-title","rsvpText":".response > div:first-child > p:last-child","footerText":".signoff p","news0Button":"[data-desk=\"0\"]","news1Button":"[data-desk=\"1\"]","news2Button":"[data-desk=\"2\"]"};
+    const contentMap={"introTag":".opening .broadcast-label","introText":".opening-copy > p:not(.broadcast-label)","introPhotoCaption":".monitor figcaption span:first-child","tickerLabel":".newsline-label","tickerText":".newsline p","liveTag":".live .section-bar .broadcast-label","liveCaption":".news-photo figcaption > span:first-of-type","archiveTag":".archive .section-kicker","newsTag":".desk-topline .broadcast-label","newsKicker":".desk-headline .section-kicker","scheduleTag":".field-report-head .section-kicker","scheduleTitle":"#schedule-title","venueText":".venue-note","forecastTag":".forecast .section-kicker","rsvpTag":".response .section-kicker","rsvpTitle":"#response-title","rsvpText":".response > div:first-child > p:last-child","footerText":".signoff p","news0Button":"[data-desk=\"0\"]","news1Button":"[data-desk=\"1\"]","news2Button":"[data-desk=\"2\"]"};
     for(const [key,selector] of Object.entries(contentMap)){
       if(key.endsWith('Button') || key==='introTag'||key==='liveTag'||key==='newsTag'){
         const node=document.querySelector(selector);
@@ -44,6 +44,17 @@
           }
         }
       } else set(selector,b[key]);
+    }
+    if(typeof b.introTitle==='string'){
+      const title=document.querySelector('.opening h1');
+      if(title){
+        const words=b.introTitle.trim().split(/\s+/);
+        const midpoint=Math.max(1,Math.ceil(words.length/2));
+        title.replaceChildren(document.createTextNode(words.slice(0,midpoint).join(' ')),document.createElement('br'));
+        const highlight=document.createElement('em');
+        highlight.textContent=words.slice(midpoint).join(' ');
+        title.append(highlight);
+      }
     }
     if(typeof b.introButton==='string') {
       const a=document.querySelector('#tune-in');
