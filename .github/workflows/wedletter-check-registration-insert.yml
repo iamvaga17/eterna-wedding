@@ -1,0 +1,69 @@
+name: WEDLETTER | Check registration INSERT without writing
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wedletter-spaceweb-api
+  cancel-in-progress: false
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate read-only probe syntax
+        run: php -l tools/spaceweb-insert-readonly-probe.php
+      - name: Test registration INSERT plan and privileges without changing data
+        env:
+          FTP_USER: ${{ secrets.SPACEWEB_API_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SPACEWEB_API_FTP_PASSWORD }}
+        run: |
+          set -euo pipefail
+          test -n "$FTP_USER" && test -n "$FTP_PASSWORD"
+          echo "77.222.40.70 vh404.sweb.ru" | sudo tee -a /etc/hosts >/dev/null
+          python3 - <<'PY'
+          import ftplib,hashlib,io,json,os,secrets,ssl,urllib.request,urllib.error
+          from pathlib import Path
+          secret=secrets.token_urlsafe(40)
+          digest=hashlib.sha256(secret.encode()).hexdigest()
+          filename='wedletter_insert_probe_'+secrets.token_hex(16)+'.php'
+          source=Path('tools/spaceweb-insert-readonly-probe.php').read_bytes()
+          assert source.count(b'__TOKEN_SHA256__')==1
+          contents=source.replace(b'__TOKEN_SHA256__',digest.encode())
+          ftp=ftplib.FTP_TLS(context=ssl.create_default_context(),timeout=20)
+          ftp.connect('vh404.sweb.ru',21)
+          ftp.login(os.environ['FTP_USER'],os.environ['FTP_PASSWORD'])
+          ftp.prot_p()
+          uploaded=False
+          try:
+              ftp.storbinary('STOR '+filename,io.BytesIO(contents))
+              uploaded=True
+              request=urllib.request.Request('https://wedletter.ru/api/'+filename,headers={'X-Wedletter-Probe':secret,'Cache-Control':'no-store'},method='GET')
+              try:
+                  with urllib.request.urlopen(request,timeout=25) as response:
+                      data=json.loads(response.read(10000))
+              except urllib.error.HTTPError as error:
+                  data=json.loads(error.read(10000))
+              if not isinstance(data,dict) or not isinstance(data.get('checks'),dict):
+                  raise RuntimeError('Bad diagnostic response')
+              for name,value in data['checks'].items():
+                  print('CHECK:',name,'=',value)
+              if 'explain_rows' in data:print('EXPLAIN ROWS:',data['explain_rows'])
+              if 'error_category' in data:print('ERROR CATEGORY:',data['error_category'],'SQLSTATE:',data.get('error_sqlstate',''))
+              print('OVERALL:',data.get('ok'))
+              if not data.get('ok'):raise RuntimeError('Registration SQL analysis failed')
+              print('Diagnostic complete; no database rows were written.')
+          finally:
+              if uploaded:
+                  try:ftp.delete(filename);print('Temporary INSERT probe deleted from SpaceWeb.')
+                  except Exception:
+                      print('::error::Temporary diagnostic file cleanup failed; manually remove '+filename)
+                      raise
+              try:ftp.quit()
+              except Exception:ftp.close()
+          PY
