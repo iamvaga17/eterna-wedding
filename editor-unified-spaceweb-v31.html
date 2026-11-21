@@ -665,7 +665,7 @@ async function exportPremiere(folder,files,config,id){
   files.push({name:folder+'assets/'+file,bytes:new Uint8Array(await r.arrayBuffer())});
  }
  html=html.replaceAll('../eterna-12/assets/','assets/');
- const inject='<script>window.PREMIERE_ORDER='+JSON.stringify(config).replace(/</g,'\\u003c')+';<\/script>';
+ const inject='<script>window.PREMIERE_ORDER='+JSON.stringify(config).replace(/</g,'\\u003c')+';'+'</script>';
  html=html.replace('</head>',inject+'</head>');
  files.push({name:folder+'index.html',bytes:enc.encode(html)});
  files.push({name:folder+'настройки.json',bytes:enc.encode(JSON.stringify(config,null,2))});
@@ -678,7 +678,7 @@ function syncWorkflowTemplate(){
    if(el.dataset.forTemplate==='shared'){el.hidden=false;return}
    el.hidden=el.dataset.forTemplate!==selected&&!(el.dataset.forTemplate==='eterna'&&!broadcast&&!premiere)
  });
- WORKFLOW_TABS[1][1]=premiere?'6 фотографий из вашей истории':broadcast?'4 настоящие фотографии пары':'Фотографии, фоновые сцены и палитра';
+ WORKFLOW_TABS[1][1]=premiere?'5 фотографий из вашей истории':broadcast?'4 настоящие фотографии пары':'Фотографии, фоновые сцены и палитра';
  WORKFLOW_TABS[2][1]=premiere?'Киносцены, расписание, дресс-код и RSVP':broadcast?'Новости, история и прогноз':'Расписание, текстовые блоки и RSVP';
  const page1=$('workflow-stage-1'),page2=$('workflow-stage-2');
  if(page1)page1.querySelector('.workflow-intro').textContent=WORKFLOW_TABS[1][1];
@@ -1995,6 +1995,12 @@ async function exportPackage(){
    const legacy=isLegacy();
    const folder='orders/'+id+'/';
    const files=[];
+   if($('previewVersion').value==='premiere'){
+      await exportPremiere(folder,files,config,id);
+      download(zip(files),'wedletter-premiere-'+id+'.zip');
+      setStatus('Готов комплект PREMIÈRE для заказа '+id+'.');
+      return;
+   }
    if($('previewVersion').value==='broadcast'){
       await exportBroadcast(folder,files,config,id);
       download(zip(files),'eterna-broadcast-'+id+'.zip');
@@ -2113,7 +2119,7 @@ $('duplicateOrderBtn').addEventListener('click',async()=>{
  }
 });
 $('deleteOrderBtn').addEventListener('click',async()=>{if(studioGenerating){setStatus('Дождись завершения генерации.');return}if(orders.length===1){setStatus('Нельзя удалить единственный заказ.');return}if(!confirm('Удалить этот заказ и его файлы из браузера?'))return;const old=orderId;if(backupTimers.has(old)){clearTimeout(backupTimers.get(old));backupTimers.delete(old)}backupPendingIds.delete(old);for(const key of [...PHOTO_KEYS,...STUDIO_KEYS,'music']){try{await deleteMedia(key)}catch{}}localStorage.removeItem(draftKey());orders=orders.filter(o=>o.id!==old);storeOrder();await openOrder(orders[0].id)});
-async function start(){$('previewVersion').value=data.template in previewUrls?data.template:'12';$('siteFrame').src=previewUrls[$('previewVersion').value];await Promise.all([loadPhotos(),loadMusic(),loadStudioPhotos()]);showOrder();draw();updatePreview();if(data.publicSlugLocked&&data.publicSlug)renderShareLinks($('publishResult'),publicationSlug());else $('publishResult').replaceChildren();}
+async function start(){$('previewVersion').value=data.template in previewUrls?data.template:'12';$('siteFrame').src=previewUrls[$('previewVersion').value];await Promise.all([loadPhotos(),loadMusic(),loadStudioPhotos(),loadPremierePhotos()]);showOrder();draw();updatePreview();if(data.publicSlugLocked&&data.publicSlug)renderShareLinks($('publishResult'),publicationSlug());else $('publishResult').replaceChildren();}
 
 
 /* WEDLETTER v17 private automatic server backup. Existing v16 remains available. */
@@ -2178,7 +2184,7 @@ async function runCloudBackup(manual,id=orderId){
   const remote=await backupCall({action:'status',orderId:id},key);
   const remoteHashes=remote.mediaHashes||{};
   let uploaded=0;
-  const keys=[...new Set([...PHOTO_KEYS,...STUDIO_KEYS,'music'])];
+  const keys=[...new Set([...PHOTO_KEYS,...STUDIO_KEYS,...PREMIERE_PHOTOS.map(k=>'premiere-'+k),'music'])];
   for(const media of keys){
    const type=media==='music'?(musicType(config.music)||'audio/mpeg'):'image/jpeg';
    const blob=await readMedia(media,type,id);
