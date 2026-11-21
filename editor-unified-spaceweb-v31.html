@@ -665,7 +665,7 @@ async function exportPremiere(folder,files,config,id){
   files.push({name:folder+'assets/'+file,bytes:new Uint8Array(await r.arrayBuffer())});
  }
  html=html.replaceAll('../eterna-12/assets/','assets/');
- const inject='<script>window.PREMIERE_ORDER='+JSON.stringify(config).replace(/</g,'\\u003c')+';'+'</script>';
+ const inject='<script>window.PREMIERE_ORDER='+JSON.stringify(config).replace(/</g,'\\u003c')+';'+'<'+'/script>';
  html=html.replace('</head>',inject+'</head>');
  files.push({name:folder+'index.html',bytes:enc.encode(html)});
  files.push({name:folder+'настройки.json',bytes:enc.encode(JSON.stringify(config,null,2))});
