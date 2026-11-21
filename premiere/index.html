@@ -20,9 +20,180 @@ main{background:var(--ink)}.scene{position:relative;overflow:hidden}.scene-title
 .rsvp{background:radial-gradient(circle at 50% 8%,#59312c,#120b0b 65%);padding:115px 0}.rsvp .wrap{text-align:center}.ticket{margin:45px auto 0;max-width:860px;display:grid;grid-template-columns:.7fr 1.35fr;min-height:280px;text-align:left;background:#ede1ce;color:#251a17;box-shadow:0 20px 70px #0008;border-radius:13px;position:relative;overflow:hidden}.ticket::before,.ticket::after{content:"";position:absolute;top:50%;width:30px;height:30px;border-radius:50%;background:#2a1415;transform:translateY(-50%)}.ticket::before{left:-15px}.ticket::after{right:-15px}.ticket-left{padding:38px;border-right:2px dashed #927d6975}.ticket-left h3{font-size:64px}.ticket-left p{font-size:11px;letter-spacing:.16em;text-transform:uppercase}.ticket-body{padding:35px 45px}.rsvp-form{display:grid;gap:12px}.rsvp-form label{font-size:12px}.rsvp-form input:not([type=radio]),.rsvp-form textarea{width:100%;border:1px solid #b8a28c;background:#fffaf2;padding:12px;border-radius:4px;color:#271a15}.rsvp-form .choices{display:flex;gap:20px;flex-wrap:wrap}.rsvp-form button{border:none;border-radius:35px;padding:14px 24px;background:#641d2b;color:#fff2e1;font-weight:700;letter-spacing:.05em}.rsvp-status{font-size:12px}.rsvp-status:empty{display:none}.end{min-height:450px;display:grid;place-items:center;text-align:center;background:radial-gradient(ellipse at 50% 40%,#3b2320,#110b0b 70%);padding:95px 20px}.end h2{font-size:clamp(43px,7vw,82px);color:#e8cca4}.end p{font-size:12px;letter-spacing:.19em;margin-top:20px}.back-top{font-size:11px;letter-spacing:.15em;margin-top:38px;display:inline-block;text-decoration:none}
 @media(max-width:750px){.wrap{width:min(100% - 36px,630px)}.hero{min-height:100svh}.reel{top:11%;left:4%;opacity:.42}.hero-inner{padding:75px 10px}.hero h1{font-size:clamp(58px,13vw,105px)}.hero-kicker{margin-top:26px}.hero-names{font-size:clamp(25px,6vw,42px)}.hero::before,.hero::after{width:18%}.intro{grid-template-columns:1fr}.intro-image{min-height:380px;height:48vh}.intro-image::after{background:linear-gradient(0deg,#18110f,transparent 60%)}.intro-copy{padding:20px 25px 80px}.story{padding:85px 0}.film-strip{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding:14px 24px 40px;gap:22px;margin:0 -18px}.film-frame{min-width:78%;scroll-snap-align:center}.schedule,.venue,.dress,.rsvp{padding:85px 0}.schedule-list::before{left:83px}.schedule-item{grid-template-columns:65px 20px 1fr;gap:8px}.schedule-time{font-size:21px}.schedule-item h3{font-size:23px}.venue-grid{grid-template-columns:1fr;gap:4px}.venue-photo{height:340px}.venue-info{padding:20px 3px}.ticket{grid-template-columns:1fr;max-width:520px}.ticket-left{border-right:0;border-bottom:2px dashed #927d6975;padding:26px 30px}.ticket-left h3{font-size:46px}.ticket-body{padding:29px 30px}.ticket::before,.ticket::after{top:32%;}.rsvp-form .choices{gap:10px}.rsvp-form button{width:100%}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}
+
+/* PREMIÈRE 1.1 · art-directed cinematic environments
+   Layered lighting, velvet, cinema dust, film texture and theater silhouettes.
+   Pure CSS; zero video or external background dependencies. */
+:root{--cinema-gold:#f0c58c}
+.hero{
+ background:
+   radial-gradient(ellipse 75% 60% at 67% 25%,#e8a76c19 0,transparent 75%),
+   radial-gradient(ellipse 43% 38% at 22% 49%,#efc1812c,transparent 85%),
+   radial-gradient(ellipse 72% 76% at 54% 48%,#573522b8,#190f0f 75%,#070606 100%);
+}
+.hero .hero-inner::before{
+ content:"";position:absolute;inset:4% -7%;z-index:-1;pointer-events:none;
+ border:1px solid #dfbc7954;border-image:linear-gradient(120deg,transparent,#bb8c555c,transparent) 1;
+ box-shadow:inset 0 0 70px #cea17610;
+ mask-image:linear-gradient(to bottom,transparent,#000 20%,#000 78%,transparent);
+}
+.hero::before,.hero::after{
+ width:clamp(100px,24%,390px);
+ background:
+  repeating-linear-gradient(90deg,#26060c 0 12px,#5a1724 24px,#771f32 35px,#3b0c18 54px,#180507 66px),
+  linear-gradient(90deg,#3f0b16,#260711);
+ box-shadow:inset -22px 0 32px #050202a6,inset 7px 0 20px #c77b5b29,0 0 60px #0009;
+ filter:drop-shadow(10px 0 19px #000b);
+}
+.hero .projector-beam{
+ background:
+   conic-gradient(from 208deg at 8% 36%,transparent 0 12deg,#f0ca7733 20deg,#ffedbd20 28deg,#ebbc6c1a 33deg,transparent 43deg 360deg),
+   radial-gradient(ellipse at 44% 42%,#ffd7a01c,transparent 70%);
+ filter:blur(8px) saturate(1.1);opacity:.95;
+}
+.hero::selection{background:#f0c58c;color:#170f0d}
+.cinema-projector{
+ position:absolute;top:25%;left:1.6%;z-index:2;width:clamp(65px,15vw,160px);
+ aspect-ratio:1.1;pointer-events:none;transform:rotate(-7deg);
+ opacity:.82;filter:drop-shadow(8px 17px 19px #000b);
+}
+.cinema-projector::before{
+ content:"";position:absolute;left:13%;top:27%;width:76%;height:50%;
+ background:linear-gradient(150deg,#5b5042,#171513 58%,#79654c 85%,#201a15);
+ border:2px solid #b09169a8;border-radius:13px 8px 8px 10px;
+ box-shadow:inset 7px 7px 13px #d5b58c40,inset -8px -4px 14px #000b;
+}
+.cinema-projector::after{
+ content:"";position:absolute;right:-6%;top:36%;width:28%;height:32%;
+ background:radial-gradient(ellipse at 90% 50%,#ffebb1 0%,#d6aa62 14%,#6c5840 30%,#191716 54%,#65513b 90%);
+ clip-path:polygon(0 8%,100% 0,100% 100%,0 92%);
+ box-shadow:0 0 35px #fff2b56b;
+}
+.cinema-projector .projector-feet{
+ position:absolute;left:31%;bottom:0;width:42%;height:27%;
+ border-left:8px solid #635743;border-right:8px solid #483c2d;
+ transform:perspective(120px) rotateX(16deg);border-radius:3px;
+}
+.cinema-projector .projector-lens{
+ position:absolute;right:-10%;top:43%;width:14%;aspect-ratio:1;border-radius:50%;
+ background:radial-gradient(circle,#ffecb9 0 15%,#e6b76b 28%,#2b2117 70%);
+ box-shadow:0 0 23px 13px #ffdfa958;
+ animation:lens-glimmer 4s ease-in-out infinite alternate;
+}
+@keyframes lens-glimmer{to{box-shadow:0 0 38px 23px #ffdfa975;filter:brightness(1.14)}}
+.hero .reel{z-index:3;left:6%;top:13%;width:clamp(85px,14vw,170px);opacity:.82}
+.cinema-dust,.cinema-dust::before,.cinema-dust::after{
+ position:absolute;inset:0;z-index:0;pointer-events:none;
+ background-image:
+ radial-gradient(2px 2px at 17% 15%,#ffd49eaf 60%,transparent 100%),
+ radial-gradient(2px 2px at 32% 51%,#f0ce91a3 60%,transparent 100%),
+ radial-gradient(1.5px 1.5px at 66% 24%,#ffdea9af 60%,transparent 100%),
+ radial-gradient(1.4px 1.4px at 81% 72%,#ffe7c47a 60%,transparent 100%),
+ radial-gradient(2px 2px at 92% 45%,#e3a76a87 60%,transparent 100%);
+ background-size:440px 380px;opacity:.5;
+ animation:drifting-dust 18s linear infinite;
+}
+.cinema-dust::before,.cinema-dust::after{content:"";background-size:600px 540px;opacity:.65;animation-duration:25s}
+.cinema-dust::after{background-size:350px 270px;animation-direction:reverse;opacity:.35}
+@keyframes drifting-dust{to{background-position:50px -70px}}
+.hero .hero-inner{filter:drop-shadow(0 5px 13px #000b)}
+.hero h1{text-shadow:0 3px 0 #6f48335e,0 14px 34px #000b,0 0 42px #f0c58c26}
+.hero-mark,.laurel{filter:drop-shadow(0 0 8px #d5a4754c)}
+.story,.venue{
+ background-image:
+ radial-gradient(ellipse at 18% 20%,#fff6e3c4,transparent 60%),
+ radial-gradient(ellipse at 80% 75%,#b7967252,transparent 60%),
+ repeating-linear-gradient(90deg,#79532c09 0 1px,transparent 1px 6px),
+ linear-gradient(140deg,#f3e6d2,#d9c4a7 68%,#f3e6d2);
+}
+.story{position:relative}
+.story::before,.venue::before{
+ content:"";position:absolute;inset:0;pointer-events:none;opacity:.15;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.41' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23a)' opacity='.7'/%3E%3C/svg%3E");
+}
+.story .wrap,.venue .wrap{position:relative;z-index:1}
+.schedule{
+ background:
+ radial-gradient(ellipse at 81% 74%,#c3664933,transparent 35%),
+ radial-gradient(ellipse at 20% 35%,#661a292b,transparent 65%),
+ linear-gradient(110deg,#100909 5%,#2a1417 50%,#0d0909);
+ isolation:isolate;
+}
+.schedule::before,.dress::before,.rsvp::before,.end::before{
+ content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;
+ background:
+ radial-gradient(ellipse at 5% 4%,#fbd7a226,transparent 27%),
+ radial-gradient(circle at 86% 15%,#f8ddb423 0,transparent 17%),
+ radial-gradient(circle at 84% 23%,#f6c88d17 0,transparent 8%),
+ radial-gradient(circle at 91% 39%,#ffbe8014 0,transparent 10%),
+ radial-gradient(ellipse at 80% 92%,#b34f3b1c,transparent 35%);
+ filter:blur(1px);
+}
+.schedule::after{
+ content:"";position:absolute;right:-8%;top:10%;width:40%;height:75%;
+ pointer-events:none;z-index:-1;opacity:.53;
+ background:linear-gradient(90deg,transparent,#6915268c,#2c0a1199),repeating-linear-gradient(90deg,#3b0b18 0 18px,#8c2634 28px,#300a13 43px);
+ clip-path:polygon(30% 0,100% 0,100% 100%,0 94%);
+ filter:blur(1px);
+}
+.schedule .wrap,.dress .wrap,.rsvp .wrap,.end>div{position:relative;z-index:1}
+.dress{
+ background:
+ radial-gradient(ellipse at 12% 42%,#b46a4b32,transparent 43%),
+ linear-gradient(110deg,#0e0909,#301b18 45%,#100b0c);
+ isolation:isolate;
+}
+.dress::after{
+ content:"";position:absolute;top:-6%;left:-12%;width:28%;height:115%;pointer-events:none;z-index:-1;
+ background:repeating-linear-gradient(90deg,#310710 0 11px,#701e30 21px,#2c0711 41px);
+ filter:blur(3px);opacity:.63;transform:rotate(9deg)
+}
+.rsvp{
+ background:
+ radial-gradient(ellipse at 60% -18%,#e4a0662b,transparent 60%),
+ radial-gradient(ellipse at 9% 90%,#8d30283a,transparent 55%),
+ linear-gradient(145deg,#1b0b10,#4b1b22 48%,#110b0d);
+ isolation:isolate;
+}
+.rsvp .ticket{
+ background:
+ radial-gradient(ellipse at 17% 20%,#fff8e6a8,transparent 70%),
+ repeating-linear-gradient(0deg,#7751300b 0 1px,transparent 1px 8px),
+ linear-gradient(130deg,#eee0c6,#d8c1a2);
+ border:1px solid #ddc7a9;
+}
+.end{
+ position:relative;isolation:isolate;overflow:hidden;
+ background:
+ radial-gradient(ellipse at 49% 37%,#ad734439 0,transparent 43%),
+ radial-gradient(ellipse at 80% 79%,#77283144,transparent 60%),
+ linear-gradient(180deg,#170d0d 0,#231319 60%,#090608);
+}
+.end::after{
+ content:"";position:absolute;z-index:-1;pointer-events:none;
+ bottom:-35px;left:-5%;width:110%;height:125px;
+ background:repeating-radial-gradient(ellipse at 50% 100%,#5e1220 0 15px,#220811 34px,#070507 55px);
+ border-radius:50% 50% 0 0;
+ box-shadow:0 -23px 50px #0007,inset 0 18px 25px #b93d4344;
+ opacity:.82;
+}
+@media(max-width:750px){
+ .hero .reel{width:88px;left:-3%;top:17%;opacity:.55}
+ .cinema-projector{width:78px;top:26%;left:-18px;opacity:.55}
+ .hero .hero-inner::before{inset:11% -2%}
+ .hero::before,.hero::after{width:20%;opacity:.75}
+ .hero .projector-beam{opacity:.75}
+ .schedule::after{width:33%;right:-19%;opacity:.25}
+ .dress::after{left:-20%;opacity:.25}
+ .end::after{height:95px}
+}
+@media(prefers-reduced-motion:reduce){
+ .cinema-dust,.cinema-dust::before,.cinema-dust::after,.cinema-projector .projector-lens{animation:none!important}
+}
+
 </style></head><body>
 <div class="opening-transition" id="transition" hidden><span>НАЧИНАЕМ ПОКАЗ</span></div>
-<header class="hero" id="top"><div class="projector-beam"></div><div class="reel" aria-hidden="true"></div><div class="hero-inner wrap"><p class="hero-mark">WEDLETTER <span class="gold">·</span> ПРЕДСТАВЛЯЕТ</p><p class="hero-kicker">премьера нашей истории</p><p class="laurel">✦ &nbsp; ИСТОРИЯ ЛЮБВИ &nbsp; ✦</p><h1>PREMIÈRE</h1><p class="micro hero-sub">СВАДЕБНЫЙ ФИЛЬМ В ГЛАВНЫХ РОЛЯХ</p><p class="hero-names" data-edit="names">АЛЕКСАНДР <span class="gold">&amp;</span> ВИКТОРИЯ</p><p class="micro hero-date" data-edit="date">12 ИЮЛЯ 2027</p><button type="button" class="premiere-btn" id="enterFilm">▶ &nbsp; СМОТРЕТЬ ИСТОРИЮ</button><p class="hero-hint">↓ &nbsp; YOUR STORY BEGINS HERE</p></div></header>
+<header class="hero" id="top"><div class="projector-beam"></div><div class="cinema-dust" aria-hidden="true"></div><div class="cinema-projector" aria-hidden="true"><div class="projector-feet"></div><div class="projector-lens"></div></div><div class="reel" aria-hidden="true"></div><div class="hero-inner wrap"><p class="hero-mark">WEDLETTER <span class="gold">·</span> ПРЕДСТАВЛЯЕТ</p><p class="hero-kicker">премьера нашей истории</p><p class="laurel">✦ &nbsp; ИСТОРИЯ ЛЮБВИ &nbsp; ✦</p><h1>PREMIÈRE</h1><p class="micro hero-sub">СВАДЕБНЫЙ ФИЛЬМ В ГЛАВНЫХ РОЛЯХ</p><p class="hero-names" data-edit="names">АЛЕКСАНДР <span class="gold">&amp;</span> ВИКТОРИЯ</p><p class="micro hero-date" data-edit="date">12 ИЮЛЯ 2027</p><button type="button" class="premiere-btn" id="enterFilm">▶ &nbsp; СМОТРЕТЬ ИСТОРИЮ</button><p class="hero-hint">↓ &nbsp; YOUR STORY BEGINS HERE</p></div></header>
 <main id="film">
 <section class="intro scene" id="intro"><div class="intro-image"><img data-photo="cover" src="../eterna-12/assets/editorial-0.webp" alt="Главные герои нашей истории"></div><div class="intro-copy reveal"><p class="eyebrow">АКТ I · ПРИГЛАШЕНИЕ</p><h2 class="scene-title" data-edit="introTitle">Это больше,<br>чем история любви.</h2><div class="gold-line"></div><p data-edit="introText">В этот день начинается наша новая глава. Нам хочется, чтобы вы стали частью самого важного события в нашем фильме.</p></div></section>
 <section class="story scene" id="story"><div class="wrap"><p class="eyebrow reveal">КАДРЫ НАШЕЙ ИСТОРИИ</p><h2 class="scene-title reveal" data-edit="storyTitle">Наша история</h2><p class="reveal" data-edit="storyText">Несколько важных моментов, которые привели нас к этому дню.</p><div class="film-strip" id="filmFrames"><figure class="film-frame reveal"><img data-photo="story1" src="../eterna-12/assets/editorial-1.webp" alt="История пары: первый кадр"><figcaption data-edit="frame1Title">Встреча</figcaption><p data-edit="frame1Text">Случайность, которая всё изменила</p></figure><figure class="film-frame reveal"><img data-photo="story2" src="../eterna-12/assets/editorial-2.webp" alt="История пары: второй кадр"><figcaption data-edit="frame2Title">Вместе</figcaption><p data-edit="frame2Text">Сотни разговоров и общих мечт</p></figure><figure class="film-frame reveal"><img data-photo="story3" src="../eterna-12/assets/editorial-3.webp" alt="История пары: третий кадр"><figcaption data-edit="frame3Title">Решение</figcaption><p data-edit="frame3Text">Дальше — только вместе</p></figure></div></div></section>
