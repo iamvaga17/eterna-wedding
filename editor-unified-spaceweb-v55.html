@@ -419,7 +419,7 @@ function setupWorkflow(){
  const templateBox=workflowNode('section','workflow-template');
  const title=workflowNode('label','', '01 / ВЫБЕРИ ШАБЛОН');title.htmlFor='previewVersion';
  const select=workflowNode('select');select.id='previewVersion';
- for(const [value,label] of [['12','ÉTERNA 12.0 — ART OBJECT'],['broadcast','Срочный выпуск — NEWS'],['premiere','PREMIÈRE — CINEMA'],['legacy','ÉTERNA — классический']]){
+ for(const [value,label] of [['12','ÉTERNA 12.0 — ART OBJECT'],['broadcast','Срочный выпуск — NEWS'],['premiere','PREMIÈRE — CINEMA']]){
   const option=document.createElement('option');option.value=value;option.textContent=label;select.append(option);
  }
  templateBox.append(title,select,workflowNode('p','', 'Шаблон можно менять в рамках заказа. Фотографии и тексты сохраняются.'));
