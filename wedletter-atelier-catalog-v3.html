@@ -197,7 +197,7 @@ const payload={name:String(d.get('name')||'').trim(),contact:String(d.get('conta
 backup='Заявка WEDLETTER\\nИмя: '+payload.name+'\\nКонтакт: '+payload.contact+'\\nДата: '+(payload.date||'Не указана')+'\\nДизайн: '+payload.design+'\\nПожелания: '+(payload.details||'Не указаны');
 if(payload.name.length<2||payload.contact.length<3){setFeedback('Укажи имя и Telegram или телефон для связи.',false);return;}
 if(submitBtn){submitBtn.disabled=true;submitBtn.textContent='Отправляем…';}copy.hidden=true;out.hidden=true;
-try{const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),17000);let response;try{response=await fetch('https://wedletter.ru/api/order.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),mode:'cors',signal:controller.signal,cache:'no-store'});}finally{clearTimeout(timer);}
+try{const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),17000);let response;try{response=await fetch('https://wedletter-telegram.vaga7486.workers.dev/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),mode:'cors',signal:controller.signal,cache:'no-store'});}finally{clearTimeout(timer);}
 let body={};try{body=await response.json();}catch{}if(!response.ok||body.ok!==true)throw new Error(body.message||'Сервер не подтвердил отправку');
 setFeedback('Спасибо! Заявка отправлена. Скоро свяжемся с вами.',true);form.reset();
 }catch(error){setFeedback('Не получилось отправить заявку: '+(error?.message||'ошибка соединения')+'. Можно скопировать данные и отправить нам вручную.',false);copy.hidden=false;
