@@ -367,7 +367,7 @@ body.preview-open{overflow:hidden}
 .collection .item-photo.img-news .catalog-live-screen{background:#1e2d3a}
 .collection .item-photo.img-premiere .catalog-live-screen{background:#431823}
 /* Each crop is tuned to the real design while retaining an unmodified full preview. */
-.collection .item-photo.img-eterna iframe{top:0}
+.collection .item-photo.img-eterna iframe{top:var(--muza-top,0);left:var(--muza-left,0);transform:scale(var(--muza-scale,var(--screen-scale,.75)))}
 .collection .item-photo.img-news iframe{top:calc(-64px * var(--screen-scale,.75))}
 .collection .item-photo.img-premiere iframe{top:calc(-142px * var(--screen-scale,.75))}
 .catalog-live-screen::after{content:"";position:absolute;inset:auto 0 0;height:13%;background:linear-gradient(to bottom,transparent,rgba(0,0,0,.12));pointer-events:none}
@@ -424,7 +424,7 @@ close.addEventListener('click',hide);overlay.addEventListener('click',e=>{if(e.t
 </script><script>
 // Square windows show the genuine live template viewport; opening it shows the complete site.
 (()=>{const screens=[...document.querySelectorAll('.catalog-live-screen')];if(!screens.length)return;
-const fit=()=>{for(const el of screens){const width=el.clientWidth;el.style.setProperty('--screen-scale',String(width/390));}};
+const fit=()=>{for(const el of screens){const width=el.clientWidth;el.style.setProperty('--screen-scale',String(width/390));if(el.closest('.img-eterna')){const zoom=width/390*0.86;el.style.setProperty('--muza-scale',String(zoom));el.style.setProperty('--muza-left',((width-390*zoom)/2)+'px');el.style.setProperty('--muza-top',(-335*zoom)+'px');}}};
 if('ResizeObserver'in window){const obs=new ResizeObserver(fit);screens.forEach(el=>obs.observe(el));}
 window.addEventListener('resize',fit,{passive:true});fit();
 })();
