@@ -366,7 +366,10 @@ body.preview-open{overflow:hidden}
 .collection .item-photo.img-eterna .catalog-live-screen{background:#37211d}
 .collection .item-photo.img-news .catalog-live-screen{background:#1e2d3a}
 .collection .item-photo.img-premiere .catalog-live-screen{background:#431823}
-.collection .item-photo.img-premiere iframe{top:-88px}
+/* Each crop is tuned to the real design while retaining an unmodified full preview. */
+.collection .item-photo.img-eterna iframe{top:0}
+.collection .item-photo.img-news iframe{top:calc(-64px * var(--screen-scale,.75))}
+.collection .item-photo.img-premiere iframe{top:calc(-142px * var(--screen-scale,.75))}
 .catalog-live-screen::after{content:"";position:absolute;inset:auto 0 0;height:13%;background:linear-gradient(to bottom,transparent,rgba(0,0,0,.12));pointer-events:none}
 .collection .item-photo[role=button]{cursor:pointer}
 .collection .item-photo[role=button]:focus-visible{outline:3px solid #9e7960;outline-offset:2px}
