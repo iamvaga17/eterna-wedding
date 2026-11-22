@@ -1,0 +1,96 @@
+name: WEDLETTER | Deploy expiry compatibility v3
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: 'Type DEPLOY EXPIRY to approve updating only api/expiry.php'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wedletter-spaceweb-api
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require explicit approval and lint reviewed release
+        env:
+          CONFIRM: ${{ inputs.confirmation }}
+        run: |
+          set -euo pipefail
+          test "$CONFIRM" = 'DEPLOY EXPIRY' || { echo 'Explicit expiry approval required'; exit 1; }
+          php -l spaceweb-api-release/expiry.php
+          test "$(wc -c < spaceweb-api-release/expiry.php)" -lt 50000
+          grep -Fq "gate-internal.php" spaceweb-api-release/expiry.php
+          grep -Fq "expires_on" spaceweb-api-release/expiry.php
+          grep -Fq "existing" spaceweb-api-release/expiry.php || true
+      - name: Update only existing expiry.php with SHA verification and rollback
+        env:
+          FTP_USER: ${{ secrets.SPACEWEB_API_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.SPACEWEB_API_FTP_PASSWORD }}
+        run: |
+          set -euo pipefail
+          test -n "$FTP_USER" && test -n "$FTP_PASSWORD"
+          echo "77.222.40.70 vh404.sweb.ru" | sudo tee -a /etc/hosts >/dev/null
+          python3 - <<'PY'
+          import ftplib,hashlib,io,os,ssl
+          from pathlib import Path
+          target='expiry.php'
+          source=Path('spaceweb-api-release/expiry.php').read_bytes()
+          if not 1000 < len(source) < 50000:
+              raise RuntimeError('Invalid reviewed expiry release size')
+          ftp=ftplib.FTP_TLS(context=ssl.create_default_context(),timeout=20)
+          ftp.connect('vh404.sweb.ru',21)
+          ftp.login(os.environ['FTP_USER'],os.environ['FTP_PASSWORD'])
+          ftp.prot_p()
+          old=None
+          changed=False
+          try:
+              parts=[]
+              ftp.retrbinary('RETR '+target,parts.append)
+              old=b''.join(parts)
+              if not old or b'wedletter-expiry' not in old:
+                  raise RuntimeError('Unexpected existing expiry.php; refusing update')
+              if old==source:
+                  print('Live expiry.php already matches reviewed release; no changes made.')
+              else:
+                  try:
+                      changed=True
+                      ftp.storbinary('STOR '+target,io.BytesIO(source))
+                      check=[]
+                      ftp.retrbinary('RETR '+target,check.append)
+                      if hashlib.sha256(b''.join(check)).digest()!=hashlib.sha256(source).digest():
+                          raise RuntimeError('Release verification failed')
+                      print('Updated api/expiry.php only; readback SHA-256 verified.')
+                  except BaseException:
+                      if changed:
+                          try:
+                              ftp.storbinary('STOR '+target,io.BytesIO(old))
+                              print('Previous expiry.php restored.')
+                          except Exception:
+                              print('::error::Rollback failed, restore api/expiry.php from hosting backup')
+                      raise
+          finally:
+              try:ftp.quit()
+              except Exception:ftp.close()
+          PY
+      - name: Verify public expiry health without credentials
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,urllib.request
+          request=urllib.request.Request('https://wedletter.ru/api/expiry.php',headers={'Cache-Control':'no-store'})
+          with urllib.request.urlopen(request,timeout=15) as response:
+              data=json.loads(response.read(5000))
+          if data.get('ok') is not True or data.get('service')!='wedletter-expiry' or data.get('version')!=3:
+              raise RuntimeError('Unexpected expiry API version after deployment')
+          print('Expiry API v3 health check passed.')
+          PY
