@@ -178,6 +178,50 @@
 .collection .item.reveal{opacity:1!important;transform:none!important;visibility:visible!important}
 .collection .item{content-visibility:visible}
 .hp-field{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}.output.is-error{border-color:#af7c6e;color:#7a4139;background:#fff1ea}.orderform button:disabled{opacity:.65;cursor:progress}
+
+/* WEDLETTER ATELIER — mobile polish, 2026-11-22 */
+:root{scroll-padding-top:85px}
+#designs,#order,#faq,#how{scroll-margin-top:82px}
+.item{box-shadow:0 10px 35px rgba(58,38,26,.035);transition:box-shadow .25s ease,border-color .25s ease}
+.item:hover{box-shadow:0 16px 42px rgba(58,38,26,.09);border-color:#c7b3a1}
+.item-photo{overflow:hidden}
+.item-content{flex:1}
+.item-actions{margin-top:auto}
+.filter{transition:background-color .2s ease,color .2s ease,border-color .2s ease}
+.catalog-arrow{touch-action:manipulation}
+.orderform input,.orderform select,.orderform textarea{transition:border-color .2s ease,box-shadow .2s ease}
+.orderform input:focus-visible,.orderform select:focus-visible,.orderform textarea:focus-visible{outline:2px solid #9e7960;outline-offset:2px}
+.orderform button[type=submit]{transition:transform .2s ease,box-shadow .2s ease,background .2s ease}
+.orderform button[type=submit]:not(:disabled):hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(45,31,23,.16)}
+@media(max-width:680px){
+ .wrap{width:min(100% - 36px,1250px)}
+ .hero-grid{gap:12px}
+ .hero-cta{flex-wrap:wrap}
+ .hero-stage{height:322px}
+ .phone-left{left:1%}
+ .phone-right{right:1%}
+ .collection-caption span{max-width:34ch}
+ .section-head{margin-bottom:14px}
+ .section-head p{font-size:12px;line-height:1.65}
+ .filterrow{gap:7px;margin-bottom:8px}
+ .filter{font-size:11px;padding:9px 13px}
+ .catalog-guide{font-size:10px;margin-top:8px}
+ .collection.mode-all{scroll-snap-type:x mandatory;overscroll-behavior-x:contain;padding-bottom:12px}
+ .collection.mode-all .item{min-width:77vw;max-width:77vw;scroll-snap-align:start;box-shadow:0 8px 25px rgba(55,32,22,.05)}
+ .collection.mode-all .item-photo{aspect-ratio:4/3.05}
+ .collection.mode-all .item-content{padding:12px 10px 11px}
+ .collection.mode-all .item-content h3{font-size:22px;line-height:1.2}
+ .collection.mode-all .item-content p{line-height:1.55;margin:9px 0 12px}
+ .catalog-controls{padding-top:10px}
+ .catalog-arrow{height:42px;width:42px}
+ .ordergrid{gap:25px}
+ .orderbox h2{line-height:1.08}
+ .orderform{border-radius:22px}
+ .orderform label{font-size:12px}
+ .orderform input,.orderform select,.orderform textarea{font-size:16px}
+ .orderform button[type=submit]{min-height:52px}
+}
+@media(prefers-reduced-motion:reduce){.item,.filter,.orderform button[type=submit]{transition:none}}
 </style></head><body>
 <header class="top"><div class="wrap topin"><a class="brand" href="#top">WEDLETTER</a><nav class="nav"><a href="#designs">Дизайны</a><a href="#how">Как это работает</a><a href="#faq">Вопросы</a><a href="#order" class="pill">Оставить заявку ↗</a></nav></div></header>
 <main id="top"><section class="hero"><div class="wrap hero-grid"><div class="hero-copy"><span class="caps eyebrow">WEDLETTER · wedding art studio</span><h1>Не просто<br>пригласить.<br><em>Впечатлить.</em></h1><p>Мы создаём свадебные сайты-приглашения с выразительной подачей, продуманной структурой и красивым визуальным ритмом. Каждый дизайн ощущается как отдельная история.</p><div class="hero-cta"><a href="#designs" class="btn">Выбрать дизайн ↗</a><a class="btn secondary" href="#how">Как это устроено</a></div></div><div class="hero-visual"><div class="hero-stage" aria-label="Первые экраны дизайнов WEDLETTER"><div class="phone-frame phone-left" aria-hidden="true"><div class="phone-screen"><iframe src="https://iamvaga17.github.io/eterna-wedding/eterna-12/editor-preview-v29.html" title="ÉTERNA preview" loading="lazy"></iframe></div></div><div class="phone-frame phone-center" aria-hidden="true"><div class="phone-screen"><iframe src="https://iamvaga17.github.io/eterna-wedding/premiere/index-v19.html" title="PREMIÈRE preview" loading="lazy"></iframe></div></div><div class="phone-frame phone-right" aria-hidden="true"><div class="phone-screen"><iframe src="https://iamvaga17.github.io/eterna-wedding/srochny-vypusk/editor-preview-v40.html" title="Срочный выпуск preview" loading="lazy"></iframe></div></div></div><div class="collection-caption"><strong>Авторская коллекция WEDLETTER</strong><span>Каждый дизайн — самостоятельная история. Коллекция будет пополняться новыми работами.</span></div></div></div></section>
@@ -187,8 +231,8 @@
 <article class="item reveal" data-category="bold"><div class="item-photo img-news"><span class="item-tag">02 · special edition</span><div class="item-title">СРОЧНЫЙ<br>ВЫПУСК</div></div><div class="item-content"><h3>Срочный выпуск · NEWS</h3><p>Главная новость года — ваша свадьба. Телеэстетика, титры, яркие акценты и неожиданная подача.</p><div class="item-actions"><a href="srochny-vypusk/editor-preview-v40.html" target="_blank" rel="noopener">Посмотреть ↗</a><a href="#order" data-choose="Срочный выпуск — NEWS">Выбрать дизайн</a></div></div></article>
 <article class="item reveal" data-category="cinema"><div class="item-photo img-premiere"><span class="item-tag">03 · cinema edition</span><div class="item-title">PREMIÈRE</div></div><div class="item-content"><h3>PREMIÈRE · CINEMA</h3><p>Свадьба как громкая премьера: кинематографичная атмосфера, титры и история, где вы главные герои.</p><div class="item-actions"><a href="premiere/index-v19.html" target="_blank" rel="noopener">Посмотреть ↗</a><a href="#order" data-choose="PREMIÈRE — CINEMA">Выбрать дизайн</a></div></div></article>
 </div><div class="catalog-controls"><span class="catalog-progress" id="catalogProgress">01 / 03</span><div class="catalog-buttons"><button type="button" class="catalog-arrow" id="catalogPrev" aria-label="Предыдущий дизайн">←</button><button type="button" class="catalog-arrow" id="catalogNext" aria-label="Следующий дизайн">→</button></div></div></div></section>
-<section class="features" id="how"><div class="wrap"><span class="caps" style="color:#cfb092">02 / больше, чем ссылка</span><h2>Всё, что нужно вашим гостям.<br><em>И ни одного скучного экрана.</em></h2><div class="features-grid"><div class="feature"><b>01</b><h3>Выбираете дизайн</h3><p>Смотрите три формата и находите историю, которая подходит вашей паре.</p></div><div class="feature"><b>02</b><h3>Добавляем вашу историю</h3><p>Фотографии, даты, локации, программа и дресс-код превращаются в целый мир.</p></div><div class="feature"><b>03</b><h3>Получаете готовую ссылку</h3><p>Рассылаете приглашение гостям и получаете ответы RSVP в личном кабинете.</p></div></div></div></section>
-<section class="section wrap" id="faq"><div class="section-head"><div><span class="caps" style="color:#a1846d">03 / ответы</span><h2>О чём вы могли<br>хотеть спросить.</h2></div></div><div class="faq-list"><details><summary>Что входит в свадебный сайт?</summary><p>Персональное оформление на основе выбранного дизайна, фотографии, детали торжества, программа, дресс-код и форма подтверждения присутствия гостей (RSVP).</p></details><details><summary>Можно ли указать две даты?</summary><p>Да. Можно разделить дату регистрации и дату банкета, если события проходят в разные дни.</p></details><details><summary>Как мы увидим ответы гостей?</summary><p>В личном кабинете доступны список гостей, статистика присутствия и выгрузка в CSV.</p></details><details><summary>Как выбрать подходящий стиль?</summary><p>Откройте все три дизайна, посмотрите их подачу на телефоне и выберите тот, который ближе вашей истории.</p></details></div></section>
+<section class="features" id="how"><div class="wrap"><span class="caps" style="color:#cfb092">02 / больше, чем ссылка</span><h2>Всё, что нужно вашим гостям.<br><em>И ни одного скучного экрана.</em></h2><div class="features-grid"><div class="feature"><b>01</b><h3>Выбираете дизайн</h3><p>Смотрите авторские дизайны и находите историю, которая подходит вашей паре.</p></div><div class="feature"><b>02</b><h3>Добавляем вашу историю</h3><p>Фотографии, даты, локации, программа и дресс-код превращаются в целый мир.</p></div><div class="feature"><b>03</b><h3>Получаете готовую ссылку</h3><p>Рассылаете приглашение гостям и получаете ответы RSVP в личном кабинете.</p></div></div></div></section>
+<section class="section wrap" id="faq"><div class="section-head"><div><span class="caps" style="color:#a1846d">03 / ответы</span><h2>О чём вы могли<br>хотеть спросить.</h2></div></div><div class="faq-list"><details><summary>Что входит в свадебный сайт?</summary><p>Персональное оформление на основе выбранного дизайна, фотографии, детали торжества, программа, дресс-код и форма подтверждения присутствия гостей (RSVP).</p></details><details><summary>Можно ли указать две даты?</summary><p>Да. Можно разделить дату регистрации и дату банкета, если события проходят в разные дни.</p></details><details><summary>Как мы увидим ответы гостей?</summary><p>В личном кабинете доступны список гостей, статистика присутствия и выгрузка в CSV.</p></details><details><summary>Как выбрать подходящий стиль?</summary><p>Откройте коллекцию дизайнов, посмотрите их подачу на телефоне и выберите тот, который ближе вашей истории.</p></details></div></section>
 <section class="orderbox" id="order"><div class="wrap ordergrid"><div><span class="caps" style="color:#9e7960">04 / ваша история начинается здесь</span><h2>Пусть гости<br>скажут:<br><em>«Вау!»</em></h2><p class="intro">Расскажите о вашем празднике — заявка сразу придёт в нашу студию. Мы свяжемся с вами по указанному контакту.</p></div><form class="orderform" id="requestForm"><label>Как вас зовут<input name="name" maxlength="100" required placeholder="Ваше имя"></label><label>Дата свадьбы<input name="date" type="date"></label><label class="full">Telegram или телефон для связи<input name="contact" type="text" maxlength="120" autocomplete="off" required placeholder="@username или +7..." aria-label="Telegram или телефон для связи"></label><input class="hp-field" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true"><label class="full">Выбранный дизайн<select name="design" id="designSelect"><option>ÉTERNA 12.0 — ART OBJECT</option><option>Срочный выпуск — NEWS</option><option>PREMIÈRE — CINEMA</option><option>Пока не определились</option></select></label><label class="full">Пожелания<textarea name="details" maxlength="2000" placeholder="Расскажите немного о вашей свадьбе"></textarea></label><button type="submit">Отправить заявку</button><p class="form-note">Контакт нужен только для ответа на вашу заявку. Не отправляйте пароли или другие секретные данные.</p><output id="requestOutput" class="output" hidden></output><button id="copyBtn" type="button" hidden>Скопировать данные заявки</button></form></div></section></main><footer class="wrap footer"><strong>WEDLETTER</strong><span>Коллекция свадебных сайтов-приглашений · WEDLETTER</span></footer>
 <script>(()=>{'use strict';const filters=[...document.querySelectorAll('[data-filter]')],items=[...document.querySelectorAll('.item')],collection=document.querySelector('.collection');const allButton=filters.find(b=>b.dataset.filter==='all');const applyFilter=(category)=>{filters.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.filter===category)));items.forEach(item=>item.hidden=category!=='all'&&item.dataset.category!==category);if(collection)collection.classList.toggle('mode-all',category==='all');};if(allButton)allButton.textContent='Все дизайны';filters.forEach(button=>button.addEventListener('click',()=>applyFilter(button.dataset.filter)));applyFilter('all');document.querySelectorAll('[data-choose]').forEach(a=>a.addEventListener('click',()=>{document.getElementById('designSelect').value=a.dataset.choose}));const form=document.getElementById('requestForm'),out=document.getElementById('requestOutput'),copy=document.getElementById('copyBtn'),submitBtn=form?.querySelector('[type="submit"]');let backup='';
 const setFeedback=(message,isSuccess)=>{out.textContent=message;out.hidden=false;out.setAttribute('role',isSuccess?'status':'alert');out.classList.toggle('is-error',!isSuccess);};
