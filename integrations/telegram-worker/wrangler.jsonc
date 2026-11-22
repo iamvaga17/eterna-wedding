@@ -2,5 +2,23 @@
   "name": "wedletter-telegram",
   "main": "worker.js",
   "compatibility_date": "2026-11-22",
-  "workers_dev": true
+  "workers_dev": true,
+  "ratelimits": [
+    {
+      "name": "ORDER_IP_LIMITER",
+      "namespace_id": "864201",
+      "simple": {
+        "limit": 3,
+        "period": 60
+      }
+    },
+    {
+      "name": "ORDER_CONTACT_LIMITER",
+      "namespace_id": "864202",
+      "simple": {
+        "limit": 2,
+        "period": 60
+      }
+    }
+  ]
 }
