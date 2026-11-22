@@ -1,0 +1,62 @@
+name: WEDLETTER static catalogue captures
+
+on:
+  push:
+    paths:
+      - ".github/workflows/wedletter-static-covers.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install Chromium screenshot tooling
+        run: |
+          npm install --no-save playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Capture three real invitation designs as static images
+        run: |
+          mkdir -p assets/catalog-covers
+          node <<'NODE'
+          const { chromium } = require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
+            const list=[
+              {name:'muza',url:'https://iamvaga17.github.io/eterna-wedding/eterna-12/editor-preview-v29.html?editor-preview=1',y:340},
+              {name:'sensaciya',url:'https://iamvaga17.github.io/eterna-wedding/srochny-vypusk/editor-preview-v40.html',y:190},
+              {name:'kadr',url:'https://iamvaga17.github.io/eterna-wedding/premiere/index-v19.html',y:250}
+            ];
+            for(const d of list){
+              const page=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:2,isMobile:true,hasTouch:true});
+              await page.goto(d.url,{waitUntil:'domcontentloaded',timeout:60000});
+              await page.waitForTimeout(3200);
+              await page.screenshot({path:'assets/catalog-covers/'+d.name+'.webp',type:'png',clip:{x:0,y:d.y,width:390,height:390}});
+              await page.close();
+            }
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+      - name: Convert captures to compressed WebP
+        run: |
+          python -m pip install Pillow
+          python - <<'PY'
+          from PIL import Image
+          from pathlib import Path
+          for name in ('muza','sensaciya','kadr'):
+              p=Path('assets/catalog-covers')/(name+'.webp')
+              im=Image.open(p)
+              im.save(p,'WEBP',quality=85,method=6)
+          PY
+      - name: Commit static catalogue images
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/catalog-covers/*.webp
+          git diff --cached --quiet || (git commit -m "Publish static snapshots of WEDLETTER template designs" && git push)
