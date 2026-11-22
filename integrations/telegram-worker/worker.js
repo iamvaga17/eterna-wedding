@@ -1,3 +1,4 @@
+// WEDLETTER Telegram Worker — isolated deployment via GitHub
 const ALLOWED = new Set(["https://iamvaga17.github.io","https://wedletter.ru","https://www.wedletter.ru"]);
 function reply(status,data,origin=""){const headers={"Content-Type":"application/json; charset=utf-8","Cache-Control":"no-store","X-Content-Type-Options":"nosniff"};if(ALLOWED.has(origin)){headers["Access-Control-Allow-Origin"]=origin;headers["Access-Control-Allow-Methods"]="POST, OPTIONS";headers["Access-Control-Allow-Headers"]="content-type";headers.Vary="Origin";}return new Response(status===204?null:JSON.stringify(data),{status,headers});}
 function clean(value,limit){return typeof value==="string"?value.trim().replace(/[\u0000-\u001f\u007f]/g,"").slice(0,limit):"";}
