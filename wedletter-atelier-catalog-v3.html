@@ -424,7 +424,7 @@ close.addEventListener('click',hide);overlay.addEventListener('click',e=>{if(e.t
 </script><script>
 // Square windows show the genuine live template viewport; opening it shows the complete site.
 (()=>{const screens=[...document.querySelectorAll('.catalog-live-screen')];if(!screens.length)return;
-const fit=()=>{for(const el of screens){const width=el.clientWidth;el.style.setProperty('--screen-scale',String(width/390));if(el.closest('.img-eterna')){const zoom=width/390*0.86;el.style.setProperty('--muza-scale',String(zoom));el.style.setProperty('--muza-left',((width-390*zoom)/2)+'px');el.style.setProperty('--muza-top',(-335*zoom)+'px');}}};
+const fit=()=>{for(const el of screens){const width=el.clientWidth;el.style.setProperty('--screen-scale',String(width/390));if(el.closest('.img-eterna')){const zoom=width/390*0.80;el.style.setProperty('--muza-scale',String(zoom));el.style.setProperty('--muza-left',((width-390*zoom)/2)+'px');el.style.setProperty('--muza-top',(-305*zoom)+'px');}}};
 if('ResizeObserver'in window){const obs=new ResizeObserver(fit);screens.forEach(el=>obs.observe(el));}
 window.addEventListener('resize',fit,{passive:true});fit();
 })();
