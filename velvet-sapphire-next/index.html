@@ -28,14 +28,17 @@
 @media(min-aspect-ratio:10/14){.art{background-size:contain;background-color:#071023}}
 @media(prefers-reduced-motion:reduce){.veil,.intro{display:none}.art,.star,.stage-light,.intro-glint{animation:none}}
 
-/* SECOND SCENE: Midnight Sapphire / floating silk / ivory calendar. */
-.silk-scene{position:relative;min-height:112svh;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:0;padding:clamp(88px,12vh,125px) 18px 110px;background:#030a1b;color:#f5e9d6}
-.silk-scene::before{content:"";position:absolute;inset:-13%;z-index:-2;background:#06132d url("assets/silk.jpg") center center/cover no-repeat;transform:translate3d(0,0,0) scale(1.08);animation:silk-drift 14s ease-in-out infinite alternate;will-change:transform}
-@keyframes silk-drift{0%{transform:translate3d(-1%,2%,0) scale(1.08)}100%{transform:translate3d(1%,-2%,0) scale(1.15)}}
-.silk-sheen{position:absolute;inset:0;pointer-events:none;z-index:-1;background:linear-gradient(155deg,transparent 15%,#d6c3a611 32%,transparent 49%,#fbdbb219 59%,transparent 71%),radial-gradient(ellipse at 50% 35%,#c8ad7612,transparent 65%)}
-.silk-twist{opacity:.42;position:absolute;top:-7vw;left:-20%;width:145%;height:45vh;transform:rotate(-9deg);pointer-events:none;border-radius:0 0 50% 50%;background:linear-gradient(167deg,#080f26 6%,#14264a 23%,#435778 31%,#182844 39%,#09142e 52%,#030819 69%);box-shadow:0 22px 45px #020618aa,inset 0 -12px 35px #6d85aa34;z-index:-1;animation:fold-sway 19s ease-in-out infinite alternate}
-@keyframes fold-sway{to{transform:rotate(-6deg) translate3d(1%,-2%,0)}}
-.silk-scene::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:3;box-shadow:inset 0 50px 90px #03071670,inset 0 -50px 95px #03071670}
+/* Second scene: layered sapphire satin. First approved scene is not changed. */
+.silk-scene{position:relative;min-height:113svh;overflow:hidden;isolation:isolate;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:clamp(102px,14vh,150px) 18px 100px;background:#03091b;color:#f5e9d6}
+.silk-fabric{position:absolute;inset:-11% -12%;z-index:-3;pointer-events:none;background:#071329 url("assets/silk.jpg") 50% 50%/cover no-repeat;transform:translate3d(0,0,0) scale(1.10);animation:fabric-drift 13s ease-in-out infinite alternate;will-change:transform}
+.silk-wave{position:absolute;inset:-14% -24%;z-index:-2;pointer-events:none;background:url("assets/silk.jpg") 58% 48%/cover no-repeat;opacity:.88;clip-path:polygon(0 23%,23% 16%,52% 24%,78% 17%,100% 3%,100% 47%,77% 58%,46% 49%,20% 59%,0 52%);transform:translate3d(-4%,3%,0) rotate(-5deg) scale(1.09);animation:fabric-wave 12s ease-in-out infinite alternate;will-change:transform;filter:brightness(1.21)}
+.silk-wave.secondary{z-index:-1;opacity:.7;clip-path:polygon(0 61%,22% 51%,51% 57%,81% 44%,100% 51%,100% 100%,0 100%);background-position:35% 70%;transform:translate3d(4%,1%,0) rotate(4deg) scale(1.15);animation:fabric-wave-two 16s ease-in-out infinite alternate;filter:brightness(.76)}
+.silk-sheen{position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(160deg,#02071570 0%,transparent 34%,#cfad7620 48%,transparent 63%,#03081970 100%),radial-gradient(ellipse 75% 90% at 50% 48%,#02071550,transparent 90%)}
+@keyframes fabric-drift{from{transform:translate3d(-2%,1%,0) scale(1.1)}to{transform:translate3d(2%,-1%,0) scale(1.17)}}
+@keyframes fabric-wave{from{transform:translate3d(-4%,3%,0) rotate(-5deg) scale(1.09)}to{transform:translate3d(4%,-4%,0) rotate(-1deg) scale(1.13)}}
+@keyframes fabric-wave-two{from{transform:translate3d(4%,1%,0) rotate(4deg) scale(1.15)}to{transform:translate3d(-3%,-4%,0) rotate(0deg) scale(1.19)}}
+.silk-scene::after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;box-shadow:inset 0 22px 42px #0206156b,inset 0 -24px 54px #02061577}
+.silk-scene>*:not(.silk-fabric):not(.silk-wave):not(.silk-sheen){position:relative;z-index:2}
 .silk-lead{font-family:Georgia,serif;font-size:clamp(46px,11vw,86px);font-weight:400;font-style:italic;line-height:1.05;text-align:center;letter-spacing:-.06em;margin:0 0 8px;color:#fff6e6;text-shadow:0 8px 24px #0008}
 .silk-sub{margin:5px 0 27px;text-align:center;font:400 10px/1.6 system-ui,-apple-system,sans-serif;letter-spacing:.29em;text-transform:uppercase;color:#d4b98c}
 .calendar-scene{position:relative;width:min(360px,calc(100vw - 62px));padding:12px 11px 15px;background:linear-gradient(140deg,#061026,#121e34 48%,#061024);border:1px solid #c9a98078;box-shadow:0 24px 70px #000a,0 0 48px #efcda40f}
@@ -52,16 +55,17 @@
 .pearls:before,.pearls:after{content:"";position:absolute;border:6px dotted #f3e9de;border-radius:55% 45% 60% 40%;width:38px;height:75px;left:15px;top:2px;transform:rotate(-18deg)}
 .pearls:after{width:38px;height:61px;top:59px;left:2px;transform:rotate(25deg)}
 .silk-date{margin-top:30px;text-align:center;font:italic 18px/1.3 Georgia,serif;color:#e8d7bd}
-.silk-transition{height:118px;margin-top:-1px;position:relative;z-index:1;background:linear-gradient(180deg,#030a1b,#07152d);overflow:hidden}
-.silk-transition:after{content:"";position:absolute;inset:-25px -15% 24px;border-radius:50%;background:linear-gradient(155deg,#020715,#1c2d56 46%,#050d21 67%);transform:rotate(4deg);box-shadow:0 12px 24px #0008,inset 0 -1px 4px #d0ab6c43}
+.silk-transition{height:82px;position:relative;z-index:1;margin:-1px 0 -1px;overflow:hidden;background:#051025}
+.silk-transition::before{content:"";position:absolute;inset:-15% -5%;background:url("assets/silk.jpg") 50% 17%/cover no-repeat;-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 92%);mask-image:linear-gradient(to bottom,transparent 0%,#000 92%);animation:transition-breathe 12s ease-in-out infinite alternate}
+@keyframes transition-breathe{to{transform:translate3d(1%,1%,0) scale(1.035)}}
 .reveal-silk{opacity:0;transform:translate3d(0,28px,0);transition:opacity 1.15s ease,transform 1.15s cubic-bezier(.2,.8,.2,1)}
 .reveal-silk.visible{opacity:1;transform:none}
 @media(max-width:380px){.calendar-scene{width:calc(100vw - 64px)}.cal-paper{padding:25px 17px;min-height:370px}.cal-days{gap:5px 0}}
-@media(prefers-reduced-motion:reduce){.silk-scene::before,.silk-twist{animation:none}.reveal-silk{opacity:1;transform:none;transition:none}}
+@media(prefers-reduced-motion:reduce){.silk-fabric,.silk-wave,.silk-transition::before{animation:none}.reveal-silk{opacity:1;transform:none;transition:none}}
 </style></head><body><main class="stage" id="stage" aria-label="Свадебная сцена Аурелии и Себастьяна в сапфировых оттенках"><div class="art" role="img" aria-label="Аурелия и Себастьян на сцене под золотыми лучами"></div><div class="stage-light" aria-hidden="true"></div><div class="stars" id="stars" aria-hidden="true"></div><div class="veil" aria-hidden="true"></div><div class="intro" id="intro" aria-hidden="true"><div class="intro-glints" id="intro-glints"></div></div><button class="replay" id="replay" type="button" aria-label="Повторить мерцающее вступление"><svg viewBox="0 0 24 24"><path d="M3.7 10a8.3 8.3 0 1 1 .8 6M3 4v6h6"/></svg></button>
 </main><div class="silk-transition" aria-hidden="true"></div>
 <section class="silk-scene" id="calendar" aria-label="Свадебный календарь">
-<div class="silk-sheen" aria-hidden="true"></div><div class="silk-twist" aria-hidden="true"></div>
+<div class="silk-fabric" aria-hidden="true"></div><div class="silk-wave" aria-hidden="true"></div><div class="silk-wave secondary" aria-hidden="true"></div><div class="silk-sheen" aria-hidden="true"></div>
 <h2 class="silk-lead reveal-silk">Сохраните дату</h2>
 <p class="silk-sub reveal-silk">День, с которого начинается наша история</p>
 <div class="calendar-scene reveal-silk" aria-label="Календарь на июнь 2027 года, выделено 12 июня">
