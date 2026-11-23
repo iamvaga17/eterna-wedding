@@ -1,0 +1,361 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#0a1531"><title>ОДНАЖДЫ V9 — WEDLETTER · театр живых сцен</title><style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700&display=swap');
+:root{--gold:#f3d8a4;--paper:#fbf0db;--night:#07132e}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#07132e;color:var(--paper);font-family:Manrope,Arial,sans-serif;overflow-x:hidden}body.lock{overflow:hidden}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-offset:3px}button:active{transform:scale(.98)}.brand{font:600 11px Manrope,sans-serif;letter-spacing:.3em;color:var(--gold)}.intro{position:fixed;inset:0;z-index:40;background:#07132e;transition:opacity 1s,visibility 1s}.intro.gone{opacity:0;visibility:hidden;pointer-events:none}.image{position:absolute;inset:0;background-position:center;background-size:cover;transform:scale(1.06);animation:ken 18s ease-in-out infinite alternate}.castle{background-image:url('../castle.webp')}.ball{background-image:url('../ball.webp')}.coach{background-image:url('../coach.webp')}.garden{background-image:url('../garden.webp')}@keyframes ken{to{transform:scale(1.18) translate3d(-1%, -1%, 0)}}.shade{position:absolute;inset:0;background:linear-gradient(180deg,#030b22ad,#07112b08 35%,#071129a3 66%,#050d22f3)}.intro-body{position:relative;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:space-between;text-align:center;padding:calc(38px + env(safe-area-inset-top)) 20px calc(32px + env(safe-area-inset-bottom));gap:12px}.intro-text{margin:auto 0;background:#081938bb;padding:32px 22px;border:1px solid #f2dbad88;border-radius:140px 140px 32px 32px;backdrop-filter:blur(5px);width:min(100%,420px);box-shadow:0 20px 70px #0008}.eyebrow{font-size:10px;letter-spacing:.25em;color:var(--gold);font-weight:600;text-transform:uppercase}.intro h1{font:italic 500 clamp(69px,19vw,112px)/.86 'Cormorant Garamond',serif;margin:19px 0 15px}.intro p{font:400 24px/1.16 'Cormorant Garamond',serif;margin:0 0 24px}.goldbtn{display:inline-block;padding:15px 26px;background:linear-gradient(105deg,#f7e7c6,#d5b276);border:1px solid #f9edd8;color:#14213e;border-radius:100px;font-size:13px;font-weight:700;box-shadow:0 10px 26px #0007}.tint{font-size:10px;letter-spacing:.15em;color:#f0ddbc}main{display:none}main.active{display:block}.top{position:fixed;inset:0 0 auto;z-index:20;padding:calc(14px + env(safe-area-inset-top)) 20px 16px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(#071129f2,#07112900);pointer-events:none}.top>*{pointer-events:auto}.meter{width:78px;height:3px;border-radius:2px;background:#d5bf9954;overflow:hidden}.meter i{display:block;background:var(--gold);width:0;height:100%}.top button{background:#112241bb;border:1px solid #ffffff45;border-radius:100%;width:37px;height:37px;color:var(--gold);font-size:20px}.chapter{position:relative;min-height:112svh;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:110px 18px max(75px,11svh);isolation:isolate;overflow:hidden;text-align:center}.chapter .image{z-index:-3}.chapter .shade{z-index:-2;background:linear-gradient(180deg,#06122b08 0%,#06122b00 31%,#06122b8a 58%,#06112cf5 83%,#06112afa)}.storylabel{font-size:10px;letter-spacing:.23em;color:var(--gold);font-weight:700;margin-bottom:12px}.chapter h2{font:italic 500 clamp(45px,12.5vw,82px)/.89 'Cormorant Garamond',serif;margin:0 0 13px;text-shadow:0 4px 18px #000e;max-width:620px}.subtitle{font:400 22px/1.17 'Cormorant Garamond',serif;max-width:360px;margin:0 0 18px;text-shadow:0 3px 13px #000e}.panel{background:linear-gradient(170deg,#101d3ef7,#1c2e52f5);border:1px solid #f1d9a5c4;border-radius:26px;padding:23px 20px;width:min(100%,430px);box-shadow:0 17px 43px #000b}.panel p{font:400 22px/1.23 'Cormorant Garamond',serif;margin:8px 0}.names{font:italic 500 56px/1 'Cormorant Garamond',serif;color:var(--gold);margin:10px 0 12px}.smallcap{font-size:10px;letter-spacing:.16em;color:var(--gold)}.divider{height:1px;background:linear-gradient(90deg,transparent,#edd39a,transparent);margin:16px auto;width:75%}.reveal{opacity:0;transform:translateY(30px);transition:opacity .9s,transform 1s}.reveal.visible{opacity:1;transform:translateY(0)}.event{display:grid;grid-template-columns:72px 1fr;text-align:left;gap:11px;padding:13px 0;border-bottom:1px solid #ffffff32}.event:last-child{border:0}.event time{color:var(--gold);font-weight:700;font-size:14px}.event b{font-size:13px;display:block}.event span{font-size:11px;opacity:.8;display:block;margin-top:5px}.swatches{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:18px 0 7px}.swatches i{width:43px;height:43px;border:2px solid #f7e8c0a6;border-radius:50%;box-shadow:0 6px 15px #0006}.rsvp-paper{background:#f7ecd9;color:#192342;border-radius:20px;border:2px solid #e8c88e;box-shadow:0 24px 60px #000a;padding:23px 21px;width:min(100%,435px)}.rsvp-paper h3{font:italic 500 44px/.94 'Cormorant Garamond',serif;margin:10px 0}.rsvp-paper p{font:400 20px/1.18 'Cormorant Garamond',serif}.rsvp-paper label{display:block;text-align:left;font-size:12px;font-weight:700;margin-top:14px}.rsvp-paper input[type=text]{width:100%;padding:13px 12px;border:1px solid #a98c5d;background:#fffcf4;border-radius:8px;margin-top:7px;color:#14203a}.answers{display:flex;gap:17px;justify-content:center;margin:20px 0}.answers label{display:flex;gap:7px;margin:0;font-size:12px}.rsvp-note{font-size:10px;opacity:.65;margin-top:15px}.rsvp-paper .goldbtn{padding:14px 25px}.scroll{font-size:11px;letter-spacing:.14em;color:var(--gold);margin-top:22px}.data{display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:left}.data b{font:500 25px/1.1 'Cormorant Garamond',serif;display:block}.data small{font-size:10px;letter-spacing:.1em;color:#e7cc96;display:block;margin-bottom:6px}@media(min-width:700px){.chapter{min-height:100vh;max-width:760px;margin:auto}.chapter .image,.chapter .shade{left:calc((760px - 100vw)/2);right:calc((760px - 100vw)/2)}.chapter h2{font-size:85px}}@media(prefers-reduced-motion:reduce){.image{animation:none!important}*,*:before,*:after{transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+/* WEDLETTER ОДНАЖДЫ / LIVE V6: cinematic art direction */
+:root{--gold:#f7d694;--paper:#fff5e5}
+body{background:#041127}
+.chapter{min-height:105svh;padding:calc(112px + env(safe-area-inset-top)) 17px max(60px,8svh);justify-content:flex-end;gap:0}
+.chapter .image{filter:contrast(1.045) saturate(1.09);transform-origin:50% 40%;animation:ken 23s ease-in-out infinite alternate}
+.chapter .shade{background:linear-gradient(180deg,#06152c44 0%,#06152c21 20%,#06152c66 37%,#06132ddd 52%,#07142ded 78%,#061329f6 100%)}
+.chapter::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(ellipse at 50% 61%,#111b3dc7 0%,transparent 59%);opacity:.48}
+.chapter h2{font-size:clamp(47px,12vw,77px);line-height:.94;max-width:440px;letter-spacing:-.022em;text-wrap:balance;text-shadow:0 3px 18px #030a1ff2,0 1px 3px #000}
+.chapter .subtitle{font-size:clamp(22px,6vw,28px);line-height:1.12;max-width:340px;text-shadow:0 2px 11px #020814,0 3px 18px #000}
+.chapter .storylabel{font-size:10px;letter-spacing:.23em;text-shadow:0 2px 8px #000;display:flex;align-items:center;gap:12px;margin-bottom:19px}
+.chapter .storylabel::before,.chapter .storylabel::after{content:"";width:31px;height:1px;background:linear-gradient(90deg,transparent,#f4cf89)}
+.chapter .storylabel::after{transform:rotate(180deg)}
+.panel{border:1.5px solid #e6c38b;border-radius:31px;background:linear-gradient(152deg,#102244ef,#102341f9 65%,#142850f9);box-shadow:0 0 0 3px #ead09b12 inset,0 12px 50px #010a1dc2,0 0 26px #ddae6833;position:relative;padding:30px 22px 29px;overflow:hidden;max-width:410px}
+.panel::before,.rsvp-paper::before{content:"✦";position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:inherit;color:#f7dc9d;text-shadow:0 0 13px #fbd58b;font-size:21px;padding:0 13px}
+.panel::after{content:"";position:absolute;inset:4px;border:1px solid #f3d19e1f;border-radius:26px;pointer-events:none}
+.names{font-size:clamp(50px,13vw,65px);line-height:.97;text-shadow:0 0 24px #ffdaa527}
+.panel p{font-size:clamp(21px,5.4vw,26px);line-height:1.2;color:#fff5e5}
+.chapter .scroll{font-size:11px;letter-spacing:.24em;margin-top:25px;text-shadow:0 2px 10px #000b;animation:scrollpulse 2.5s ease-in-out infinite}
+@keyframes scrollpulse{50%{opacity:.48;transform:translateY(7px)}}
+.top{padding:calc(11px + env(safe-area-inset-top)) 18px 16px;background:linear-gradient(#07132ff5,#07132f8a 65%,transparent)}
+.top .brand{font-size:11px;letter-spacing:.32em}
+.meter{width:90px;height:2px;background:#f4d79a47}
+.meter i{box-shadow:0 0 9px #ffdf9d}
+.intro .shade{background:linear-gradient(180deg,#06112c69,#06112c11 32%,#04102a8c 58%,#061027f8 95%)}
+.intro-text{background:linear-gradient(150deg,#071734e6,#0b1a39f2);border:1px solid #f3d6a9b8;border-radius:150px 150px 28px 28px;box-shadow:0 24px 65px #0009,0 0 36px #f6cf8c22}
+.intro-text::before{content:"✧";display:block;color:#e6c386;text-shadow:0 0 14px #ffd49f;font-size:22px;margin-top:-12px}
+.intro h1{font-size:clamp(72px,20vw,100px)}
+.intro p{color:#fff4df}
+.intro.gone{transition:opacity 1.3s ease,visibility 1.3s}
+.goldbtn{background:linear-gradient(108deg,#f8e9c9,#dcb67b,#fff0ca);border:1px solid #fff4d1;box-shadow:0 0 20px #edbd6860,0 11px 31px #0007;transition:filter .3s,transform .3s}
+.goldbtn:active{transform:scale(.97)}
+.chapter[data-type=story] .panel{padding-top:34px}
+.chapter[data-type=invite] .panel{margin-top:20px}
+.chapter[data-type=timing] .panel{padding:29px 20px}
+.chapter[data-type=timing] .event{grid-template-columns:73px 1fr;gap:12px;padding:16px 0;border-bottom:1px solid #f1d4a542;position:relative}
+.chapter[data-type=timing] .event:before{content:"✦";position:absolute;top:16px;left:60px;color:#f4d49c;text-shadow:0 0 11px #ffcf7a}
+.chapter[data-type=timing] .event time{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:25px;font-weight:500;line-height:1}
+.chapter[data-type=timing] .event b{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:24px;line-height:1.05;font-weight:500}
+.chapter[data-type=timing] .event span{font-size:11px;color:#f1e6d6;opacity:1}
+.chapter[data-type=dress] .swatches i{width:52px;height:52px;box-shadow:0 3px 17px #0008,0 0 0 2px #cfaa69;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.chapter[data-type=dress] .swatches i:hover{transform:translateY(-9px)}
+.rsvp-paper{background:linear-gradient(150deg,#fff5df,#f7e6c9);border:2px solid #e3b36f;border-radius:27px;box-shadow:0 0 0 4px #f3d4a02c inset,0 16px 57px #010712a6;position:relative;padding:33px 23px}
+.rsvp-paper .smallcap{color:#956327;letter-spacing:.2em}
+.rsvp-paper h3{font-size:42px}
+.rsvp-paper input[type=text]{min-height:48px}
+.rsvp-paper .goldbtn{background:linear-gradient(160deg,#183257,#061630);color:#f9dfa9;border:1px solid #d4a75f}
+.magical-overlay{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:-1}
+.magic-spark{position:absolute;left:var(--x);top:var(--y);width:var(--s);height:var(--s);border-radius:50%;background:#ffdf9b;box-shadow:0 0 7px 3px #f7d09b78,0 0 17px #ffce7f7f;opacity:0;animation:magicrise var(--d) ease-in-out var(--delay) infinite;will-change:transform,opacity}
+@keyframes magicrise{0%{transform:translate3d(0,30px,0) scale(.45);opacity:0}25%{opacity:.95}75%{opacity:.6}100%{transform:translate3d(var(--drift),-90px,0) scale(1.2);opacity:0}}
+.magic-mist{position:absolute;width:180%;height:22%;left:-35%;top:18%;filter:blur(34px);background:radial-gradient(ellipse,#adc4e338,transparent 68%);mix-blend-mode:screen;animation:mistdrift 19s ease-in-out infinite alternate;will-change:transform}
+.magic-mist.second{top:35%;opacity:.6;animation-duration:28s;animation-direction:alternate-reverse}
+@keyframes mistdrift{from{transform:translateX(-13%)}to{transform:translateX(15%)}}
+.chapter[data-type=ball] .image{animation:ken 21s ease-in-out infinite alternate,ballglow 5s ease-in-out infinite alternate}
+@keyframes ballglow{from{filter:brightness(.93) saturate(1.04)}to{filter:brightness(1.22) saturate(1.22)}}
+.chapter[data-type=invite] .image{animation:coachroad 14s ease-in-out infinite alternate}
+@keyframes coachroad{from{transform:scale(1.08) translateX(-1.4%)}to{transform:scale(1.13) translateX(2%)}}
+.chapter[data-type=timing] .event{opacity:0;transform:translateX(-15px);transition:opacity .65s,transform .65s}
+.chapter[data-type=timing].in-view .event{opacity:1;transform:translateX(0)}
+.chapter[data-type=timing].in-view .event:nth-child(2){transition-delay:.13s}
+.chapter[data-type=timing].in-view .event:nth-child(3){transition-delay:.26s}
+.chapter[data-type=timing].in-view .event:nth-child(4){transition-delay:.39s}
+.chapter[data-type=dress] .swatches i{opacity:0;transform:scale(.3);transition:transform .7s,opacity .7s}
+.chapter[data-type=dress].in-view .swatches i{opacity:1;transform:scale(1)}
+.chapter[data-type=dress].in-view .swatches i:nth-child(2){transition-delay:.14s}
+.chapter[data-type=dress].in-view .swatches i:nth-child(3){transition-delay:.28s}
+.chapter[data-type=dress].in-view .swatches i:nth-child(4){transition-delay:.42s}
+.chapter[data-type=dress].in-view .swatches i:nth-child(5){transition-delay:.56s}
+.chapter[data-type=rsvp] .rsvp-paper{transform:translateY(30px) rotateX(8deg);transform-origin:center bottom;transition:transform 1.2s ease,opacity 1.2s}
+.chapter[data-type=rsvp] .rsvp-paper.visible{transform:translateY(0) rotateX(0)}
+@media(max-width:390px){.panel{padding:25px 16px}.chapter h2{font-size:46px}.chapter .subtitle{font-size:21px}.names{font-size:50px}.data b{font-size:22px}}
+@media(prefers-reduced-motion:reduce){.magic-spark,.magic-mist,.chapter[data-type=ball] .image,.chapter[data-type=invite] .image,.scroll{animation:none!important}.chapter[data-type=timing] .event,.chapter[data-type=dress] .swatches i{opacity:1;transform:none}}
+
+
+/* V6.2 critical iPhone fix: scene art on section background instead of negative z-layers */
+.chapter{background-color:#07152e;background-size:cover;background-position:center center;background-repeat:no-repeat}
+.chapter[data-type=story],.chapter[data-type=rsvp]{background-image:linear-gradient(180deg,#06102520 0%,#06102526 27%,#06132c6b 44%,#07152de8 75%,#07142cf1),url('../castle.webp')}
+.chapter[data-type=ball],.chapter[data-type=dress]{background-image:linear-gradient(180deg,#0610251c 0%,#06102521 24%,#06132c75 46%,#07152de8 75%,#07142cf1),url('../ball.webp')}
+.chapter[data-type=invite]{background-image:linear-gradient(180deg,#0610251b 0%,#06102522 27%,#06132c77 48%,#07152de9 77%,#07142cf1),url('../coach.webp')}
+.chapter[data-type=timing],.chapter[data-type=notes]{background-image:linear-gradient(180deg,#06102512 0%,#06102529 28%,#06132c75 48%,#07152de9 77%,#07142cf1),url('../garden.webp')}
+.chapter>.image{display:none!important}
+.chapter>.shade{display:none!important}
+.chapter::after{display:none!important}
+.magical-overlay{z-index:0}
+.chapter>.storylabel,.chapter>h2,.chapter>.subtitle,.chapter>.panel,.chapter>.rsvp-paper,.chapter>.scroll{position:relative;z-index:1}
+@media (max-width:600px){.chapter{background-position:50% 36%;background-size:cover}}
+
+/* V7: first genuine independently animated fairytale object */
+.chapter[data-type=invite]{background-image:linear-gradient(180deg,#06102538 0%,#0610253b 20%,#06152c70 45%,#07152df5 77%,#07142cfb),url('../garden.webp')!important;min-height:122svh;justify-content:flex-end;padding-bottom:7svh}
+.chapter[data-type=invite]>.storylabel{margin-top:0}
+.coach-stage{height:min(41svh,370px);width:calc(100% + 36px);max-width:700px;position:relative;align-self:center;margin:-4vh 0 2.8vh;pointer-events:none;z-index:1;overflow:visible;isolation:isolate}
+.coach-stage::before{content:"";position:absolute;left:-10%;right:-10%;bottom:5%;height:40%;background:radial-gradient(ellipse at 50% 65%,#f1cb6a50 0%,transparent 67%);filter:blur(20px);opacity:0;transition:opacity 1.5s}
+.chapter.in-view .coach-stage::before{opacity:1}
+.coach-traveller{position:absolute;bottom:0;left:0;width:100%;height:100%;transform:translate3d(-120vw,0,0) scale(.82);opacity:0;will-change:transform,opacity}
+.chapter.in-view .coach-traveller{animation:coach-arrival 3.2s cubic-bezier(.2,.7,.2,1) .15s both}
+@keyframes coach-arrival{0%{opacity:0;transform:translate3d(-115vw,9%,0) scale(.9)}12%{opacity:1}70%{opacity:1;transform:translate3d(-7%,0,0) scale(1)}100%{opacity:1;transform:translate3d(0,0,0) scale(1)}}
+@keyframes coach-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+.coach-svg{width:108%;height:100%;overflow:visible;filter:drop-shadow(0 10px 16px #000a) drop-shadow(0 0 6px #e3b9795c)}
+.coach-wheel{transform-box:fill-box;transform-origin:center;animation:none}
+@keyframes carriage-wheel{to{transform:rotate(360deg)}}
+.chapter.in-view .coach-wheel{animation:carriage-wheel .64s linear .15s 5 both}
+.horse-leg-front,.horse-leg-back{transform-box:fill-box;transform-origin:top center}
+.chapter.in-view .horse-leg-front{animation:horse-trot .34s ease-in-out .15s 9 alternate both}
+.chapter.in-view .horse-leg-back{animation:horse-trot .34s ease-in-out .15s 9 alternate both}
+@keyframes horse-trot{from{transform:rotate(-15deg)}to{transform:rotate(15deg)}}
+.horse-tail{transform-box:fill-box;transform-origin:100% 10%;animation:none}.chapter.in-view .horse-tail{animation:tail-sway .55s ease-in-out .15s 5 alternate both}
+@keyframes tail-sway{to{transform:rotate(-13deg)}}
+.coach-lamp{animation:lamp-glow 1.7s ease-in-out infinite alternate}
+@keyframes lamp-glow{to{opacity:.55;filter:drop-shadow(0 0 8px #ffeec9)}}
+.coach-dust{position:absolute;left:6%;bottom:5%;width:4px;height:4px;background:#f8d797;border-radius:50%;opacity:0;box-shadow:0 0 12px 4px #eab85e99;z-index:-1}
+.chapter.in-view .coach-dust{animation:dust-spark 1s ease-out var(--delay) 2}
+@keyframes dust-spark{0%{opacity:0;transform:translate3d(120px,0,0) scale(.5)}20%{opacity:1}100%{opacity:0;transform:translate3d(-80px,-95px,0) scale(0)}}
+.coach-stage .fairy-swish{position:absolute;bottom:5%;left:8%;right:10%;height:1px;background:linear-gradient(90deg,transparent,#ffe3a7,#fbd08e88,transparent);box-shadow:0 0 12px 2px #fdcf6a8c;transform:scaleX(0);transform-origin:left}
+.chapter.in-view .coach-stage .fairy-swish{animation:swish 3.3s ease-out .15s both}
+@keyframes swish{15%{transform:scaleX(.6);opacity:1}100%{transform:scaleX(1);opacity:0}}
+.chapter[data-type=invite] h2{font-size:clamp(43px,11vw,72px);max-width:420px}
+.chapter[data-type=invite] .panel{background:linear-gradient(150deg,#081b39f5,#0a2044f9);padding:22px}
+.chapter[data-type=invite] .subtitle{margin-bottom:10px}
+.coach-caption{position:absolute;top:0;left:50%;transform:translateX(-50%);white-space:nowrap;color:#ffdfac;font:600 10px Manrope,sans-serif;letter-spacing:.23em;text-shadow:0 0 14px #b88751;opacity:0}
+.chapter.in-view .coach-caption{animation:caption-in .9s ease 2.5s both}
+@keyframes caption-in{to{opacity:1}}
+@media (max-width:430px){.coach-stage{height:34svh;min-height:245px;margin:-3vh 0 2vh}.coach-svg{width:110%}.chapter[data-type=invite]{padding-top:72px}.chapter[data-type=invite] h2{font-size:clamp(40px,10vw,55px)}}
+@media(prefers-reduced-motion:reduce){.coach-traveller,.chapter.in-view .coach-traveller{animation:none!important;opacity:1!important;transform:none!important}.coach-wheel,.horse-leg-front,.horse-leg-back,.horse-tail,.coach-lamp,.coach-dust,.fairy-swish{animation:none!important}}
+
+/* V7.2: stop every mechanical animation on the SAME arrival end event */
+.chapter[data-type=invite].coach-stopped .coach-traveller{
+ animation:none!important;transform:translate3d(0,0,0) scale(1)!important;opacity:1!important;
+}
+.chapter[data-type=invite].coach-stopped .coach-wheel,
+.chapter[data-type=invite].coach-stopped .horse-leg-front,
+.chapter[data-type=invite].coach-stopped .horse-leg-back,
+.chapter[data-type=invite].coach-stopped .horse-tail{
+ animation:none!important;transform:rotate(0deg)!important;
+}
+.chapter[data-type=invite].coach-stopped .coach-dust,
+.chapter[data-type=invite].coach-stopped .fairy-swish{animation:none!important;opacity:0!important}
+
+/* V7.3: carriage travels continuously while wheels turn; hard stop at 1.65 seconds */
+.chapter[data-type=invite].in-view:not(.coach-stopped) .coach-traveller{
+ animation:coach-cross-quick 2.55s cubic-bezier(.26,.35,.58,1) .06s both!important;
+}
+@keyframes coach-cross-quick{
+ 0%{transform:translate3d(-115vw,0,0) scale(.96);opacity:0}
+ 6%{opacity:1}
+ 100%{transform:translate3d(0,0,0) scale(1);opacity:1}
+}
+.chapter[data-type=invite].in-view:not(.coach-stopped) .coach-wheel{
+ animation:carriage-wheel .425s linear .06s 6 both!important;
+}
+.chapter[data-type=invite].in-view:not(.coach-stopped) .horse-leg-front,
+.chapter[data-type=invite].in-view:not(.coach-stopped) .horse-leg-back{
+ animation:horse-trot .3s ease-in-out .06s 8 alternate both!important;
+}
+.chapter[data-type=invite].in-view:not(.coach-stopped) .horse-tail{
+ animation:tail-sway .425s ease-in-out .06s 6 alternate both!important;
+}
+.chapter[data-type=invite].coach-stopped .coach-traveller{
+ animation:none!important;transform:translate3d(0,0,0) scale(1)!important;opacity:1!important;
+}
+.chapter[data-type=invite].coach-stopped .coach-wheel,
+.chapter[data-type=invite].coach-stopped .horse-leg-front,
+.chapter[data-type=invite].coach-stopped .horse-leg-back,
+.chapter[data-type=invite].coach-stopped .horse-tail{
+ animation:none!important;transform:rotate(0deg)!important;
+}
+
+/* V8 cinematic living castle / ballroom. Separate CSS layers, independent of existing scene imagery. */
+.scene-film{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;isolation:isolate}
+.scene-film>*{pointer-events:none}
+.scene-film .mistbank{position:absolute;top:4%;left:-55%;width:170%;height:40%;background:radial-gradient(ellipse at center,#dce7fc6b 0%,#97acd332 27%,transparent 68%);filter:blur(38px);opacity:.6;animation:fairytale-mist 15s linear infinite alternate}
+.scene-film .mistbank.second{top:25%;animation-duration:23s;animation-direction:alternate-reverse;opacity:.37}
+@keyframes fairytale-mist{from{transform:translate3d(-12%,0,0)}to{transform:translate3d(20%,0,0)}}
+.scene-film .window-glow{position:absolute;left:var(--x);top:var(--y);width:var(--w);height:var(--h);border-radius:48% 48% 4px 4px;background:#ffce82;box-shadow:0 0 11px 4px #ffe7a3,0 0 39px 16px #ffc9695a;mix-blend-mode:screen;opacity:0;animation:window-warmth var(--dur) ease-in-out var(--delay) infinite alternate}
+@keyframes window-warmth{0%{opacity:.04}45%{opacity:.36}100%{opacity:.63}}
+.scene-film .firefly{position:absolute;left:var(--x);top:var(--y);width:3px;height:3px;background:#fff1ad;border-radius:50%;box-shadow:0 0 10px 4px #ffc96b8a;opacity:0;animation:fairytale-fly var(--dur) ease-in-out var(--delay) infinite}
+@keyframes fairytale-fly{0%{opacity:0;transform:translate3d(0,18px,0)}30%{opacity:.9}75%{opacity:.65}100%{opacity:0;transform:translate3d(var(--dx),-62px,0)}}
+.scene-film .moon-halo{position:absolute;top:5%;right:15%;width:27vw;max-width:160px;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#fff4d133 0%,#f1d8a21a 32%,transparent 69%);filter:blur(11px);animation:moon-brightness 5s ease-in-out infinite alternate}
+@keyframes moon-brightness{to{opacity:.33;transform:scale(1.14)}}
+.scene-film .ballroom-halo{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 24%,#ffd99b33 0%,transparent 48%);animation:ballroom-lights 4s ease-in-out infinite alternate;mix-blend-mode:screen}
+@keyframes ballroom-lights{to{opacity:.35}}
+.scene-film .chandelier{position:absolute;top:-2%;width:clamp(96px,34vw,190px);filter:drop-shadow(0 0 9px #f5c97b88);transform-origin:50% 0;animation:chandelier-sway 6.8s ease-in-out infinite alternate;opacity:.85}
+.scene-film .chandelier.center{left:50%;margin-left:calc(clamp(96px,34vw,190px) / -2);top:-8%;animation-delay:-2s}
+.scene-film .chandelier.left{width:clamp(55px,18vw,105px);left:-2%;top:10%;animation-delay:-1s}
+.scene-film .chandelier.right{width:clamp(55px,18vw,105px);right:-3%;top:12%;animation-delay:-4s}
+@keyframes chandelier-sway{from{transform:rotate(-2.8deg)}to{transform:rotate(2.8deg)}}
+.scene-film .chandelier svg{width:100%;height:auto}
+.scene-film .candle{position:absolute;left:var(--x);top:var(--y);width:7px;height:25px;background:linear-gradient(#fff6cb,#e9b25a,#d78232);filter:blur(1px);border-radius:50% 50% 40% 40%;opacity:.65;box-shadow:0 0 22px 7px #fbb662b6;animation:candle-flame var(--dur) ease-in-out var(--delay) infinite alternate}
+@keyframes candle-flame{to{transform:scale(.85,1.4) rotate(7deg);opacity:.36}}
+.scene-film .light-streak{position:absolute;left:-65%;width:75%;height:3px;top:var(--y);transform:rotate(-13deg);background:linear-gradient(90deg,transparent,#ffe7bcaa,#fffbee,transparent);filter:blur(2px);opacity:0}
+.chapter.in-view .scene-film .light-streak{animation:streak-sweep 5s ease-in-out var(--delay) infinite}
+@keyframes streak-sweep{0%,15%{opacity:0;transform:translateX(-25%) rotate(-13deg)}36%{opacity:.45}65%{opacity:0;transform:translateX(210%) rotate(-13deg)}100%{opacity:0}}
+.chapter[data-type=story],.chapter[data-type=ball]{background-position:center 28%}
+.chapter[data-type=story] .scene-film,.chapter[data-type=ball] .scene-film{z-index:0}
+.chapter[data-type=story]>.storylabel,.chapter[data-type=story]>h2,.chapter[data-type=story]>.subtitle,.chapter[data-type=story]>.panel,.chapter[data-type=ball]>.storylabel,.chapter[data-type=ball]>h2,.chapter[data-type=ball]>.subtitle,.chapter[data-type=ball]>.panel{position:relative;z-index:2}
+.intro .scene-film{z-index:1}
+.intro .intro-body{z-index:3}
+.intro .scene-film .window-glow{opacity:.24}
+@media(prefers-reduced-motion:reduce){.scene-film *{animation:none!important}.scene-film .firefly,.scene-film .light-streak{display:none}}
+
+
+/* V9 visible fairy-tale stage. Unlike V8, the magic layers sit ABOVE the scenery. */
+.chapter[data-type=story] .scene-film,.chapter[data-type=ball] .scene-film{z-index:3!important;mix-blend-mode:screen}
+.chapter[data-type=story]>.storylabel,.chapter[data-type=story]>h2,.chapter[data-type=story]>.subtitle,.chapter[data-type=story]>.panel,
+.chapter[data-type=ball]>.storylabel,.chapter[data-type=ball]>h2,.chapter[data-type=ball]>.subtitle,.chapter[data-type=ball]>.panel{z-index:6!important}
+.chapter[data-type=story] .scene-film .window-glow{opacity:.45;box-shadow:0 0 20px 8px #f3c277,0 0 55px 17px #e5b35c;animation:window-warmth 2.1s ease-in-out infinite alternate}
+.chapter[data-type=ball] .scene-film .chandelier{filter:drop-shadow(0 0 17px #ffdb9a);opacity:1}
+.fairytale-stage{position:absolute;inset:0;overflow:hidden;z-index:4;pointer-events:none;isolation:isolate}
+.chapter .fairytale-stage{mix-blend-mode:screen}
+.fairytale-stage .dramatic-cloud{position:absolute;left:-64%;top:var(--top);width:110%;height:19%;border-radius:50%;background:radial-gradient(ellipse at 52% 48%,#c5d2f484 0%,#d8e3f04d 32%,#a4bfed16 59%,transparent 75%);filter:blur(23px);will-change:transform;animation:cloud-passing var(--duration) linear var(--delay) infinite}
+@keyframes cloud-passing{from{transform:translate3d(-30%,0,0)}to{transform:translate3d(190%,0,0)}}
+.fairytale-stage .magic-comet{position:absolute;top:13%;left:-25%;width:115px;height:3px;background:linear-gradient(90deg,transparent,#d9e7fb,#fff8d0);border-radius:99px;box-shadow:0 0 11px 4px #f9dc9688;transform:rotate(-21deg);opacity:0;animation:comet-fly 7s linear 1s infinite}
+@keyframes comet-fly{0%,16%{opacity:0;transform:translate3d(-10vw,5vh,0) rotate(-21deg)}21%{opacity:1}33%{opacity:0;transform:translate3d(150vw,-21vh,0) rotate(-21deg)}100%{opacity:0}}
+.fairytale-stage .magic-lantern{position:absolute;top:var(--top);left:var(--left);height:var(--size);width:var(--size);border-radius:50%;background:#fff2bd;box-shadow:0 0 15px 5px #ffe2a0,0 0 42px 13px #f4bd6877;opacity:.6;animation:lantern-rise var(--duration) ease-in-out var(--delay) infinite alternate}
+@keyframes lantern-rise{0%{transform:translateY(0) scale(.75);opacity:.25}100%{transform:translateY(-32px) scale(1.12);opacity:.8}}
+.chapter[data-type=ball] .fairytale-stage{mix-blend-mode:normal}
+.fairytale-stage .theatre-curtain{position:absolute;top:-8%;height:61%;width:56%;z-index:2;filter:drop-shadow(0 14px 23px #0009);background:repeating-linear-gradient(90deg,#070d2d 0%,#202953 9%,#081334 16%,#38416e 24%,#0b173a 32%);box-shadow:inset 0 0 12px #e7c48b44,inset 0 -10px 34px #0b123c;transition:transform 2.2s cubic-bezier(.16,.7,.2,1)}
+.fairytale-stage .theatre-curtain.left{left:-3%;border-radius:0 0 55% 8%;transform:translateX(0)}
+.fairytale-stage .theatre-curtain.right{right:-3%;border-radius:0 0 8% 55%;transform:translateX(0)}
+.chapter.in-view .fairytale-stage .theatre-curtain.left{transform:translateX(-93%)}
+.chapter.in-view .fairytale-stage .theatre-curtain.right{transform:translateX(93%)}
+.fairytale-stage .theatre-curtain:after{content:"";position:absolute;bottom:0;left:5%;right:5%;height:3px;background:#d5af69;box-shadow:0 0 10px 3px #ffe5a29c}
+.fairytale-stage .grand-chandelier{position:absolute;top:-5%;left:50%;width:min(70vw,340px);aspect-ratio:1/1;transform-origin:50% -10%;transform:translateX(-50%) rotate(0);filter:drop-shadow(0 0 18px #fff0bd);z-index:1;animation:grand-sway 6s ease-in-out infinite alternate}
+@keyframes grand-sway{0%{transform:translateX(-50%) rotate(-3deg)}100%{transform:translateX(-50%) rotate(3deg)}}
+.fairytale-stage .grand-chandelier svg{width:100%;height:100%;overflow:visible}
+.fairytale-stage .grand-chandelier .glass-light{opacity:.45;animation:chandelier-flash 3.8s ease-in-out infinite alternate}
+@keyframes chandelier-flash{0%{opacity:.27}100%{opacity:1}}
+.fairytale-stage .gold-beam{position:absolute;left:50%;top:10%;width:88vw;max-width:520px;height:48%;clip-path:polygon(49% 0,51% 0,100% 100%,0 100%);background:linear-gradient(180deg,#fff1c244,#fae6b31b,transparent);filter:blur(14px);transform-origin:50% 0;opacity:.7;animation:beam-sweep 6s ease-in-out infinite alternate;mix-blend-mode:screen}
+@keyframes beam-sweep{from{transform:translateX(-50%) rotate(-13deg)}to{transform:translateX(-50%) rotate(13deg)}}
+.fairytale-stage .gold-fall{position:absolute;left:var(--left);top:-4%;font-size:var(--size);line-height:1;color:#ffe8a0;text-shadow:0 0 13px #f8d28c;opacity:0;animation:gold-falling var(--duration) ease-in-out var(--delay) infinite}
+@keyframes gold-falling{0%{transform:translate3d(0,-25px,0) rotate(0);opacity:0}18%{opacity:.85}80%{opacity:.7}100%{transform:translate3d(var(--dx),56vh,0) rotate(180deg);opacity:0}}
+.v9-mark{position:fixed;top:calc(48px + env(safe-area-inset-top));right:11px;z-index:25;font:700 9px Manrope,sans-serif;letter-spacing:.15em;color:#f8ddb3;background:#05122acc;border:1px solid #f1d38c7a;border-radius:20px;padding:7px 10px;pointer-events:none}
+@media (max-width:420px){.fairytale-stage .grand-chandelier{top:0;width:61vw}.fairytale-stage .theatre-curtain{height:52%}}
+@media(prefers-reduced-motion:reduce){.fairytale-stage *{animation:none!important;transition:none!important}.chapter.in-view .fairytale-stage .theatre-curtain.left{transform:translateX(-93%)}.chapter.in-view .fairytale-stage .theatre-curtain.right{transform:translateX(93%)}}
+
+</style></head><body class="lock"><section id="intro" class="intro"><div class="image castle"></div><div class="shade"></div><div class="intro-body"><div class="brand">✦ WEDLETTER</div><div class="intro-text"><div class="eyebrow">Интерактивная свадебная сказка</div><h1>Однажды…</h1><p>Самые красивые истории начинаются с одного взгляда.</p><button id="start" class="goldbtn">Открыть нашу сказку ✧</button></div><div class="tint">ВОЛШЕБСТВО УЖЕ БЛИЗКО</div></div></section><main id="main"><header class="top"><div class="brand">WEDLETTER</div><div class="meter"><i id="meter"></i></div><button id="restart" aria-label="Вернуться к заставке">↶</button></header><div id="sections"></div></main><script>
+const STORE='wedletter_fairytale_real_v9',initial={couple:'Алина & Матвей',date:'14 июня 2027',venue:'Усадьба «Сказка»',arrival:'16:00',colors:['#f0dcca','#deb9c4','#a3b5d2','#bc94ad','#b5aa99'],events:[{time:'15:30',name:'Сбор гостей',note:'Приветственные напитки'},{time:'16:00',name:'Свадебная церемония',note:'Наше самое главное «да»'},{time:'17:30',name:'Праздничный ужин',note:'Тёплые слова, музыка и танцы'},{time:'20:30',name:'Свадебный торт',note:'Сладкое завершение вечера'}],blocks:[{id:'story',type:'story',on:true,title:'Однажды два сердца встретились…',text:'И мир вдруг стал чуточку волшебнее.'},{id:'ball',type:'ball',on:true,title:'И целый мир закружился в танце',text:'Началась история, которую хочется прожить вместе.'},{id:'invite',type:'invite',on:true,title:'Карета уже отправляется…',text:'Приглашаем вас разделить с нами этот день.'},{id:'timing',type:'timing',on:true,title:'Программа волшебного дня',text:'Каждая минута нашей сказки особенна.'},{id:'dress',type:'dress',on:true,title:'Королевский дресс-код',text:'Поддержите атмосферу праздника нежными оттенками.'},{id:'notes',type:'notes',on:true,title:'Наши пожелания',text:'Самый главный подарок для нас — ваше присутствие.'},{id:'rsvp',type:'rsvp',on:true,title:'До встречи в нашей сказке',text:'Пожалуйста, подтвердите своё присутствие.'}]};
+const clone=x=>JSON.parse(JSON.stringify(x));let settings=clone(initial);try{let x=JSON.parse(localStorage.getItem(STORE)||'null');if(x&&Array.isArray(x.blocks))settings=x}catch(e){}const esc=x=>String(x??'').replace(/[&<>"']/g,a=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[a]));
+function section(b){const a={story:'castle',ball:'ball',invite:'coach',timing:'garden',dress:'ball',notes:'garden',rsvp:'castle'};let inner='';if(b.type==='story')inner='<div class="smallcap">НАША ИСТОРИЯ</div><div class="names">'+esc(settings.couple)+'</div><div class="divider"></div><p>Самая красивая сказка — та, которую пишут вдвоём.</p>';else if(b.type==='ball')inner='<div class="smallcap">КОРОЛЕВСКИЙ БАЛ</div><div class="names">Приглашаем вас</div><div class="divider"></div><p>Вечер, где сбудется ещё одна мечта.</p>';else if(b.type==='invite')inner='<div class="smallcap">ДАТА НАШЕГО ПРАЗДНИКА</div><div class="names" style="font-size:44px">'+esc(settings.date)+'</div><div class="divider"></div><div class="data"><div><small>ГДЕ</small><b>'+esc(settings.venue)+'</b></div><div><small>КОГДА</small><b>Сбор в '+esc(settings.arrival)+'</b></div></div>';else if(b.type==='timing')inner='<div class="smallcap">РАСПИСАНИЕ КОРОЛЕВСКОГО БАЛА</div>'+settings.events.map(e=>'<div class="event"><time>'+esc(e.time)+'</time><div><b>'+esc(e.name)+'</b><span>'+esc(e.note)+'</span></div></div>').join('');else if(b.type==='dress')inner='<div class="smallcap">ЦВЕТА НАШЕГО ВЕЧЕРА</div><div class="swatches">'+settings.colors.map(c=>'<i style="background:'+(/^#[0-9a-f]{6}$/i.test(c)?c:'#e4d3be')+'"></i>').join('')+'</div><div class="divider"></div><p>Будем рады видеть вас в нарядах этих оттенков.</p>';else if(b.type==='notes')inner='<div class="smallcap">ПОСЛАНИЕ ГОСТЯМ</div><p>'+esc(b.text)+'</p><div class="divider"></div><div style="font:italic 40px Georgia">♡</div>';else if(b.type==='rsvp')inner='<div class="smallcap">ВОЛШЕБНОЕ ПИСЬМО</div><p>Подтвердите участие в нашем празднике</p><form id="rsvpForm"><label for="guestName">Ваше имя</label><input id="guestName" type="text" placeholder="Как к вам обращаться?" required><div class="answers"><label><input type="radio" name="attendance" value="yes" checked> Я буду</label><label><input type="radio" name="attendance" value="no"> Не смогу</label></div><button class="goldbtn">Отправить ответ ♡</button><div class="rsvp-note" id="rsvpNote">Демоверсия: ответ не отправляется на сервер.</div></form>';
+return '<section class="chapter" data-type="'+esc(b.type)+'"><div class="image '+(a[b.type]||'garden')+'"></div><div class="shade"></div><div class="storylabel reveal">'+({story:'Глава первая',ball:'Глава вторая',invite:'Приглашение',timing:'Тайминг дня',dress:'Дресс-код',notes:'Пожелания',rsvp:'Эпилог'}[b.type]||'Новая глава')+'</div><h2 class="reveal">'+esc(b.title)+'</h2><p class="subtitle reveal">'+esc(b.text)+'</p><div class="'+(b.type==='rsvp'?'rsvp-paper':'panel')+' reveal">'+inner+'</div><div class="scroll reveal">'+(b.type==='rsvp'?'WEDLETTER ♡':'ЛИСТАЙТЕ ДАЛЬШЕ ↓')+'</div></section>'}
+function render(){document.getElementById('sections').innerHTML=settings.blocks.filter(b=>b.on).map(section).join('');let ob=new IntersectionObserver(items=>items.forEach(item=>{if(item.isIntersecting)item.target.querySelectorAll('.reveal').forEach((n,i)=>setTimeout(()=>n.classList.add('visible'),i*140))}),{threshold:.08});document.querySelectorAll('.chapter').forEach(s=>{ob.observe(s);const spark=document.createElement('div');spark.className='magical-overlay';spark.innerHTML='<div class="magic-mist"></div><div class="magic-mist second"></div>';for(let i=0;i<22;i++){let dot=document.createElement('i');dot.className='magic-spark';dot.style.setProperty('--x',(7+(i*37)%86)+'%');dot.style.setProperty('--y',(9+(i*19)%83)+'%');dot.style.setProperty('--s',(1+i%3)+'px');dot.style.setProperty('--d',(3.2+i%5)+'s');dot.style.setProperty('--delay',(-i*.47)+'s');dot.style.setProperty('--drift',((i%2?1:-1)*(12+i%5*8))+'px');spark.append(dot)}s.append(spark)});const inView=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in-view')}),{threshold:.16});document.querySelectorAll('.chapter').forEach(s=>inView.observe(s));document.getElementById('rsvpForm')?.addEventListener('submit',e=>{e.preventDefault();document.getElementById('rsvpNote').textContent='Спасибо! Это демонстрационная форма, данные не сохранены.'})}
+render();document.getElementById('start').onclick=()=>{document.querySelector('#intro').classList.add('gone');document.querySelector('main').classList.add('active');document.body.classList.remove('lock');window.scrollTo(0,0);setTimeout(()=>document.querySelectorAll('.chapter:first-child .reveal').forEach((e,i)=>setTimeout(()=>e.classList.add('visible'),i*160)),120)};document.getElementById('restart').onclick=()=>location.reload();window.addEventListener('scroll',()=>{let max=document.documentElement.scrollHeight-innerHeight;document.querySelector('#meter').style.width=Math.max(0,Math.min(100,max?scrollY/max*100:0))+'%'},{passive:true});
+</script><script>
+(function(){
+function installCarriage(){
+ const scene=document.querySelector('.chapter[data-type="invite"]');if(!scene)return;
+ if(scene.querySelector('.coach-stage'))return;
+ const stage=document.createElement('div');stage.className='coach-stage';stage.setAttribute('aria-label','Анимированная королевская карета выезжает на дорогу');
+ stage.innerHTML='<div class="coach-caption">ВОЛШЕБСТВО НАЧИНАЕТСЯ</div><div class="fairy-swish"></div><div class="coach-traveller">'+"<svg class=\"coach-svg\" viewBox=\"0 0 800 350\" role=\"img\" aria-label=\"Золотая карета с двумя лошадьми, колёса вращаются\" xmlns=\"http://www.w3.org/2000/svg\">\n<defs>\n <linearGradient id=\"carGold\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop stop-color=\"#fff3b8\"/><stop offset=\".27\" stop-color=\"#b9803b\"/><stop offset=\".6\" stop-color=\"#ffe6a4\"/><stop offset=\".83\" stop-color=\"#a77039\"/><stop offset=\"1\" stop-color=\"#ffe7b2\"/></linearGradient>\n <linearGradient id=\"carBody\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop stop-color=\"#fff7e4\"/><stop offset=\".43\" stop-color=\"#dec6a2\"/><stop offset=\".76\" stop-color=\"#f2e7d6\"/><stop offset=\"1\" stop-color=\"#a38769\"/></linearGradient>\n <linearGradient id=\"carWindow\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop stop-color=\"#fff7c4\"/><stop offset=\".4\" stop-color=\"#d49252\"/><stop offset=\"1\" stop-color=\"#402b35\"/></linearGradient>\n <radialGradient id=\"lanternLight\"><stop stop-color=\"#fff8dd\" stop-opacity=\".9\"/><stop offset=\".25\" stop-color=\"#ffd27a\" stop-opacity=\".65\"/><stop offset=\"1\" stop-color=\"#ffba59\" stop-opacity=\"0\"/></radialGradient>\n</defs>\n<ellipse cx=\"384\" cy=\"308\" rx=\"320\" ry=\"16\" fill=\"#030c26\" opacity=\".38\"/>\n<!-- harness and two layered horses -->\n<g stroke-linejoin=\"round\" stroke-linecap=\"round\">\n <g transform=\"translate(537,28) scale(.82)\" fill=\"url(#carBody)\" stroke=\"#c6a67c\" stroke-width=\"3\">\n  <path d=\"M25 163 C17 134 14 95 37 77 C57 60 97 56 125 75 L161 92 L172 59 L197 28 L205 5 L225 16 L235 29 L242 31 L246 48 L227 61 L211 100 L192 151 L178 169 L82 175 Z\"/>\n  <path d=\"M209 17 L221 -9 L232 17 M195 16 L194 -4 L209 14\" fill=\"#eee1c8\"/>\n  <path d=\"M172 64 Q164 24 192 10 L186 83\" fill=\"#c5ae97\"/>\n  <circle cx=\"224\" cy=\"40\" r=\"3.7\" fill=\"#2b2932\" stroke=\"none\"/>\n  <path d=\"M236 50 Q246 57 227 64\" fill=\"none\"/>\n  <path class=\"horse-tail\" d=\"M22 112 C-5 126 -3 165 19 194 C11 169 22 154 36 148\" fill=\"#e9dec8\" stroke=\"#bfad96\"/>\n  <g class=\"horse-leg-back\"><path d=\"M55 165 Q56 214 45 264 L45 296 L59 301 L66 286 L80 196 Z\"/><path d=\"M95 167 Q113 220 93 289 L105 300 L120 290 L127 224 L113 167 Z\"/></g>\n  <g class=\"horse-leg-front\"><path d=\"M148 169 L158 231 L169 281 L184 284 L182 263 L172 196 Z\"/><path d=\"M181 164 L195 212 L211 275 L228 276 L217 249 L211 191 Z\"/></g>\n  <path d=\"M31 95 Q109 112 194 99\" stroke=\"#9f6b33\" stroke-width=\"9\" fill=\"none\"/>\n  <path d=\"M163 82 L226 61 L249 97\" stroke=\"#c5a56e\" stroke-width=\"4\" fill=\"none\"/>\n  <path d=\"M209 49 L247 51\" stroke=\"#7e5337\" stroke-width=\"3\" fill=\"none\"/>\n </g>\n <g transform=\"translate(602,35) scale(.68)\" fill=\"#d8d9da\" stroke=\"#aca5a2\" stroke-width=\"3\" opacity=\".96\">\n  <path d=\"M20 163 Q-4 103 33 72 C62 58 111 63 139 82 L165 91 L172 55 L207 16 L227 20 L241 34 L244 52 L218 64 L203 107 L187 168 Z\"/>\n  <path d=\"M213 18 L222 -9 L230 20\" fill=\"#f4eee0\"/><circle cx=\"227\" cy=\"42\" r=\"4\" fill=\"#141c2c\" stroke=\"none\"/>\n  <path class=\"horse-tail\" d=\"M17 111 Q-9 155 21 192 L36 148\" fill=\"#f6f3e7\"/>\n  <g class=\"horse-leg-back\"><path d=\"M60 164 L45 287 L61 298 L82 178 Z\"/><path d=\"M105 169 L96 290 L110 298 L125 178 Z\"/></g>\n  <g class=\"horse-leg-front\"><path d=\"M150 161 L157 242 L172 284 L189 286 L175 225 Z\"/><path d=\"M184 159 L196 236 L216 280 L231 277 L214 218 Z\"/></g>\n  <path d=\"M28 104 L190 107\" stroke=\"#b18a4a\" stroke-width=\"10\" fill=\"none\"/>\n  <path d=\"M181 84 L242 52\" stroke=\"#9d733f\" stroke-width=\"5\" fill=\"none\"/>\n </g>\n <!-- reins and drawbar -->\n <path d=\"M385 237 Q480 210 535 168 L632 103 M390 244 L536 178 L682 123\" fill=\"none\" stroke=\"url(#carGold)\" stroke-width=\"5\"/>\n <path d=\"M392 273 L542 276\" fill=\"none\" stroke=\"#be904e\" stroke-width=\"7\"/>\n <!-- carriage base and royal cabin -->\n <path d=\"M94 273 Q241 294 383 266 L398 284 L95 306 Z\" fill=\"#654630\" stroke=\"url(#carGold)\" stroke-width=\"10\"/>\n <path d=\"M90 123 Q96 55 150 50 L276 50 Q360 63 362 139 L361 254 Q249 286 94 251 Z\" fill=\"url(#carBody)\" stroke=\"url(#carGold)\" stroke-width=\"12\"/>\n <path d=\"M108 111 Q123 73 150 73 L293 74 Q338 88 342 126 L340 222 Q224 255 112 226 Z\" fill=\"#192746\" stroke=\"#f6dba7\" stroke-width=\"5\"/>\n <!-- ornate glowing carriage windows -->\n <path d=\"M133 121 Q130 91 162 91 L215 91 L216 222 L126 208 Z\" fill=\"url(#carWindow)\" stroke=\"url(#carGold)\" stroke-width=\"7\"/>\n <path d=\"M234 92 L291 92 Q320 95 323 125 L325 211 L227 223 Z\" fill=\"url(#carWindow)\" stroke=\"url(#carGold)\" stroke-width=\"7\"/>\n <path d=\"M172 91 L172 213 M276 92 L278 212\" stroke=\"#fff4c5\" stroke-width=\"3\"/>\n <path d=\"M130 123 Q174 142 215 116 M232 118 Q277 146 319 121\" fill=\"none\" stroke=\"#f3dfba\" stroke-width=\"8\" opacity=\".9\"/>\n <path d=\"M120 209 Q226 251 338 208\" fill=\"none\" stroke=\"url(#carGold)\" stroke-width=\"8\"/>\n <path d=\"M108 155 Q225 168 350 155\" stroke=\"#ffe6af\" stroke-width=\"3\" opacity=\".6\" fill=\"none\"/>\n <path d=\"M116 256 Q225 274 349 246\" stroke=\"url(#carGold)\" stroke-width=\"7\" fill=\"none\"/>\n <path d=\"M90 95 Q82 56 113 55 L132 37 Q160 17 207 29 Q264 10 314 39 L343 51 Q370 66 364 102\" fill=\"none\" stroke=\"url(#carGold)\" stroke-width=\"10\"/>\n <path d=\"M117 45 Q157 26 197 36 Q232 20 265 35 Q305 30 341 55\" fill=\"none\" stroke=\"#fff3cc\" stroke-width=\"3\"/>\n <!-- crown -->\n <path d=\"M204 24 L184 -1 L203 8 L214 -16 L226 8 L247 -5 L236 24 Z\" fill=\"url(#carGold)\" stroke=\"#e6bd78\" stroke-width=\"2\"/>\n <circle cx=\"213\" cy=\"-16\" r=\"4\" fill=\"#fff9d6\"/>\n <path d=\"M210 236 L226 221 L243 238 L226 251 Z\" fill=\"url(#carGold)\" stroke=\"#fff1c3\" stroke-width=\"2\"/>\n <!-- swinging carriage lanterns -->\n <g class=\"coach-lamp\"><path d=\"M97 130 L75 122\" stroke=\"#cdaa64\" stroke-width=\"5\"/><circle cx=\"68\" cy=\"120\" r=\"35\" fill=\"url(#lanternLight)\"/><path d=\"M61 103 L76 103 L80 135 L57 135 Z\" fill=\"#ffd98a\" stroke=\"url(#carGold)\" stroke-width=\"4\"/><path d=\"M61 101 L68 92 L78 101 M58 136 L81 136\" fill=\"none\" stroke=\"#fff0c4\" stroke-width=\"3\"/></g>\n <g class=\"coach-lamp\"><path d=\"M362 130 L382 121\" stroke=\"#cdaa64\" stroke-width=\"5\"/><circle cx=\"389\" cy=\"118\" r=\"37\" fill=\"url(#lanternLight)\"/><path d=\"M381 100 L397 100 L400 133 L379 133 Z\" fill=\"#ffdf88\" stroke=\"url(#carGold)\" stroke-width=\"4\"/></g>\n <!-- rotating individually layered wheels -->\n <g class=\"coach-wheel\"><circle cx=\"155\" cy=\"282\" r=\"51\" fill=\"#203150\" stroke=\"url(#carGold)\" stroke-width=\"9\"/><circle cx=\"155\" cy=\"282\" r=\"42\" fill=\"none\" stroke=\"#e9c48e\" stroke-width=\"3\"/><path d=\"M155 233 V331 M106 282 H204 M120 247 L190 317 M190 247 L120 317 M136 235 L174 329 M174 235 L136 329\" stroke=\"url(#carGold)\" stroke-width=\"5\"/><circle cx=\"155\" cy=\"282\" r=\"11\" fill=\"#ffdf9f\" stroke=\"#99683d\" stroke-width=\"4\"/></g>\n <g class=\"coach-wheel\"><circle cx=\"342\" cy=\"287\" r=\"39\" fill=\"#1c2b49\" stroke=\"url(#carGold)\" stroke-width=\"8\"/><circle cx=\"342\" cy=\"287\" r=\"31\" fill=\"none\" stroke=\"#f5d6a2\" stroke-width=\"2\"/><path d=\"M342 250 V324 M305 287 H379 M315 260 L369 314 M369 260 L315 314\" stroke=\"url(#carGold)\" stroke-width=\"5\"/><circle cx=\"342\" cy=\"287\" r=\"9\" fill=\"#ffdf9f\" stroke=\"#99683d\" stroke-width=\"3\"/></g>\n</g></svg>"+'</div>';
+ for(let i=0;i<22;i++){const s=document.createElement('i');s.className='coach-dust';s.style.left=(5+i*7%75)+'%';s.style.bottom=(5+i*11%22)+'%';s.style.setProperty('--delay',(.15+i*.075)+'s');stage.append(s)}
+ scene.insertBefore(stage,scene.querySelector('.storylabel'));
+ const traveller=stage.querySelector('.coach-traveller');
+ // One animationend event stops the wheels, horses, tail and body together.
+ let stopTimer;
+ function hardStop(){
+  if(scene.classList.contains('coach-stopped'))return;
+  scene.classList.add('coach-stopped');
+  [traveller,...stage.querySelectorAll('.coach-wheel,.horse-leg-front,.horse-leg-back,.horse-tail')].forEach(el=>{
+   el.getAnimations().forEach(animation=>animation.cancel());
+   el.style.setProperty('animation','none','important');
+  });
+ }
+ // CSS animationend is primary, hard deadline handles Safari missed events.
+ traveller.addEventListener('animationend',ev=>{
+  if(ev.target===traveller&&ev.animationName==='coach-cross-quick')hardStop();
+ });
+ const watcher=new IntersectionObserver(entries=>{
+  if(entries.some(x=>x.isIntersecting)){
+   watcher.disconnect();
+   stopTimer=setTimeout(hardStop,2650);
+  }
+ },{threshold:.16});
+ watcher.observe(scene);
+
+
+}
+installCarriage();
+new MutationObserver(()=>installCarriage()).observe(document.getElementById('sections'),{childList:true});
+})();</script><script>
+(function(){
+ 'use strict';
+ const rm=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const chandelierSvg='<svg viewBox="0 0 220 155" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="none" stroke="#f6d9a0" stroke-width="2.4" stroke-linecap="round"><path d="M110 0V56"/><path d="M106 52C96 66 70 71 38 72 Q38 92 23 99 M114 52C124 66 150 71 182 72Q182 92 197 99"/><path d="M110 65C104 94 81 102 57 105M110 65C116 94 139 102 163 105"/><path d="M30 104Q110 154 190 104"/><path d="M110 69V140"/></g><g fill="#fff3c7" stroke="#d09b54" stroke-width="1"><circle cx="23" cy="98" r="5"/><circle cx="57" cy="103" r="5"/><circle cx="163" cy="103" r="5"/><circle cx="197" cy="98" r="5"/><circle cx="110" cy="139" r="7"/><circle cx="110" cy="65" r="5"/><path d="M20 95L23 83L26 95M54 100L57 88L60 100M160 100L163 88L166 100M194 95L197 83L200 95" fill="#ffcb67"/></g></svg>';
+ function addGlow(host,left,top,w,h,delay,dur){
+ const node=document.createElement('i');node.className='window-glow';
+ node.style.setProperty('--x',left+'%');node.style.setProperty('--y',top+'%');
+ node.style.setProperty('--w',w+'px');node.style.setProperty('--h',h+'px');
+ node.style.setProperty('--delay',delay+'s');node.style.setProperty('--dur',dur+'s');host.append(node);
+ }
+ function fireflies(host,qty){
+ for(let i=0;i<qty;i++){
+ const node=document.createElement('i');node.className='firefly';
+ node.style.setProperty('--x',(8+(i*43)%84)+'%');
+ node.style.setProperty('--y',(9+(i*29)%75)+'%');
+ node.style.setProperty('--dur',(3+i%5)+'s');node.style.setProperty('--delay',(-i*.37)+'s');
+ node.style.setProperty('--dx',((i%2===0?1:-1)*(16+i%6*8))+'px');host.append(node);
+ }
+ }
+ function makeFilm(section){
+ if(section.querySelector(':scope > .scene-film'))return;
+ const film=document.createElement('div');film.className='scene-film';film.setAttribute('aria-hidden','true');
+ const type=section.dataset.type;
+ if(type==='story'){
+ film.innerHTML='<i class="mistbank"></i><i class="mistbank second"></i><i class="moon-halo"></i>';
+ // Small warm glows follow approximate castle silhouettes; no scene artwork is hidden.
+ [[56,15,3,9],[63,17,3,9],[68,12,3,10],[72,18,3,8],[78,15,3,8],[85,24,3,8],[61,24,3,6]].forEach(([x,y,w,h],i)=>addGlow(film,x,y,w,h,-i*.48,2.4+i%3));
+ fireflies(film,rm?0:14);
+ }else if(type==='ball'){
+ film.innerHTML='<i class="ballroom-halo"></i>';
+ for(const cls of ['left','center','right']){const x=document.createElement('span');x.className='chandelier '+cls;x.innerHTML=chandelierSvg;film.append(x)}
+ for(let i=0;i<7;i++){
+ const f=document.createElement('i');f.className='candle';f.style.setProperty('--x',(8+i*14)+'%');f.style.setProperty('--y',(35+(i%3)*7)+'%');f.style.setProperty('--dur',(1.3+(i%3)*.4)+'s');f.style.setProperty('--delay',(-i*.23)+'s');film.append(f)
+ }
+ for(let i=0;i<3;i++){const s=document.createElement('i');s.className='light-streak';s.style.setProperty('--y',(42+i*10)+'%');s.style.setProperty('--delay',(-i*1.7)+'s');film.append(s)}
+ }
+ section.insertBefore(film,section.querySelector('.storylabel'));
+ }
+ function install(){
+ document.querySelectorAll('.chapter[data-type="story"],.chapter[data-type="ball"]').forEach(makeFilm);
+ const intro=document.querySelector('.intro');
+ if(intro&&!intro.querySelector('.scene-film')){
+ const f=document.createElement('div');f.className='scene-film';f.setAttribute('aria-hidden','true');
+ f.innerHTML='<i class="mistbank"></i><i class="moon-halo"></i>';
+ [[56,15,3,10],[62,12,3,8],[67,18,3,9],[75,16,3,10]].forEach(([x,y,w,h],i)=>addGlow(f,x,y,w,h,i*.3,2.4));
+ intro.append(f);
+ }
+ }
+ install();
+ const container=document.getElementById('sections');
+ if(container)new MutationObserver(install).observe(container,{childList:true});
+})();
+</script><script>
+(function(){
+'use strict';
+const rand=(n)=>((n*47)%89)+5;
+const chandelier='<svg viewBox="0 0 300 310" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><radialGradient id="v9gold"><stop stop-color="#fff9dc" stop-opacity=".95"/><stop offset=".5" stop-color="#ffeab8" stop-opacity=".5"/><stop offset="1" stop-color="#f1cd80" stop-opacity="0"/></radialGradient></defs><ellipse class="glass-light" cx="150" cy="161" rx="120" ry="105" fill="url(#v9gold)"/><g stroke="#ffe2a9" stroke-width="5" fill="none" stroke-linecap="round"><path d="M150 0 V73 M150 73C130 114 98 133 45 127 M150 73C170 114 202 133 255 127 M150 93C121 159 95 163 61 175 M150 93C179 159 205 163 239 175 M45 127C42 158 50 180 61 175 M255 127C258 158 250 180 239 175 M150 94V253 M61 175C113 235 188 235 239 175"/><path d="M45 130L36 114M255 130L264 114M61 179L50 158M239 179L250 158"/></g><g fill="#fff1c4" stroke="#c28d4e" stroke-width="2"><circle cx="150" cy="72" r="10"/><circle cx="150" cy="254" r="12"/><circle cx="45" cy="130" r="11"/><circle cx="255" cy="130" r="11"/><circle cx="61" cy="178" r="11"/><circle cx="239" cy="178" r="11"/><circle cx="150" cy="94" r="8"/></g><g fill="#ffe4a6"><path d="M41 120Q38 100 45 92 Q52 107 49 120Z M251 120Q247 100 255 92Q263 108 259 120Z M57 169Q55 148 61 141Q69 154 65 169Z M235 169Q233 148 239 141Q247 154 243 169Z"/></g></svg>';
+function build(chapter){
+ if(chapter.querySelector(':scope > .fairytale-stage'))return;
+ const type=chapter.dataset.type,st=document.createElement('div');st.className='fairytale-stage';st.setAttribute('aria-hidden','true');
+ if(type==='story'){
+  for(let i=0;i<3;i++){let el=document.createElement('i');el.className='dramatic-cloud';el.style.setProperty('--top',(7+i*13)+'%');el.style.setProperty('--duration',(15+i*4)+'s');el.style.setProperty('--delay',(-i*6)+'s');st.append(el)}
+  st.insertAdjacentHTML('beforeend','<span class="magic-comet"></span>');
+  for(let i=0;i<10;i++){let e=document.createElement('i');e.className='magic-lantern';e.style.setProperty('--left',rand(i)+'%');e.style.setProperty('--top',(7+i*17%45)+'%');e.style.setProperty('--size',(2+i%3*2)+'px');e.style.setProperty('--duration',(3+i%3*1.1)+'s');e.style.setProperty('--delay',(-i*.38)+'s');st.append(e)}
+ }
+ if(type==='ball'){
+  st.innerHTML='<div class="gold-beam"></div><div class="grand-chandelier">'+chandelier+'</div><div class="theatre-curtain left"></div><div class="theatre-curtain right"></div>';
+  for(let i=0;i<19;i++){const e=document.createElement('i');e.className='gold-fall';e.textContent='✦';e.style.setProperty('--left',rand(i)+'%');e.style.setProperty('--size',(9+i%4*4)+'px');e.style.setProperty('--duration',(4+i%4)+'s');e.style.setProperty('--delay',(-i*.4)+'s');e.style.setProperty('--dx',((i%2?1:-1)*(19+i%4*8))+'px');st.append(e)}
+ }
+ chapter.append(st);
+}
+function install(){
+ document.querySelectorAll('.chapter[data-type="story"],.chapter[data-type="ball"]').forEach(build);
+}
+install();
+const host=document.getElementById('sections');
+if(host)new MutationObserver(install).observe(host,{childList:true});
+const marker=document.createElement('div');marker.className='v9-mark';marker.textContent='СЦЕНЫ V9';document.body.append(marker);
+})();
+</script></body></html>
