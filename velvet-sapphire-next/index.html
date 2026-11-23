@@ -1,6 +1,6 @@
 <!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#061127"><meta name="description" content="WEDLETTER — Midnight Sapphire, свадебная сцена"><title>Аурелия и Себастьян — Midnight Sapphire | WEDLETTER</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;min-height:100%;background:#061025}body{overflow-x:hidden;color:#fff;scroll-behavior:smooth}
+*{box-sizing:border-box}html,body{margin:0;width:100%;min-height:100%;background:#061025}body{overflow-x:hidden;color:#fff}html{scroll-behavior:smooth}
 .stage{position:relative;width:100%;height:100svh;height:100dvh;overflow:hidden;background:#070d1d;isolation:isolate}
 .art{position:absolute;inset:0;background:#070d1d url("../velvet-sapphire/assets/sapphire.jpg") center/cover no-repeat;transform:translateZ(0);}
 
@@ -30,14 +30,10 @@
 
 /* SECOND SCENE: Midnight Sapphire / floating silk / ivory calendar. */
 .silk-scene{position:relative;min-height:112svh;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:0;padding:clamp(88px,12vh,125px) 18px 110px;background:#030a1b;color:#f5e9d6}
-.silk-scene::before{content:"";position:absolute;inset:-11%;z-index:-2;background:
-radial-gradient(ellipse 65% 26% at 18% 85%,#384976a8 0%,#0b1732 46%,transparent 73%),
-radial-gradient(ellipse 66% 34% at 110% 38%,#40507cdd 0%,#142245 43%,transparent 75%),
-repeating-linear-gradient(151deg,#030819 0%,#101d40 13%,#07112b 26%,#243459 34%,#050c21 43%,#101b38 58%,#040a1c 69%);
-transform:translate3d(0,0,0) scale(1.08);animation:silk-drift 20s ease-in-out infinite alternate}
-@keyframes silk-drift{0%{transform:translate3d(-1.5%,1.5%,0) scale(1.08)}100%{transform:translate3d(1.5%,-1.5%,0) scale(1.13)}}
+.silk-scene::before{content:"";position:absolute;inset:-13%;z-index:-2;background:#06132d url("assets/silk.jpg") center center/cover no-repeat;transform:translate3d(0,0,0) scale(1.08);animation:silk-drift 14s ease-in-out infinite alternate;will-change:transform}
+@keyframes silk-drift{0%{transform:translate3d(-1%,2%,0) scale(1.08)}100%{transform:translate3d(1%,-2%,0) scale(1.15)}}
 .silk-sheen{position:absolute;inset:0;pointer-events:none;z-index:-1;background:linear-gradient(155deg,transparent 15%,#d6c3a611 32%,transparent 49%,#fbdbb219 59%,transparent 71%),radial-gradient(ellipse at 50% 35%,#c8ad7612,transparent 65%)}
-.silk-twist{position:absolute;top:-7vw;left:-20%;width:145%;height:45vh;transform:rotate(-9deg);pointer-events:none;border-radius:0 0 50% 50%;background:linear-gradient(167deg,#080f26 6%,#14264a 23%,#435778 31%,#182844 39%,#09142e 52%,#030819 69%);box-shadow:0 22px 45px #020618aa,inset 0 -12px 35px #6d85aa34;z-index:-1;animation:fold-sway 19s ease-in-out infinite alternate}
+.silk-twist{opacity:.42;position:absolute;top:-7vw;left:-20%;width:145%;height:45vh;transform:rotate(-9deg);pointer-events:none;border-radius:0 0 50% 50%;background:linear-gradient(167deg,#080f26 6%,#14264a 23%,#435778 31%,#182844 39%,#09142e 52%,#030819 69%);box-shadow:0 22px 45px #020618aa,inset 0 -12px 35px #6d85aa34;z-index:-1;animation:fold-sway 19s ease-in-out infinite alternate}
 @keyframes fold-sway{to{transform:rotate(-6deg) translate3d(1%,-2%,0)}}
 .silk-scene::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:3;box-shadow:inset 0 50px 90px #03071670,inset 0 -50px 95px #03071670}
 .silk-lead{font-family:Georgia,serif;font-size:clamp(46px,11vw,86px);font-weight:400;font-style:italic;line-height:1.05;text-align:center;letter-spacing:-.06em;margin:0 0 8px;color:#fff6e6;text-shadow:0 8px 24px #0008}
@@ -63,7 +59,7 @@ transform:translate3d(0,0,0) scale(1.08);animation:silk-drift 20s ease-in-out in
 @media(max-width:380px){.calendar-scene{width:calc(100vw - 64px)}.cal-paper{padding:25px 17px;min-height:370px}.cal-days{gap:5px 0}}
 @media(prefers-reduced-motion:reduce){.silk-scene::before,.silk-twist{animation:none}.reveal-silk{opacity:1;transform:none;transition:none}}
 </style></head><body><main class="stage" id="stage" aria-label="Свадебная сцена Аурелии и Себастьяна в сапфировых оттенках"><div class="art" role="img" aria-label="Аурелия и Себастьян на сцене под золотыми лучами"></div><div class="stage-light" aria-hidden="true"></div><div class="stars" id="stars" aria-hidden="true"></div><div class="veil" aria-hidden="true"></div><div class="intro" id="intro" aria-hidden="true"><div class="intro-glints" id="intro-glints"></div></div><button class="replay" id="replay" type="button" aria-label="Повторить мерцающее вступление"><svg viewBox="0 0 24 24"><path d="M3.7 10a8.3 8.3 0 1 1 .8 6M3 4v6h6"/></svg></button>
-<div class="silk-transition" aria-hidden="true"></div>
+</main><div class="silk-transition" aria-hidden="true"></div>
 <section class="silk-scene" id="calendar" aria-label="Свадебный календарь">
 <div class="silk-sheen" aria-hidden="true"></div><div class="silk-twist" aria-hidden="true"></div>
 <h2 class="silk-lead reveal-silk">Сохраните дату</h2>
@@ -71,7 +67,7 @@ transform:translate3d(0,0,0) scale(1.08);animation:silk-drift 20s ease-in-out in
 <div class="calendar-scene reveal-silk" aria-label="Календарь на июнь 2027 года, выделено 12 июня">
 <div class="cal-paper"><h3 class="cal-month">Июнь</h3><div class="cal-year">2027</div><div class="cal-days" id="cal-days"></div><p class="calendar-note">Ждём вас в этот день</p></div>
 <div class="pearls" aria-hidden="true"></div></div><div class="silk-date reveal-silk">12 июня 2027 года</div>
-</section></main>
+</section>
 <script>(()=>{'use strict';
 const stars=document.getElementById('stars');const frag=document.createDocumentFragment();
 let seed=2941;function rand(){seed=(seed*1664525+1013904223)>>>0;return seed/4294967296}
@@ -88,6 +84,7 @@ document.getElementById('intro').addEventListener('animationend',e=>{if(e.animat
 
 const stage=document.getElementById('stage');document.getElementById('replay').addEventListener('click',()=>{stage.classList.add('restart');document.getElementById('intro').style.visibility='visible';if(!glints.children.length){for(let i=0;i<72;i++){const e=document.createElement('i');e.className='intro-glint';e.style.setProperty('--x',(rand()*100).toFixed(2)+'%');e.style.setProperty('--y',(rand()*100).toFixed(2)+'%');e.style.setProperty('--s',(1.5+rand()*2.9).toFixed(2)+'px');e.style.setProperty('--t',(1.1+rand()*1.9).toFixed(2)+'s');e.style.setProperty('--delay',(-rand()*3).toFixed(2)+'s');glints.appendChild(e)}}void stage.offsetWidth;stage.classList.remove('restart')});
 
+if('scrollRestoration' in history)history.scrollRestoration='manual';if(!location.hash){window.scrollTo(0,0);window.addEventListener('pageshow',()=>window.scrollTo(0,0),{once:true})}
 const calendar=document.getElementById('cal-days');for(const d of ['ПН','ВТ','СР','ЧТ','ПТ','СБ','ВС']){const el=document.createElement('span');el.className='dow';el.textContent=d;calendar.appendChild(el)}
 const first=(new Date(2027,5,1).getDay()+6)%7;
 for(let i=0;i<first;i++)calendar.appendChild(document.createElement('span'));
