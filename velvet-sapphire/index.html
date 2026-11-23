@@ -6,34 +6,23 @@
 
 .stage-light{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.17;background:radial-gradient(ellipse 35% 38% at 58% 58%,rgba(255,220,156,.13),transparent 80%);animation:light-breathe 9s ease-in-out 5s infinite alternate}
 @keyframes light-breathe{to{opacity:.34}}
-.stars{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:2}
-.star{position:absolute;left:var(--x);top:var(--y);width:var(--s);height:var(--s);border-radius:50%;background:var(--c);opacity:.5;animation:twinkle var(--t) ease-in-out var(--delay) infinite alternate}
-@keyframes twinkle{0%{opacity:.1;transform:translate3d(0,4px,0) scale(.65)}55%{opacity:.95;transform:translate3d(1px,-3px,0) scale(1.2)}100%{opacity:.3;transform:translate3d(3px,-8px,0) scale(.75)}}
-.veil{position:absolute;inset:0;z-index:4;pointer-events:none;background:radial-gradient(ellipse at 50% 48%,#172744 0%,#08162f 50%,#030918 100%);animation:veil-fade 4.6s ease-out .12s both}
-@keyframes veil-fade{0%,27%{opacity:1}69%{opacity:.75}100%{opacity:0}}
-.intro{position:absolute;inset:0;z-index:5;pointer-events:none;overflow:hidden;animation:intro-fade 4.65s ease-out .1s both}
-@keyframes intro-fade{0%,30%{opacity:1}69%{opacity:.82}100%{opacity:0}}
-/* Scatter, not a tiled texture: random micro-stars painted once and gently pulsed as a single layer. */
-.glitter-field{position:absolute;inset:0;width:100%;height:100%;opacity:.96;animation:field-pulse 2.4s ease-in-out infinite alternate;pointer-events:none}
-@keyframes field-pulse{from{opacity:.68}to{opacity:1}}
-.intro:after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 36% 37%,#d6ae5a16,transparent 58%),radial-gradient(ellipse at 70% 70%,#ffdcb91a,transparent 60%);mix-blend-mode:screen;animation:field-pulse 2s ease-in-out infinite alternate}
-.intro .point{position:absolute;left:var(--x);top:var(--y);width:var(--s);height:var(--s);background:var(--c);border-radius:50%;animation:twinkle var(--t) ease-in-out var(--delay) infinite alternate}
+
+.stars{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+.star{position:absolute;left:var(--x);top:var(--y);width:var(--s);height:var(--s);border-radius:50%;background:#ffedc8;animation:twinkle var(--t) ease-in-out var(--delay) infinite alternate}
+@keyframes twinkle{0%{opacity:.16}50%{opacity:.95}100%{opacity:.3}}
+.veil{position:absolute;inset:0;z-index:4;pointer-events:none;background:#08162f;opacity:1;animation:veil-fade 4.45s ease-out .1s both}
+@keyframes veil-fade{0%,27%{opacity:1}100%{opacity:0}}
+.intro{position:absolute;inset:0;z-index:5;pointer-events:none;background-image:url("assets/glitter.webp");background-repeat:no-repeat;background-size:100% 100%;opacity:1;animation:intro-fade 4.4s ease-out .1s both}
+@keyframes intro-fade{0%,28%{opacity:1}100%{opacity:0}}
 .replay{position:absolute;z-index:8;right:calc(16px + env(safe-area-inset-right));bottom:calc(18px + env(safe-area-inset-bottom));height:44px;width:44px;display:grid;place-items:center;border-radius:50%;border:1px solid #e8d5bd88;background:#09142999;color:#f7e9d4;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .replay svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .stage.restart .veil,.stage.restart .intro{animation:none!important}
 @media(min-aspect-ratio:10/14){.art{background-size:contain;background-color:#071023}}
 @media(prefers-reduced-motion:reduce){.veil,.intro{display:none}.art,.star,.stage-light{animation:none}}
-</style></head><body><main class="stage" id="stage" aria-label="Свадебная сцена Аурелии и Себастьяна в сапфировых оттенках"><div class="art" role="img" aria-label="Аурелия и Себастьян на сцене под золотыми лучами"></div><div class="stage-light" aria-hidden="true"></div><div class="stars" id="stars" aria-hidden="true"></div><div class="veil" aria-hidden="true"></div><div class="intro" id="intro" aria-hidden="true"><canvas class="glitter-field" id="glitter-field"></canvas></div><button class="replay" id="replay" type="button" aria-label="Повторить мерцающее вступление"><svg viewBox="0 0 24 24"><path d="M3.7 10a8.3 8.3 0 1 1 .8 6M3 4v6h6"/></svg></button></main>
-<script>(()=>{'use strict';let seed=2941;const rand=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296};const mobile=matchMedia('(max-width:600px)').matches;function generate(id,count){const el=document.getElementById(id),f=document.createDocumentFragment();for(let i=0;i<count;i++){const n=document.createElement('i');n.className=id==='intro'?'point':'star';n.style.setProperty('--x',(rand()*100).toFixed(2)+'%');n.style.setProperty('--y',(rand()*100).toFixed(2)+'%');n.style.setProperty('--s',(.7+rand()*2.5).toFixed(2)+'px');n.style.setProperty('--t',(1.4+rand()*2.9).toFixed(2)+'s');n.style.setProperty('--delay',(-rand()*5).toFixed(2)+'s');n.style.setProperty('--c',i%6===0?'#ffe3b0':'#fff1d7');f.appendChild(n)}el.appendChild(f)}generate('stars',mobile?44:70);generate('intro',mobile?64:94);
-const field=document.getElementById('glitter-field');
-function scatter(){const box=field.getBoundingClientRect();const w=Math.max(1,Math.round(box.width)),h=Math.max(1,Math.round(box.height)),dpr=1;
-field.width=Math.round(w*dpr);field.height=Math.round(h*dpr);
-const ctx=field.getContext('2d');if(!ctx)return;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
-let state=73129;const r=()=>{state=(1664525*state+1013904223)>>>0;return state/4294967296};
-const n=Math.min(12500,Math.max(4800,Math.round(w*h/23)));
-for(let i=0;i<n;i++){const x=r()*w,y=r()*h,size=.2+r()*.75,alpha=.22+r()*.68;
-ctx.fillStyle=(i%6===0?'rgba(255,239,206,':'rgba(245,210,152,')+alpha.toFixed(2)+')';ctx.fillRect(x,y,size,size)}
-for(let i=0;i<Math.round(n/30);i++){const x=r()*w,y=r()*h,rad=.7+r()*1.6;
-ctx.fillStyle='rgba(255,244,217,'+(.55+r()*.45).toFixed(2)+')';ctx.beginPath();ctx.arc(x,y,rad,0,Math.PI*2);ctx.fill()}
-}
-scatter();const stage=document.getElementById('stage');document.getElementById('replay').addEventListener('click',()=>{stage.classList.add('restart');void stage.offsetWidth;stage.classList.remove('restart')})})();</script></body></html>
+</style></head><body><main class="stage" id="stage" aria-label="Свадебная сцена Аурелии и Себастьяна в сапфировых оттенках"><div class="art" role="img" aria-label="Аурелия и Себастьян на сцене под золотыми лучами"></div><div class="stage-light" aria-hidden="true"></div><div class="stars" id="stars" aria-hidden="true"></div><div class="veil" aria-hidden="true"></div><div class="intro" id="intro" aria-hidden="true"></div><button class="replay" id="replay" type="button" aria-label="Повторить мерцающее вступление"><svg viewBox="0 0 24 24"><path d="M3.7 10a8.3 8.3 0 1 1 .8 6M3 4v6h6"/></svg></button></main>
+<script>(()=>{'use strict';
+const stars=document.getElementById('stars');const frag=document.createDocumentFragment();
+let seed=2941;function rand(){seed=(seed*1664525+1013904223)>>>0;return seed/4294967296}
+for(let i=0;i<24;i++){const n=document.createElement('i');n.className='star';n.style.setProperty('--x',(rand()*100).toFixed(2)+'%');n.style.setProperty('--y',(rand()*100).toFixed(2)+'%');n.style.setProperty('--s',(1+rand()*2).toFixed(2)+'px');n.style.setProperty('--t',(2+rand()*2).toFixed(2)+'s');n.style.setProperty('--delay',(-rand()*4).toFixed(2)+'s');frag.appendChild(n)}stars.appendChild(frag);
+const stage=document.getElementById('stage');document.getElementById('replay').addEventListener('click',()=>{stage.classList.add('restart');void stage.offsetWidth;stage.classList.remove('restart')});
+})();</script></body></html>
