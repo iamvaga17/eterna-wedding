@@ -2,20 +2,10 @@
 <style>
 *{box-sizing:border-box}html,body{margin:0;width:100%;min-height:100%;background:#061025}body{overflow-x:hidden;color:#fff}
 .stage{position:relative;width:100%;height:100svh;height:100dvh;overflow:hidden;background:#070d1d;isolation:isolate}
-.art{position:absolute;inset:0;background:#070d1d url("assets/sapphire.jpg") center/cover no-repeat;transform:translateZ(0) scale(1.018);animation:arrival 4s ease-out both}
-@keyframes arrival{from{opacity:.45;transform:scale(1.05)}to{opacity:1;transform:scale(1.018)}}
-/* Subtle local depth: only the couple's region breathes; names and curtains stay fixed. */
-.couple-life{position:absolute;inset:0;z-index:1;pointer-events:none;
-background:url("assets/sapphire.jpg") center/cover no-repeat;
--webkit-mask-image:radial-gradient(ellipse 34% 24% at 51% 66%,#000 40%,rgba(0,0,0,.95) 60%,transparent 100%);
-mask-image:radial-gradient(ellipse 34% 24% at 51% 66%,#000 40%,rgba(0,0,0,.95) 60%,transparent 100%);
-transform:translate3d(0,0,0) scale(1.018);transform-origin:51% 66%;
-animation:couple-breathe 7.5s ease-in-out 4.4s infinite alternate;will-change:transform}
-@keyframes couple-breathe{0%{transform:translate3d(-.6px,1.2px,0) scale(1.018)}100%{transform:translate3d(.7px,-1.2px,0) scale(1.022)}}
-.stage-light{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.2;
-background:radial-gradient(ellipse 31% 43% at 58% 58%,#ffdd9e23,transparent 80%);
-animation:light-breathe 6.8s ease-in-out 4.4s infinite alternate}
-@keyframes light-breathe{to{opacity:.55;transform:translate3d(1%,-1%,0)}}
+.art{position:absolute;inset:0;background:#070d1d url("assets/sapphire.jpg") center/cover no-repeat;transform:translateZ(0);}
+
+.stage-light{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.17;background:radial-gradient(ellipse 35% 38% at 58% 58%,rgba(255,220,156,.13),transparent 80%);animation:light-breathe 9s ease-in-out 5s infinite alternate}
+@keyframes light-breathe{to{opacity:.34}}
 .stars{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:2}
 .star{position:absolute;left:var(--x);top:var(--y);width:var(--s);height:var(--s);border-radius:50%;background:var(--c);opacity:.5;animation:twinkle var(--t) ease-in-out var(--delay) infinite alternate}
 @keyframes twinkle{0%{opacity:.1;transform:translate3d(0,4px,0) scale(.65)}55%{opacity:.95;transform:translate3d(1px,-3px,0) scale(1.2)}100%{opacity:.3;transform:translate3d(3px,-8px,0) scale(.75)}}
@@ -24,23 +14,23 @@ animation:light-breathe 6.8s ease-in-out 4.4s infinite alternate}
 .intro{position:absolute;inset:0;z-index:5;pointer-events:none;overflow:hidden;animation:intro-fade 4.65s ease-out .1s both}
 @keyframes intro-fade{0%,30%{opacity:1}69%{opacity:.82}100%{opacity:0}}
 /* Scatter, not a tiled texture: random micro-stars painted once and gently pulsed as a single layer. */
-.glitter-field{position:absolute;inset:0;width:100%;height:100%;opacity:.96;animation:field-pulse 1.35s ease-in-out infinite alternate;pointer-events:none}
+.glitter-field{position:absolute;inset:0;width:100%;height:100%;opacity:.96;animation:field-pulse 2.4s ease-in-out infinite alternate;pointer-events:none}
 @keyframes field-pulse{from{opacity:.68}to{opacity:1}}
 .intro:after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 36% 37%,#d6ae5a16,transparent 58%),radial-gradient(ellipse at 70% 70%,#ffdcb91a,transparent 60%);mix-blend-mode:screen;animation:field-pulse 2s ease-in-out infinite alternate}
-.intro .point{position:absolute;left:var(--x);top:var(--y);width:var(--s);height:var(--s);background:var(--c);border-radius:50%;box-shadow:0 0 5px #ffe2bb;animation:twinkle var(--t) ease-in-out var(--delay) infinite alternate}
+.intro .point{position:absolute;left:var(--x);top:var(--y);width:var(--s);height:var(--s);background:var(--c);border-radius:50%;animation:twinkle var(--t) ease-in-out var(--delay) infinite alternate}
 .replay{position:absolute;z-index:8;right:calc(16px + env(safe-area-inset-right));bottom:calc(18px + env(safe-area-inset-bottom));height:44px;width:44px;display:grid;place-items:center;border-radius:50%;border:1px solid #e8d5bd88;background:#09142999;color:#f7e9d4;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .replay svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.stage.restart .veil,.stage.restart .intro,.stage.restart .art{animation:none!important}
+.stage.restart .veil,.stage.restart .intro{animation:none!important}
 @media(min-aspect-ratio:10/14){.art{background-size:contain;background-color:#071023}}
-@media(prefers-reduced-motion:reduce){.veil,.intro{display:none}.art,.star,.couple-life,.stage-light{animation:none}.couple-life{display:none}}
-</style></head><body><main class="stage" id="stage" aria-label="Свадебная сцена Аурелии и Себастьяна в сапфировых оттенках"><div class="art" role="img" aria-label="Аурелия и Себастьян на сцене под золотыми лучами"></div><div class="couple-life" aria-hidden="true"></div><div class="stage-light" aria-hidden="true"></div><div class="stars" id="stars" aria-hidden="true"></div><div class="veil" aria-hidden="true"></div><div class="intro" id="intro" aria-hidden="true"><canvas class="glitter-field" id="glitter-field"></canvas></div><button class="replay" id="replay" type="button" aria-label="Повторить мерцающее вступление"><svg viewBox="0 0 24 24"><path d="M3.7 10a8.3 8.3 0 1 1 .8 6M3 4v6h6"/></svg></button></main>
-<script>(()=>{'use strict';let seed=2941;const rand=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296};const mobile=matchMedia('(max-width:600px)').matches;function generate(id,count){const el=document.getElementById(id),f=document.createDocumentFragment();for(let i=0;i<count;i++){const n=document.createElement('i');n.className=id==='intro'?'point':'star';n.style.setProperty('--x',(rand()*100).toFixed(2)+'%');n.style.setProperty('--y',(rand()*100).toFixed(2)+'%');n.style.setProperty('--s',(.7+rand()*2.5).toFixed(2)+'px');n.style.setProperty('--t',(1.4+rand()*2.9).toFixed(2)+'s');n.style.setProperty('--delay',(-rand()*5).toFixed(2)+'s');n.style.setProperty('--c',i%6===0?'#ffe3b0':'#fff1d7');f.appendChild(n)}el.appendChild(f)}generate('stars',mobile?44:70);generate('intro',mobile?230:340);
+@media(prefers-reduced-motion:reduce){.veil,.intro{display:none}.art,.star,.stage-light{animation:none}}
+</style></head><body><main class="stage" id="stage" aria-label="Свадебная сцена Аурелии и Себастьяна в сапфировых оттенках"><div class="art" role="img" aria-label="Аурелия и Себастьян на сцене под золотыми лучами"></div><div class="stage-light" aria-hidden="true"></div><div class="stars" id="stars" aria-hidden="true"></div><div class="veil" aria-hidden="true"></div><div class="intro" id="intro" aria-hidden="true"><canvas class="glitter-field" id="glitter-field"></canvas></div><button class="replay" id="replay" type="button" aria-label="Повторить мерцающее вступление"><svg viewBox="0 0 24 24"><path d="M3.7 10a8.3 8.3 0 1 1 .8 6M3 4v6h6"/></svg></button></main>
+<script>(()=>{'use strict';let seed=2941;const rand=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296};const mobile=matchMedia('(max-width:600px)').matches;function generate(id,count){const el=document.getElementById(id),f=document.createDocumentFragment();for(let i=0;i<count;i++){const n=document.createElement('i');n.className=id==='intro'?'point':'star';n.style.setProperty('--x',(rand()*100).toFixed(2)+'%');n.style.setProperty('--y',(rand()*100).toFixed(2)+'%');n.style.setProperty('--s',(.7+rand()*2.5).toFixed(2)+'px');n.style.setProperty('--t',(1.4+rand()*2.9).toFixed(2)+'s');n.style.setProperty('--delay',(-rand()*5).toFixed(2)+'s');n.style.setProperty('--c',i%6===0?'#ffe3b0':'#fff1d7');f.appendChild(n)}el.appendChild(f)}generate('stars',mobile?44:70);generate('intro',mobile?64:94);
 const field=document.getElementById('glitter-field');
-function scatter(){const box=field.getBoundingClientRect();const w=Math.max(1,Math.round(box.width)),h=Math.max(1,Math.round(box.height)),dpr=Math.min(window.devicePixelRatio||1,1.5);
+function scatter(){const box=field.getBoundingClientRect();const w=Math.max(1,Math.round(box.width)),h=Math.max(1,Math.round(box.height)),dpr=1;
 field.width=Math.round(w*dpr);field.height=Math.round(h*dpr);
 const ctx=field.getContext('2d');if(!ctx)return;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
 let state=73129;const r=()=>{state=(1664525*state+1013904223)>>>0;return state/4294967296};
-const n=Math.min(17000,Math.max(4300,Math.round(w*h/28)));
+const n=Math.min(12500,Math.max(4800,Math.round(w*h/23)));
 for(let i=0;i<n;i++){const x=r()*w,y=r()*h,size=.2+r()*.75,alpha=.22+r()*.68;
 ctx.fillStyle=(i%6===0?'rgba(255,239,206,':'rgba(245,210,152,')+alpha.toFixed(2)+')';ctx.fillRect(x,y,size,size)}
 for(let i=0;i<Math.round(n/30);i++){const x=r()*w,y=r()*h,rad=.7+r()*1.6;
