@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#180309">
+<meta name="description" content="WEDLETTER — демонстрация кинематографичного свадебного приглашения VELVET THEATRE">
+<title>Аурелия и Себастьян — VELVET THEATRE | WEDLETTER</title>
+<style>
+:root{color-scheme:dark;--deep:#140207;--velvet:#4e081d;--cream:#f8e7cd;--glow:#f5b0aa}
+*,*::before,*::after{box-sizing:border-box}
+html{height:100%;background:var(--deep)}
+body{margin:0;min-height:100%;overflow-x:hidden;background:var(--deep);color:var(--cream);font-family:Georgia,'Times New Roman',serif}
+button{font:inherit}
+.stage{position:relative;min-height:100svh;min-height:100dvh;width:100%;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 50% 63%,#551324 0%,#23050f 58%,#140207 100%)}
+/* The approved Russian artwork is the actual scene asset; the curtains, particles, and lighting are separate real-time layers. */
+.scene-art{position:absolute;inset:0;background-image:url('assets/velvet-hero.jpg');background-position:center center;background-repeat:no-repeat;background-size:cover;transform:scale(1.075);filter:brightness(.33) saturate(.9);animation:scene-in 5s cubic-bezier(.22,.74,.29,1) .55s both,scene-breathe 18s ease-in-out 5.5s infinite alternate;will-change:transform,filter}
+.scene-art:after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 51% 70%,transparent 33%,#10000821 100%);pointer-events:none}
+@keyframes scene-in{0%{transform:scale(1.14);filter:brightness(.12) saturate(.6)}50%{filter:brightness(.5) saturate(.8)}100%{transform:scale(1.005);filter:brightness(1) saturate(1)}}
+@keyframes scene-breathe{to{transform:scale(1.047)}}
+.atmosphere{pointer-events:none;position:absolute;inset:-20%;z-index:2;opacity:0;mix-blend-mode:screen;background:radial-gradient(ellipse 30% 30% at 17% 75%,#ee8d8a32,transparent 78%),radial-gradient(ellipse 32% 18% at 76% 71%,#ed8c8030,transparent 80%);animation:atmosphere-enter 3s ease 2.8s forwards,atmosphere-move 11s ease-in-out 5.8s infinite alternate}
+@keyframes atmosphere-enter{to{opacity:.95}}@keyframes atmosphere-move{to{transform:translate(2.5%, -2%);opacity:.65}}
+.lightshaft{position:absolute;pointer-events:none;inset:-40%;z-index:3;opacity:0;transform:rotate(-26deg);transform-origin:45% 65%;background:linear-gradient(90deg,transparent 33%,#ee87931b 48%,#ffd1c215 49.1%,transparent 53%);mix-blend-mode:screen;animation:light-in 3s ease 2.65s forwards,light-sway 12s ease-in-out 5.65s infinite alternate}
+@keyframes light-in{to{opacity:.7}}@keyframes light-sway{to{transform:rotate(-21deg) translateX(2%);opacity:.38}}
+#stars{position:absolute;inset:0;z-index:5;width:100%;height:100%;pointer-events:none;opacity:0;animation:stars-in 2.5s ease 2s forwards}
+@keyframes stars-in{to{opacity:.8}}
+.proscenium{position:absolute;inset:0;z-index:10;pointer-events:none;overflow:hidden}
+.curtain{position:absolute;top:-3%;bottom:-4%;width:57%;background-color:#3b0716;background-image:linear-gradient(90deg,#120106 0%,#370611 7%,#6e0f27 14%,#320410 22%,#9c183b 31%,#36040f 39%,#6f0c27 47%,#1e020b 54%,#7e1230 64%,#380513 73%,#8e1232 82%,#20030d 91%,#560819 98%),repeating-linear-gradient(89deg,#00000052 0 7px,transparent 10px 31px,#ffb6b00a 35px,#0000003a 46px);background-blend-mode:multiply;filter:drop-shadow(0 0 20px #140209);box-shadow:inset 0 0 45px #100006,0 0 70px #080104aa;will-change:transform}
+.curtain::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,#10000588,transparent 12%,transparent 80%,#0a0108a0),repeating-linear-gradient(94deg,transparent 0 21px,#0900064f 26px,transparent 34px);mix-blend-mode:multiply}
+.curtain--left{left:-5%;border-radius:0 0 7% 0;transform-origin:0 0;animation:curtain-left 3.7s cubic-bezier(.72,0,.15,1) .45s both}
+.curtain--right{right:-5%;border-radius:0 0 0 7%;transform-origin:100% 0;animation:curtain-right 3.7s cubic-bezier(.72,0,.15,1) .45s both}
+@keyframes curtain-left{0%,8%{transform:translateX(0) scaleX(1)}42%{transform:translateX(-20%) scaleX(1.05)}100%{transform:translateX(-88%) scaleX(.66)}}
+@keyframes curtain-right{0%,8%{transform:translateX(0) scaleX(1)}42%{transform:translateX(20%) scaleX(1.05)}100%{transform:translateX(88%) scaleX(.66)}}
+.curtain-shadow{position:absolute;top:0;bottom:0;width:18%;z-index:9;pointer-events:none;opacity:0;animation:shadow-in 2s ease 2s forwards}
+.curtain-shadow.left{left:0;background:linear-gradient(90deg,#100006ba,transparent)}.curtain-shadow.right{right:0;background:linear-gradient(270deg,#100006ba,transparent)}
+@keyframes shadow-in{to{opacity:1}}
+.bottom-shadow{position:absolute;z-index:4;bottom:0;left:0;right:0;height:15%;background:linear-gradient(0deg,#1300086e,transparent);pointer-events:none}
+.replay{position:absolute;z-index:15;right:max(18px,env(safe-area-inset-right));bottom:calc(18px + env(safe-area-inset-bottom));width:42px;height:42px;border:1px solid #f7e3c866;border-radius:50%;background:#1b051083;color:#fff0dc;display:grid;place-items:center;opacity:0;animation:control-in 1s ease 4.6s forwards;backdrop-filter:blur(12px);cursor:pointer}
+.replay svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+@keyframes control-in{to{opacity:.92}}
+.replay:focus-visible{outline:2px solid #f5d3b0;outline-offset:4px}.replay:active{transform:scale(.94)}
+.brand{position:absolute;z-index:14;bottom:calc(24px + env(safe-area-inset-bottom));left:22px;color:#f7e3c8ab;font:500 9px/1.4 system-ui,sans-serif;letter-spacing:.22em;text-shadow:0 2px 10px #130108;opacity:0;animation:control-in 1s ease 4.6s forwards}
+.stage.restarting .scene-art,.stage.restarting .atmosphere,.stage.restarting .lightshaft,.stage.restarting #stars,.stage.restarting .curtain,.stage.restarting .curtain-shadow{animation:none}
+@media(min-aspect-ratio:8/11){.scene-art{background-size:contain;background-color:#15040a}.stage{background:#15040a}.scene-art:before{content:'';position:absolute;inset:0;background:url('assets/velvet-hero.jpg') center/cover;filter:blur(30px) brightness(.35);z-index:-1}}
+@media(max-width:380px){.brand{font-size:8px;left:14px}.replay{right:14px}}
+@media(prefers-reduced-motion:reduce){.scene-art{animation:none;transform:none;filter:none}.curtain{animation:none;display:none}.curtain-shadow{opacity:1;animation:none}.atmosphere{animation:none;opacity:.5}.lightshaft{animation:none;opacity:.25}#stars{animation:none;opacity:.4}.replay,.brand{animation:none;opacity:1}}
+</style>
+</head>
+<body>
+<main class="stage" id="stage" aria-label="Свадебное приглашение Аурелии и Себастьяна. Анимированная театральная сцена">
+  <div class="scene-art" role="img" aria-label="Аурелия и Себастьян: 12 июня 2027 года, бальный зал «Хартвелл», Чикаго"></div>
+  <div class="atmosphere" aria-hidden="true"></div>
+  <div class="lightshaft" aria-hidden="true"></div>
+  <canvas id="stars" aria-hidden="true"></canvas>
+  <div class="curtain-shadow left" aria-hidden="true"></div><div class="curtain-shadow right" aria-hidden="true"></div>
+  <div class="proscenium" aria-hidden="true"><div class="curtain curtain--left"></div><div class="curtain curtain--right"></div></div>
+  <div class="bottom-shadow" aria-hidden="true"></div>
+  <span class="brand">WEDLETTER · ТЕСТ СЦЕНЫ</span>
+  <button class="replay" id="replay" aria-label="Повторить раскрытие занавеса" title="Повторить анимацию"><svg viewBox="0 0 24 24"><path d="M3.7 10a8.3 8.3 0 1 1 .8 6M3 4v6h6"/></svg></button>
+</main>
+<script>
+(()=>{'use strict';const stage=document.getElementById('stage'),canvas=document.getElementById('stars'),ctx=canvas.getContext('2d',{alpha:true}),replay=document.getElementById('replay');const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;let w=0,h=0,dpr=1,particles=[],frame=0,last=0;
+function resize(){const rect=stage.getBoundingClientRect();w=Math.ceil(rect.width);h=Math.ceil(rect.height);dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.ceil(w*dpr);canvas.height=Math.ceil(h*dpr);canvas.style.width=w+'px';canvas.style.height=h+'px';ctx.setTransform(dpr,0,0,dpr,0,0);const n=Math.min(105,Math.max(38,Math.round(w*h/4800)));particles=Array.from({length:n},()=>({x:Math.random()*w,y:Math.random()*h,r:.45+Math.random()*1.8,v:.055+Math.random()*.22,t:Math.random()*Math.PI*2,alpha:.13+Math.random()*.65}));}
+function paint(ms){if(ms-last>16){ctx.clearRect(0,0,w,h);const t=ms*.001;for(const p of particles){p.y-=p.v*(reduced?.15:1);if(p.y<-8){p.y=h+8;p.x=Math.random()*w}const twinkle=.6+.4*Math.sin(t*(.7+p.v)+p.t);ctx.beginPath();ctx.fillStyle='rgba(255,213,195,'+(p.alpha*twinkle).toFixed(3)+')';ctx.shadowBlur=p.r>1.5?11:3;ctx.shadowColor='#ffc2bc';ctx.arc(p.x,p.y,p.r,0,2*Math.PI);ctx.fill()}ctx.shadowBlur=0;last=ms}frame=requestAnimationFrame(paint)}
+resize();window.addEventListener('resize',resize,{passive:true});if(ctx)frame=requestAnimationFrame(paint);
+replay.addEventListener('click',()=>{if(reduced)return;stage.classList.add('restarting');void stage.offsetWidth;stage.classList.remove('restarting')});
+})();
+</script>
+</body>
+</html>
