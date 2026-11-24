@@ -208,7 +208,20 @@ main{max-width:1440px;padding:0 clamp(14px,3.2vw,44px) 26px;grid-template-column
 .rsvp-advanced>summary{font:600 13px system-ui;padding:10px 0}
 .rsvp-advanced textarea{min-height:170px;font:12px/1.5 monospace}
 @media(min-width:680px){.rsvp-head{grid-template-columns:1fr 1fr}}
-.ms-section{border:1px solid #ded7cb;border-radius:12px;padding:12px;margin:10px 0;background:#fcfaf6}.ms-section summary{font:600 15px system-ui}.ms-toggle{display:flex;align-items:center;gap:10px}.ms-toggle input{width:20px;height:20px}.ms-item{border:1px solid #e3d9ca;border-radius:9px;padding:12px;margin:12px 0;background:#fff}.ms-item button{margin:6px 5px 0 0}</style><style>
+.ms-section{border:1px solid #ded7cb;border-radius:12px;padding:12px;margin:10px 0;background:#fcfaf6}.ms-section summary{font:600 15px system-ui}.ms-toggle{display:flex;align-items:center;gap:10px}.ms-toggle input{width:20px;height:20px}.ms-item{border:1px solid #e3d9ca;border-radius:9px;padding:12px;margin:12px 0;background:#fff}.ms-item button{margin:6px 5px 0 0}
+.order-disclosure{padding:0!important;min-width:0;margin:0}
+.order-disclosure-summary{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:62px;padding:12px 15px;cursor:pointer;list-style:none;-webkit-tap-highlight-color:transparent;font-family:system-ui}
+.order-disclosure-summary::-webkit-details-marker{display:none}
+.order-disclosure-summary::marker{content:''}
+.order-disclosure-text{display:grid;gap:5px;min-width:0}
+.order-disclosure-caption{font-size:10px;font-weight:700;letter-spacing:.12em;color:#72675b}
+.order-disclosure-current{font-size:15px;font-weight:600;color:#2d2824;overflow-wrap:anywhere}
+.order-disclosure-chevron{flex:none;width:10px;height:10px;margin-right:3px;border-right:2px solid #927b63;border-bottom:2px solid #927b63;transform:rotate(45deg);transition:transform .2s}
+.order-disclosure[open] .order-disclosure-chevron{transform:rotate(225deg)}
+.workflow-top .order-disclosure .orders-box{padding:13px 14px!important;border-top:1px solid #ded7cb!important}
+.order-disclosure .orders-box>h2{display:none}
+@media(prefers-reduced-motion:reduce){.order-disclosure-chevron{transition:none}}
+</style><style>
 .wedletter-share-title{font:400 22px Georgia,serif;margin:16px 0 10px;color:#332b25}
 .wedletter-share-card{display:flex;flex-direction:column;gap:8px;padding:14px 15px;margin:10px 0;background:#fffdf8;border:1px solid #dfd6ca;border-radius:14px;max-width:100%;overflow-wrap:anywhere}
 .wedletter-share-card strong{font-size:15px;color:#302921}
@@ -423,7 +436,7 @@ function setupWorkflow(){
   const option=document.createElement('option');option.value=value;option.textContent=label;select.append(option);
  }
  templateBox.append(title,select,workflowNode('p','', 'Шаблон можно менять в рамках заказа. Фотографии и тексты сохраняются.'));
- const orderBox=workflowNode('section','workflow-order');orderBox.append(document.querySelector('.orders-box'));
+ const orderBox=workflowNode('details','workflow-order order-disclosure');orderBox.id='orderDisclosure';const orderSummary=workflowNode('summary','order-disclosure-summary');const orderCaption=workflowNode('span','order-disclosure-caption','ЗАКАЗЫ МОЛОДОЖЁНОВ');const orderCurrent=workflowNode('span','order-disclosure-current','Выбрать заказ');orderCurrent.id='orderDisclosureCurrent';const orderText=workflowNode('span','order-disclosure-text');orderText.append(orderCaption,orderCurrent);orderSummary.append(orderText,workflowNode('span','order-disclosure-chevron',''));orderBox.append(orderSummary,document.querySelector('.orders-box'));
  top.append(templateBox,orderBox);document.querySelector('header').after(top);
  const tabs=workflowNode('nav','workflow-nav');tabs.setAttribute('aria-label','Этапы создания');
  WORKFLOW_TABS.forEach(([label],index)=>{
@@ -2277,7 +2290,7 @@ function renderOrdersDashboard(){
  const active=orders.find(o=>o.id===orderId);
  if(active)$('currentOrderStatus').value=orderStatus(active,data);
 }
-function showOrder(){const select=$('orderSelect');select.replaceChildren();orders.forEach(o=>{const opt=document.createElement('option');opt.value=o.id;opt.textContent=o.label+' ('+o.id+')';select.append(opt)});select.value=orderId;$('orderUrlLabel').textContent='Адрес заказа: wedletter.ru/'+publicationSlug()+'/';renderOrdersDashboard();}
+function showOrder(){const current=$('orderDisclosureCurrent');if(current)current.textContent=orders.find(o=>o.id===orderId)?.label||'Выбрать заказ';const select=$('orderSelect');select.replaceChildren();orders.forEach(o=>{const opt=document.createElement('option');opt.value=o.id;opt.textContent=o.label+' ('+o.id+')';select.append(opt)});select.value=orderId;$('orderUrlLabel').textContent='Адрес заказа: wedletter.ru/'+publicationSlug()+'/';renderOrdersDashboard();}
 async function openOrder(id){if(!orders.some(o=>o.id===id))return;if(studioGenerating){setStatus('Дождись завершения генерации перед сменой заказа.');return}orderId=id;data=normalizeOrder(getJSON(draftKey(),copy(defaults)));$('previewVersion').value=data.template in previewUrls?data.template:'12';$('siteFrame').src=previewUrls[$('previewVersion').value];await Promise.all([loadPhotos(),loadMusic(),loadStudioPhotos(),loadPremierePhotos()]);draw();showOrder();updatePreview();if(data.publicSlugLocked&&data.publicSlug)renderShareLinks($('publishResult'),publicationSlug());else $('publishResult').replaceChildren();setStatus('Открыт заказ: '+orders.find(o=>o.id===id).label);
  if(backupLastSaved.has(id))cloudMessage('Последняя серверная копия: '+backupLastSaved.get(id));
  else cloudMessage('Проверка копии запланирована после открытия заказа.');
