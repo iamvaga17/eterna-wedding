@@ -751,7 +751,7 @@ function syncWorkflowTemplate(){
  if(page1)page1.querySelector('.workflow-intro').textContent=WORKFLOW_TABS[1][1];
  if(page2)page2.querySelector('.workflow-intro').textContent=WORKFLOW_TABS[2][1];
  const ready=['downloadBtn','downloadBtnBottom'];
- ready.forEach(id=>{$(id).disabled=selected==='midnight';$(id).title=selected==='midnight'?'Экспорт нового шаблона пока не подключён':'Скачать самостоятельный сайт выбранного шаблона'});
+ ready.forEach(id=>{$(id).disabled=false;$(id).title='Скачать самостоятельный сайт выбранного шаблона'});
 }
 function openWorkflowStage(stage){
  activeWorkflowStage=Math.max(0,Math.min(3,stage));
@@ -786,7 +786,7 @@ function uniqueId(name){const base=translit(name);let x=base,n=2;while(orders.so
 
 const $=id=>document.getElementById(id);
 const isLegacy=()=>$('previewVersion').value==='legacy';
-const previewUrls={midnight:'velvet-sapphire-next/ultra-editor-v32.html?editor-preview=1',12:'eterna-12/editor-preview-v29.html?editor-preview=1',broadcast:'srochny-vypusk/editor-preview-v40.html?editor-preview=1#top',premiere:'premiere/index-v19.html?editor-preview=1&rsvp-success=19#top',legacy:'templates/eterna.html?editor-preview=1#top'};
+const previewUrls={midnight:'velvet-sapphire-next/ultra-editor-v33.html?editor-preview=1',12:'eterna-12/editor-preview-v29.html?editor-preview=1',broadcast:'srochny-vypusk/editor-preview-v40.html?editor-preview=1#top',premiere:'premiere/index-v19.html?editor-preview=1&rsvp-success=19#top',legacy:'templates/eterna.html?editor-preview=1#top'};
 const STUDIO_KEYS=['studio-bride','studio-groom','studio-sceneCover','studio-sceneCake','studio-sceneArchive','studio-sceneForecast','studio-pending-sceneCover','studio-pending-sceneCake','studio-pending-sceneArchive','studio-pending-sceneForecast'];
 const PHOTO_KEYS=["midnightHero","midnightStory0","midnightStory1","midnightStory2","midnightVenue0","midnightVenue1","midnightVenue2","midnightVenue3","midnightLook0","midnightLook1",'main','secondary1','secondary2','collage1','collage2','invitationBg','invitationLeft','invitationRight','storyMain','storySmall','memoryBg','scheduleBg','venueBg','dressBg','dress1','dress2','dress3','dress4','dressFemale3','dressFemale4','dressFemale5','dressFemale6','dressFemale7','dressFemale8','dressMale3','dressMale4','dressMale5','dressMale6','dressMale7','dressMale8','countdownBg','rsvpBg','endingBg','introCover'];
 const PHOTO_NAMES={"midnightHero":"Главная сцена","midnightStory0":"История — фото 1","midnightStory1":"История — фото 2","midnightStory2":"История — фото 3","midnightVenue0":"Площадка — фото 1","midnightVenue1":"Площадка — фото 2","midnightVenue2":"Площадка — фото 3","midnightVenue3":"Площадка — фото 4","midnightLook0":"Образ невесты","midnightLook1":"Образ жениха",main:'Главная фотография',secondary1:'Дополнительная фотография 1',secondary2:'Дополнительная фотография 2',storyMain:'Наша история — главное фото',storySmall:'Наша история — дополнительное фото',introCover:'Обложка книги — фон',collage1:'Первый фотоколлаж — слева',collage2:'Первый фотоколлаж — справа',invitationBg:'Приглашение — большое фоновое фото',invitationLeft:'Приглашение — левый фотокадр',invitationRight:'Приглашение — правый фотокадр',memoryBg:'Атмосферный блок — фоновое фото',scheduleBg:'День свадьбы — фоновое фото',venueBg:'Место встречи — фон зала',dressBg:'Дресс-код — фон',dress1:'Для неё — фото 1',dress2:'Для него — фото 1',dress3:'Для неё — фото 2',dress4:'Для него — фото 2',countdownBg:'Обратный отсчёт — фон',rsvpBg:'Анкета гостей — фон',endingBg:'До встречи — финальное фото',dressFemale3:'Для неё — фото 3',dressFemale4:'Для неё — фото 4',dressFemale5:'Для неё — фото 5',dressFemale6:'Для неё — фото 6',dressFemale7:'Для неё — фото 7',dressFemale8:'Для неё — фото 8',dressMale3:'Для него — фото 3',dressMale4:'Для него — фото 4',dressMale5:'Для него — фото 5',dressMale6:'Для него — фото 6',dressMale7:'Для него — фото 7',dressMale8:'Для него — фото 8'};
@@ -1775,6 +1775,32 @@ async function fetchResource(path){
  if(!response.ok)throw Error('Не удалось загрузить '+path+' ('+response.status+').');
  return response;
 }
+
+async function exportMidnight(folder,files,config,id){
+ const root='velvet-sapphire-next/';
+ let page=await (await fetchResource(root+'ultra-editor-v33.html')).text();
+ const deps=['assets/silk-ultra.jpg','assets/silk-ultra.mp4','assets/sapphire-clean-v27.webp','assets/story-v28-1.webp','assets/story-v28-2.webp','assets/story-v28-3.webp','../velvet-sapphire/assets/glitter.webp','../premiere/assets/venue-estate.svg','../rsvp-config.js','../rsvp-renderer.js'];
+ for(const path of deps){
+   const target=path.replace(/^\.\.\//,'');
+   const bytes=new Uint8Array(await (await fetchResource(root+path)).arrayBuffer());
+   files.push({name:folder+target,bytes});
+   if(path!==target)page=page.split(path).join(target);
+ }
+ const cfg=copy(config);
+ if(cfg.eventDates?.mode==='split'){const d=cfg.eventDates;cfg.midnight??={};cfg.midnight.locations=['ceremony','party'].map((k,i)=>({...cfg.midnight.locations?.[i],type:(k==='ceremony'?'Роспись':'Банкет')+' · '+[d[k+'Date'],d[k+'Time']].filter(Boolean).join(' '),name:d[k+'Venue']||cfg.midnight.locations?.[i]?.name||'',address:d[k+'Address']||cfg.midnight.locations?.[i]?.address||'',demo:false}));}
+ for(const key of PHOTO_KEYS.filter(k=>k.startsWith('midnight')&&localPhoto(k))){
+   const blob=await readMedia(key,'image/jpeg',id);if(!blob)throw Error('Не найдено фото '+(PHOTO_NAMES[key]||key));
+   files.push({name:folder+photoFileName(key),bytes:new Uint8Array(await blob.arrayBuffer())});
+ }
+ const type=musicType(cfg.music);if(type){const audio=await readMedia('music',type,id);if(!audio)throw Error('Не найден файл музыки.');files.push({name:folder+cfg.music.source,bytes:new Uint8Array(await audio.arrayBuffer())});}
+ const publicCfg={couple:cfg.couple,eventDates:cfg.eventDates,midnight:cfg.midnight,photos:Object.fromEntries(Object.entries(cfg.photos||{}).filter(([k])=>k.startsWith('midnight'))),photoPosition:Object.fromEntries(Object.entries(cfg.photoPosition||{}).filter(([k])=>k.startsWith('midnight'))),music:cfg.music,rsvp:cfg.rsvp};
+ const marker='<script src="rsvp-config.js">';
+ if(!page.includes(marker))throw Error('Не найдена точка подключения настроек Midnight.');
+ page=page.replace(marker,'<script src="order.js"><'+'/script>'+marker);
+ files.push({name:folder+'order.js',bytes:enc.encode('window.ETERNA_ORDER = '+JSON.stringify(publicCfg,null,2)+';\n')});
+ files.push({name:folder+'index.html',bytes:enc.encode(page)});
+}
+
 async function exportV12(folder, files, config){
  const source='eterna-12/';
  let page=await (await fetchResource(source+'editor-preview-v29.html')).text();
@@ -2048,13 +2074,14 @@ const SPACEWEB_SSL_PENDING=false; // HTTPS and cross-origin GET/POST verified on
 let isPublishing=false;
 function publishBase64(bytes){let text='';for(let i=0;i<bytes.length;i+=16384)text+=String.fromCharCode(...bytes.subarray(i,i+16384));return btoa(text)}
 async function buildPublishFiles(id,slug=id,rsvpEndpoint=''){
- if($('previewVersion').value==='midnight'){throw Error('Публикация Midnight Sapphire пока не подключена.');}
+
  if(musicBusy)throw Error('Дождись сохранения музыки.');
  if($('previewVersion').value==='legacy')throw Error('Классический шаблон не поддерживает автоматическую публикацию. Выбери ÉTERNA, «Срочный выпуск» или PREMIÈRE.');
  if(!/^[a-z0-9](?:[a-z0-9-]{0,58}[a-z0-9])?$/.test(id))throw Error('Неверный ID заказа.');
  const folder='orders/'+slug+'/',files=[],cfg=withEventDates(copy(data));
  if(rsvpEndpoint){cfg.rsvp??={};cfg.rsvp.endpoint=rsvpEndpoint;}
- if($('previewVersion').value==='premiere')await exportPremiere(folder,files,cfg,id);
+ if($('previewVersion').value==='midnight')await exportMidnight(folder,files,cfg,id);
+ else if($('previewVersion').value==='premiere')await exportPremiere(folder,files,cfg,id);
  else if($('previewVersion').value==='broadcast')await exportBroadcast(folder,files,cfg,id);
  else{
   for(const key of PHOTO_KEYS.filter(localPhoto)){
@@ -2082,7 +2109,7 @@ async function publishRequest(route,body,token){
  return value;
 }
 async function publishOrder(){
- if($('previewVersion').value==='midnight'){setStatus('Публикация Midnight Sapphire пока не подключена. Используй предпросмотр.');return;}
+
  if(SPACEWEB_SSL_PENDING){setStatus('Публикация временно недоступна до установки SSL и проверки соединения с SpaceWeb.');return;}
  if(isPublishing)return;
  const pass=$('publishPassword')?.value.trim();
@@ -2140,7 +2167,7 @@ async function publishOrder(){
 }
 
 async function exportPackage(){
- if($('previewVersion').value==='midnight'){setStatus('Экспорт Midnight Sapphire пока не подключён.');return;}
+
  if(musicBusy){setStatus('Дождитесь сохранения музыки и повторите экспорт.');return;}
  const buttons=[$('downloadBtn'),$('downloadBtnBottom')];buttons.forEach(b=>b.disabled=true);
  setStatus('Собираю отдельную свадебную страницу и фотографии…');
@@ -2150,6 +2177,11 @@ async function exportPackage(){
    const legacy=isLegacy();
    const folder='orders/'+id+'/';
    const files=[];
+   if($('previewVersion').value==='midnight'){
+      await exportMidnight(folder,files,config,id);
+      download(zip(files),'wedletter-midnight-'+id+'.zip');
+      setStatus('Готов комплект Midnight Sapphire для заказа '+id+'.');return;
+   }
    if($('previewVersion').value==='premiere'){
       await exportPremiere(folder,files,config,id);
       download(zip(files),'wedletter-premiere-'+id+'.zip');
