@@ -386,7 +386,7 @@ main{max-width:1440px;padding:0 clamp(14px,3.2vw,44px) 26px;grid-template-column
 <details><summary>Фоновая музыка</summary>
 <label for="musicFile">Загрузить или заменить трек</label>
 <input id="musicFile" type="file" accept=".mp3,.m4a,audio/mpeg,audio/mp4">
-<p class="muted">MP3 или M4A до 25 МБ. Музыка включается гостем вручную. Файл сохраняется в заказе и попадёт в ZIP для 12.0.</p>
+<p class="muted">MP3 или M4A до 10 МБ для публикации. Музыка включается гостем вручную. Трек сохраняется в заказе и входит в ZIP.</p>
 <div class="actions"><button id="removeMusic" type="button" class="secondary" disabled>Убрать музыку</button></div>
 <p id="musicStatus" class="status" role="status"></p></details>
 <h2>Разделы сайта</h2><fieldset id="sections"></fieldset>
@@ -505,7 +505,7 @@ function setupWorkflow(){
   detail.open=false;
   const summary=detail.querySelector(':scope > summary');
   if(summary)summary.textContent=i===0?'Фоновая музыка':'RSVP — анкета гостей';
-  if(i===0)et.append(detail);else content.append(detail);
+  if(i===0){detail.dataset.musicSettings='1';content.append(detail);}else content.append(detail);
  });
  content.append(et);
  const final=workflowNode('div','stage-finish','Проверь фотографии, дату и тексты в предпросмотре. Затем скачай ZIP — готовый комплект отдельного сайта.');
@@ -741,6 +741,7 @@ async function exportPremiere(folder,files,config,id){
 function syncWorkflowTemplate(){
  const selected=$('previewVersion').value;
  const broadcast=selected==='broadcast',premiere=selected==='premiere';
+ const music=document.querySelector('[data-music-settings]');if(music)music.hidden=broadcast||premiere||selected==='legacy';
  document.querySelectorAll('[data-for-template]').forEach(el=>{
    if(el.dataset.forTemplate==='shared'){el.hidden=false;return}
    el.hidden=el.dataset.forTemplate!==selected&&!(el.dataset.forTemplate==='eterna'&&!broadcast&&!premiere&&selected!=='midnight')
@@ -947,8 +948,8 @@ $('musicFile').addEventListener('change',async event=>{
  if($('downloadBtn').disabled){input.value='';return;}
  const id=orderId;
  const ext=file.name.toLowerCase().split('.').pop();
- if(!Object.hasOwn(musicTypes,ext)||file.size===0||file.size>25*1024*1024){
-   $('musicStatus').textContent='Выберите непустой файл MP3 или M4A до 25 МБ.';
+ if(!Object.hasOwn(musicTypes,ext)||file.size===0||file.size>10_000_000){
+   $('musicStatus').textContent='Выберите непустой файл MP3 или M4A до 10 МБ.';
    input.value='';
    return;
  }
@@ -1682,7 +1683,7 @@ function drawMidnight(openId){
  }
 }
 
-function syncEditorMode(){syncWorkflowTemplate();const active=$('previewVersion').value==='midnight';if(active)drawMidnight();const music=$('musicFile').closest('details');const parent=active?$('midnightSettings'):document.querySelector('.workflow-eterna.workflow-content');if(music&&parent)parent.append(music);}
+function syncEditorMode(){syncWorkflowTemplate();if($('previewVersion').value==='midnight')drawMidnight();}
 
 function draw(){showRsvp();renderMusic();renderStudioPhotos();renderPremiere();for(const id of ['couple','photos','sections','texts'])$(id).replaceChildren();
 for(const key of ['first','second','dateLabel','city','dateTime'])field($('couple'),data.couple,key);
