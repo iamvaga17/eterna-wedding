@@ -343,7 +343,7 @@ main{max-width:1440px;padding:0 clamp(14px,3.2vw,44px) 26px;grid-template-column
 </div>
 </section><p class="note">Загружай фото из галереи iPhone — они сразу появятся в предпросмотре. Фото сохраняются локально в этом браузере. Для публикации скачай самостоятельный сайт клиента ZIP. Фото хранятся в браузере до публикации. Анкету для 12.0 можно настроить в этом заказе.</p>
 <div id="broadcastEditorFields" hidden>
-  <h2>Данные пары · Срочный выпуск</h2>
+  <h2>Данные пары · Хроника любви</h2>
   <fieldset id="broadcastCouple"></fieldset>
   <section class="studio-panel" aria-labelledby="studioHeading">
     <h2 id="studioHeading">Фотографии «Срочного выпуска»</h2>
@@ -432,7 +432,7 @@ function setupWorkflow(){
  const templateBox=workflowNode('section','workflow-template');
  const title=workflowNode('label','', '01 / ВЫБЕРИ ШАБЛОН');title.htmlFor='previewVersion';
  const select=workflowNode('select');select.id='previewVersion';
- for(const [value,label] of [['12','ÉTERNA 12.0 — ART OBJECT'],['broadcast','Срочный выпуск — NEWS'],['premiere','PREMIÈRE — CINEMA'],['midnight','Midnight Sapphire ULTRA']]){
+ for(const [value,label] of [['12','Бархатная поэзия'],['broadcast','Хроника любви'],['premiere','Вечная премьера'],['midnight','Сапфировая полночь']]){
   const option=document.createElement('option');option.value=value;option.textContent=label;select.append(option);
  }
  templateBox.append(title,select,workflowNode('p','', 'Шаблон можно менять в рамках заказа. Фотографии и тексты сохраняются.'));
@@ -462,11 +462,11 @@ function setupWorkflow(){
  panel.prepend(stack);
  const [couple,photos,content,finish]=sections;
  const pc=workflowNode('div','workflow-premiere');pc.dataset.forTemplate='premiere';
- pc.append(workflowNode('h3','','PREMIÈRE · Данные фильма'));
+ pc.append(workflowNode('h3','','Вечная премьера · Данные фильма'));
  const premiereCouple=document.createElement('fieldset');premiereCouple.id='premiereCouple';
  pc.append(premiereCouple);couple.append(pc);
  const bc=workflowNode('div','workflow-broadcast');bc.dataset.forTemplate='broadcast';
- bc.append(workflowNode('h3','', '«Срочный выпуск»'));
+ bc.append(workflowNode('h3','', '«Хроника любви»'));
  bc.append($('broadcastCouple'));couple.append(bc);
  {const box=workflowNode('div','workflow-midnight');box.dataset.forTemplate='midnight';box.id='midnightCouple';couple.append(box);}
  const ec=workflowNode('div','workflow-eterna');ec.dataset.forTemplate='eterna';ec.append($('couple'));couple.append(ec);
@@ -606,7 +606,7 @@ function renderNewsTools(groups){
  function render(){
   list.replaceChildren();
   const h=document.createElement('h3');h.textContent='Расписание дня';list.append(h);
-  const desc=document.createElement('p');desc.className='muted';desc.textContent='Добавляй, удаляй и меняй порядок событий, как в ÉTERNA.';list.append(desc);
+  const desc=document.createElement('p');desc.className='muted';desc.textContent='Добавляй, удаляй и меняй порядок событий, как в «Бархатной поэзии».';list.append(desc);
   const events=newsSchedule();
   events.forEach((e,i)=>{
    const det=document.createElement('details');det.className='et-schedule-item';
@@ -670,14 +670,14 @@ function renderPremiere(){
   const title=document.createElement('strong');title.textContent=PREMIERE_PHOTO_NAMES[name];card.append(title);
   const image=document.createElement('img');image.loading='lazy';image.alt=PREMIERE_PHOTO_NAMES[name];image.hidden=!photoUrls[key];if(photoUrls[key])image.src=photoUrls[key];card.append(image);
   const picker=document.createElement('input');picker.type='file';picker.accept='image/*,.heic,.heif';picker.setAttribute('aria-label',title.textContent);
-  picker.onchange=async()=>{const file=picker.files?.[0];if(!file)return;try{const blob=await compressPhoto(file);await storeMedia(key,blob);cachedUrl(key,blob);p.photoAssets[key]=true;changed('Фотография PREMIÈRE сохранена.');renderPremiere()}catch(error){setStatus('Не удалось загрузить фото: '+error.message)}};
+  picker.onchange=async()=>{const file=picker.files?.[0];if(!file)return;try{const blob=await compressPhoto(file);await storeMedia(key,blob);cachedUrl(key,blob);p.photoAssets[key]=true;changed('Фотография «Вечная премьера» сохранена.');renderPremiere()}catch(error){setStatus('Не удалось загрузить фото: '+error.message)}};
   const remove=document.createElement('button');remove.className='secondary';remove.type='button';remove.textContent='Убрать фотографию';remove.disabled=!p.photoAssets[key];
   remove.onclick=async()=>{await deleteMedia(key);if(photoUrls[key])URL.revokeObjectURL(photoUrls[key]);delete photoUrls[key];delete p.photoAssets[key];changed('Фото удалено.');renderPremiere()};
   const actions=document.createElement('div');actions.className='photo-tools';actions.append(picker,remove);card.append(actions);root.append(card);
  }
  const groups=[...document.querySelectorAll('.workflow-premiere.workflow-content .stage-group-inner')];if(groups.length!==PREMIERE_GROUPS.length)return;
  groups.forEach(group=>group.replaceChildren());
- const vis=document.createElement('div');vis.className='news-section-options';const h=document.createElement('strong');h.textContent='Управление разделами PREMIÈRE';vis.append(h);
+ const vis=document.createElement('div');vis.className='news-section-options';const h=document.createElement('strong');h.textContent='Управление разделами «Вечная премьера»';vis.append(h);
  for(const [key,title] of [['intro','Приглашение'],['story','История пары'],['schedule','Программа'],['venue','Место проведения'],['dress','Дресс-код'],['rsvp','RSVP'],['ending','Финальный экран']]){
   const row=document.createElement('label');row.style.cssText='display:flex;align-items:center;gap:12px;padding:10px;border-bottom:1px solid #ddd';
   const check=document.createElement('input');check.type='checkbox';check.checked=p.sections[key]!==false;check.onchange=()=>{p.sections[key]=check.checked;changed('Раздел обновлён.');};row.append(check,document.createTextNode(title));vis.append(row);
@@ -717,7 +717,7 @@ async function exportPremiere(folder,files,config,id){
  for(const name of PREMIERE_PHOTOS){
   const key='premiere-'+name;
   if(!config.premiere.photoAssets?.[key])continue;
-  const blob=await readMedia(key,'image/jpeg',id);if(!blob)throw Error('Не найдено фото PREMIÈRE: '+PREMIERE_PHOTO_NAMES[name]);
+  const blob=await readMedia(key,'image/jpeg',id);if(!blob)throw Error('Не найдено фото «Вечная премьера»: '+PREMIERE_PHOTO_NAMES[name]);
   const path='assets/custom-'+name+'.jpg';
   files.push({name:folder+path,bytes:new Uint8Array(await blob.arrayBuffer())});photos[name]=path;
  }
@@ -1583,7 +1583,7 @@ $('studioPrompt').addEventListener('click',async()=>{
   const scene=$('studioScene').value;
   const names=[data.couple?.first,data.couple?.second].filter(Boolean).join(' и ')||'пара';
   const details=$('studioBrief').value.trim();
-  const prompt='Создай новое фотореалистичное изображение для свадебного сайта «Срочный выпуск». '+
+  const prompt='Создай новое фотореалистичное изображение для свадебного сайта «Хроника любви». '+
     'Используй прикреплённые исходные фотографии жениха и невесты как референсы внешности; сохрани узнаваемые черты лица, пропорции и телосложение обоих, без карикатуры, замены возраста и изменения внешности. '+
     'Сцена: '+STUDIO_SCENES[scene]+' Персонажи: '+names+'. '+
     (details?'Контекст пары: '+details+'. ':'')+
@@ -1668,7 +1668,7 @@ function drawMidnight(openId){
  const m=data.midnight??={};m.sections??={};m.text??={};m.story??={};m.story.removed??={};m.events??=copy(msEvents);m.locations??=[{type:'Банкет',name:'Зал торжества',address:'Название площадки и точный адрес будут указаны в персональном приглашении.',photo:'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1000&q=85',mapUrl:'',demo:true}];m.dress??={colors:['#142740','#142740'],labels:['Для неё','Для него'],palette:[{name:'Сапфир',color:'#142740'},{name:'Пыльный синий',color:'#687c95'},{name:'Шампань',color:'#cfb58a'},{name:'Песочный',color:'#ad9174'},{name:'Графит',color:'#424651'}]};
  for(const k of Object.keys(msSections))m.sections[k]??=true;for(const rows of Object.values(msTextGroups))for(const [k,l,v] of rows)m.text[k]??=v;
  for(const k of ["midnightHero","midnightStory0","midnightStory1","midnightStory2","midnightVenue0","midnightVenue1","midnightVenue2","midnightVenue3","midnightLook0","midnightLook1"]){data.photos[k]??='';data.photoPosition[k]??='center 50%'}
- const title=document.createElement('h2');title.textContent='Настройки Midnight Sapphire';root.append(title);
+ const title=document.createElement('h2');title.textContent='Настройки «Сапфировая полночь»';root.append(title);
  const info=document.createElement('p');info.className='muted';info.textContent='Открой нужный раздел. Изменения автоматически сохраняются в тестовом заказе.';root.append(info);
  for(const [id,name] of Object.entries(msSections)){
  const det=document.createElement('details');det.dataset.ms=id;det.className='ms-section';det.open=opened.has(id)||openId===id;const sum=document.createElement('summary');sum.textContent=name;det.append(sum);root.append(det);msCheck(det,m.sections,id,'Показывать раздел');
@@ -2083,7 +2083,7 @@ function publishBase64(bytes){let text='';for(let i=0;i<bytes.length;i+=16384)te
 async function buildPublishFiles(id,slug=id,rsvpEndpoint=''){
 
  if(musicBusy)throw Error('Дождись сохранения музыки.');
- if($('previewVersion').value==='legacy')throw Error('Классический шаблон не поддерживает автоматическую публикацию. Выбери ÉTERNA, «Срочный выпуск» или PREMIÈRE.');
+ if($('previewVersion').value==='legacy')throw Error('Классический шаблон не поддерживает автоматическую публикацию. Выбери один из четырёх актуальных шаблонов.');
  if(!/^[a-z0-9](?:[a-z0-9-]{0,58}[a-z0-9])?$/.test(id))throw Error('Неверный ID заказа.');
  const folder='orders/'+slug+'/',files=[],cfg=withEventDates(copy(data));
  if(rsvpEndpoint){cfg.rsvp??={};cfg.rsvp.endpoint=rsvpEndpoint;}
@@ -2187,18 +2187,18 @@ async function exportPackage(){
    if($('previewVersion').value==='midnight'){
       await exportMidnight(folder,files,config,id);
       download(zip(files),'wedletter-midnight-'+id+'.zip');
-      setStatus('Готов комплект Midnight Sapphire для заказа '+id+'.');return;
+      setStatus('Готов комплект «Сапфировая полночь» для заказа '+id+'.');return;
    }
    if($('previewVersion').value==='premiere'){
       await exportPremiere(folder,files,config,id);
       download(zip(files),'wedletter-premiere-'+id+'.zip');
-      setStatus('Готов комплект PREMIÈRE для заказа '+id+'.');
+      setStatus('Готов комплект «Вечная премьера» для заказа '+id+'.');
       return;
    }
    if($('previewVersion').value==='broadcast'){
       await exportBroadcast(folder,files,config,id);
       download(zip(files),'eterna-broadcast-'+id+'.zip');
-      setStatus('Готов персональный сайт «Срочный выпуск» для заказа '+id+'. RSVP пока демонстрационный.');
+      setStatus('Готов персональный сайт «Хроника любви» для заказа '+id+'. RSVP пока демонстрационный.');
       return;
    }
    const uploaded=PHOTO_KEYS.filter(localPhoto);
