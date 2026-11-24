@@ -208,7 +208,7 @@ main{max-width:1440px;padding:0 clamp(14px,3.2vw,44px) 26px;grid-template-column
 .rsvp-advanced>summary{font:600 13px system-ui;padding:10px 0}
 .rsvp-advanced textarea{min-height:170px;font:12px/1.5 monospace}
 @media(min-width:680px){.rsvp-head{grid-template-columns:1fr 1fr}}
-</style><style>
+.ms-section{border:1px solid #ded7cb;border-radius:12px;padding:12px;margin:10px 0;background:#fcfaf6}.ms-section summary{font:600 15px system-ui}.ms-toggle{display:flex;align-items:center;gap:10px}.ms-toggle input{width:20px;height:20px}.ms-item{border:1px solid #e3d9ca;border-radius:9px;padding:12px;margin:12px 0;background:#fff}.ms-item button{margin:6px 5px 0 0}</style><style>
 .wedletter-share-title{font:400 22px Georgia,serif;margin:16px 0 10px;color:#332b25}
 .wedletter-share-card{display:flex;flex-direction:column;gap:8px;padding:14px 15px;margin:10px 0;background:#fffdf8;border:1px solid #dfd6ca;border-radius:14px;max-width:100%;overflow-wrap:anywhere}
 .wedletter-share-card strong{font-size:15px;color:#302921}
@@ -419,7 +419,7 @@ function setupWorkflow(){
  const templateBox=workflowNode('section','workflow-template');
  const title=workflowNode('label','', '01 / ВЫБЕРИ ШАБЛОН');title.htmlFor='previewVersion';
  const select=workflowNode('select');select.id='previewVersion';
- for(const [value,label] of [['12','ÉTERNA 12.0 — ART OBJECT'],['broadcast','Срочный выпуск — NEWS'],['premiere','PREMIÈRE — CINEMA']]){
+ for(const [value,label] of [['12','ÉTERNA 12.0 — ART OBJECT'],['broadcast','Срочный выпуск — NEWS'],['premiere','PREMIÈRE — CINEMA'],['midnight','Midnight Sapphire ULTRA']]){
   const option=document.createElement('option');option.value=value;option.textContent=label;select.append(option);
  }
  templateBox.append(title,select,workflowNode('p','', 'Шаблон можно менять в рамках заказа. Фотографии и тексты сохраняются.'));
@@ -455,6 +455,7 @@ function setupWorkflow(){
  const bc=workflowNode('div','workflow-broadcast');bc.dataset.forTemplate='broadcast';
  bc.append(workflowNode('h3','', '«Срочный выпуск»'));
  bc.append($('broadcastCouple'));couple.append(bc);
+ {const box=workflowNode('div','workflow-midnight');box.dataset.forTemplate='midnight';box.id='midnightCouple';couple.append(box);}
  const ec=workflowNode('div','workflow-eterna');ec.dataset.forTemplate='eterna';ec.append($('couple'));couple.append(ec);
  const eventBox=workflowNode('section','event-date-editor');eventBox.id='eventDatesEditor';couple.append(eventBox);
  const bf=workflowNode('div','workflow-broadcast');bf.dataset.forTemplate='broadcast';
@@ -462,6 +463,7 @@ function setupWorkflow(){
  const pf=workflowNode('div','workflow-premiere');pf.dataset.forTemplate='premiere';
  pf.innerHTML='<h3>Фотографии кинокартины</h3><p class="muted">6 отдельных фото: главный кадр, три кадра киноленты, место проведения и финальная рамка. Блок «Любовь · в каждом кадре» после киноленты остаётся с исходным фото шаблона и не меняется.</p><div id="premierePhotoCards"></div>';
  photos.append(pf);
+ {const box=workflowNode('div','workflow-midnight');box.dataset.forTemplate='midnight';box.id='midnightPhotos';photos.append(box);}
  const ef=workflowNode('div','workflow-eterna');ef.dataset.forTemplate='eterna';
  ef.append($('photos'));photos.append(ef);
  const bt=workflowNode('div','workflow-broadcast workflow-content');bt.dataset.forTemplate='broadcast';
@@ -478,6 +480,7 @@ function setupWorkflow(){
  for(const [title] of PREMIERE_GROUPS)pt.append(workflowGroup(title,[]));
  pt.querySelector('details').open=true;
  content.append(pt);
+ {const box=workflowNode('div','workflow-midnight');box.dataset.forTemplate='midnight';box.id='midnightSettings';content.append(box);}
  const et=workflowNode('div','workflow-eterna workflow-content');et.dataset.forTemplate='eterna';
  et.append(workflowGroup('Разделы приглашения',[$('sections')],true));
  et.append(workflowGroup('Все тексты и расписание',[$('texts')],false));
@@ -727,7 +730,7 @@ function syncWorkflowTemplate(){
  const broadcast=selected==='broadcast',premiere=selected==='premiere';
  document.querySelectorAll('[data-for-template]').forEach(el=>{
    if(el.dataset.forTemplate==='shared'){el.hidden=false;return}
-   el.hidden=el.dataset.forTemplate!==selected&&!(el.dataset.forTemplate==='eterna'&&!broadcast&&!premiere)
+   el.hidden=el.dataset.forTemplate!==selected&&!(el.dataset.forTemplate==='eterna'&&!broadcast&&!premiere&&selected!=='midnight')
  });
  WORKFLOW_TABS[1][1]=premiere?'6 фотографий: обложка, кинолента, площадка и отдельный финал':broadcast?'4 настоящие фотографии пары':'Фотографии, фоновые сцены и палитра';
  WORKFLOW_TABS[2][1]=premiere?'Киносцены, расписание, дресс-код и RSVP':broadcast?'Новости, история и прогноз':'Расписание, текстовые блоки и RSVP';
@@ -735,7 +738,7 @@ function syncWorkflowTemplate(){
  if(page1)page1.querySelector('.workflow-intro').textContent=WORKFLOW_TABS[1][1];
  if(page2)page2.querySelector('.workflow-intro').textContent=WORKFLOW_TABS[2][1];
  const ready=['downloadBtn','downloadBtnBottom'];
- ready.forEach(id=>{$(id).disabled=false;$(id).title='Скачать самостоятельный сайт выбранного шаблона'});
+ ready.forEach(id=>{$(id).disabled=selected==='midnight';$(id).title=selected==='midnight'?'Экспорт нового шаблона пока не подключён':'Скачать самостоятельный сайт выбранного шаблона'});
 }
 function openWorkflowStage(stage){
  activeWorkflowStage=Math.max(0,Math.min(3,stage));
@@ -770,10 +773,10 @@ function uniqueId(name){const base=translit(name);let x=base,n=2;while(orders.so
 
 const $=id=>document.getElementById(id);
 const isLegacy=()=>$('previewVersion').value==='legacy';
-const previewUrls={12:'eterna-12/editor-preview-v29.html?editor-preview=1',broadcast:'srochny-vypusk/editor-preview-v40.html?editor-preview=1#top',premiere:'premiere/index-v19.html?editor-preview=1&rsvp-success=19#top',legacy:'templates/eterna.html?editor-preview=1#top'};
+const previewUrls={midnight:'velvet-sapphire-next/ultra-editor-v30.html?editor-preview=1',12:'eterna-12/editor-preview-v29.html?editor-preview=1',broadcast:'srochny-vypusk/editor-preview-v40.html?editor-preview=1#top',premiere:'premiere/index-v19.html?editor-preview=1&rsvp-success=19#top',legacy:'templates/eterna.html?editor-preview=1#top'};
 const STUDIO_KEYS=['studio-bride','studio-groom','studio-sceneCover','studio-sceneCake','studio-sceneArchive','studio-sceneForecast','studio-pending-sceneCover','studio-pending-sceneCake','studio-pending-sceneArchive','studio-pending-sceneForecast'];
-const PHOTO_KEYS=['main','secondary1','secondary2','collage1','collage2','invitationBg','invitationLeft','invitationRight','storyMain','storySmall','memoryBg','scheduleBg','venueBg','dressBg','dress1','dress2','dress3','dress4','dressFemale3','dressFemale4','dressFemale5','dressFemale6','dressFemale7','dressFemale8','dressMale3','dressMale4','dressMale5','dressMale6','dressMale7','dressMale8','countdownBg','rsvpBg','endingBg','introCover'];
-const PHOTO_NAMES={main:'Главная фотография',secondary1:'Дополнительная фотография 1',secondary2:'Дополнительная фотография 2',storyMain:'Наша история — главное фото',storySmall:'Наша история — дополнительное фото',introCover:'Обложка книги — фон',collage1:'Первый фотоколлаж — слева',collage2:'Первый фотоколлаж — справа',invitationBg:'Приглашение — большое фоновое фото',invitationLeft:'Приглашение — левый фотокадр',invitationRight:'Приглашение — правый фотокадр',memoryBg:'Атмосферный блок — фоновое фото',scheduleBg:'День свадьбы — фоновое фото',venueBg:'Место встречи — фон зала',dressBg:'Дресс-код — фон',dress1:'Для неё — фото 1',dress2:'Для него — фото 1',dress3:'Для неё — фото 2',dress4:'Для него — фото 2',countdownBg:'Обратный отсчёт — фон',rsvpBg:'Анкета гостей — фон',endingBg:'До встречи — финальное фото',dressFemale3:'Для неё — фото 3',dressFemale4:'Для неё — фото 4',dressFemale5:'Для неё — фото 5',dressFemale6:'Для неё — фото 6',dressFemale7:'Для неё — фото 7',dressFemale8:'Для неё — фото 8',dressMale3:'Для него — фото 3',dressMale4:'Для него — фото 4',dressMale5:'Для него — фото 5',dressMale6:'Для него — фото 6',dressMale7:'Для него — фото 7',dressMale8:'Для него — фото 8'};
+const PHOTO_KEYS=["midnightHero","midnightStory0","midnightStory1","midnightStory2","midnightVenue0","midnightVenue1","midnightVenue2","midnightVenue3","midnightLook0","midnightLook1",'main','secondary1','secondary2','collage1','collage2','invitationBg','invitationLeft','invitationRight','storyMain','storySmall','memoryBg','scheduleBg','venueBg','dressBg','dress1','dress2','dress3','dress4','dressFemale3','dressFemale4','dressFemale5','dressFemale6','dressFemale7','dressFemale8','dressMale3','dressMale4','dressMale5','dressMale6','dressMale7','dressMale8','countdownBg','rsvpBg','endingBg','introCover'];
+const PHOTO_NAMES={"midnightHero":"Главная сцена","midnightStory0":"История — фото 1","midnightStory1":"История — фото 2","midnightStory2":"История — фото 3","midnightVenue0":"Площадка — фото 1","midnightVenue1":"Площадка — фото 2","midnightVenue2":"Площадка — фото 3","midnightVenue3":"Площадка — фото 4","midnightLook0":"Образ невесты","midnightLook1":"Образ жениха",main:'Главная фотография',secondary1:'Дополнительная фотография 1',secondary2:'Дополнительная фотография 2',storyMain:'Наша история — главное фото',storySmall:'Наша история — дополнительное фото',introCover:'Обложка книги — фон',collage1:'Первый фотоколлаж — слева',collage2:'Первый фотоколлаж — справа',invitationBg:'Приглашение — большое фоновое фото',invitationLeft:'Приглашение — левый фотокадр',invitationRight:'Приглашение — правый фотокадр',memoryBg:'Атмосферный блок — фоновое фото',scheduleBg:'День свадьбы — фоновое фото',venueBg:'Место встречи — фон зала',dressBg:'Дресс-код — фон',dress1:'Для неё — фото 1',dress2:'Для него — фото 1',dress3:'Для неё — фото 2',dress4:'Для него — фото 2',countdownBg:'Обратный отсчёт — фон',rsvpBg:'Анкета гостей — фон',endingBg:'До встречи — финальное фото',dressFemale3:'Для неё — фото 3',dressFemale4:'Для неё — фото 4',dressFemale5:'Для неё — фото 5',dressFemale6:'Для неё — фото 6',dressFemale7:'Для неё — фото 7',dressFemale8:'Для неё — фото 8',dressMale3:'Для него — фото 3',dressMale4:'Для него — фото 4',dressMale5:'Для него — фото 5',dressMale6:'Для него — фото 6',dressMale7:'Для него — фото 7',dressMale8:'Для него — фото 8'};
 const LABELS={first:'Имя жениха',second:'Имя невесты',dateLabel:'Дата на сайте',city:'Город',dateTime:'Дата и время для таймера (ISO)',photoStory:'Первый фотоколлаж',invitation:'Приглашение',story:'Наша история',memory:'Атмосферный блок',schedule:'Программа дня',venue:'Место проведения',dress:'Дресс-код',countdown:'Обратный отсчёт',rsvp:'Анкета гостей (RSVP)',ending:'Финальный экран',greeting:'Обращение к гостям',invitation1:'Приглашение — абзац 1',invitation2:'Приглашение — абзац 2',storyIntro:'Вступление к истории',storyNote:'Текст истории',venueName:'Название площадки или город',venueAddress:'Адрес и описание',venueMap:'Ссылка на карту (https://)',rsvpDeadline:'Срок подтверждения'};
 const photoUrls={};
 let db;
@@ -898,7 +901,7 @@ function withEventDates(config){
  return config;
 }
 
-function updatePreview(){const cfg=withEventDates(structuredClone(data));if(cfg.music){if(photoUrls.music)cfg.music.source=photoUrls.music;else delete cfg.music;}for(const key of PHOTO_KEYS)if(localPhoto(key)&&photoUrls[key])cfg.photos[key]=photoUrls[key];if($('previewVersion').value==='premiere'){
+function updatePreview(){const cfg=withEventDates(structuredClone(data));if($('previewVersion').value==='midnight'&&cfg.eventDates?.mode==='split'){const d=cfg.eventDates;cfg.midnight??={};cfg.midnight.locations=['ceremony','party'].map((k,i)=>({...cfg.midnight.locations?.[i],type:(k==='ceremony'?'Роспись':'Банкет')+' · '+[d[k+'Date'],d[k+'Time']].filter(Boolean).join(' '),name:d[k+'Venue']||cfg.midnight.locations?.[i]?.name||'',address:d[k+'Address']||cfg.midnight.locations?.[i]?.address||'',demo:false}));}if(cfg.music){if(photoUrls.music)cfg.music.source=photoUrls.music;else delete cfg.music;}for(const key of PHOTO_KEYS)if(localPhoto(key)&&photoUrls[key])cfg.photos[key]=photoUrls[key];if($('previewVersion').value==='premiere'){
  cfg.premiere??={};cfg.premiere.previewPhotos={};
  for(const key of PREMIERE_PHOTOS){
   const k='premiere-'+key;if(data.premiere?.photoAssets?.[k]&&photoUrls[k])cfg.premiere.previewPhotos[key]=photoUrls[k];
@@ -1639,7 +1642,33 @@ function renderBroadcastFields(){
     container.lastElementChild?.querySelector('input,textarea')?.setAttribute('data-field-key',key);
   }
 }
-function syncEditorMode(){syncWorkflowTemplate();}
+const msSections={gate:'Вступительная заставка',stage:'Главный экран',calendar:'Календарь',invitation:'Приглашение',story:'Наша история',venue:'Место торжества',schedule:'Тайминг',dress:'Дресс-код',countdown:'Обратный отсчёт',rsvp:'RSVP'};
+const msTextGroups={gate:[['gateTitle','Верхняя надпись','СВАДЕБНОЕ ПРИГЛАШЕНИЕ'],['gateHint','Кнопка','Открыть приглашение']],calendar:[['calendarTitle','Заголовок','Сохраните дату'],['calendarIntro','Подзаголовок','День, который мы хотим разделить с вами'],['calendarNote','Подпись','Ждём вас в этот день']],invitation:[['letterKicker','Метка','Приглашение'],['greeting','Обращение','Дорогие родные и друзья!'],['letter1','Абзац 1','Есть моменты, которые хочется сохранить навсегда, и люди, без которых они невозможны.'],['letter2','Абзац 2','Приглашаем вас разделить с нами день нашей свадьбы — начало новой главы нашей истории.'],['letter3','Абзац 3','Будем счастливы видеть вас рядом!'],['letterSign','Подпись','С любовью,']],venue:[['venueChapter','Метка','V · МЕСТО НАШЕЙ ВСТРЕЧИ'],['venueTitle','Заголовок','Место торжества'],['venueIntro','Текст','Здесь мы разделим с вами самые прекрасные мгновения нашего дня.']],schedule:[['scheduleChapter','Метка','VI · МГНОВЕНИЯ НАШЕГО ДНЯ'],['scheduleTitle','Заголовок','Программа дня'],['scheduleIntro','Вступление','От первой встречи до последнего танца — каждое мгновение станет частью нашей истории.'],['scheduleEnd','Подпись','Пусть этот день останется в наших сердцах']],dress:[['dressChapter','Метка','VII · ИСКУССТВО БЫТЬ СОБОЙ'],['dressTitle','Заголовок','Дресс-код'],['dressIntro','Пожелания','Будем рады, если ваши образы поддержат атмосферу нашего вечера — элегантность, благородные оттенки и немного сияния.'],['dressNote','Подпись','Главное — ваше присутствие и улыбки. Выбирайте образ, в котором чувствуете себя прекрасными.'],['paletteTitle','Заголовок палитры','Палитра нашего вечера']],countdown:[['countdownChapter','Метка','VIII · ВРЕМЯ ДО НАШЕГО ДНЯ'],['countdownTitle','Заголовок','До нашей встречи'],['countdownIntro','Текст','Каждая секунда приближает нас к началу новой истории.']],rsvp:[['rsvpChapter','Метка','IX · ВАШЕ ОТВЕТНОЕ ПИСЬМО'],['finalSign','Подпись','С любовью,']]};
+const msEvents=[['15:00','Сбор гостей','Встречаемся и наслаждаемся первыми минутами праздника.','glass'],['16:00','Церемония','Самое важное «да».','rings'],['17:00','Праздничный ужин','Тёплые слова, улыбки и любимые люди.','dinner'],['20:00','Первый танец','Мелодия нашей истории.','music'],['23:00','Завершение вечера','Сохраняем прекрасные воспоминания.','star']].map(([time,title,description,icon])=>({time,title,description,icon}));
+function msButton(parent,label,fn){const b=document.createElement('button');b.type='button';b.className='secondary';b.textContent=label;b.onclick=fn;parent.append(b);return b}
+function msSelect(parent,obj,key,label,options){const l=document.createElement('label');l.textContent=label;const s=document.createElement('select');for(const [v,n] of options){const o=document.createElement('option');o.value=v;o.textContent=n;s.append(o)}s.value=obj[key]??options[0][0];s.onchange=()=>{obj[key]=s.value;changed()};l.append(s);parent.append(l);return s}
+function msCheck(parent,obj,key,label){const l=document.createElement('label');l.className='ms-toggle';const i=document.createElement('input');i.type='checkbox';i.checked=obj[key]!==false;i.onchange=()=>{obj[key]=i.checked;changed()};l.append(i,document.createTextNode(label));parent.append(l)}
+function msRedraw(id){changed();drawMidnight(id)}
+function drawMidnight(openId){
+ const root=$('midnightSettings');$('midnightCouple').replaceChildren();$('midnightPhotos').replaceChildren();for(const k of ['first','second','dateLabel','city','dateTime'])field($('midnightCouple'),data.couple,k);const opened=new Set([...root.querySelectorAll('details[open][data-ms]')].map(x=>x.dataset.ms));root.replaceChildren();
+ const m=data.midnight??={};m.sections??={};m.text??={};m.story??={};m.story.removed??={};m.events??=copy(msEvents);m.locations??=[{type:'Банкет',name:'Зал торжества',address:'Название площадки и точный адрес будут указаны в персональном приглашении.',photo:'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1000&q=85',mapUrl:'',demo:true}];m.dress??={colors:['#142740','#142740'],labels:['Для неё','Для него'],palette:[{name:'Сапфир',color:'#142740'},{name:'Пыльный синий',color:'#687c95'},{name:'Шампань',color:'#cfb58a'},{name:'Песочный',color:'#ad9174'},{name:'Графит',color:'#424651'}]};
+ for(const k of Object.keys(msSections))m.sections[k]??=true;for(const rows of Object.values(msTextGroups))for(const [k,l,v] of rows)m.text[k]??=v;
+ for(const k of ["midnightHero","midnightStory0","midnightStory1","midnightStory2","midnightVenue0","midnightVenue1","midnightVenue2","midnightVenue3","midnightLook0","midnightLook1"]){data.photos[k]??='';data.photoPosition[k]??='center 50%'}
+ const title=document.createElement('h2');title.textContent='Настройки Midnight Sapphire';root.append(title);
+ const info=document.createElement('p');info.className='muted';info.textContent='Открой нужный раздел. Изменения автоматически сохраняются в тестовом заказе.';root.append(info);
+ for(const [id,name] of Object.entries(msSections)){
+ const det=document.createElement('details');det.dataset.ms=id;det.className='ms-section';det.open=opened.has(id)||openId===id;const sum=document.createElement('summary');sum.textContent=name;det.append(sum);root.append(det);msCheck(det,m.sections,id,'Показывать раздел');
+ for(const [k,l] of msTextGroups[id]||[])field(det,m.text,k,l,true);
+ if(id==='stage')$('midnightPhotos').append(createPhotoInput('midnightHero'));
+ if(id==='story'){const s=m.story;for(const [k,l,v] of [['chapter','Метка','IV · ИСТОРИЯ НАШЕЙ ЛЮБВИ'],['title','Заголовок','Наша история'],['intro','Текст','Несколько мгновений нашей истории, которые привели нас к самому важному дню.'],['sign','Подпись','С любовью']]){s[k]??=v;field(det,s,k,l,true)}for(let i=0;i<3;i++){$('midnightPhotos').append(createPhotoInput('midnightStory'+i));const proxy={visible:!s.removed[i]};const l=document.createElement('label');l.className='ms-toggle';const c=document.createElement('input');c.type='checkbox';c.checked=proxy.visible;c.onchange=()=>{s.removed[i]=!c.checked;changed()};l.append(c,'Показывать фотографию '+(i+1));det.append(l)}}
+ if(id==='venue'){m.locations.forEach((v,i)=>{const card=document.createElement('div');card.className='ms-item';const h=document.createElement('strong');h.textContent='Площадка '+(i+1);card.append(h);for(const [k,l] of [['type','Тип / дата события'],['name','Название'],['address','Адрес'],['mapUrl','Ссылка на карту']])field(card,v,k,l);det.append(card);$('midnightPhotos').append(createPhotoInput('midnightVenue'+i));msButton(card,'Удалить площадку',async()=>{for(let j=i;j<m.locations.length;j++){const a='midnightVenue'+j,b='midnightVenue'+(j+1);try{await deleteMedia(a);if(j<m.locations.length-1&&localPhoto(b)){const blob=await readMedia(b);if(blob){await storeMedia(a,blob);cachedUrl(a,blob)}}}catch{}data.photos[a]=j<m.locations.length-1?(localPhoto(b)?photoLink(a):data.photos[b]||''):'';data.photoPosition[a]=data.photoPosition[b]||'center'}m.locations.splice(i,1);msRedraw(id)})});const add=msButton(det,'+ Добавить площадку',()=>{m.locations.push({type:'Церемония',name:'',address:'',mapUrl:'',photo:'',demo:false});msRedraw(id)});add.disabled=m.locations.length>=4;}
+ if(id==='schedule'){m.events.forEach((v,i)=>{const card=document.createElement('div');card.className='ms-item';det.append(card);for(const [k,l] of [['time','Время / дата'],['title','Событие'],['description','Описание']])field(card,v,k,l,k==='description');msSelect(card,v,'icon','Иконка',[['glass','Бокалы'],['rings','Кольца'],['dinner','Ужин'],['music','Музыка'],['star','Звезда']]);msButton(card,'↑',()=>{if(i>0){[m.events[i-1],m.events[i]]=[m.events[i],m.events[i-1]];msRedraw(id)}}).disabled=i===0;msButton(card,'↓',()=>{if(i<m.events.length-1){[m.events[i+1],m.events[i]]=[m.events[i],m.events[i+1]];msRedraw(id)}}).disabled=i===m.events.length-1;msButton(card,'Удалить',()=>{m.events.splice(i,1);msRedraw(id)})});msButton(det,'+ Добавить событие',()=>{m.events.push({time:'',title:'Новое событие',description:'',icon:'star'});msRedraw(id)})}
+ if(id==='dress'){const d=m.dress;for(let i=0;i<2;i++){field(det,d.labels,i,'Подпись образа');const color=document.createElement('input');color.type='color';color.value=d.colors[i];color.oninput=()=>{d.colors[i]=color.value;changed()};det.append(color);$('midnightPhotos').append(createPhotoInput('midnightLook'+i))}d.palette.forEach((v,i)=>{const row=document.createElement('div');row.className='ms-item';field(row,v,'name','Название оттенка');const color=document.createElement('input');color.type='color';color.value=v.color;color.oninput=()=>{v.color=color.value;changed()};row.append(color);msButton(row,'Удалить цвет',()=>{d.palette.splice(i,1);msRedraw(id)});det.append(row)});msButton(det,'+ Добавить цвет',()=>{d.palette.push({name:'Новый цвет',color:'#142740'});msRedraw(id)})}
+
+ }
+}
+
+function syncEditorMode(){syncWorkflowTemplate();if($('previewVersion').value==='midnight')drawMidnight();}
 
 function draw(){showRsvp();renderMusic();renderStudioPhotos();renderPremiere();for(const id of ['couple','photos','sections','texts'])$(id).replaceChildren();
 for(const key of ['first','second','dateLabel','city','dateTime'])field($('couple'),data.couple,key);
@@ -2005,6 +2034,7 @@ const SPACEWEB_SSL_PENDING=false; // HTTPS and cross-origin GET/POST verified on
 let isPublishing=false;
 function publishBase64(bytes){let text='';for(let i=0;i<bytes.length;i+=16384)text+=String.fromCharCode(...bytes.subarray(i,i+16384));return btoa(text)}
 async function buildPublishFiles(id,slug=id,rsvpEndpoint=''){
+ if($('previewVersion').value==='midnight'){throw Error('Публикация Midnight Sapphire пока не подключена.');}
  if(musicBusy)throw Error('Дождись сохранения музыки.');
  if($('previewVersion').value==='legacy')throw Error('Классический шаблон не поддерживает автоматическую публикацию. Выбери ÉTERNA, «Срочный выпуск» или PREMIÈRE.');
  if(!/^[a-z0-9](?:[a-z0-9-]{0,58}[a-z0-9])?$/.test(id))throw Error('Неверный ID заказа.');
@@ -2038,6 +2068,7 @@ async function publishRequest(route,body,token){
  return value;
 }
 async function publishOrder(){
+ if($('previewVersion').value==='midnight'){setStatus('Публикация Midnight Sapphire пока не подключена. Используй предпросмотр.');return;}
  if(SPACEWEB_SSL_PENDING){setStatus('Публикация временно недоступна до установки SSL и проверки соединения с SpaceWeb.');return;}
  if(isPublishing)return;
  const pass=$('publishPassword')?.value.trim();
@@ -2095,6 +2126,7 @@ async function publishOrder(){
 }
 
 async function exportPackage(){
+ if($('previewVersion').value==='midnight'){setStatus('Экспорт Midnight Sapphire пока не подключён.');return;}
  if(musicBusy){setStatus('Дождитесь сохранения музыки и повторите экспорт.');return;}
  const buttons=[$('downloadBtn'),$('downloadBtnBottom')];buttons.forEach(b=>b.disabled=true);
  setStatus('Собираю отдельную свадебную страницу и фотографии…');
