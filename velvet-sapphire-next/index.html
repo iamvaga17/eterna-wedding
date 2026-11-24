@@ -1,5 +1,5 @@
 <!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#061127"><meta name="description" content="WEDLETTER — Midnight Sapphire, свадебная сцена"><title>Аурелия и Себастьян — Midnight Sapphire | WEDLETTER</title>
-<style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap"><style>
 *{box-sizing:border-box}html,body{margin:0;width:100%;min-height:100%;background:#061025}body{overflow-x:hidden;color:#fff}html{scroll-behavior:auto;overflow-anchor:none}
 .stage{position:relative;width:100%;height:100vh;height:100svh;overflow:hidden;background:#070d1d;isolation:isolate}
 .art{position:absolute;inset:0;background:#070d1d url("../velvet-sapphire/assets/sapphire.jpg") center/cover no-repeat;transform:translateZ(0);}
@@ -51,6 +51,17 @@
 @media(max-width:380px){.calendar-scene{width:calc(100vw - 58px)}.cal-paper{padding:31px 16px 24px}.cal-days span{font-size:14px}.cal-days .dow{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.reveal-silk{opacity:1;transform:none;transition:none}}
 .stage.offscreen .star,.stage.offscreen .stage-light,.stage.offscreen .intro-glint,.stage.offscreen .intro::after{animation-play-state:paused}.silk-film{transform:translateZ(0);backface-visibility:hidden}
+/* Calendar refinement, preserving V6 scrolling behavior. */
+.silk-lead{font-family:'Marck Script','Segoe Script',Georgia,cursive;font-style:normal;font-size:clamp(43px,11vw,72px);letter-spacing:0;line-height:1.18;color:#f9e7c6}
+.silk-sub{font-size:16px;line-height:1.6}
+.calendar-scene{margin-bottom:35px}
+.cal-days span{font-size:17px;line-height:34px;height:34px}
+.cal-days .dow{font-size:12px;color:#695334;font-weight:600;line-height:34px}
+.cal-days .chosen{position:relative;width:34px;background:none;color:#172b4b;box-shadow:none;font-weight:700}
+.cal-days .chosen::after{content:"";position:absolute;inset:-4px -3px -3px;pointer-events:none;background:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M22 38C18 34 3 24 3 13C3 2 16 1 22 11C28 1 41 2 41 13C41 24 26 34 22 38Z' fill='none' stroke='%23b18b49' stroke-width='1.5'/%3E%3C/svg%3E")}
+.pearls{left:-17px;bottom:-65px;width:110px;height:89px;z-index:2}
+.silk-date{margin-top:46px}
+@media(max-width:380px){.cal-days span{font-size:15px}.cal-days .dow{font-size:11px}.cal-days .chosen{width:30px}}
 </style></head><body><main class="stage" id="stage" aria-label="Свадебная сцена Аурелии и Себастьяна в сапфировых оттенках"><div class="art" role="img" aria-label="Аурелия и Себастьян на сцене под золотыми лучами"></div><div class="stage-light" aria-hidden="true"></div><div class="stars" id="stars" aria-hidden="true"></div><div class="veil" aria-hidden="true"></div><div class="intro" id="intro" aria-hidden="true"><div class="intro-glints" id="intro-glints"></div></div><button class="replay" id="replay" type="button" aria-label="Повторить мерцающее вступление"><svg viewBox="0 0 24 24"><path d="M3.7 10a8.3 8.3 0 1 1 .8 6M3 4v6h6"/></svg></button>
 </main>
 <section class="silk-scene" id="calendar" aria-label="Свадебный календарь">
