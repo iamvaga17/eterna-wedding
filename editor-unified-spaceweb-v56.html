@@ -1781,7 +1781,13 @@ async function exportMidnight(folder,files,config,id){
  let page=await (await fetchResource(root+'ultra-editor-v33.html')).text();
  const deps=['assets/silk-ultra.jpg','assets/silk-ultra.mp4','assets/sapphire-clean-v27.webp','assets/story-v28-1.webp','assets/story-v28-2.webp','assets/story-v28-3.webp','../velvet-sapphire/assets/glitter.webp','../premiere/assets/venue-estate.svg','../rsvp-config.js','../rsvp-renderer.js'];
  for(const path of deps){
-   const target=path.replace(/^\.\.\//,'');
+   const target=path.startsWith('../velvet-sapphire/')?'assets/midnight-glitter.webp':path.startsWith('../premiere/')?'assets/venue-estate.svg':path.replace(/^\.\.\//,'');
+   // SpaceWeb's existing publisher accepts root files and assets/ files. Keep the
+   // video on the public template host for server publication; ZIP retains it.
+   if(config.rsvp?.endpoint && path==='assets/silk-ultra.mp4'){
+     page=page.split(path).join(new URL(root+path,location.href).href);
+     continue;
+   }
    const bytes=new Uint8Array(await (await fetchResource(root+path)).arrayBuffer());
    files.push({name:folder+target,bytes});
    if(path!==target)page=page.split(path).join(target);
@@ -2132,7 +2138,7 @@ async function publishOrder(){
    const file=files[i];
    if(file.bytes.byteLength>10_500_000)throw Error('Файл слишком большой: '+file.name);
    setStatus('Загружаю '+(i+1)+' из '+files.length+': '+file.name.split('/').pop());
-   const result=await publishRequest('/publish/blob',{orderId:slug,ownerId:id,path:file.name,content:publishBase64(file.bytes)},pass);
+   let result;try{result=await publishRequest('/publish/blob',{orderId:slug,ownerId:id,path:file.name,content:publishBase64(file.bytes)},pass)}catch(error){throw Error(file.name+' — '+String(error?.message||error))}
    staged.push({path:file.name,sha:result.sha});
   }
   setStatus('Размещаю свадебный сайт на SpaceWeb…');
