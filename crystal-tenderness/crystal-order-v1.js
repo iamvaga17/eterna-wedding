@@ -597,7 +597,7 @@ function setSchedule(events){
 }
 function mediaUrl(value,allowBlob=preview){
  if(typeof value!=='string'||!value.trim())return '';
- try{const u=new URL(value,location.href);if(u.protocol==='https:'||u.protocol==='http:'||(allowBlob&&u.protocol==='blob:'))return u.href}catch{}
+ try{const u=new URL(value,location.href);if(u.protocol==='https:'||u.protocol==='http:'||(allowBlob&&u.protocol==='blob:')||(location.protocol==='file:'&&u.protocol==='file:'&&/^wedding-(?:photo-[a-zA-Z0-9-]+\.jpg|music\.(?:mp3|m4a))$/.test(value)))return u.href}catch{}
  return '';
 }
 function httpsUrl(value){try{const u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password?u.href:''}catch{return ''}}
