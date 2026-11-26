@@ -1,3 +1,0 @@
-# WEDLETTER staging: never expose staged files over HTTP(S).
-# Apache 2.4 (SpaceWeb)
-Require all denied
